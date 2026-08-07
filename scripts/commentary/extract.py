@@ -279,6 +279,42 @@ def clean_lines(text):
 
 SENT_END = ('。', '！', '？', '」', '”')
 
+REF_RE = re.compile(r'^(\d+)(?:-(\d+))?$')
+
+def ref_range(r):
+    """ref 字符串 → (start, end)；无法解析返回 None"""
+    if not r:
+        return None
+    m = REF_RE.match(r)
+    if not m:
+        return None
+    s = int(m.group(1))
+    return (s, int(m.group(2)) if m.group(2) else s)
+
+def postprocess_chapters(chapters):
+    """小节后处理：
+    a) 倒退小节（ref 起点小于前一小节，注释编号被误判为经文块的产物）并入前段文本；
+    b) 相邻小节 ref 缺口自动补全（如 [16-16] 后 [18-19] → [16-17]）。
+    文本不丢失，仅修正 ref 显示与合并误切分。"""
+    for c in chapters:
+        secs = c['sections']
+        merged = []
+        for s in secs:
+            r = ref_range(s.get('ref'))
+            prev = merged[-1] if merged else None
+            prev_r = ref_range(prev.get('ref')) if prev else None
+            if r and prev_r and r[0] < prev_r[0]:
+                prev['text'] = (prev['text'] + '\n' + s['text']).strip()
+                continue
+            merged.append(s)
+        c['sections'] = merged
+        for i in range(len(merged) - 1):
+            r1 = ref_range(merged[i].get('ref'))
+            r2 = ref_range(merged[i + 1].get('ref'))
+            if r1 and r2 and r1[1] < r2[0] - 1:
+                merged[i]['ref'] = '%d-%d' % (r1[0], r2[0] - 1)
+    return chapters
+
 def join_paras(rows):
     """按句末标点合并行 → 逻辑段落（pypdf 行拆常在句子中间断开）"""
     paras, buf = [], ''
@@ -321,7 +357,7 @@ def parse_lines(lines):
         nonlocal cur_sec
         if cur is not None and cur_sec is not None:
             cur_sec['text'] = cur_sec['text'].strip()
-            if cur_sec['text'] or cur_sec['ref']:
+            if cur_sec['text']:
                 cur['sections'].append(cur_sec)
         cur_sec = None
 
@@ -364,13 +400,30 @@ def parse_lines(lines):
         if cur is None:
             continue
 
-        # 经文块行判定：行首为节号（新块开始），或处于经文块中且含「」引号/行内节号（跨行续行）
-        is_verse_start = re.match(r'^\d+ +', ln) is not None
+        # 经文块行判定：行首为节号（新块开始；排除"3 节）。"类注释续行），
+        # 或处于经文块中且含「」引号/行内节号（跨行续行）
+        is_verse_start = re.match(r'^\d+ +(?!节|章)', ln) is not None
         if is_verse_start or (in_verse and ('「' in ln or VERSE_NUM_RE.search(ln))):
+            nums = [int(x) for x in VERSE_NUM_RE.findall(ln)]
+            # 注释中的单节经文引文（如"5 塞特共活了九百一十二岁就死了。"）：
+            # 注释进行中（小节有 ref 有文本）+ 非小节标题引领 + 单节 + 句末标点 → 并入注释文本
+            in_comment = cur_sec is not None and cur_sec['ref'] and bool(cur_sec['text'])
+            if (
+                is_verse_start and in_comment and pending_heading is None
+                and len(nums) <= 1 and ln.endswith(('。', '；', '」', '”', '！', '？'))
+            ):
+                if cur_sec['text'] and last_sentence:
+                    cur_sec['text'] += '\n'
+                cur_sec['text'] += ln
+                last_sentence = ln.endswith(SENT_END)
+                continue
             if pending_heading is not None:
                 begin_section(pending_heading)
                 pending_heading = None
-            nums = [int(x) for x in VERSE_NUM_RE.findall(ln)]
+            elif cur_sec is not None and cur_sec['ref']:
+                # 新经文块（无小节标题）且当前小节已有 ref（上一块已结束）→ 开新小节，
+                # 避免后续块的 ref 覆盖前一块注释小节（如创 2 章 8-15 被 16 覆盖）
+                begin_section('')
             verse_nums += nums
             in_verse = True
             continue
@@ -434,6 +487,7 @@ def process_book(files, book_id, report):
                 'bookId': book_id,
                 'chapters': [chapters_all[k] for k in sorted(chapters_all)],
             }
+    postprocess_chapters(book['chapters'])
     got = len(book['chapters'])
     expected = EXPECTED_CHAPTERS.get(book_id)
     report['status'] = 'ok'
