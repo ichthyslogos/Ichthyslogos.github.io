@@ -48,7 +48,7 @@
 |                 |  继续探索（同主题其他子命题 + 进入读经研究）
 ```
 
-- 左侧列表点击切换子命题，右侧即时更新。
+- 左侧列表点击切换子命题，右侧即时更新；列表**按分类分组**（如"神义论问题""祷告与信仰"），点击分类头可展开/折叠（默认全部展开）。
 - **质疑卡**（米白底）：该子命题最强有力的反对意见。
 - **内容卡**：子命题即最基层内容——标题（中英）+ 视角徽章 + 核心思想 + 正文 + 证据面板。
 - **证据面板**：支撑证据按类别分区（📖圣经 / 📚哲学 / 🏛️历史 / 🔬科学 / ✝️神学 / ⚖️伦理 / 📜文献）。
@@ -64,22 +64,23 @@
 
 ## 二、数据编辑指南（面向开发者）
 
-### 1. 数据流水线（两层子数据库结构）
+### 1. 数据流水线（三级子数据库结构）
 
-护教数据是**按主题分目录、子命题为最基层**的子数据库——每个子命题一个 `question.json`，内含完整内容（问题 + 质疑 + 标题 + 正文 + 证据）：
+护教数据是**按主题分目录、子命题归入分类**的子数据库——每个子命题一个 `question.json`（问题 + 质疑 + 标题 + 正文 + 证据），按分类（category）组织，分类在主题左栏可展开/折叠：
 
 ```
 data-src/apologetics/
 ├── content.meta.json                站点元数据（source + 主题顺序列表）
 └── topics/                          主题子数据库
-    ├── <topicId>/topic.json         主题元数据（含子命题顺序列表）
-    └── <topicId>/<sqId>/question.json   子命题 ★（最基层，完整内容）
+    ├── <topicId>/topic.json         主题元数据（含 categories 分类列表）
+    ├── <topicId>/<categoryId>/      分类目录
+    └── <topicId>/<categoryId>/<sqId>/question.json   子命题 ★（最基层，完整内容）
 
         │  npm run data（scripts/build-data.mjs 的 buildApologetics()：目录扫描组装）
         ▼
 public/data/apologetics/
 ├── content.json                     索引（主题元数据 + 子命题轻量搜索文本，不含正文）
-└── topics/<topicId>.json            主题切片（完整数据，前端按需加载 + 缓存）
+└── topics/<topicId>.json            主题切片（categories 分组 + sub_questions 完整数据，按需加载 + 缓存）
         │  前端：fetchApologetics() 加载索引（探索/搜索）
         │        fetchApologeticsTopic(topicId) 按需加载主题切片（进入主题时才请求）
         ▼
@@ -88,7 +89,7 @@ public/data/apologetics/
 
 - **改数据只动 `data-src/apologetics/topics/`**，然后运行 `npm run data` 再 `npm run dev` 预览。
 - `public/data/apologetics/` 是构建产物，提交仓库（部署 CI 依赖），但**不要手改**——改了也会被 `npm run data` 覆盖。
-- **顺序约定**：主题顺序在 `content.meta.json` 的 `topics` 列表中显式声明；子命题顺序在 `topic.json` 的 `sub_questions` 中声明（目录扫描是字母序，顺序一律以列表为准）。
+- **顺序约定**：主题顺序在 `content.meta.json` 的 `topics` 列表中显式声明；分类顺序与子命题顺序在 `topic.json` 的 `categories` 中声明（目录扫描是字母序，顺序一律以列表为准）。
 
 ### 2. 目录结构与字段说明
 
@@ -96,12 +97,16 @@ public/data/apologetics/
 data-src/apologetics/topics/suffering/          ← 主题目录（一级：一类质疑）
 ├── topic.json                                  ← 主题元数据
 │     { id, title{zh,en}, description, tags[],
-│       sub_questions: ["evil", "natural-disaster", "prayer"] }   ← 子命题顺序
-└── evil/                                       ← 子命题目录（二级：最基层）
-      └── question.json                         ← 子命题完整内容 ★
-            { id, question, objection,
-              title{zh,en}, perspective, tags[],
-              summary, text, evidence }
+│       categories: [                           ← 分类列表（顺序 + 完整性）
+│         { id: "theodicy", title: "神义论问题",
+│           sub_questions: ["evil", "natural-disaster"] },
+│         { id: "prayer-life", title: "祷告与信仰",
+│           sub_questions: ["prayer"] } ] }
+├── theodicy/                                   ← 分类目录（二级）
+│   ├── evil/question.json                      ← 子命题（三级：最基层）★
+│   └── natural-disaster/question.json
+└── prayer-life/
+    └── prayer/question.json
 ```
 
 | 文件 | 字段 | 说明 |
@@ -110,10 +115,10 @@ data-src/apologetics/topics/suffering/          ← 主题目录（一级：一�
 | | `title { zh, en }` | 主题标题（中英双语，卡片显示） |
 | | `description` | 一句话描述（卡片 + 主题头显示） |
 | | `tags[]` | 领域标签（卡片与主题头显示） |
-| | `sub_questions[]` | 子命题 id 列表（**顺序 + 完整性**：列表中的 id 必须有对应目录，未登记的目录会被忽略） |
+| | `categories[]` | 分类列表：`{ id, title, sub_questions[] }`——`sub_questions` 为子命题 id 列表（顺序 + 完整性；**分类 id 不得与子命题 id 同名**） |
 | `question.json` | `id` | 唯一标识，与目录名一致 |
 | | `question` | 子命题问题全文（列表与详情标题） |
-| | `objection` | 质疑陈述（该问题最强反对意见，显示在米白"质疑"卡） |
+| | `objection` | 质疑陈述（显示在米白"质疑"卡） |
 | | `title { zh, en }` | 内容标题（中英双语，如"并非水火不容 / Not Irreconcilable"） |
 | | `perspective` | 视角徽章（可选，如"历史学视角"） |
 | | `tags[]` | 领域标签（可选） |
@@ -121,13 +126,13 @@ data-src/apologetics/topics/suffering/          ← 主题目录（一级：一�
 | | `text` | 正文（完整论述，支持换行） |
 | | `evidence` | 证据面板（可选）：`bible[] / philosophy[] / history[] / science[] / theology[] / ethics[] / literature[]`，每项 `{ "ref": "引用名/出处", "note": "一句话说明" }` |
 
-> 运行时（前端）看到的结构不变：索引 `content.json` 的 `topics[]` 含 `sqCount / questions[{id, question, searchText}]`；主题切片 `<topicId>.json` 为 `{ id, title, description, tags, sub_questions[] }`（完整数据）。
+> 运行时（前端）看到的结构不变：索引 `content.json` 的 `topics[]` 含 `sqCount / questions[{id, question, searchText}]`；主题切片 `<topicId>.json` 为 `{ id, title, description, tags, categories: [{id,title,sub_questions}], sub_questions[] }`（分类分组 + 完整数据）。
 
 ### 3. 新增 / 编辑一个子命题
 
-> **更省事的方式**：`data-src/apologetics/topics/_template/` 提供了可直接复制的模板（topic.json / question.json + `_README.md` 填写说明）。复制 → 改名 → 填写 → 登记顺序 → `npm run data`，三步完成。`_template` 不会被构建。
+> **更省事的方式**：`data-src/apologetics/topics/_template/` 提供了可直接复制的模板（topic.json / your-category/your-question/question.json + `_README.md` 填写说明）。复制 → 改名 → 填写 → 登记顺序 → `npm run data`，三步完成。`_template` 不会被构建。
 
-在目标主题下新建/编辑子命题目录（如 `data-src/apologetics/topics/suffering/evil/`）的 `question.json`：
+在目标主题的分类目录下新建/编辑子命题（如 `data-src/apologetics/topics/suffering/theodicy/evil/`）的 `question.json`：
 
 ```json
 {
@@ -148,11 +153,11 @@ data-src/apologetics/topics/suffering/          ← 主题目录（一级：一�
 }
 ```
 
-然后把子命题 id 追加到 `topic.json` 的 `sub_questions` 列表末尾。保存后执行 `npm run data`，刷新页面即可看到：左列表多一项，详情区展示完整内容。
+然后把子命题 id 追加到 `topic.json` 的 `categories` 列表中对应分类的 `sub_questions` 数组末尾。保存后执行 `npm run data`，刷新页面即可看到：左列表对应分类下多一项，详情区展示完整内容。
 
 ### 4. 新增一个主题
 
-新建目录 `data-src/apologetics/topics/<新主题id>/`，内含 `topic.json`（`sub_questions` 至少 1 个）：
+新建目录 `data-src/apologetics/topics/<新主题id>/`，内含 `topic.json`（`categories` 至少 1 个，每个分类至少 1 个子命题）与对应的分类/子命题目录：
 
 ```json
 {
@@ -160,11 +165,13 @@ data-src/apologetics/topics/suffering/          ← 主题目录（一级：一�
   "title": { "zh": "自由意志与邪恶", "en": "Evil and Free Will" },
   "description": "自由意志、预定与邪恶来源的讨论。",
   "tags": ["神学", "哲学"],
-  "sub_questions": [ "…子命题id…" ]
+  "categories": [
+    { "id": "theodicy", "title": "神义论问题", "sub_questions": [ "…子命题id…" ] }
+  ]
 }
 ```
 
-以及对应的子命题目录（每目录一个 `question.json`）。最后把主题 id 追加到 `content.meta.json` 的 `topics` 列表（决定卡片顺序）。探索视图的卡片网格会自动显示（数据驱动，无需改代码）。卡片数量多时自动换行（桌面 3 列 / 窄屏 2 列 / 移动端 1 列）。
+最后把主题 id 追加到 `content.meta.json` 的 `topics` 列表（决定卡片顺序）。探索视图的卡片网格会自动显示（数据驱动，无需改代码）。卡片数量多时自动换行（桌面 3 列 / 窄屏 2 列 / 移动端 1 列）。
 
 ### 5. 写作规范（给内容编辑者）
 
@@ -183,7 +190,7 @@ data-src/apologetics/topics/suffering/          ← 主题目录（一级：一�
 | 事项 | 说明 |
 |---|---|
 | id 与目录/文件名一致 | `topic.json` 的 id = 主题目录名；`question.json` 的 id = 子命题目录名（构建时校验，不一致会报错） |
-| 顺序与完整性 | 顺序一律以列表为准：`content.meta.json → topics`、`topic.json → sub_questions` |
+| 顺序与完整性 | 顺序一律以列表为准：`content.meta.json → topics`、`topic.json → categories[].sub_questions`；**分类 id 不得与子命题 id 同名**（同名会导致目录冲突） |
 | `id` 全局唯一 | 主题与子命题的 id 各自域内唯一即可；一旦上线被引用（收藏/分享/搜索直达），不要随意改名 |
 | 引号 | 内容中的引号请使用中文引号「"…"」，**不要用英文双引号**（会破坏 JSON 结构） |
 | JSON 合法性 | 编辑后直接 `npm run data`（解析失败会报错并指明文件） |
@@ -228,7 +235,7 @@ npm run build    # 3. 生产构建（提交前确认能通过）
 
 - [ ] 探索视图：Hero 统计数字正确（N 主题 · N 问题）、主题卡片数量与 `topics` 一致
 - [ ] 搜索：关键词能过滤卡片并列出"相关问题"直达
-- [ ] 主题视图：左列表子命题数量与 `topic.json` 的 `sub_questions` 一致
+- [ ] 主题视图：左列表按分类分组、数量与 `topic.json` 的 `categories` 一致；分类头点击可展开/折叠（默认全展开）
 - [ ] 内容卡：标题/视角徽章/核心思想/正文/证据面板齐全
 - [ ] 圣经引用：点击跳转 `/brp/{卷}/{章}` 对应章节
 - [ ] 移动端（≤900px）：主题视图两段式（列表 ↔ 详情）切换正常

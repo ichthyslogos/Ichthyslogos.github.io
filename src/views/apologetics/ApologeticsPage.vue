@@ -57,9 +57,12 @@ const stats = computed(() => {
 const currentTopic = computed(() => topicsData.value.get(activeTopicId.value) || null)
 const currentSQ = computed(() => currentTopic.value?.sub_questions.find((q) => q.id === activeSQId.value) || null)
 
-/** 确保主题切片已加载（缓存命中直接返回；否则按需 fetch） */
+/** 分类展开状态（默认全展开；Set 存展开的分类 id） */
+const expandedCats = ref(new Set())
+
+/** 确保主题切片已加载（缓存命中直接返回；否则按需 fetch）；返回主题数据 */
 async function ensureTopic(id) {
-  if (topicsData.value.has(id)) return
+  if (topicsData.value.has(id)) return topicsData.value.get(id)
   topicLoading.value = true
   try {
     const t = await fetchApologeticsTopic(id)
@@ -68,11 +71,21 @@ async function ensureTopic(id) {
     if (!t.sub_questions.some((q) => q.id === activeSQId.value)) {
       activeSQId.value = t.sub_questions?.[0]?.id || ''
     }
+    return t
   } catch (e) {
     error.value = e.message
+    return null
   } finally {
     topicLoading.value = false
   }
+}
+
+/** 切换分类展开/折叠 */
+function toggleCat(catId) {
+  const s = new Set(expandedCats.value)
+  if (s.has(catId)) s.delete(catId)
+  else s.add(catId)
+  expandedCats.value = s
 }
 
 /** 搜索：主题级过滤（标题/描述/子问题轻量文本命中，索引驱动） */
@@ -103,14 +116,15 @@ function scrollMainTop() {
   document.querySelector('.app-main')?.scrollTo(0, 0)
 }
 
-/** 进入主题：加载切片（首次按需 fetch），默认第一个子问题 */
+/** 进入主题：加载切片（首次按需 fetch），默认第一个子命题，分类全部展开 */
 async function openTopic(id) {
   activeTopicId.value = id
   activeSQId.value = ''
   mobileView.value = 'list'
   view.value = 'topic'
   scrollMainTop()
-  await ensureTopic(id)
+  const t = await ensureTopic(id)
+  expandedCats.value = new Set((t?.categories || []).map((c) => c.id))
 }
 
 /** 从搜索结果直达子问题 */
@@ -120,7 +134,8 @@ async function openQuestion(topicId, sqId) {
   mobileView.value = 'detail'
   view.value = 'topic'
   scrollMainTop()
-  await ensureTopic(topicId)
+  const t = await ensureTopic(topicId)
+  expandedCats.value = new Set((t?.categories || []).map((c) => c.id))
 }
 
 /** 选中子问题：移动端进入详情 */
@@ -226,17 +241,26 @@ const otherQuestions = computed(() => {
       </header>
 
       <div class="layout">
-        <!-- 左栏：子问题列表（移动端 list 视图显示） -->
+        <!-- 左栏：子命题列表，按分类分组（可展开/折叠；移动端 list 视图显示） -->
         <aside class="question-list" :class="{ 'mobile-hidden': mobileView === 'detail' }">
-          <div class="ql-title">相关问题</div>
-          <QuestionCard
-            v-for="(q, i) in currentTopic.sub_questions"
-            :key="q.id"
-            :q="q"
-            :index="i"
-            :active="q.id === currentSQ?.id"
-            @select="selectQuestion"
-          />
+          <div class="ql-title">子命题</div>
+          <div v-for="cat in currentTopic.categories" :key="cat.id" class="question-group">
+            <button class="cat-group" :class="{ collapsed: !expandedCats.has(cat.id) }" @click="toggleCat(cat.id)">
+              <span class="cg-arrow" aria-hidden="true">▾</span>
+              <span class="cg-title">{{ cat.title }}</span>
+              <span class="cg-count">{{ cat.sub_questions.length }}</span>
+            </button>
+            <div v-show="expandedCats.has(cat.id)" class="cg-items">
+              <QuestionCard
+                v-for="(q, i) in cat.sub_questions.map((id) => currentTopic.sub_questions.find((x) => x.id === id))"
+                :key="q.id"
+                :q="q"
+                :index="i"
+                :active="q.id === currentSQ?.id"
+                @select="selectQuestion"
+              />
+            </div>
+          </div>
         </aside>
 
         <!-- 右栏：质疑 → 回应 → 证据 → 相关学习（移动端 detail 视图显示） -->
@@ -558,6 +582,53 @@ const otherQuestions = computed(() => {
   font-weight: 700;
   color: #a7adb6;
   letter-spacing: 0.16em;
+}
+
+/* 分类分组：分类头（可展开/折叠） */
+.question-group {
+  margin-bottom: 0.3rem;
+}
+.cat-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.cat-group:hover {
+  background: #f8f5ef;
+}
+.cg-arrow {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  color: #8b7355;
+  transition: transform 0.18s ease;
+}
+.cat-group.collapsed .cg-arrow {
+  transform: rotate(-90deg);
+}
+.cg-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: 0.04em;
+}
+.cg-count {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  color: #a7adb6;
+  font-variant-numeric: tabular-nums;
+}
+.cg-items {
+  padding-left: 0.15rem;
 }
 
 /* 右栏：子问题详情 */

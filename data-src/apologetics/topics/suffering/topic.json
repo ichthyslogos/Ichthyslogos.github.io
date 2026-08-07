@@ -10,9 +10,21 @@
     "哲学",
     "圣经"
   ],
-  "sub_questions": [
-    "evil",
-    "natural-disaster",
-    "prayer"
+  "categories": [
+    {
+      "id": "theodicy",
+      "title": "神义论问题",
+      "sub_questions": [
+        "evil",
+        "natural-disaster"
+      ]
+    },
+    {
+      "id": "prayer-life",
+      "title": "祷告与信仰",
+      "sub_questions": [
+        "prayer"
+      ]
+    }
   ]
 }

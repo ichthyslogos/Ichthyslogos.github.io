@@ -10,9 +10,21 @@
     "哲学",
     "神学"
   ],
-  "sub_questions": [
-    "only-way",
-    "outdated",
-    "church-darkness"
+  "categories": [
+    {
+      "id": "exclusivity",
+      "title": "耶稣的独一性",
+      "sub_questions": [
+        "only-way"
+      ]
+    },
+    {
+      "id": "relevance",
+      "title": "信仰的当代意义",
+      "sub_questions": [
+        "outdated",
+        "church-darkness"
+      ]
+    }
   ]
 }

@@ -10,9 +10,21 @@
     "科学",
     "神学"
   ],
-  "sub_questions": [
-    "universe-origin",
-    "life-design",
-    "moral-foundation"
+  "categories": [
+    {
+      "id": "cosmos-life",
+      "title": "宇宙与生命的起源",
+      "sub_questions": [
+        "universe-origin",
+        "life-design"
+      ]
+    },
+    {
+      "id": "morality-faith",
+      "title": "道德与信仰",
+      "sub_questions": [
+        "moral-foundation"
+      ]
+    }
   ]
 }

@@ -9,14 +9,32 @@
     "科学",
     "神学"
   ],
-  "sub_questions": [
-    "unproven-hypothesis",
-    "two-models",
-    "thermodynamics",
-    "origin-of-universe",
-    "origin-of-life",
-    "natural-selection-difficulties",
-    "creationism-and-evolution",
-    "essence-of-the-debate"
+  "categories": [
+    {
+      "id": "status-of-evolution",
+      "title": "进化论的定位",
+      "sub_questions": [
+        "unproven-hypothesis",
+        "two-models",
+        "natural-selection-difficulties"
+      ]
+    },
+    {
+      "id": "origins",
+      "title": "宇宙与生命起源",
+      "sub_questions": [
+        "thermodynamics",
+        "origin-of-universe",
+        "origin-of-life"
+      ]
+    },
+    {
+      "id": "conclusion",
+      "title": "结论与论战实质",
+      "sub_questions": [
+        "creationism-and-evolution",
+        "essence-of-the-debate"
+      ]
+    }
   ]
 }

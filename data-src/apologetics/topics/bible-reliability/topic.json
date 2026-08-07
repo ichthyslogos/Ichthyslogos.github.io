@@ -10,9 +10,21 @@
     "文献",
     "考古"
   ],
-  "sub_questions": [
-    "corruption",
-    "archaeology",
-    "contradictions"
+  "categories": [
+    {
+      "id": "text",
+      "title": "文本与抄传",
+      "sub_questions": [
+        "corruption",
+        "contradictions"
+      ]
+    },
+    {
+      "id": "archaeology-evidence",
+      "title": "考古印证",
+      "sub_questions": [
+        "archaeology"
+      ]
+    }
   ]
 }

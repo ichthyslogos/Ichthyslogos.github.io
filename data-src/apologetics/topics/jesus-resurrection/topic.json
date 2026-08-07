@@ -10,9 +10,21 @@
     "圣经",
     "神学"
   ],
-  "sub_questions": [
-    "resurrection",
-    "historical-jesus",
-    "myth"
+  "categories": [
+    {
+      "id": "resurrection-evidence",
+      "title": "复活的证据",
+      "sub_questions": [
+        "resurrection"
+      ]
+    },
+    {
+      "id": "historicity",
+      "title": "耶稣的历史性",
+      "sub_questions": [
+        "historical-jesus",
+        "myth"
+      ]
+    }
   ]
 }
