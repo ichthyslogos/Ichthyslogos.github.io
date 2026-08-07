@@ -32,9 +32,9 @@ const stats = computed(() => {
 
 <template>
   <div class="home">
-    <!-- 古典油画横幅：示巴女王登船的海港（Claude Lorrain, 1648，公有领域） -->
-    <div class="banner" role="img" aria-label="古典海港油画：示巴女王登船的海港">
-      <img :src="bannerUrl" alt="Claude Lorrain《示巴女王登船的海港》1648" />
+    <!-- 古典油画横幅：耶稣平静风浪（伦勃朗, 1633，公有领域） -->
+    <div class="banner" role="img" aria-label="古典油画：基督在加利利海的风暴中">
+      <img :src="bannerUrl" alt="伦勃朗《基督在加利利海的风暴中》1633" />
     </div>
 
     <!-- Hero：左衬线大标题 / 右侧描述 + 双按钮（非对称两列） -->
@@ -88,7 +88,7 @@ const stats = computed(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 42%; /* 略偏上，突出海平面与建筑 */
+  object-position: center 45%; /* 略偏上，突出船与基督主体 */
   display: block;
 }
 
@@ -187,7 +187,7 @@ const stats = computed(() => {
 @media (max-width: 900px) {
   .hero {
     gap: 3rem;
-    padding: 3.5rem 2rem;
+    padding: 3rem 2rem;
   }
   .hero-title {
     font-size: 3rem;
@@ -195,30 +195,48 @@ const stats = computed(() => {
 }
 @media (max-width: 600px) {
   .banner {
-    height: 200px;
+    height: 190px;
   }
   .hero {
     flex-direction: column;
-    gap: 2rem;
-    padding: 2.6rem 1.5rem 2.8rem;
+    gap: 1.8rem;
+    padding: 2.2rem 1.5rem 2.5rem;
   }
   .hero-title {
-    font-size: 2.6rem;
+    font-size: 2.3rem;
+    line-height: 1.22;
   }
   .hero-side {
     width: 100%;
+    gap: 1.3rem;
+  }
+  .hero-desc {
+    font-size: 0.9rem;
+  }
+  /* 主按钮通栏：移动端整行可点 */
+  .hero-actions {
+    width: 100%;
+  }
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.7rem 1.4rem;
   }
   .trust-strip {
     flex-wrap: wrap;
-    gap: 0.6rem 0.9rem;
+    gap: 0.55rem 1rem;
     height: auto;
-    padding: 1.1rem 1rem;
+    padding: 1rem 1.2rem;
+  }
+  .trust-item {
+    font-size: 0.88rem;
   }
   .trust-dot {
     display: none;
   }
   .home-footer {
-    padding: 1.6rem 1.5rem 2rem;
+    padding: 1.5rem 1.5rem 2rem;
+    font-size: 0.75rem;
   }
 }
 </style>
