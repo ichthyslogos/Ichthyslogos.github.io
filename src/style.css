@@ -63,10 +63,16 @@ button {
   cursor: pointer;
 }
 
-/* 应用外壳：固定视口高度，页面内各区域各自滚动（Home 在 main 内滚动，brp 三区独立滚动） */
+/* 应用外壳：固定视口高度，页面内各区域各自滚动（Home 在 main 内滚动，brp 三区独立滚动）
+   优先使用动态视口单位 dvh（移动端浏览器地址栏收起时布局自适应） */
 .app-shell {
   height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+@supports (height: 100dvh) {
+  .app-shell {
+    height: 100dvh;
+  }
 }

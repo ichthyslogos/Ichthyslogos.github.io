@@ -1,7 +1,8 @@
 <script setup>
 /**
  * ScripturePanel — 经文正文面板（brp 子组件）
- * 包含：书名/章节标题、译本切换（展开式下拉）、经文列表、"解经"按钮（切换右侧解经面板）
+ * 包含：书卷菜单按钮（移动端抽屉）、书名/章节标题、译本切换（展开式下拉）、
+ *      经文列表、"解经"按钮（切换右侧解经面板）
  * 译本选择器由 manifest 数据驱动：新增译本 → 自动出现在下拉中（原文/译本分组展示）
  */
 import TranslationMenu from './TranslationMenu.vue'
@@ -15,15 +16,18 @@ defineProps({
   activeKey: { type: String, required: true },
   loading: { type: Boolean, default: false },
 })
-const emit = defineEmits(['change-translation', 'toggle-commentary'])
+const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar'])
 </script>
 
 <template>
   <div class="scripture-panel">
     <header class="panel-head">
-      <h1 class="panel-title">
-        {{ book.zh }} <span class="chapter-label">第 {{ chapter }} 章</span>
-      </h1>
+      <div class="head-left">
+        <button class="menu-btn" @click="emit('toggle-sidebar')" aria-label="书卷列表">☰</button>
+        <h1 class="panel-title">
+          {{ book.zh }} <span class="chapter-label">第 {{ chapter }} 章</span>
+        </h1>
+      </div>
       <div class="panel-actions">
         <TranslationMenu
           :translations="translations"
@@ -61,6 +65,27 @@ const emit = defineEmits(['change-translation', 'toggle-commentary'])
   gap: 0.6rem;
   padding: 0.9rem 1.4rem;
   border-bottom: 1px solid var(--line);
+}
+.head-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+/* 汉堡按钮：仅窄屏显示（移动端书卷抽屉开关） */
+.menu-btn {
+  display: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0.32rem 0.55rem;
+}
+.menu-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 .panel-title {
   margin: 0;
@@ -105,5 +130,21 @@ const emit = defineEmits(['change-translation', 'toggle-commentary'])
   color: var(--muted);
   text-align: center;
   padding: 2rem 0;
+}
+
+/* 窄屏适配：显示汉堡按钮、压缩头部 */
+@media (max-width: 900px) {
+  .menu-btn {
+    display: inline-flex;
+  }
+  .panel-head {
+    padding: 0.6rem 0.8rem;
+  }
+  .panel-title {
+    font-size: 1.15rem;
+  }
+  .scripture-body {
+    padding: 0.8rem 1rem 2.5rem;
+  }
 }
 </style>

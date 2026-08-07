@@ -78,4 +78,17 @@ function getCommentary() {
   flex: 1;
   overflow-y: auto;
 }
+
+/* 窄屏（≤900px）：解经面板变为右侧覆盖层（不占布局宽度） */
+@media (max-width: 900px) {
+  .commentary-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 45;
+    width: min(88vw, 24rem);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
+  }
+}
 </style>

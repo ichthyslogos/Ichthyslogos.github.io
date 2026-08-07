@@ -55,4 +55,18 @@ import { RouterLink } from 'vue-router'
   font-weight: 600;
   border-bottom: 2px solid var(--accent);
 }
+
+/* 窄屏适配：紧凑头部 */
+@media (max-width: 600px) {
+  .app-header {
+    padding: 0.5rem 0.8rem;
+  }
+  .brand-sub {
+    display: none;
+  }
+  .nav {
+    gap: 0.8rem;
+    font-size: 0.85rem;
+  }
+}
 </style>

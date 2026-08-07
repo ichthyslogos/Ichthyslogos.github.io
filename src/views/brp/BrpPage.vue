@@ -23,7 +23,10 @@ const router = useRouter()
 
 const manifest = ref(null)
 const bookData = ref(null)
-const panelOpen = ref(true) // 解经面板默认展开（常驻经文右侧）
+// 解经面板：桌面默认展开、窄屏默认收起（避免覆盖经文）
+const panelOpen = ref(window.innerWidth > 900)
+// 移动端侧栏抽屉开关（窄屏下书卷列表为抽屉形式）
+const sidebarOpen = ref(false)
 const loading = ref(false)
 const error = ref('')
 
@@ -76,6 +79,14 @@ async function load() {
 
 watch([translation, book], load)
 
+// 路由变化（含外部链接/后退进入）时收起移动端抽屉，避免残留遮挡
+watch(
+  () => route.fullPath,
+  () => {
+    sidebarOpen.value = false
+  },
+)
+
 function syncFromRoute() {
   if (!translation.value || !book.value) return
   const c = clampChapter(book.value, route.params.chapter || 1)
@@ -91,6 +102,7 @@ function navigate(bookId, ch, trans) {
 }
 
 function onSelectBook(bookId) {
+  sidebarOpen.value = false // 移动端选择书卷后收起抽屉
   navigate(bookId, 1)
 }
 
@@ -106,10 +118,15 @@ function onChangeTranslation(key) {
 function onToggleCommentary() {
   panelOpen.value = !panelOpen.value
 }
+
+function onToggleSidebar() {
+  sidebarOpen.value = !sidebarOpen.value
+}
 </script>
 
 <template>
-  <div class="brp-layout" v-if="manifest">
+  <div class="brp-layout" :class="{ 'sidebar-open': sidebarOpen }" v-if="manifest">
+    <div v-if="sidebarOpen" class="sidebar-backdrop" @click="sidebarOpen = false"></div>
     <BookSidebar :translation="translation" :active-book-id="book && book.id" @select-book="onSelectBook" />
     <section class="brp-main">
       <div v-if="error" class="brp-error">{{ error }}</div>
@@ -124,6 +141,7 @@ function onToggleCommentary() {
           :loading="loading"
           @change-translation="onChangeTranslation"
           @toggle-commentary="onToggleCommentary"
+          @toggle-sidebar="onToggleSidebar"
         />
       </template>
     </section>
@@ -159,5 +177,35 @@ function onToggleCommentary() {
 }
 .brp-error {
   color: #b3413b;
+}
+/* 移动端遮罩（仅侧栏抽屉打开时显示） */
+.sidebar-backdrop {
+  display: none;
+}
+
+/* 窄屏（≤900px）：侧栏变抽屉、解经面板变覆盖层 */
+@media (max-width: 900px) {
+  .book-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 40;
+    width: min(80vw, 16rem);
+    transform: translateX(-105%);
+    transition: transform 0.25s ease;
+    background: #fbfcfd;
+    box-shadow: 8px 0 24px rgba(20, 28, 38, 0.18);
+  }
+  .brp-layout.sidebar-open .book-sidebar {
+    transform: translateX(0);
+  }
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 28, 38, 0.35);
+    z-index: 39;
+  }
 }
 </style>
