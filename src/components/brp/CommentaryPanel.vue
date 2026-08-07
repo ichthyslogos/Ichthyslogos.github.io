@@ -19,7 +19,7 @@ import {
   isCommentaryEnabled,
 } from '../../lib/data.js'
 import EmptyState from '../EmptyState.vue'
-import { flowCommentary } from '../../lib/text.js'
+import { flowCommentary, commentaryToHtml } from '../../lib/text.js'
 
 const props = defineProps({
   open: { type: Boolean, default: true },
@@ -100,11 +100,11 @@ watch(
 const chapterData = computed(() => {
   const c = findCommentaryChapter(bookData.value, props.chapter)
   if (!c) return null
-  // 合并 PDF 提取残留的句中硬换行，保留段落结构（见 src/lib/text.js）
+  // 智能排版：合并 PDF 硬换行、脚注移到文末、上标转 <sup>（见 src/lib/text.js）
   return {
     ...c,
-    summary: flowCommentary(c.summary),
-    sections: c.sections.map((s) => ({ ...s, text: flowCommentary(s.text) })),
+    summaryHtml: commentaryToHtml(flowCommentary(c.summary)),
+    sections: c.sections.map((s) => ({ ...s, html: commentaryToHtml(flowCommentary(s.text)) })),
   }
 })
 const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.value)?.name || '')
@@ -133,7 +133,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
             {{ allExpanded ? '全部收起' : '全部展开' }}
           </button>
         </div>
-        <p v-if="chapterData.summary" class="commentary-summary">{{ chapterData.summary }}</p>
+        <div v-html="chapterData.summaryHtml" class="commentary-summary"></div>
         <div v-for="(s, i) in chapterData.sections" :key="i" class="commentary-section">
           <button
             class="commentary-heading"
@@ -148,7 +148,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
           </button>
           <Transition name="fold">
             <div v-if="expanded.has(i)" class="fold-wrap">
-              <p class="commentary-text">{{ s.text }}</p>
+              <div class="commentary-text" v-html="s.html"></div>
             </div>
           </Transition>
         </div>
@@ -233,6 +233,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   border-color: var(--accent);
   color: var(--accent);
 }
+/* 概要：v-html 输出 <p> 段落 */
 .commentary-summary {
   font-size: 0.95rem;
   color: var(--text);
@@ -240,7 +241,12 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   margin: 0 0 1.2rem;
   padding-bottom: 0.8rem;
   border-bottom: 1px solid var(--line);
-  white-space: pre-line;
+}
+.commentary-summary p {
+  margin: 0 0 0.55em;
+}
+.commentary-summary p:last-child {
+  margin-bottom: 0;
 }
 .commentary-section {
   margin-bottom: 0.4rem;
@@ -291,13 +297,39 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   border-radius: 4px;
   padding: 0.05rem 0.4rem;
 }
+/* 小节正文：v-html 输出 <p> 段落（含 <sup> 上标与脚注段） */
 .commentary-text {
   margin: 0;
   font-size: 0.93rem;
   line-height: 1.95;
   color: #3c4652;
-  white-space: pre-line;
   padding: 0.15rem 0.3rem 0.5rem;
+}
+.commentary-text p {
+  margin: 0 0 0.6em;
+}
+.commentary-text p:last-child {
+  margin-bottom: 0;
+}
+.commentary-text sup {
+  font-size: 0.72em;
+  color: var(--muted);
+}
+/* 脚注段：独立成段的小字说明 */
+.commentary-text p.footnote {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0.5em 0 0;
+  padding-top: 0.4em;
+  border-top: 1px dashed var(--line);
+}
+.commentary-summary p.footnote {
+  font-size: 0.78rem;
+  color: var(--muted);
+  border: none;
+  padding: 0;
+  margin-top: 0.6em;
 }
 /* 展开/收起过渡（grid-rows 高度动画） */
 .fold-wrap {

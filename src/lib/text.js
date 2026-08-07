@@ -18,16 +18,44 @@ function endsSentence(line) {
 const SECTION_START =
   /^(（\d+）|\[?\d+\]?[.、．]|[一二三四五六七八九十]+[、.．]|[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+[.、．]|注意[:：])/
 
+/** 脚注行：行首"数字+脚注词"（钦定本/和合本/约翰/莱福特/原文/译本/译注等），数字后可带空格 */
+const FOOTNOTE_START = /^\d+\s*(钦定本|和合本|约翰|莱福特|原文|译本|译注)/
+
+/** 脚注内容特征：含引号（译文引用），或承接上一脚注引号句的收尾行 */
+function isNoteTail(line, prevNote) {
+  if (/[“”"'「」『』]/.test(line)) return true
+  return /[。；]/.test(line) && /[“”"'「」『』]$/.test(prevNote)
+}
+
+/** 上标脚注标记：汉字/括号后紧跟数字再跟中文标点（或冒号后非数字），如"他们1：""混乱虚空1。" */
+const SUP_MARK = /([\u4e00-\u9fa5）】])(\d{1,2})([，。；、）」』]|：[^\d])/g
+
 /**
  * 智能合并段落：行尾为句末标点或行首为层级编号 → 新段落；
- * 其余行（句中截断）与上一行拼接。段落间以空行（\n\n）分隔。
+ * 其余行（句中截断）与上一行拼接。脚注行从正文流中抽取，统一移到文末。
+ * 段落间以空行（\n\n）分隔。
  */
 export function flowCommentary(text) {
   if (!text) return text
   const out = []
+  const notes = []
+  let inNote = false
   for (const raw of text.split('\n')) {
     const line = raw.trim()
     if (!line) continue
+    if (FOOTNOTE_START.test(line)) {
+      notes.push(line) // 新脚注行
+      inNote = true
+      continue
+    }
+    if (inNote) {
+      const prevNote = notes[notes.length - 1]
+      if (!SECTION_START.test(line) && isNoteTail(line, prevNote)) {
+        notes[notes.length - 1] += line // 脚注续行（跨行脚注）
+        continue
+      }
+      inNote = false // 回到正文流
+    }
     const prev = out[out.length - 1]
     if (out.length === 0 || SECTION_START.test(line) || endsSentence(prev)) {
       out.push(line)
@@ -35,5 +63,23 @@ export function flowCommentary(text) {
       out[out.length - 1] += line
     }
   }
-  return out.join('\n\n')
+  return out.concat(notes).join('\n\n')
+}
+
+/**
+ * 注释文本 → 安全 HTML：转义特殊字符、上标数字包 <sup>、段落包 <p>（脚注段加 footnote 类）。
+ * 数据为本站自产内容（无外部输入），转义仍保留以防万一。
+ */
+export function commentaryToHtml(text) {
+  if (!text) return ''
+  const esc = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+  const withSup = esc.replace(SUP_MARK, '$1<sup>$2</sup>$3')
+  return withSup
+    .split('\n\n')
+    .map((p) => `<p${FOOTNOTE_START.test(p) ? ' class="footnote"' : ''}>${p}</p>`)
+    .join('')
 }
