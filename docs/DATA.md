@@ -105,3 +105,18 @@ public/data/brp/crossrefs/<bookId>.json   ← 按卷切片（66 卷 / 29060 节�
 - 每卷 JSON：`{ source, bookId, chapters: [{ chapter, verses: [{ verse, refs: [{ anchor, targets: [{ id, ch, vs }] }] }] }] }`，目标 `vs` 为字符串（支持 `22-24`、`6,9`）
 - 书卷缩写映射在 `scripts/bible-books.mjs` 的 `KJV_ABBR`（66 卷 KJV 标准缩写）
 - 前端接入：`src/lib/data.js` 的 `fetchCrossrefs(bookId)` / `findCrossrefChapter()`；引用目标显示名由 ScripturePanel 用当前译本的中文书卷名拼装（`箴言 8:22-24`）
+
+## 7. 简体译本（ChiUns，SWORD 模块解包）
+
+素材：`bible_databases/sources/zh-hans/ChiUns.zip`（e-Sword/SWORD zText 模块，和合本简体，zh-Hans，Public Domain，来源 bible.fhl.net）。
+
+解包流程（**只读素材，全部工作在副本 `D:/Eyphka/fish/chiuns-copy/` 进行**）：
+1. 解压 zip → `modules/texts/ztext/chiuns/{ot,nt}.bzz/.bzv`
+2. `.bzz` 为 ZIP 压缩（BlockType=BOOK，每卷一个 zlib 流，流 0 为模块标记）
+3. `.bzv` 为节索引：每条 10 字节 `{块号(4), 块内字节偏移(4), 大小(2)}`，记录顺序 = 书卷头(div book sID) → 章头(chapter n=) → 各节内容（OSIS 片段，含 Strong `<w>` 标签）
+4. `python scripts/convert-chiuns.py`：按 bzv 索引切节 → 去标签/碎片 → 标准译本 JSON → `data-src/brp/translations/ChiUns.json`（66 卷 / 31103 节）
+
+说明：
+- 模块无 `<verse>` 标记，节的边界以 bzv 索引为准（信望爱版分节）
+- 已知差异：约翰福音 7 章为 52 节（7:53 内容并入 8 章开头，源版本如此，如实保留）
+- 经文含 Strong 编号（`<w lemma="strong:Hxxxx">`），当前版本已剥离；未来 Strong 功能可直接复用源数据
