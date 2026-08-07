@@ -113,6 +113,11 @@ function backToExplore() {
   window.scrollTo(0, 0)
 }
 
+/** 滚动到探索区（不用 #锚点：与 hash 路由冲突会触发路由跳转导致空白页） */
+function scrollToTopics() {
+  document.getElementById('topics')?.scrollIntoView({ behavior: 'smooth' })
+}
+
 /** 相关学习：同主题其他子问题 */
 const otherQuestions = computed(() => {
   const t = currentTopic.value
@@ -135,7 +140,7 @@ const otherQuestions = computed(() => {
           <p class="hero-sub">Questions. Reason. Faith.</p>
           <p class="hero-desc">探索基督教面对的核心问题，从哲学、历史、科学与圣经寻找答案。</p>
           <div class="hero-actions">
-            <a href="#topics" class="btn-explore">开始探索 <span class="arr">→</span></a>
+            <a href="#topics" class="btn-explore" @click.prevent="scrollToTopics">开始探索 <span class="arr">→</span></a>
             <span v-if="stats.topics" class="hero-stats">{{ stats.topics }} 主题 · {{ stats.questions }} 问题 · {{ stats.responses }} 回应</span>
           </div>
         </div>
