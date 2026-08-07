@@ -1,31 +1,37 @@
 <script setup>
 /**
- * ApologeticsPage — 护教页面（回应当今世界对基督教信仰的挑战）
+ * ApologeticsPage — 护教页面（帮助人理解基督信仰为何具有合理性）
  * 数据驱动：public/data/apologetics/content.json
- *   结构：categories[].topics[].{ question, answers: [{ source, text }] }——同一话题支持多个回答（不同视角）
- * 布局（为大量内容设计，风格对齐首页现代黑白极简）：
- *   - 桌面（>900px）：全宽两栏——左栏话题列表（当前分类，可滚），右栏内容区（选中话题的问题 + 全部回答，直接阅读）
- *   - 移动端：两段式——先话题列表，点击话题进入详情（带"返回话题"按钮）
+ *   结构：topics[].sub_questions[].{ question, objection, responses: [{ title, summary, text, evidence }] }
+ * 布局（设计语言：Minimal / Elegant / Sacred / Academic / Readable）：
+ *   - 探索视图：Hero（米白纸感 + 金棕细线装饰）→ 搜索 → 主题卡片网格 → 相关问题直达
+ *   - 主题视图：面包屑 + 主题头（中英标题/描述/标签）→ 两栏（左子问题列表 / 右：质疑 → 多回应 → 证据 → 相关学习）
+ *   - 移动端：探索网格单列；主题视图两段式（list/detail）
  */
 import { ref, computed, watch, onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
 import { fetchApologetics } from '../../lib/data.js'
 import EmptyState from '../../components/EmptyState.vue'
+import SearchBar from '../../components/apologetics/SearchBar.vue'
+import TopicCard from '../../components/apologetics/TopicCard.vue'
+import QuestionCard from '../../components/apologetics/QuestionCard.vue'
+import ResponseCard from '../../components/apologetics/ResponseCard.vue'
 
 const content = ref(null)
 const loading = ref(false)
 const error = ref('')
-const activeCat = ref('')
-const activeTopic = ref('')
-/** 移动端视图：list=话题列表 / detail=话题详情（仅窄屏生效） */
+/** 视图：explore=主题探索 / topic=主题详情 */
+const view = ref('explore')
+const activeTopicId = ref('')
+const activeSQId = ref('')
+const query = ref('')
+/** 移动端视图（主题详情内）：list=子问题列表 / detail=详情 */
 const mobileView = ref('list')
 
 onMounted(async () => {
   loading.value = true
   try {
     content.value = await fetchApologetics()
-    const cats = content.value?.categories || []
-    activeCat.value = cats[0]?.id || ''
-    activeTopic.value = cats[0]?.topics?.[0]?.id || ''
   } catch (e) {
     error.value = e.message
   } finally {
@@ -33,425 +39,705 @@ onMounted(async () => {
   }
 })
 
-const categories = computed(() => content.value?.categories || [])
+const topics = computed(() => content.value?.topics || [])
 
-/** 数据统计：类 / 问 / 答 数量（页头右侧） */
+/** 全站统计：主题 / 问题 / 回应 */
 const stats = computed(() => {
-  const cats = categories.value
-  const topics = cats.reduce((s, c) => s + (c.topics?.length || 0), 0)
-  const answers = cats.reduce(
-    (s, c) => s + (c.topics?.reduce((x, t) => x + (t.answers?.length || 0), 0) || 0),
+  const questions = topics.value.reduce((s, t) => s + (t.sub_questions?.length || 0), 0)
+  const responses = topics.value.reduce(
+    (s, t) => s + (t.sub_questions?.reduce((x, q) => x + (q.responses?.length || 0), 0) || 0),
     0,
   )
-  return { cats: cats.length, topics, answers }
+  return { topics: topics.value.length, questions, responses }
 })
 
-/** 当前分类（找不到时回退第一个） */
-const currentCat = computed(() => {
-  const cats = categories.value
-  return cats.find((c) => c.id === activeCat.value) || cats[0] || null
+const currentTopic = computed(() => topics.value.find((t) => t.id === activeTopicId.value) || null)
+const currentSQ = computed(() => currentTopic.value?.sub_questions.find((q) => q.id === activeSQId.value) || null)
+
+/** 搜索：主题级过滤（标题/描述/子问题/回应文本命中） */
+const filteredTopics = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  if (!q) return topics.value
+  return topics.value.filter((t) => {
+    const hay = [
+      t.title.zh, t.title.en, t.description,
+      ...(t.sub_questions?.map((s) => `${s.question} ${s.objection || ''} ${s.responses?.map((r) => `${r.title.zh} ${r.title.en} ${r.summary} ${r.text}`).join(' ')}`) || []),
+    ].join(' ').toLowerCase()
+    return hay.includes(q)
+  })
 })
 
-/** 当前话题（找不到时回退该分类第一个话题） */
-const currentTopic = computed(() => {
-  const cat = currentCat.value
-  if (!cat) return null
-  return cat.topics.find((t) => t.id === activeTopic.value) || cat.topics[0] || null
+/** 搜索：子问题级命中（可直达） */
+const searchMatches = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  if (!q) return []
+  const out = []
+  for (const t of topics.value) {
+    for (const sq of t.sub_questions || []) {
+      const hay = `${sq.question} ${sq.objection || ''} ${sq.responses?.map((r) => `${r.title.zh} ${r.summary} ${r.text}`).join(' ')}`.toLowerCase()
+      if (hay.includes(q)) out.push({ topic: t, sq })
+    }
+  }
+  return out
 })
 
-const catCount = (id) => {
-  const c = categories.value.find((x) => x.id === id)
-  return c?.topics?.length || 0
-}
-
-/** 切换分类：重置到该分类第一个话题，移动端回到列表 */
-function selectCat(id) {
-  activeCat.value = id
-  const cat = categories.value.find((c) => c.id === id)
-  activeTopic.value = cat?.topics?.[0]?.id || ''
+/** 进入主题：默认第一个子问题 */
+function openTopic(id) {
+  const t = topics.value.find((x) => x.id === id)
+  if (!t) return
+  activeTopicId.value = id
+  activeSQId.value = t.sub_questions?.[0]?.id || ''
   mobileView.value = 'list'
+  view.value = 'topic'
+  window.scrollTo(0, 0)
 }
 
-/** 选中话题：移动端进入详情 */
-function selectTopic(id) {
-  activeTopic.value = id
+/** 从搜索结果直达子问题 */
+function openQuestion(topicId, sqId) {
+  activeTopicId.value = topicId
+  activeSQId.value = sqId
+  mobileView.value = 'detail'
+  view.value = 'topic'
+  window.scrollTo(0, 0)
+}
+
+/** 选中子问题：移动端进入详情 */
+function selectQuestion(id) {
+  activeSQId.value = id
   mobileView.value = 'detail'
 }
 
-// 数据到达时确保 topic 有效（防御：内容更新后 id 变化）
-watch(currentCat, (cat) => {
-  if (cat && !cat.topics.some((t) => t.id === activeTopic.value)) {
-    activeTopic.value = cat.topics?.[0]?.id || ''
-  }
+/** 返回探索视图 */
+function backToExplore() {
+  view.value = 'explore'
+  window.scrollTo(0, 0)
+}
+
+/** 相关学习：同主题其他子问题 */
+const otherQuestions = computed(() => {
+  const t = currentTopic.value
+  if (!t) return []
+  return (t.sub_questions || []).filter((q) => q.id !== activeSQId.value)
 })
 </script>
 
 <template>
   <div class="apologetics">
-    <!-- 页头：左衬线大标题 + 副题 / 右数据统计（非对称，同首页 hero） -->
-    <header class="page-head">
-      <div class="head-left">
-        <h1 class="page-title">护教</h1>
-        <p class="page-sub">回应当今世界对基督教信仰的挑战——以敬畏的心，回答各人</p>
-      </div>
-      <p v-if="stats.topics" class="head-stats">{{ stats.cats }} 类 · {{ stats.topics }} 问 · {{ stats.answers }} 答</p>
-    </header>
-
     <div v-if="loading" class="page-state">内容加载中…</div>
     <EmptyState v-else-if="error" title="内容加载失败" :message="error" />
-    <template v-else-if="categories.length">
-      <!-- 分类导航：文字式 tabs（激活项黑色下划线） -->
-      <nav class="cat-tabs" aria-label="护教分类">
-        <button
-          v-for="c in categories"
-          :key="c.id"
-          class="cat-tab"
-          :class="{ active: c.id === currentCat?.id }"
-          @click="selectCat(c.id)"
-        >
-          {{ c.title }}
-          <span class="cat-count">{{ catCount(c.id) }}</span>
-        </button>
-      </nav>
 
-      <!-- 两栏：左话题列表 + 右内容区（移动端两段式切换） -->
-      <div v-if="currentCat" class="layout">
-        <!-- 移动端：详情视图顶部返回按钮 -->
-        <button
-          v-if="mobileView === 'detail'"
-          class="back-topics"
-          @click="mobileView = 'list'"
-        >← 全部话题</button>
+    <!-- ===== 探索视图：Hero + 搜索 + 主题网格 ===== -->
+    <div v-else-if="view === 'explore'" class="explore">
+      <section class="hero">
+        <div class="hero-inner">
+          <p class="hero-eyebrow">APOLOGETICS · 护教</p>
+          <h1 class="hero-title">信仰的思考与回应</h1>
+          <p class="hero-sub">Questions. Reason. Faith.</p>
+          <p class="hero-desc">探索基督教面对的核心问题，从哲学、历史、科学与圣经寻找答案。</p>
+          <div class="hero-actions">
+            <a href="#topics" class="btn-explore">开始探索 <span class="arr">→</span></a>
+            <span v-if="stats.topics" class="hero-stats">{{ stats.topics }} 主题 · {{ stats.questions }} 问题 · {{ stats.responses }} 回应</span>
+          </div>
+        </div>
+      </section>
 
-        <!-- 左栏：当前分类的话题列表（移动端 list 视图显示） -->
-        <aside
-          class="topic-list"
-          :class="{ 'mobile-hidden': mobileView === 'detail' }"
-        >
-          <div class="topic-list-title">{{ currentCat.title }}</div>
+      <section class="explorer" id="topics">
+        <header class="explorer-head">
+          <h2 class="section-title">问题探索</h2>
+          <p class="section-sub">选择一个主题，查看不同的质疑与回应</p>
+        </header>
+
+        <SearchBar v-model="query" />
+
+        <!-- 搜索：子问题级命中直达 -->
+        <div v-if="query.trim() && searchMatches.length" class="search-matches">
+          <h3 class="sm-title">相关问题（{{ searchMatches.length }}）</h3>
           <button
-            v-for="t in currentCat.topics"
-            :key="t.id"
-            class="topic-item"
-            :class="{ active: t.id === currentTopic?.id }"
-            @click="selectTopic(t.id)"
+            v-for="m in searchMatches.slice(0, 8)"
+            :key="m.sq.id"
+            class="sm-item"
+            @click="openQuestion(m.topic.id, m.sq.id)"
           >
-            <span class="topic-text">{{ t.question }}</span>
-            <span class="topic-count">{{ t.answers.length }} 答</span>
+            <span class="sm-topic">{{ m.topic.title.zh }}</span>
+            <span class="sm-q">{{ m.sq.question }}</span>
+            <span class="sm-arrow">→</span>
           </button>
+        </div>
+
+        <!-- 主题卡片网格 -->
+        <div v-if="filteredTopics.length" class="topic-grid">
+          <TopicCard
+            v-for="t in filteredTopics"
+            :key="t.id"
+            :topic="t"
+            @select="openTopic"
+          />
+        </div>
+        <EmptyState
+          v-else-if="query.trim()"
+          title="没有匹配的主题"
+          message="换个关键词试试，例如「苦难」「复活」「圣经可靠吗」"
+        />
+      </section>
+    </div>
+
+    <!-- ===== 主题视图：面包屑 + 主题头 + 两栏 ===== -->
+    <div v-else-if="currentTopic" class="topic-view">
+      <header class="topic-head">
+        <button class="back-all" @click="backToExplore">← 全部主题</button>
+        <div class="topic-head-main">
+          <h1 class="topic-zh">{{ currentTopic.title.zh }}</h1>
+          <span class="topic-en">{{ currentTopic.title.en }}</span>
+        </div>
+        <p class="topic-desc">{{ currentTopic.description }}</p>
+        <div class="topic-tags">
+          <span v-for="tag in currentTopic.tags" :key="tag" class="tag">{{ tag }}</span>
+        </div>
+      </header>
+
+      <div class="layout">
+        <!-- 左栏：子问题列表（移动端 list 视图显示） -->
+        <aside class="question-list" :class="{ 'mobile-hidden': mobileView === 'detail' }">
+          <div class="ql-title">相关问题</div>
+          <QuestionCard
+            v-for="(q, i) in currentTopic.sub_questions"
+            :key="q.id"
+            :q="q"
+            :index="i"
+            :active="q.id === currentSQ?.id"
+            @select="selectQuestion"
+          />
         </aside>
 
-        <!-- 右栏：选中话题的问题与全部回答（移动端 detail 视图显示） -->
-        <section
-          v-if="currentTopic"
-          class="topic-detail"
-          :class="{ 'mobile-hidden': mobileView === 'list' }"
-        >
-          <h2 class="topic-question">{{ currentTopic.question }}</h2>
-          <div v-if="currentTopic.answers.length" class="answers">
-            <article
-              v-for="(a, i) in currentTopic.answers"
-              :key="i"
-              class="answer-card"
-            >
-              <span v-if="a.source" class="answer-source">{{ a.source }}</span>
-              <p class="answer-text">{{ a.text }}</p>
-            </article>
+        <!-- 右栏：质疑 → 回应 → 证据 → 相关学习（移动端 detail 视图显示） -->
+        <section v-if="currentSQ" class="sq-detail" :class="{ 'mobile-hidden': mobileView === 'list' }">
+          <button v-if="mobileView === 'detail'" class="back-questions" @click="mobileView = 'list'">← 全部问题</button>
+
+          <h2 class="sq-question">{{ currentSQ.question }}</h2>
+
+          <!-- 质疑（Objection） -->
+          <div v-if="currentSQ.objection" class="objection">
+            <span class="obj-label">质疑</span>
+            <p class="obj-text">{{ currentSQ.objection }}</p>
           </div>
-          <EmptyState v-else title="回答整理中" message="该话题的回答正在整理，敬请期待。" />
+
+          <!-- 回应（Responses） -->
+          <div class="responses">
+            <div class="responses-label">回应 · {{ currentSQ.responses.length }} 个观点</div>
+            <ResponseCard v-for="r in currentSQ.responses" :key="r.id" :r="r" />
+          </div>
+
+          <!-- 相关学习（Related Study） -->
+          <div v-if="otherQuestions.length" class="related">
+            <h3 class="related-title">继续探索</h3>
+            <button
+              v-for="q in otherQuestions"
+              :key="q.id"
+              class="related-item"
+              @click="selectQuestion(q.id)"
+            >→ {{ q.question }}</button>
+            <RouterLink to="/brp" class="btn-brp">进入读经研究 →</RouterLink>
+          </div>
         </section>
       </div>
-    </template>
-    <EmptyState v-else title="内容整理中" message="护教内容正在整理，敬请期待。" />
+    </div>
   </div>
 </template>
 
 <style scoped>
 .apologetics {
+  /* 页面级色板（设计语言：灰黑学术 / 米白经典 / 金棕神圣） */
+  --p: #1f2937;
+  --p-soft: #f3f4f6;
+  --sec: #f8f5ef;
+  --acc: #8b7355;
+  --acc-soft: #f1ece2;
+  --line: #eae5db;
+  --line-soft: #f0ece2;
+  --text: #3f4a56;
+  --muted: #8a93a0;
   flex: 1;
   background: #fff;
 }
 
-/* ===== 页头：非对称两列（左标题/右统计），全宽 padding，同首页 hero 语言 ===== */
-.page-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 2rem;
-  padding: 3.2rem 6rem 2rem;
-}
-.page-title {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 3.2rem;
-  line-height: 1.15;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: #101010;
-}
-.page-sub {
-  margin: 0.8rem 0 0;
-  font-size: 0.92rem;
-  color: #8a8a8a;
-  letter-spacing: 0.02em;
-}
-.head-stats {
-  margin: 0 0 0.3rem;
-  font-size: 0.82rem;
-  color: #9a9a9a;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-}
 .page-state {
   text-align: center;
   padding: 4rem 0;
-  color: #9a9a9a;
+  color: #8a93a0;
 }
 
-/* ===== 分类导航：文字式 tabs，激活项黑色下划线 ===== */
-.cat-tabs {
-  display: flex;
-  gap: 0.2rem;
-  padding: 0.6rem 6rem 0;
-  border-bottom: 1px solid #ececec;
-  overflow-x: auto;
-  scrollbar-gutter: stable;
-}
-.cat-tab {
+/* ===== Hero：米白纸感 + 金棕装饰线 ===== */
+.hero {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.75rem 1.1rem;
-  border: none;
-  background: transparent;
-  color: #8a8a8a;
-  font-size: 0.95rem;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: color 0.15s ease;
+  background: var(--sec);
+  border-bottom: 1px solid var(--line);
 }
-.cat-tab:hover {
-  color: #101010;
-}
-.cat-tab.active {
-  color: #101010;
-  font-weight: 600;
-}
-.cat-tab::after {
+/* 左缘细十字线稿（低调装饰，非宗教渲染） */
+.hero::before {
   content: '';
   position: absolute;
-  left: 1.1rem;
-  right: 1.1rem;
-  bottom: -1px;
-  height: 2px;
-  background: transparent;
+  left: 3rem;
+  top: 2.6rem;
+  width: 34px;
+  height: 34px;
+  border-left: 1px solid rgba(139, 115, 85, 0.45);
+  border-top: 1px solid rgba(139, 115, 85, 0.45);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 3rem;
+  top: 2.6rem;
+  width: 0;
+  height: 34px;
+  border-left: 1px solid rgba(139, 115, 85, 0.45);
+  transform: translateX(16px);
+}
+.hero-inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 5rem 6rem 4.4rem;
+}
+.hero-eyebrow {
+  margin: 0 0 1.2rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--acc);
+  letter-spacing: 0.28em;
+}
+.hero-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 3.4rem;
+  line-height: 1.18;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--p);
+}
+.hero-sub {
+  margin: 1.1rem 0 0;
+  font-size: 1rem;
+  color: var(--acc);
+  letter-spacing: 0.18em;
+}
+.hero-desc {
+  margin: 1.1rem 0 0;
+  max-width: 30rem;
+  font-size: 0.95rem;
+  line-height: 1.95;
+  color: var(--muted);
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin-top: 2.2rem;
+  flex-wrap: wrap;
+}
+.btn-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--p);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.62rem 1.6rem;
+  border-radius: 999px;
   transition: background 0.15s ease;
 }
-.cat-tab.active::after {
-  background: #101010;
+.btn-explore:hover {
+  background: #10161d;
+  text-decoration: none;
 }
-.cat-count {
-  font-size: 0.7rem;
-  opacity: 0.55;
-  font-variant-numeric: tabular-nums;
+.btn-explore .arr {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+.hero-stats {
+  font-size: 0.82rem;
+  color: #a2957e;
+  letter-spacing: 0.05em;
 }
 
-/* ===== 两栏布局：全宽（左右 padding），无盒子边框 ===== */
-.layout {
+/* ===== 探索区 ===== */
+.explorer {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 2.8rem 6rem 4.5rem;
+  scroll-margin-top: 1rem;
+}
+.explorer-head {
+  margin-bottom: 1.3rem;
+}
+.section-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--p);
+}
+.section-sub {
+  margin: 0.4rem 0 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* 搜索结果：子问题直达 */
+.search-matches {
+  margin-top: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.sm-title {
+  margin: 0;
+  padding: 0.6rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--acc);
+  background: var(--sec);
+  letter-spacing: 0.1em;
+}
+.sm-item {
   display: flex;
-  align-items: flex-start;
-  gap: 3.5rem;
-  padding: 2.2rem 6rem 4rem;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--line-soft);
+  background: #fff;
+  padding: 0.7rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text);
+  transition: background 0.12s ease;
 }
-
-/* 左栏：话题列表（极简：白底 + 悬停浅灰，激活黑底白字） */
-.topic-list {
-  width: 19rem;
+.sm-item:hover {
+  background: var(--sec);
+}
+.sm-topic {
   flex-shrink: 0;
-  max-height: calc(100vh - 280px);
-  overflow-y: auto;
-  scrollbar-gutter: stable;
-  padding-bottom: 0.8rem;
-}
-.topic-list-title {
-  padding: 0.25rem 0.8rem 0.8rem;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #b0b0b0;
-  letter-spacing: 0.16em;
+  color: var(--acc);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
 }
-.topic-item {
+.sm-q {
+  flex: 1;
+  min-width: 0;
+}
+.sm-arrow {
+  flex-shrink: 0;
+  color: var(--acc);
+}
+
+/* 主题网格 */
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  margin-top: 1.6rem;
+}
+
+/* ===== 主题视图 ===== */
+.topic-head {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 2.2rem 6rem 1.6rem;
+}
+.back-all {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--p);
+  font-size: 0.85rem;
+  padding: 0.32rem 1.05rem;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.back-all:hover {
+  border-color: var(--acc);
+  color: var(--acc);
+}
+.topic-head-main {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.topic-zh {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--p);
+}
+.topic-en {
+  font-size: 1rem;
+  color: #a7adb6;
+  letter-spacing: 0.04em;
+}
+.topic-desc {
+  margin: 0.8rem 0 0;
+  max-width: 36rem;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.topic-tags {
+  display: flex;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--acc);
+  background: var(--acc-soft);
+  border-radius: 999px;
+  padding: 0.16rem 0.7rem;
+}
+
+/* 两栏布局 */
+.layout {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 1.4rem 6rem 4.5rem;
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.6rem;
+  gap: 2.6rem;
+  border-top: 1px solid var(--line);
+}
+
+/* 左栏：子问题列表 */
+.question-list {
+  width: 21rem;
+  flex-shrink: 0;
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: 0.9rem 0.5rem 0.9rem 0;
+}
+.ql-title {
+  padding: 0.2rem 0.8rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #a7adb6;
+  letter-spacing: 0.16em;
+}
+
+/* 右栏：子问题详情 */
+.sq-detail {
+  flex: 1;
+  min-width: 0;
+}
+.sq-question {
+  margin: 0 0 1.4rem;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  font-weight: 700;
+  color: var(--p);
+  padding: 0 0 1.1rem 1.1rem;
+  border-left: 3px solid var(--acc);
+}
+
+/* 质疑卡 */
+.objection {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  background: var(--sec);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--acc);
+  border-radius: 8px;
+  padding: 0.95rem 1.2rem;
+  margin-bottom: 1.8rem;
+}
+.obj-label {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--p);
+  border-radius: 999px;
+  padding: 0.14rem 0.6rem;
+  margin-top: 0.1rem;
+}
+.obj-text {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.85;
+  color: #6b7683;
+  font-style: italic;
+}
+
+/* 回应列表 */
+.responses-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #a7adb6;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.3rem;
+}
+
+/* 相关学习 */
+.related {
+  margin-top: 2.2rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
+}
+.related-title {
+  margin: 0 0 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--acc);
+  letter-spacing: 0.12em;
+}
+.related-item {
+  display: block;
   width: 100%;
   text-align: left;
   border: none;
   background: transparent;
-  padding: 0.72rem 0.8rem;
-  border-radius: 6px;
+  padding: 0.55rem 0;
   font-size: 0.92rem;
-  color: #3a3f47;
+  color: var(--text);
   cursor: pointer;
-  line-height: 1.55;
+  transition: color 0.12s ease;
+}
+.related-item:hover {
+  color: var(--acc);
+}
+.btn-brp {
+  display: inline-block;
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--p);
+  border: 1px solid var(--p);
+  border-radius: 999px;
+  padding: 0.45rem 1.3rem;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.topic-item:hover {
-  background: #f5f5f5;
-}
-.topic-item.active {
-  background: #101010;
+.btn-brp:hover {
+  background: var(--p);
   color: #fff;
-  font-weight: 600;
-}
-.topic-text {
-  flex: 1;
-  min-width: 0;
-}
-.topic-count {
-  flex-shrink: 0;
-  font-size: 0.7rem;
-  opacity: 0.6;
-  margin-top: 0.18rem;
-  white-space: nowrap;
-}
-
-/* 右栏：话题详情 */
-.topic-detail {
-  flex: 1;
-  min-width: 0;
-}
-.topic-question {
-  margin: 0.1rem 0 1.6rem;
-  font-size: 1.55rem;
-  line-height: 1.5;
-  font-weight: 700;
-  color: #101010;
-  padding: 0 0 1.1rem 1.1rem;
-  border-left: 3px solid #101010;
-}
-
-/* 回答列表：无盒子卡片，来源徽章 + 正文，回答间细分隔线 */
-.answers {
-  display: flex;
-  flex-direction: column;
-}
-.answer-card {
-  padding: 1.7rem 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-.answer-card:last-child {
-  border-bottom: none;
-}
-.answer-source {
-  display: inline-block;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #101010;
-  border: 1px solid #e2e2e2;
-  border-radius: 5px;
-  padding: 0.16rem 0.6rem;
-  margin-bottom: 0.95rem;
-  letter-spacing: 0.05em;
-}
-.answer-text {
-  margin: 0;
-  font-size: 0.97rem;
-  line-height: 2.05;
-  color: #3a3f47;
-  white-space: pre-line;
+  text-decoration: none;
 }
 
 /* 移动端返回按钮（仅详情视图显示） */
-.back-topics {
+.back-questions {
   display: none;
 }
 
-/* 中间宽度（平板）：压缩左右 padding，保证右栏可读 */
-@media (max-width: 1024px) {
-  .page-head {
-    padding: 2.6rem 2.5rem 1.6rem;
+/* ===== 中间宽度 ===== */
+@media (max-width: 1100px) {
+  .hero-inner {
+    padding: 4.2rem 2.5rem 3.6rem;
   }
-  .cat-tabs {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
+  .explorer {
+    padding: 2.4rem 2.5rem 3.6rem;
+  }
+  .topic-head {
+    padding: 2rem 2.5rem 1.4rem;
   }
   .layout {
-    gap: 2.5rem;
-    padding: 2rem 2.5rem 3.5rem;
+    padding: 1.3rem 2.5rem 3.6rem;
+    gap: 2rem;
+  }
+  .topic-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* 窄屏（≤900px）：两段式——列表/详情互斥切换 */
+/* ===== 窄屏（≤900px）：网格单列 + 两段式 ===== */
 @media (max-width: 900px) {
-  .page-head {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.4rem;
-    padding: 2.4rem 1.5rem 1.4rem;
+  .hero::before,
+  .hero::after {
+    left: 1.4rem;
+    top: 2.2rem;
   }
-  .page-title {
+  .hero-inner {
+    padding: 3.6rem 1.5rem 3rem;
+  }
+  .hero-title {
     font-size: 2.4rem;
   }
-  .head-stats {
-    margin: 0.2rem 0 0;
+  .hero-sub {
+    font-size: 0.9rem;
   }
-  .cat-tabs {
-    padding: 0.5rem 1.5rem 0;
+  .hero-desc {
+    font-size: 0.9rem;
   }
-  .cat-tab {
-    padding: 0.65rem 0.85rem;
-    font-size: 0.92rem;
+  .explorer {
+    padding: 2.2rem 1.5rem 3rem;
+  }
+  .section-title {
+    font-size: 1.45rem;
+  }
+  .topic-grid {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+  .topic-head {
+    padding: 1.7rem 1.5rem 1.2rem;
+  }
+  .topic-zh {
+    font-size: 1.9rem;
   }
   .layout {
     display: block;
-    padding: 1.6rem 1.5rem 3rem;
+    padding: 1.2rem 1.5rem 3rem;
   }
-  .topic-list {
+  .question-list {
     width: 100%;
     max-height: none;
-    padding-bottom: 0.5rem;
+    padding: 0.8rem 0 0.5rem;
   }
-  .topic-list-title {
-    padding: 0.15rem 0.15rem 0.7rem;
+  .ql-title {
+    padding: 0.1rem 0.15rem 0.7rem;
     font-size: 0.78rem;
   }
-  .topic-item {
-    border-bottom: 1px solid #f2f2f2;
+  .question-item {
+    border-bottom: 1px solid var(--line-soft);
     border-radius: 0;
     padding: 0.95rem 0.15rem;
   }
-  .topic-item.active {
+  .question-item.active {
     background: transparent;
-    color: #101010;
+    color: var(--p);
   }
-  .topic-item.active .topic-count {
-    opacity: 0.9;
+  .question-item.active .q-num {
+    color: var(--acc);
   }
-  .back-topics {
+  .question-item.active .q-count {
+    color: var(--muted);
+  }
+  .back-questions {
     display: inline-block;
-    border: 1px solid #ddd;
+    border: 1px solid var(--line);
     border-radius: 999px;
     background: #fff;
-    color: #101010;
-    font-size: 0.88rem;
-    padding: 0.35rem 1.05rem;
+    color: var(--p);
+    font-size: 0.85rem;
+    padding: 0.32rem 1rem;
     margin-bottom: 1.1rem;
   }
-  .topic-detail {
-    padding-top: 0.3rem;
-  }
-  .topic-question {
-    font-size: 1.2rem;
+  .sq-question {
+    font-size: 1.25rem;
     padding: 0 0 0.9rem 0.9rem;
   }
-  .answer-card {
-    padding: 1.4rem 0;
+  .objection {
+    padding: 0.85rem 1rem;
   }
-  .answer-text {
-    font-size: 0.94rem;
+  .response-card {
+    padding: 1.4rem 0;
   }
   /* 两段互斥：detail 视图隐藏列表，list 视图隐藏详情 */
   .mobile-hidden {

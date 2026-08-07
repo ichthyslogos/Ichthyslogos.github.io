@@ -41,7 +41,7 @@ D:\Eyphka\fish\site\
 │           └── commentary\           注释数据（多注释源）
 │               ├── manifest.json      注释源清单
 │               └── matthew-henry\01.json … 按卷注释
-│           └── apologetics\          护教问答数据（content.json：categories → topics，topic = question + 多 answers，每回答带来源视角）
+│           └── apologetics\          护教问答数据（content.json：topics → sub_questions → responses，response 含中英标题/核心思想/正文/evidence 证据，topic 含中英标题/描述/领域标签）
 │
 ├── src\
 │   ├── main.js                    入口：createApp + router + 全局样式
@@ -56,7 +56,7 @@ D:\Eyphka\fish\site\
 │   │   ├── brp\
 │   │   │   └── BrpPage.vue        读经研究平台页：全部状态 + 布局 + 数据加载
 │   │   └── apologetics\
-│   │       └── ApologeticsPage.vue 护教页：分类 chips + 两栏布局（左话题列表/右回答卡片，同话题多回答），移动端两段式（列表/详情）
+│   │       └── ApologeticsPage.vue 护教页：探索视图（Hero + 搜索 + 主题卡片网格 + 相关问题直达）与主题视图（质疑 → 多回应 → 证据面板 → 相关学习；两栏），移动端两段式；色板灰黑/米白/金棕
 │   └── components\
 │       ├── AppHeader.vue          共享：顶栏品牌与导航（components 根目录）
 │       ├── EmptyState.vue         共享：空状态占位（占位功能复用）
@@ -67,6 +67,13 @@ D:\Eyphka\fish\site\
 │           ├── TranslationMenu.vue   展开式译本选择器（分组：译本/原文；列表过长时内部滚动）
 │           ├── VerseItem.vue         单节经文（串珠 🔗 展开/跳转；预留 Strong annotations 插槽）
 │           └── CommentaryPanel.vue  解经面板（常驻经文右侧；多注释源渲染：来源标识+概要+小节注释，无注释显示空状态）
+│       └── apologetics\             护教子页面组件文件夹
+│           ├── SearchBar.vue           搜索框（关键词/问题/分类搜索）
+│           ├── TopicCard.vue           主题卡片（中英标题/描述/子问题数/领域标签）
+│           ├── QuestionCard.vue        子问题列表项（序号/问题/回应数，激活灰黑底）
+│           ├── ResponseCard.vue        回应卡片（中英标题/视角徽章/核心思想/正文 + 证据面板）
+│           ├── EvidencePanel.vue       证据面板（圣经/哲学/历史/科学/神学/伦理/文献分类展示）
+│           └── ScriptureReference.vue  经文引用（解析「书卷 章:节」跳转读经研究 /brp）
 │
 ├── package.json                  脚本入口：dev/build/preview/data（数据流水线）
 ├── vite.config.js                vite 配置（vue 插件，base: './'）
