@@ -32,9 +32,9 @@ const stats = computed(() => {
 
 <template>
   <div class="home">
-    <!-- 古典油画横幅：耶稣平静风浪（伦勃朗, 1633，公有领域） -->
-    <div class="banner" role="img" aria-label="古典油画：基督在加利利海的风暴中">
-      <img :src="bannerUrl" alt="伦勃朗《基督在加利利海的风暴中》1633" />
+    <!-- 古典油画横幅：神奇捕鱼（拉斐尔, 1515，公有领域）——基督呼召彼得 -->
+    <div class="banner" role="img" aria-label="古典油画：基督在革尼撒勒湖的神奇捕鱼">
+      <img :src="bannerUrl" alt="拉斐尔《神奇捕鱼》1515" />
     </div>
 
     <!-- Hero：左衬线大标题 / 右侧描述 + 双按钮（非对称两列） -->
@@ -88,19 +88,18 @@ const stats = computed(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 45%; /* 略偏上，突出船与基督主体 */
+  object-position: center; /* 横版构图，居中显示 */
   display: block;
 }
 
-/* Hero：非对称两列，左衬线大标题 / 右侧描述+按钮（紧凑，约一屏收尾） */
+/* Hero：非对称两列（左衬线大标题 / 右侧描述+按钮），内容区充满页面（左右 padding 而非居中限宽） */
 .hero {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 5rem;
-  max-width: 76rem;
   margin: 0 auto;
-  padding: 3.2rem 4rem 3.2rem;
+  padding: 3.2rem 6rem 3.2rem;
 }
 .hero-title {
   margin: 0;

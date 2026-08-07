@@ -43,8 +43,6 @@ const flat = computed(() => route.name === 'home')
 }
 .header-inner {
   height: 60px;
-  max-width: 76rem;
-  margin: 0 auto;
   padding: 0 2rem;
   display: flex;
   align-items: center;
