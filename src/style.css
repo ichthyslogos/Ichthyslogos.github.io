@@ -1,0 +1,72 @@
+/* FISH 全局样式（共享，无 UI 库） */
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --line: #e3e6ea;
+  --text: #26303b;
+  --muted: #7a8494;
+  --accent: #2f5d9e;
+  --accent-soft: #e8eff8;
+  --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, serif;
+  --sans: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* 全局滚动条：胶囊小条，默认完全隐藏；滚动中（html.sb-scrolling）或悬停区域时淡入，
+   停止滚动约 0.6s 后淡出。视觉宽度 4px（6px 槽位 + 内缩边）。样式由 src/lib/scrollbars.js 驱动。 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(110, 122, 138, 0.5);
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+*:hover::-webkit-scrollbar-thumb,
+html.sb-scrolling ::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+*:hover {
+  scrollbar-color: rgba(110, 122, 138, 0.5) transparent;
+}
+html.sb-scrolling {
+  scrollbar-color: rgba(110, 122, 138, 0.5) transparent;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* 应用外壳：固定视口高度，页面内各区域各自滚动（Home 在 main 内滚动，brp 三区独立滚动） */
+.app-shell {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

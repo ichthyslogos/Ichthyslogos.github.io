@@ -1,0 +1,92 @@
+# 数据流水线（DATA）
+
+本文件说明 FISH 平台的数据如何从素材库进入网站、如何扩展，以及未来功能的接入方案。
+
+## 1. 译本"放入即自动显示"
+
+### 1.1 统一格式约定
+
+`data-src\brp\translations\` 下每个译本是一个 JSON 文件，必须符合素材库 bible_databases 的统一格式：
+
+```json
+{
+  "translation": "ChiUn: 和合本 (繁體字)",
+  "books": [
+    {
+      "name": "Genesis",
+      "chapters": [
+        { "chapter": 1, "verses": [ { "verse": 1, "text": "起初，神創造天地。" } ] }
+      ]
+    }
+  ]
+}
+```
+
+### 1.2 新增译本三步
+
+1. **放入**：把符合上述格式的 JSON 复制到 `data-src\brp\translations\`，例如 `KJV.json`
+2. **运行**：`npm run data`（= import + build-data）
+3. **完成**：网站自动出现该译本（manifest 更新，前端零改动）
+
+可选：在 `scripts\build-data.mjs` 的 `META_BY_KEY` 中补充 `lang`（BCP47 语言码，决定是否做中文去空格）与 `original` 标记（原文）；未补充时默认 `lang: 'und'`、`original: false`，功能不受影响，仅净化规则不生效。
+
+### 1.3 前端如何发现译本
+
+`build-data.mjs` 扫描数据库目录生成 `public\data\brp\manifest.json`：
+
+```json
+{
+  "generatedAt": "…",
+  "translations": [
+    { "key": "chiun", "name": "和合本 (繁體字)", "original": false, "lang": "zh-Hant",
+      "books": [ { "id": "01", "zh": "创世记", "en": "Genesis", "group": "ot", "chapterCount": 50 } ] }
+  ]
+}
+```
+
+- `key`：文件名小写（URL 中 `?trans=<key>` 使用）
+- 排序：非原文在前按 key 排序、原文（original=true）在后，保证 UI 顺序稳定
+- 前端 `src\lib\data.js` 按需 fetch 切片 `translations\<key>\books\<id>.json` 并缓存
+
+## 2. 原文与译本隔离（Strong 预留）
+
+**现状（已落架构）**：
+
+- manifest 中每条译本带 `original: true|false`。`true` 表示原文（原语言圣经：希伯来文 WLC、希腊文 Byz/TR 等）。
+- 前端 `ScripturePanel` 的译本切换器把原文与译本**分区展示**（译本区 + 「原文」区），`resolveTranslation` 的默认偏好只回退译本。
+- 原文与译本在数据流上完全独立：各自的 JSON 独立切片、独立 manifest 条目。
+
+**未来 Strong 功能接入点**：
+
+- `src\components\brp\VerseItem.vue` 已预留具名插槽 `annotations`（当前为注释掉的 `<slot name="annotations">`），Strong 编号高亮与词义注解从此插槽注入，经文渲染不变。
+- 建议的 Strong 数据形态：独立 JSON（词条表 `{ strongNo, hebrew/greek, gloss }` + 每节经文 Strong 编号映射表），按 `bookId + chapter + verse` 对齐，与译本数据流平行——**不要写入译本切片**。
+
+## 3. 马太亨利译注接入方案（经文右侧解经面板）
+
+**现状**：`CommentaryPanel` 常驻于经文右侧的面板已就绪（brp 页"解经"按钮控制显隐），v1 显示空状态；`getCommentary()` 恒返回 null。
+
+**规划接入步骤**：
+
+1. 素材：`D:\Eyphka\fish\马太亨利译注\`（65 PDF + 1 DOCX + 1 EPUB，中文注释，书卷编号 1–66）
+2. 转换：用 pdftotext（或 Python 库）按卷提取文本 → 解析"本章概要 + 逐节注释"体例 → 生成 `{ bookId, chapter, summary, verses: [{ verse, text }] }` 结构
+3. 存放：`data-src\brp\commentary\<bookId>.json`（与译本平行，属于 brp 子页面的数据文件夹；bookId 复用 bible-books 编号体系，天然对齐）
+4. 构建：build-data 增加注释切片（或注释文件按章切片），manifest 增加 `commentary` 元数据
+5. 前端：`CommentaryPanel.getCommentary()` 按当前 `bookId + chapter` 查询并渲染，组件结构不变
+
+## 4. 故障记录（重要！）
+
+### 4.1 Windows 大小写残留导致 vite 不服务数据文件
+
+- **现象**：`data/brp/translations/chiun/books/01.json` 请求返回 index.html（SPA fallback），而 `manifest.json` 正常。
+- **根因**：早期版本 build-data 用原始大小写生成目录（`translations/ChiUn/`）。Windows 文件系统大小写不敏感，之后小写 key（`chiun`）写入同一物理目录，**磁盘目录名仍是 `ChiUn`**。vite dev server 启动时构建的 public 文件集合是**大小写敏感的字符串匹配**，小写 URL 全部 miss → fallback 到 index.html。
+- **修复**：build-data 每次构建前 `rmSync` 清空 `translations` 输出目录，保证目录名与 key 完全一致。
+- **教训**：在 Windows 上生成目录前先清理；manifest 中的 key 与目录名必须精确一致。
+
+## 5. 数据规模参考
+
+| 译本 | 卷数 | 章数 | 源文件 | 切片后单卷 |
+|---|---|---|---|---|
+| chiun（和合本繁体） | 66 | 1189 | ~7.4MB | ~100–200KB |
+| chisb（思高本，含 7 卷次经） | 73 | 1328 | ~8.3MB | ~100–200KB |
+
+素材库 bible_databases 共 140 种译本（含 WLC/Byz 等原文、KJV 等英文译本），均可按第 1 节流程接入。

@@ -1,0 +1,11 @@
+# 依赖与构建产物
+node_modules/
+dist/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+*.log
+
+# 注意：素材库（bible_databases 等）位于 site 目录之外，git 不会跟踪，
+# 与网站隔离约定一致；public/data 与 data-src 必须提交（CI 依赖，见 docs/DEPLOY.md）
