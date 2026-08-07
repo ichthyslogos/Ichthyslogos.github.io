@@ -154,14 +154,14 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 
 ### 7.5 实战中顺带发现的问题
 
-- **`index.html` 静态 `<title>` 残留旧品牌名**（"读经研究平台"）：Vue 组件内的标题/品牌改版不会同步到 `index.html` 的 `<title>`，需手动同步（本次已改为"FISH · 圣经研究平台"）
+- **`index.html` 静态 `<title>` 残留旧品牌名**（"读经研究平台"）：Vue 组件内的标题/品牌改版不会同步到 `index.html` 的 `<title>`，需手动同步（本次已改为"FISH 鱼与饼 · 基督教研究平台"）
 - **Git Bash 终端中文乱码**（GBK 显示 UTF-8）：提交消息、curl 输出可能显示为乱码——**纯显示问题**，用字节级验证确认真实内容：
   ```bash
   curl -s https://ichthyslogos.github.io/ | python -c "
   import sys, re
   text = sys.stdin.buffer.read().decode('utf-8', errors='replace')
   m = re.search(r'<title>([^<]*)</title>', text)
-  print('title_is_correct:', m.group(1) == 'FISH · 圣经研究平台')
+  print('title_is_correct:', m.group(1) == 'FISH 鱼与饼 · 基督教研究平台')
   "
   ```
 

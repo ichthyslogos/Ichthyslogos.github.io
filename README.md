@@ -1,6 +1,6 @@
-# FISH · 读经研究平台
+# FISH 鱼与饼 · 基督教研究平台
 
-面向中文读经者的轻量研究网站（Bible Research Platform）。Vue 3 + Vite，纯前端静态站，无后端依赖。
+面向中文读者的基督教研究与学习平台（Bible & Apologetics Research Platform）：多译本读经、解经译注、串珠引用、护教问答。Vue 3 + Vite，纯前端静态站，无后端依赖。
 
 > 本文件是项目根目录文档，是后人开发的第一入口。更详细的内容见 [`docs/`](docs/README.md) 索引。
 

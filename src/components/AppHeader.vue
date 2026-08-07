@@ -17,8 +17,8 @@ const flat = computed(() => route.name === 'home')
   <header class="app-header" :class="{ flat }">
     <div class="header-inner">
       <RouterLink to="/" class="brand">
-        <img :src="logoUrl" class="brand-logo" alt="FISH 圣经研究平台" />
-        <span class="brand-name">圣经研究平台</span>
+        <img :src="logoUrl" class="brand-logo" alt="FISH 鱼与饼 · 基督教研究平台" />
+        <span class="brand-name">FISH 鱼与饼</span>
       </RouterLink>
 
       <nav class="nav">

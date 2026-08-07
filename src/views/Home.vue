@@ -1,6 +1,6 @@
 <script setup>
 /**
- * Home — 网站首页（FISH 圣经研究平台品牌页）
+ * Home — 网站首页（FISH 鱼与饼 · 基督教研究平台品牌页）
  * 风格：现代 SaaS 极简奢华——白底、古典油画横幅、衬线大字标题、非对称两列、
  *       标题下功能关键词；大留白、无卡片、无渐变装饰。
  * 数据统计从 manifest 动态读取：新增译本后自动更新。
@@ -37,15 +37,17 @@ const stats = computed(() => {
       <img :src="bannerUrl" alt="克劳德·洛兰《圣保拉在奥斯蒂亚登船》1640" />
     </div>
 
-    <!-- Hero：左衬线大标题 + 功能关键词 / 右侧描述 + 按钮（非对称两列） -->
+    <!-- Hero：左衬线大标题 + 经文副题 + 功能关键词 / 右侧描述 + 按钮（非对称两列） -->
     <section class="hero">
       <div class="hero-copy">
-        <h1 class="hero-title">圣经<br />研究平台</h1>
-        <p class="hero-tags">多译本对照 · 解经译注 · 串珠引用 · 原文研究</p>
+        <p class="hero-eyebrow">FISH · 基督教研究平台</p>
+        <h1 class="hero-title">鱼与饼</h1>
+        <p class="hero-sub">五饼二鱼，众人吃饱（约翰福音 6:1-14）</p>
+        <p class="hero-tags">多译本对照 · 解经译注 · 串珠引用 · 护教问答 · 原文研究</p>
       </div>
       <div class="hero-side">
         <p class="hero-desc">
-          面向中文读者的圣经研究工具：多译本对照阅读、马太亨利译注、串珠交叉引用。
+          面向中文读者的基督教研究与学习平台：多译本对照阅读、马太亨利译注、串珠交叉引用、护教问答。
           素材与框架严格隔离，数据流水线驱动——新内容放入数据库即可自动上架。
         </p>
         <div class="hero-actions">
@@ -58,7 +60,7 @@ const stats = computed(() => {
     <footer class="home-footer">
       <p>
         <template v-if="stats">{{ stats.versions }} 个译本 · {{ stats.books }} 卷经文 · </template>
-        FISH 圣经研究平台
+        FISH 鱼与饼 · 基督教研究平台
       </p>
     </footer>
   </div>
@@ -102,6 +104,21 @@ const stats = computed(() => {
   font-weight: 500;
   letter-spacing: 0.04em;
   color: #101010;
+}
+/* 品牌小字：FISH · 基督教研究平台 */
+.hero-eyebrow {
+  margin: 0 0 1.1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #8b7355;
+  letter-spacing: 0.24em;
+}
+/* 经文副题 */
+.hero-sub {
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+  color: #8a8a8a;
+  letter-spacing: 0.05em;
 }
 .hero-side {
   width: 300px;
