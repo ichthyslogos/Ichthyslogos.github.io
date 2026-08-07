@@ -31,6 +31,9 @@ a:hover { text-decoration: underline; }
 * {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
+  /* 始终保留滚动条槽位：展开/收起内容导致滚动条出现或消失时，
+     内容宽度不变，避免文本（如注释 summary 的 pre-line）重新排版 */
+  scrollbar-gutter: stable;
 }
 *::-webkit-scrollbar {
   width: 6px;
