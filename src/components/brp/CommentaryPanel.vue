@@ -19,6 +19,7 @@ import {
   isCommentaryEnabled,
 } from '../../lib/data.js'
 import EmptyState from '../EmptyState.vue'
+import { flowCommentary } from '../../lib/text.js'
 
 const props = defineProps({
   open: { type: Boolean, default: true },
@@ -96,7 +97,16 @@ watch(
   },
 )
 
-const chapterData = computed(() => findCommentaryChapter(bookData.value, props.chapter))
+const chapterData = computed(() => {
+  const c = findCommentaryChapter(bookData.value, props.chapter)
+  if (!c) return null
+  // 合并 PDF 提取残留的句中硬换行，保留段落结构（见 src/lib/text.js）
+  return {
+    ...c,
+    summary: flowCommentary(c.summary),
+    sections: c.sections.map((s) => ({ ...s, text: flowCommentary(s.text) })),
+  }
+})
 const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.value)?.name || '')
 /** 当前卷注释是否被暂时关闭（白名单外；数据保留，仅前端不显示） */
 const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.book.id))
