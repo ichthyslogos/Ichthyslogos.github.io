@@ -85,5 +85,6 @@
 |---|---|---|---|---|
 | chiun（和合本繁体） | 66 | 1189 | ~7.4MB | ~100–200KB |
 | chisb（思高本，含 7 卷次经） | 73 | 1328 | ~8.3MB | ~100–200KB |
+| kjv（英王钦定本 KJV） | 66 | 1189 | ~8.0MB | ~100–200KB |
 
-素材库 bible_databases 共 140 种译本（含 WLC/Byz 等原文、KJV 等英文译本），均可按第 1 节流程接入。
+素材库 bible_databases 共 140 种译本（含 WLC/Byz 等原文、其他英文译本等），均可按第 1 节流程接入（`node scripts/import.mjs <KEY>`）；英文译本在 `META_BY_KEY` 中登记 `lang: 'en'` 即不被中文空格净化，可加 `name` 覆盖展示名。

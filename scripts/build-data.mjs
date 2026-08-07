@@ -33,6 +33,7 @@ const META_BY_KEY = {
   ChiSB: { lang: 'zh-Hant', original: false },
   ChiUnL: { lang: 'zh-Hant', original: false },
   ChiUns: { lang: 'zh-Hans', original: false },
+  KJV: { lang: 'en', original: false, name: '英王钦定本 (KJV)' },
   WLC: { lang: 'hbo', original: true }, // 希伯来文马所拉文本
   Byz: { lang: 'grc', original: true }, // 希腊文拜占庭文本
   TR: { lang: 'grc', original: true }, // 希腊文公认文本
@@ -113,7 +114,7 @@ for (const file of files) {
 
   manifest.translations.push({
     key,
-    name: displayName(raw.translation),
+    name: meta.name || displayName(raw.translation),
     original: meta.original,
     lang: meta.lang,
     books,
