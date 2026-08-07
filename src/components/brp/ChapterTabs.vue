@@ -1,7 +1,8 @@
 <script setup>
 /**
  * ChapterTabs — 章节导航（brp 子组件）
- * 章节数来自 manifest（数据驱动）；当前章自动滚动到可视区
+ * 章节数来自 manifest（数据驱动）；切换章节时选中章自动水平居中
+ * （仅滚动章选择器自身，不影响侧栏/经文等其他区域）
  */
 import { ref, watch, nextTick } from 'vue'
 
@@ -17,8 +18,12 @@ watch(
   () => props.current,
   async (cur) => {
     await nextTick()
-    const el = scroller.value?.querySelector(`[data-ch="${cur}"]`)
-    el?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    const sc = scroller.value
+    const el = sc?.querySelector(`[data-ch="${cur}"]`)
+    if (!sc || !el) return
+    // 选中章居中：目标滚动位置 = 元素偏移 - 容器中心偏移
+    const target = el.offsetLeft - sc.offsetLeft - (sc.clientWidth - el.offsetWidth) / 2
+    sc.scrollTo({ left: Math.max(0, target), behavior: 'smooth' })
   },
   { immediate: true },
 )
