@@ -71,7 +71,7 @@ export async function fetchCommentaryManifest() {
  * 临时关闭某卷注释：不在白名单内的书卷，前端一律视为"无注释"（数据文件保留，不删除）。
  * 恢复显示：把 bookId（01-66 / ext-N）加回本集合即可，无需重跑数据构建。
  */
-const ENABLED_COMMENTARY_BOOKS = new Set(['01', '02'])
+const ENABLED_COMMENTARY_BOOKS = new Set(['01', '02', '03'])
 
 /** 某卷注释当前是否开放显示 */
 export function isCommentaryEnabled(bookId) {
