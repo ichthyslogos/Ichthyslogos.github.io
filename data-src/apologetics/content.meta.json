@@ -1,8 +1,13 @@
 {
-  "source": { "key": "apologetics", "name": "护教问答", "lang": "zh" },
+  "source": {
+    "key": "apologetics",
+    "name": "护教问答",
+    "lang": "zh"
+  },
   "topics": [
     "does-god-exist",
     "science-faith",
+    "creation-and-evolution",
     "suffering",
     "bible-reliability",
     "jesus-resurrection",
