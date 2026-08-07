@@ -1,15 +1,16 @@
 {
  "54": {
-  "status": "skipped",
-  "reason": "竖排分栏版式（v1 跳过，待专项处理）"
+  "status": "ok",
+  "chapters": 6
  },
  "56": {
-  "status": "skipped",
-  "reason": "竖排分栏版式（v1 跳过，待专项处理）"
+  "status": "ok",
+  "chapters": 3
  },
  "57": {
-  "status": "skipped",
-  "reason": "竖排分栏版式（v1 跳过，待专项处理）"
+  "status": "ok",
+  "expected": 1,
+  "chapters": 1
  },
  "40": {
   "status": "ok",
@@ -219,5 +220,9 @@
  "66": {
   "status": "ok",
   "chapters": 22
+ },
+ "55": {
+  "status": "ok",
+  "chapters": 4
  }
 }

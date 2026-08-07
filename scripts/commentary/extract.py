@@ -74,7 +74,7 @@ EXPECTED_CHAPTERS = {
     '57': 1, '58': 13, '59': 5, '60': 5, '61': 3, '62': 5, '63': 1, '64': 1,
     '65': 1, '66': 22,
 }
-VERTICAL_VOLUMES = {54, 56, 57}  # 竖排分栏卷（v1 跳过）
+VERTICAL_VOLUMES = {54: ('54', '55'), 56: ('56',)}  # 竖排分栏卷（素材编号 → 标准 bookId 列表；57 腓利门实为横排）
 
 # ---------------- 正则 ----------------
 HEADER_RE = re.compile(r'^马太亨利[^\n]{0,40}第\s*\d+\s*页')
@@ -131,6 +131,110 @@ def RE_ARAB_OR_PS(ln):
 
 def is_chapter_title(ln):
     return chapter_num_of(ln) is not None
+
+# ---------------- 竖排分栏版式重建 ----------------
+# 竖排卷（54-55/56/57）为 4 栏竖排：栏标题逐字重复 4 次（如 "提","多","书","第", 1, "章" ×4），
+# 正文为正常句子行（阅读顺序已正确）。重建 = 剔除页码行 + 白名单重组栏标题为章节标题行。
+CN_SINGLE = re.compile(r'^[\u4e00-\u9fff]$')
+
+V_BOOK_NAMES = ['提摩太前书', '提摩太后书', '提多书', '腓利门书']
+V_BOOK_MAP = {'提摩太前书': '54', '提摩太后书': '55', '提多书': '56', '腓利门书': '57'}
+V_TITLE_RE = re.compile(r'^(提摩太前书|提摩太后书|提多书|腓利门书)第(\d+)章$')
+
+def vertical_rebuild(text):
+    """竖排文本 → 常规文本：页码行剔除；栏标题逐字块白名单重组为"书名第N章"标题行"""
+    lines = [ln.strip() for ln in text.split('\n') if ln.strip()]
+    out = []
+    i = 0
+    n = len(lines)
+    while i < n:
+        ln = lines[i]
+        if re.match(r'^\d{1,3}$', ln):  # 页码行
+            i += 1
+            continue
+        if len(ln) == 1:
+            # 收集连续单字/数字块
+            j = i
+            block = []
+            while j < n and (len(lines[j]) == 1 or re.match(r'^\d{1,2}$', lines[j])):
+                block.append(lines[j])
+                j += 1
+            chars = [c for c in block if CN_SINGLE.match(c)]
+            nums = [c for c in block if re.match(r'^\d{1,2}$', c)]
+            title_chars = ''.join(dict.fromkeys(chars))  # 去重保序
+            book = next((b for b in V_BOOK_NAMES if b in title_chars), None)
+            if book and '第' in title_chars and nums:
+                # 章号取块尾部最长连续重复值（pypdf 列优先：章号列在尾部；
+                # 头部可能混入页码，且数字与章号并列时不能靠众数）
+                v = nums[-1]
+                k = len(nums) - 2
+                while k >= 0 and nums[k] == v:
+                    k -= 1
+                out.append('%s第%s章' % (book, v))
+            else:
+                out.extend(block)  # 非栏标题（正文孤立单字/前言等）原样保留
+            i = j
+            continue
+        out.append(ln)
+        i += 1
+    return '\n'.join(out)
+
+def parse_vertical(text):
+    """竖排卷解析：V_TITLE_RE 切章（按书名分流多卷），章内正文全部归入 summary。
+    返回 {bookId: {chapter: chapter_dict}}"""
+    lines = [ln.strip() for ln in text.split('\n') if ln.strip()]
+    result = {}
+    cur_bid = None
+    cur = None
+    buf = []
+    toc_mode = True
+
+    def flush():
+        nonlocal cur_bid, cur, buf
+        if cur is not None and buf:
+            cur['summary'] = join_paras(buf)
+        buf = []
+
+    for ln in lines:
+        if FOOT_URL_RE.match(ln) or PAGE_NO_RE.match(ln):
+            continue
+        m = V_TITLE_RE.match(ln)
+        if m:
+            flush()
+            toc_mode = False
+            cur_bid = V_BOOK_MAP[m.group(1)]
+            num = int(m.group(2))
+            cur = {'chapter': num, 'summary': '', 'sections': []}
+            result.setdefault(cur_bid, {})[num] = cur
+            continue
+        if cur is not None and not toc_mode:
+            buf.append(ln)
+    flush()
+    return result
+
+def process_vertical(files, book_ids, report):
+    """竖排分栏卷：重建 → 解析 → 输出（一个文件可能含多卷，如 54-55 提摩太前后书）"""
+    chapters_all = {}
+    for path, kind in files:
+        text = vertical_rebuild(extract_pdf(path))
+        for bid, chs in parse_vertical(text).items():
+            chapters_all.setdefault(bid, {}).update(chs)
+    for bid in book_ids:
+        chs = chapters_all.get(bid, {})
+        book = {
+            'source': SOURCE_META,
+            'bookId': bid,
+            'chapters': [chs[k] for k in sorted(chs)],
+        }
+        got = len(book['chapters'])
+        expected = EXPECTED_CHAPTERS.get(bid)
+        report[bid] = {'status': 'ok', 'chapters': got}
+        if expected is not None and got != expected:
+            report[bid] = {'status': 'mismatch', 'expected': expected,
+                           'reason': '章节数 %d != 预期 %d' % (got, expected)}
+        with open(os.path.join(OUT_DIR, bid + '.json'), 'w', encoding='utf-8') as f:
+            json.dump(book, f, ensure_ascii=False)
+    return True
 
 # ---------------- 提取 ----------------
 def extract_pdf(path):
@@ -305,16 +409,31 @@ def process_book(files, book_id, report):
         text = extract_pdf(path) if kind == 'pdf' else extract_docx(path)
         lines = clean_lines(text)
         if not any(is_chapter_title(ln) for ln in lines):
-            report['status'] = 'skipped'
-            report['reason'] = '未识别到章节标题（可能为竖排分栏版式）'
-            return False
-        for ch in parse_lines(lines):
-            chapters_all[ch['chapter']] = ch
-    book = {
-        'source': SOURCE_META,
-        'bookId': book_id,
-        'chapters': [chapters_all[k] for k in sorted(chapters_all)],
-    }
+            if EXPECTED_CHAPTERS.get(book_id) == 1:
+                # 单章书无章节标题（如 57 腓利门书）→ 全书作为第 1 章。
+                # 不能走 clean_lines（无标题可终止目录段，会丢光内容），仅滤噪声行
+                body = [
+                    ln.strip() for ln in text.split('\n') if ln.strip()
+                    and not (HEADER_RE.match(ln.strip()) or FOOT_URL_RE.match(ln.strip())
+                             or PAGE_NO_RE.match(ln.strip()) or FOOTNOTE_RE.match(ln.strip()))
+                ]
+                book = {
+                    'source': SOURCE_META,
+                    'bookId': book_id,
+                    'chapters': [{'chapter': 1, 'summary': join_paras(body), 'sections': []}],
+                }
+            else:
+                report['status'] = 'skipped'
+                report['reason'] = '未识别到章节标题（可能为竖排分栏版式）'
+                return False
+        else:
+            for ch in parse_lines(lines):
+                chapters_all[ch['chapter']] = ch
+            book = {
+                'source': SOURCE_META,
+                'bookId': book_id,
+                'chapters': [chapters_all[k] for k in sorted(chapters_all)],
+            }
     got = len(book['chapters'])
     expected = EXPECTED_CHAPTERS.get(book_id)
     report['status'] = 'ok'
@@ -346,15 +465,14 @@ def main():
 
     files = glob.glob(os.path.join(MATERIAL_DIR, '*.pdf')) + glob.glob(os.path.join(MATERIAL_DIR, '*.docx'))
     groups = {}
+    vertical_groups = {}
     for f in files:
         name = os.path.basename(f)
         num, _ = parse_src_file(name)
         if num is None:
             continue
         if num in VERTICAL_VOLUMES:
-            book_id = src_num_to_book_id(num)
-            if book_id not in report:
-                report[book_id] = {'status': 'skipped', 'reason': '竖排分栏版式（v1 跳过，待专项处理）'}
+            vertical_groups.setdefault(num, []).append((f, 'pdf'))
             continue
         book_id = src_num_to_book_id(num)
         kind = 'docx' if f.endswith('.docx') else 'pdf'
@@ -369,6 +487,18 @@ def main():
         ok = process_book(groups[book_id], book_id, r)
         tag = 'OK ' if ok else 'SKIP'
         print('[%s] %s  %s' % (tag, book_id, r.get('reason', '章节数 %s' % r.get('chapters', '?'))))
+        with open(REPORT_PATH, 'w', encoding='utf-8') as f:
+            json.dump(report, f, ensure_ascii=False, indent=1)
+
+    # 竖排分栏卷（54-55 提摩太、56 提多、57 腓利门）
+    for src_num, files in vertical_groups.items():
+        book_ids = VERTICAL_VOLUMES[src_num]
+        if targets and not any(b in targets for b in book_ids):
+            continue
+        if not force and all(report.get(b, {}).get('status') in ('ok', 'mismatch') for b in book_ids):
+            continue
+        process_vertical(files, book_ids, report)
+        print('[VERT] %s → %s' % (src_num, ','.join('%s(%d章)' % (b, report[b].get('chapters', 0)) for b in book_ids)))
         with open(REPORT_PATH, 'w', encoding='utf-8') as f:
             json.dump(report, f, ensure_ascii=False, indent=1)
 
