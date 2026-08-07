@@ -38,10 +38,10 @@ const features = [
   },
   {
     title: '马太亨利译注',
-    desc: '规划中接入马太亨利圣经注释，显示在经文右侧的常驻解经面板（按书卷+章节对齐，当前占位）。',
-    status: '规划中',
-    statusClass: 'soon',
-    to: null,
+    desc: '解经面板已接入马太亨利圣经注释：按书卷+章节对齐显示概要与小节注释，持续收录扩充中（当前已开放旧约前 10 卷）。',
+    status: '已上线',
+    statusClass: 'on',
+    to: '/brp',
   },
   {
     title: 'Strong 原文研究',
@@ -65,7 +65,7 @@ const features = [
       <div v-if="stats" class="hero-stats">
         <span>{{ stats.versions }} 个译本</span>
         <span>{{ stats.books }} 卷经文</span>
-        <span>{{ stats.originals }} 类原文预留</span>
+        <span v-if="stats.originals">{{ stats.originals }} 类原文</span>
       </div>
       <RouterLink to="/brp" class="hero-cta">进入读经研究 →</RouterLink>
     </section>

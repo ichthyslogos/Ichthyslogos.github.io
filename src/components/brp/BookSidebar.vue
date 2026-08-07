@@ -4,7 +4,7 @@
  * 书卷列表完全由 manifest 数据驱动：随当前译本变化（如思高本含 7 卷次经）
  * 移动端为抽屉形态，头部提供关闭按钮（仅 ≤900px 显示）
  */
-import { computed } from 'vue'
+import { computed, watch, nextTick, ref } from 'vue'
 import { GROUPS } from '../../lib/data.js'
 
 const props = defineProps({
@@ -12,6 +12,8 @@ const props = defineProps({
   activeBookId: { type: String, default: '' },
 })
 const emit = defineEmits(['select-book', 'close'])
+
+const sidebarEl = ref(null)
 
 /** 按分组组织书卷，保持 manifest 中的顺序 */
 const groups = computed(() => {
@@ -22,10 +24,28 @@ const groups = computed(() => {
   }
   return g
 })
+
+/** 把高亮书卷滚入可视区（66 卷列表较长，当前卷可能在视口外） */
+function scrollActiveIntoView() {
+  nextTick(() => {
+    const sc = sidebarEl.value
+    const el = sc?.querySelector('.book-item.active')
+    if (!sc || !el) return
+    const rel = el.offsetTop - sc.offsetTop // 相对滚动容器顶部的偏移（两元素 offsetParent 相同，差值可靠）
+    if (rel < sc.scrollTop) sc.scrollTop = rel - 8
+    else if (rel + el.offsetHeight > sc.scrollTop + sc.clientHeight) {
+      sc.scrollTop = rel + el.offsetHeight - sc.clientHeight + 8
+    }
+  })
+}
+
+// 当前书卷变化（选择书卷/串珠跳转）时滚动到高亮项
+watch(() => props.activeBookId, scrollActiveIntoView)
+
 </script>
 
 <template>
-  <aside class="book-sidebar">
+  <aside ref="sidebarEl" class="book-sidebar" @transitionend="scrollActiveIntoView">
     <div class="sidebar-head">
       <span class="sidebar-head-title">书卷目录</span>
       <button class="sidebar-close" @click="emit('close')" aria-label="关闭书卷目录">✕</button>

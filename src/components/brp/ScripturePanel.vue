@@ -23,15 +23,21 @@ const props = defineProps({
 })
 const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar', 'toggle-menu', 'goto-verse'])
 
-// 串珠数据：按卷加载 + 缓存（data.js 内部缓存）
+// 串珠数据：按卷加载 + 缓存（data.js 内部缓存）；加载失败的卷记入集合，避免反复请求
 const crossrefBook = ref(null)
+const failedCrossrefs = new Set()
 watch(
   () => props.book?.id,
   async (id) => {
     if (!id) return
+    if (failedCrossrefs.has(id)) {
+      crossrefBook.value = null
+      return
+    }
     try {
       crossrefBook.value = await fetchCrossrefs(id)
     } catch {
+      failedCrossrefs.add(id)
       crossrefBook.value = null // 该卷无串珠
     }
   },

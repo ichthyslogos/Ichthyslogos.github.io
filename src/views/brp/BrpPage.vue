@@ -103,6 +103,11 @@ watch(
 
 function syncFromRoute() {
   if (!translation.value || !book.value) return
+  // 书卷 ID 非法时 resolveBook 已回退到第一卷：把 URL 修正为实际显示的书卷
+  if (book.value.id !== route.params.bookId) {
+    navigate(book.value.id, 1)
+    return
+  }
   const c = clampChapter(book.value, route.params.chapter || 1)
   if (c !== chapter.value) navigate(book.value.id, c)
 }
@@ -171,7 +176,17 @@ const fromLabel = computed(() => {
   return b ? `${b.zh} ${f.chapter} 章` : ''
 })
 
-onBeforeUnmount(() => clearTimeout(backTimer))
+/** 窗口跨移动端边界（≤900px）时：窄屏强制收起解经覆盖层，避免遮挡经文 */
+function onResize() {
+  if (isMobile() && panelOpen.value) panelOpen.value = false
+}
+
+window.addEventListener('resize', onResize)
+
+onBeforeUnmount(() => {
+  clearTimeout(backTimer)
+  window.removeEventListener('resize', onResize)
+})
 
 function onToggleCommentary() {
   closeOthers('commentary')
