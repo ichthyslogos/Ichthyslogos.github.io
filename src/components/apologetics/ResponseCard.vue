@@ -1,11 +1,18 @@
 <script setup>
 /**
- * ResponseCard — 回应卡片（子问题详情内）
- * 结构：中英标题 + 视角徽章 + 领域标签 + 核心思想（summary）+ 正文 + 证据面板。
+ * ResponseCard — 内容卡（子命题详情内）
+ * 结构：中英标题 + 视角徽章 + 领域标签 + 导语（summary）+ 正文（段落化，中文阅读排版）+ 证据面板。
+ * 阅读排版：正文衬线字体、首行缩进两字符、段间距、限宽列——长文章读起来自然。
  */
+import { computed } from 'vue'
 import EvidencePanel from './EvidencePanel.vue'
 
-defineProps({ r: { type: Object, required: true } })
+const props = defineProps({ r: { type: Object, required: true } })
+
+/** 正文按换行拆段（去空行），每段一个 <p> 便于首行缩进与段间距 */
+const paragraphs = computed(() =>
+  (props.r.text || '').split(/\n+/).map((s) => s.trim()).filter(Boolean),
+)
 </script>
 
 <template>
@@ -16,8 +23,10 @@ defineProps({ r: { type: Object, required: true } })
       <span v-if="r.perspective" class="r-persp">{{ r.perspective }}</span>
     </header>
     <div v-if="r.tags?.length" class="r-tags">{{ r.tags.join(' · ') }}</div>
-    <p class="r-summary">{{ r.summary }}</p>
-    <p class="r-text">{{ r.text }}</p>
+    <p v-if="r.summary" class="r-summary">{{ r.summary }}</p>
+    <div class="r-body">
+      <p v-for="(para, i) in paragraphs" :key="i" class="r-para">{{ para }}</p>
+    </div>
     <EvidencePanel v-if="r.evidence" :evidence="r.evidence" />
   </article>
 </template>
@@ -62,18 +71,34 @@ defineProps({ r: { type: Object, required: true } })
   color: #a7adb6;
   letter-spacing: 0.04em;
 }
+
+/* 导语：金棕竖线 + 稍大斜体，作为长文的引入 */
 .r-summary {
-  margin: 0.9rem 0 0;
-  font-size: 0.94rem;
+  margin: 1rem 0 0;
+  padding: 0.15rem 0 0.15rem 0.9rem;
+  border-left: 3px solid #8b7355;
+  font-size: 1rem;
   font-style: italic;
-  line-height: 1.8;
-  color: #6b7683;
+  line-height: 1.95;
+  color: #5c6676;
 }
-.r-text {
-  margin: 0.8rem 0 0;
-  font-size: 0.96rem;
-  line-height: 2.05;
-  color: #3f4a56;
-  white-space: pre-line;
+
+/* 正文：书籍式阅读排版——衬线字体、两字符首行缩进、段间距、限宽列 */
+.r-body {
+  max-width: 46rem; /* 中文阅读舒适行宽 */
+  margin-top: 1.1rem;
+}
+.r-para {
+  margin: 0 0 0.85em;
+  font-family: var(--serif);
+  font-size: 1.03rem;
+  line-height: 2.15;
+  letter-spacing: 0.02em;
+  text-indent: 2em; /* 中文段落首行缩进两字符 */
+  color: #37404b;
+  white-space: pre-wrap;
+}
+.r-para:last-child {
+  margin-bottom: 0;
 }
 </style>

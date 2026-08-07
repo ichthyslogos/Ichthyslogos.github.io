@@ -496,10 +496,8 @@ const otherQuestions = computed(() => {
   margin-top: 1.6rem;
 }
 
-/* ===== 主题视图 ===== */
+/* ===== 主题视图（全宽 padding：两栏阅读需要横向空间，正文行宽才舒适） ===== */
 .topic-head {
-  max-width: 68rem;
-  margin: 0 auto;
   padding: 2.2rem 6rem 1.6rem;
 }
 .back-all {
@@ -558,8 +556,6 @@ const otherQuestions = computed(() => {
 
 /* 两栏布局 */
 .layout {
-  max-width: 68rem;
-  margin: 0 auto;
   padding: 1.4rem 6rem 4.5rem;
   display: flex;
   align-items: flex-start;
