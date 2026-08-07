@@ -1,10 +1,16 @@
 <script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import logoUrl from '../assets/logo.png'
+
+// 首页（现代极简风格）时隐藏底部分隔线，读经页保持分隔
+const route = useRoute()
+const flat = computed(() => route.name === 'home')
 </script>
 
 <template>
-  <header class="app-header">
+  <header class="app-header" :class="{ flat }">
     <RouterLink to="/" class="brand">
       <img :src="logoUrl" class="brand-logo" alt="FISH 读经研究平台" />
       <span class="brand-sub">读经研究平台</span>
@@ -25,6 +31,10 @@ import logoUrl from '../assets/logo.png'
   background: #fff;
   border-bottom: 1px solid var(--line);
   flex-shrink: 0;
+}
+/* 首页极简风格：无底部分隔线 */
+.app-header.flat {
+  border-bottom: none;
 }
 .brand {
   display: flex;
