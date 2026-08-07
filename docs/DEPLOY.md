@@ -1,5 +1,11 @@
 # 部署指南（DEPLOY）
 
+> **实际部署状态（2026-08-07）**：已上线 ✅
+> - 仓库：`git@github.com:ichthyslogos/Ichthyslogos.github.io.git`（用户站点）
+> - 线上地址：https://ichthyslogos.github.io/
+> - 方式：GitHub Actions（`.github/workflows/deploy.yml`），push `main` 自动构建部署
+> - 部署用专用 SSH key：`~/.ssh/id_ed25519_fish`（repo 级 `core.sshCommand` 指定，不影响其他仓库）
+
 FISH 是纯前端静态站（无后端），**可直接部署到 GitHub Pages**。已实测验证（模拟 `user.github.io/repo/` 子路径场景：资源、数据、路由全部正常）。
 
 ## 1. 部署前提（已验证的有利条件）
