@@ -138,25 +138,18 @@ function onChangeTranslation(key) {
   navigate(book.value.id, chapter.value, key)
 }
 
-/** 串珠引用目标跳转（记录来源，用于返回；悬浮按钮显示 5 秒后自动消失） */
+/** 串珠引用目标跳转（记录来源，用于返回；按钮常驻，直到用户操作） */
 const gotoFrom = ref(null) // { bookId, chapter }
 const showBack = ref(false)
-const BACK_DURATION = 5000
-let backTimer = null
 
 function onGotoVerse(target) {
   gotoFrom.value = { bookId: book.value.id, chapter: chapter.value }
   showBack.value = true
-  clearTimeout(backTimer)
-  backTimer = setTimeout(() => {
-    showBack.value = false
-  }, BACK_DURATION)
   navigate(target.id, target.ch)
 }
 
 /** 手动导航（选书/选章/切译本）清除串珠返回状态 */
 function clearGoto() {
-  clearTimeout(backTimer)
   gotoFrom.value = null
   showBack.value = false
 }
@@ -184,7 +177,6 @@ function onResize() {
 window.addEventListener('resize', onResize)
 
 onBeforeUnmount(() => {
-  clearTimeout(backTimer)
   window.removeEventListener('resize', onResize)
 })
 
@@ -239,7 +231,7 @@ function onToggleMenu() {
       :chapter="chapter"
       @toggle="onToggleCommentary"
     />
-    <!-- 串珠跳转后的悬浮返回按钮：屏幕正下方居中，数秒后自动消失 -->
+    <!-- 串珠跳转后的悬浮返回按钮：屏幕正下方居中，常驻直到用户操作（点击返回/手动导航） -->
     <Transition name="fab">
       <button
         v-if="showBack && gotoFrom"
