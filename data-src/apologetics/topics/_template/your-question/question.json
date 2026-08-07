@@ -1,0 +1,6 @@
+{
+  "id": "your-question-id",
+  "question": "你的子问题全文？",
+  "objection": "质疑者最强有力的反对意见（一句话，显示在米白「质疑」卡）。",
+  "responses": ["your-response-id"]
+}

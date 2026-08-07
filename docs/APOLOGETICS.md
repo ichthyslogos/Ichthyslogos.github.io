@@ -152,6 +152,20 @@ data-src/apologetics/topics/suffering/          ← 主题目录（一级：一�
 
 然后把文件名（不含 `.json`）追加到 `question.json` 的 `responses` 列表末尾。保存后执行 `npm run data`，刷新页面即可看到：左列表该问题"回应"计数 +1，详情区多一张回应卡。
 
+> **更省事的方式**：`data-src/apologetics/topics/_template/` 提供了可直接复制的模板（topic.json / question.json / your-response.json + `_README.md` 填写说明）。复制 → 改名 → 填写 → 登记顺序 → `npm run data`，三步完成。`_template` 不会被构建。
+
+### 3.5 回答写作规范（给内容编辑者）
+
+| 要点 | 说明 |
+|---|---|
+| 立场 | 目标是"帮助人理解基督信仰为何具有合理性"，不是"赢得辩论"——尊重提问者，诚实面对，不回避、不嘲讽 |
+| 结构 | 三段式：① 承认问题的合理性 / 区分概念（如"需要区分两种进化论"）；② 正面回应（论证、事实或经文）；③ 指向盼望、行动或邀请（十字架、证据、继续探索） |
+| 篇幅 | 正文 150–300 字为宜；`summary` 一句话（30 字内）；`title.zh` 8 字内 |
+| 语气 | 中文书面语，清晰平和；适度引用经文（全称"书卷 章:节"），可引哲学/历史/科学证据 |
+| 视角徽章 | `perspective` 区分同一问题下不同回答的立场（哲学视角 / 圣经视角 / 历史学视角 / 牧养视角…） |
+| 证据 | 每个回答**至少一条圣经引用**（`bible`，ref 形如"书卷 章:节"，可跳转读经研究）；其余类别（philosophy/history/science/theology/ethics/literature）按论证需要补充；`ref` 具体可查、`note` 一句话说明与回应的关系；没有证据的类别省略不写；**不要虚构经文出处** |
+| 范例 | `topics/suffering/evil/free-will-defense.json`（自由意志回应）是结构与证据搭配的完整范例 |
+
 ### 4. 新增一个子问题
 
 新建目录 `data-src/apologetics/topics/<主题id>/<新子问题id>/`，内含 `question.json`（`objection` 必填——它驱动详情页的"质疑"卡；`responses` 至少 1 条，否则页面显示"回答整理中"空状态）与至少一个回答文件：
