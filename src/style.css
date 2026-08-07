@@ -31,9 +31,10 @@ a:hover { text-decoration: underline; }
 * {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
-  /* 始终保留滚动条槽位：展开/收起内容导致滚动条出现或消失时，
-     内容宽度不变，避免文本（如注释 summary 的 pre-line）重新排版 */
-  scrollbar-gutter: stable;
+  /* 默认不预留滚动条槽位：避免 overflow:hidden 的装饰层（shell/banner 等）
+     被 Chrome 挤出右侧空隙。需要内容宽度稳定的滚动容器在各自组件内显式
+     scrollbar-gutter: stable（见各滚动容器样式）。 */
+  scrollbar-gutter: auto;
 }
 *::-webkit-scrollbar {
   width: 6px;

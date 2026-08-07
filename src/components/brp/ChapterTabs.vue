@@ -52,6 +52,7 @@ watch(
   border-bottom: 1px solid var(--line);
   background: #fff;
   overflow-x: auto;
+  scrollbar-gutter: stable;
   flex-shrink: 0;
 }
 .chapter-tab {

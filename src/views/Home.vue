@@ -32,9 +32,9 @@ const stats = computed(() => {
 
 <template>
   <div class="home">
-    <!-- 古典油画横幅：神奇捕鱼（拉斐尔, 1515，公有领域）——基督呼召彼得 -->
-    <div class="banner" role="img" aria-label="古典油画：基督在革尼撒勒湖的神奇捕鱼">
-      <img :src="bannerUrl" alt="拉斐尔《神奇捕鱼》1515" />
+    <!-- 古典油画横幅：摩西被救（克劳德·洛兰, 1639-40，公有领域） -->
+    <div class="banner" role="img" aria-label="古典油画：法老的女儿在河边发现摩西">
+      <img :src="bannerUrl" alt="克劳德·洛兰《摩西被救》1639-40" />
     </div>
 
     <!-- Hero：左衬线大标题 / 右侧描述 + 双按钮（非对称两列） -->
@@ -88,7 +88,7 @@ const stats = computed(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center; /* 横版构图，居中显示 */
+  object-position: center; /* 已预裁切横幅构图带，居中显示 */
   display: block;
 }
 

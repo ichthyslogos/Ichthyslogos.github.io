@@ -180,6 +180,7 @@ function verseRefs(verse) {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 /* 正文内容在滚动容器内居中，不参与滚动定位 */
 .scripture-body {

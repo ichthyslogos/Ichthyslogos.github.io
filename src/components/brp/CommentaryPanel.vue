@@ -199,6 +199,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
 .panel-body {
   flex: 1;
   overflow-y: auto;
+  scrollbar-gutter: stable;
   padding: 1rem 1.1rem 2rem;
 }
 .commentary-state {

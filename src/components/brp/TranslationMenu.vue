@@ -134,6 +134,7 @@ watch(
   min-width: 15rem;
   max-height: min(24rem, 60vh);
   overflow-y: auto;
+  scrollbar-gutter: stable;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 8px;

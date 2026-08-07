@@ -18,5 +18,7 @@ import AppHeader from './components/AppHeader.vue'
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  /* 滚动条槽位稳定：滚动条出现/消失时内容宽度不变 */
+  scrollbar-gutter: stable;
 }
 </style>

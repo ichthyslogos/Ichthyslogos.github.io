@@ -71,6 +71,7 @@ watch(() => props.activeBookId, scrollActiveIntoView)
   width: 15rem;
   flex-shrink: 0;
   overflow-y: auto;
+  scrollbar-gutter: stable;
   background: #fbfcfd;
   border-right: 1px solid var(--line);
   padding: 0.8rem 0;
