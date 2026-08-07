@@ -4,7 +4,7 @@
  * 路由：/brp（默认）与 /brp/:bookId/:chapter，URL 与阅读位置同步
  * 布局：左栏书卷列表 | 主区（章节导航 + 经文正文 + 译本切换）
  */
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   fetchManifest,
@@ -138,20 +138,45 @@ function onChangeTranslation(key) {
   navigate(book.value.id, chapter.value, key)
 }
 
-/** 串珠引用目标跳转（记录来源，用于返回；按钮常驻，直到用户操作） */
-const gotoFrom = ref(null) // { bookId, chapter }
+/** 串珠引用目标跳转（记录来源与目标节，用于返回与跳转后定位） */
+const gotoFrom = ref(null) // { bookId, chapter, verse, targetId, targetCh }
 const showBack = ref(false)
+/** 本次串珠跳转是否已滚动定位到目标经文（只执行一次） */
+let scrolledForGoto = false
 
 function onGotoVerse(target) {
-  gotoFrom.value = { bookId: book.value.id, chapter: chapter.value }
+  gotoFrom.value = {
+    bookId: book.value.id,
+    chapter: chapter.value,
+    verse: target.vs,
+    targetId: target.id,
+    targetCh: target.ch,
+  }
   showBack.value = true
+  scrolledForGoto = false
   navigate(target.id, target.ch)
 }
+
+/** 串珠跳转后：章节渲染完成，把目标经文滚动到经文区顶部优先展示 */
+watch([book, chapter, verses], async () => {
+  const f = gotoFrom.value
+  if (!f?.verse || scrolledForGoto) return
+  if (book.value?.id !== f.targetId || chapter.value !== f.targetCh) return // 尚未到达目标章节
+  await nextTick()
+  const sc = document.querySelector('.scripture-scroll')
+  const el = sc?.querySelector(`[data-verse="${f.verse}"]`)
+  if (sc && el) {
+    const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 8
+    sc.scrollTop = Math.max(0, top)
+    scrolledForGoto = true
+  }
+})
 
 /** 手动导航（选书/选章/切译本）清除串珠返回状态 */
 function clearGoto() {
   gotoFrom.value = null
   showBack.value = false
+  scrolledForGoto = false
 }
 
 /** 串珠跳转后返回来源位置 */

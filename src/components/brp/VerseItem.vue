@@ -20,7 +20,7 @@ const open = ref(false)
 </script>
 
 <template>
-  <p class="verse-item">
+  <p class="verse-item" :data-verse="verse">
     <span class="verse-num">{{ verse }}</span>
     <span class="verse-text">{{ text }}</span>
     <button
