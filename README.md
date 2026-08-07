@@ -66,6 +66,7 @@ site\
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | 架构设计：素材隔离、数据流、按子页面组织约定 |
 | [`docs/DATA.md`](docs/DATA.md) | 数据流水线：新增译本"放入即显示"步骤、原文/译本隔离、马太亨利接入方案 |
 | [`docs/COMMENTARY.md`](docs/COMMENTARY.md) | 注释系统：多源架构、马太亨利转换管线、已知问题 |
+| [`docs/APOLOGETICS.md`](docs/APOLOGETICS.md) | 护教页面：使用说明 + 数据编辑指南（三层结构、新增内容示例） |
 | [`docs/DEVELOP.md`](docs/DEVELOP.md) | 开发规范：新增子页面四步、代码约定 |
 | [`docs/DEPLOY.md`](docs/DEPLOY.md) | 部署指南：GitHub Pages 两种部署方式、本地验证、常见问题 |
 | [`docs/STRUCTURE.md`](docs/STRUCTURE.md) | 目录结构详解：每个目录/关键文件的职责 |

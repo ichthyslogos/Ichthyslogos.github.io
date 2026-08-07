@@ -7,6 +7,7 @@
 | [ARCHITECTURE.md](ARCHITECTURE.md) | 架构设计：素材三层隔离、数据流、按子页面组织约定 | 理解整体设计、决策取舍 |
 | [DATA.md](DATA.md) | 数据流水线：新增译本"放入即显示"、原文/译本隔离与 Strong 预留 | 添加/修改数据、接入新数据源 |
 | [COMMENTARY.md](COMMENTARY.md) | 注释系统：多注释源架构、马太亨利转换管线、数据格式、已知问题 | 接入/维护注释数据 |
+| [APOLOGETICS.md](APOLOGETICS.md) | 护教页面：使用说明（探索/主题视图、搜索、证据、经文跳转）+ 数据编辑指南（三层结构与字段、新增内容示例、注意事项） | 使用护教页、编辑护教数据 |
 | [DEPLOY.md](DEPLOY.md) | 部署指南：GitHub Pages 手动/CI 两种方式、子路径验证、仓库文件策略 | 发布上线、配置 CI |
 | [DEVELOP.md](DEVELOP.md) | 开发规范：新增子页面四步流程、路由/组件/数据约定 | 开发新功能、改动代码前 |
 | [STRUCTURE.md](STRUCTURE.md) | 目录结构详解：每个目录与关键文件的职责 | 快速定位代码、找文件 |
