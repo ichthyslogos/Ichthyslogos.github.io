@@ -14,7 +14,7 @@
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, existsSync, rmSync, copyFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { resolveBook } from './bible-books.mjs'
+import { resolveBook, BOOK_ORDER } from './bible-books.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..')
@@ -111,6 +111,9 @@ for (const file of files) {
     totalBooks += 1
     totalChapters += chapters.length
   }
+
+  // 目录按圣经正典顺序排列（源数据顺序不可靠，如 ChiUns 素材为字母序）
+  books.sort((a, b) => (BOOK_ORDER.get(a.id) ?? 1e9) - (BOOK_ORDER.get(b.id) ?? 1e9))
 
   manifest.translations.push({
     key,

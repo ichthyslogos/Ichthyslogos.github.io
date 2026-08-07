@@ -115,6 +115,14 @@ export function resolveBook(srcName) {
   return null
 }
 
+/**
+ * 书卷规范顺序（id → 序号）：正典卷按圣经顺序在前，扩展卷（次经）按 EXTRA_BOOKS 顺序在后。
+ * 用于书卷目录排序——源数据书卷顺序不可靠（如 ChiUns 为字母序）。
+ */
+export const BOOK_ORDER = new Map(
+  [...BOOKS, ...EXTRA_BOOKS].map((b, i) => [resolveBook(b.srcName).id, i]),
+)
+
 /** 标准正典卷数（用于校验） */
 export const CANON_BOOK_COUNT = BOOKS.length
 

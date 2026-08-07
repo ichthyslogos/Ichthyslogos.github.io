@@ -18,7 +18,7 @@ const groups = computed(() => {
   const g = []
   for (const key of ['ot', 'nt', 'ext']) {
     const books = props.translation.books.filter((b) => b.group === key)
-    if (books.length) g.push({ key, zh: GROUPS[key].zh, books })
+    if (books.length) g.push({ key, zh: GROUPS[key], books })
   }
   return g
 })
