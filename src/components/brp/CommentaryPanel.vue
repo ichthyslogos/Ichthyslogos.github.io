@@ -128,6 +128,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
           <button
             class="commentary-heading"
             :aria-expanded="expanded.has(i)"
+            :title="s.heading || '注释'"
             @click="toggleSection(i)"
           >
             <span class="chevron" :class="{ open: expanded.has(i) }" aria-hidden="true">▸</span>
@@ -262,10 +263,14 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
 .chevron.open {
   transform: rotate(90deg);
 }
+/* 小节标题：长标题换行完整显示（最多 2 行，超出省略；min-width:0 保证 flex 内可收缩） */
 .heading-text {
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .commentary-ref {
   flex-shrink: 0;
