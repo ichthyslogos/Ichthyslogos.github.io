@@ -13,24 +13,34 @@ D:\Eyphka\fish\site\
 │   ├── DEVELOP.md                  新增子页面四步、代码约定、组件通信模式
 │   └── STRUCTURE.md                本文档
 │
-├── scripts\                      数据流水线脚本（Node ESM，零第三方依赖）
+├── scripts\                      数据流水线脚本（Node ESM，零第三方依赖；注释提取为 Python）
 │   ├── bible-books.mjs             书卷元数据唯一权威：66 卷 + 7 卷次经（id/zh/en/srcName/group）
 │   ├── import.mjs                  素材库 → data-src\brp\translations\（复制）
-│   └── build-data.mjs              data-src → public\data\brp\（校验、去空格净化、按卷切片、manifest）
+│   ├── build-data.mjs              data-src → public\data\brp\（校验、去空格净化、按卷切片、manifest；含注释切片）
+│   ├── commentary\
+│   │   └── extract.py              马太亨利注释提取（pypdf，详见 docs/COMMENTARY.md）
+│   └── serve-dist.mjs              本地模拟静态托管（子路径验证，见 docs/DEPLOY.md）
 │
-├── data-src\                     网站"数据库"：素材投影，可移植；新增译本放这里
+├── data-src\                     网站"数据库"：素材投影，可移植；新增译本/注释源放这里
 │   └── brp\
-│       └── translations\
-│           ├── ChiUn.json          和合本（繁体）
-│           └── ChiSB.json          思高本（含 7 卷次经）
+│       ├── translations\
+│       │   ├── ChiUn.json          和合本（繁体）
+│       │   └── ChiSB.json          思高本（含 7 卷次经）
+│       └── commentary\
+│           └── matthew-henry\      第一个注释源（马太亨利圣经注释）
+│               ├── 01.json …       按卷注释（bookId 对齐 bible-books）
+│               └── _report.json    转换报告（状态/章节自检）
 │
 ├── public\                        vite 静态目录：内容原样复制到 dist\
 │   └── data\
 │       └── brp\                    brp 子页面运行时数据（构建产物，勿手改）
 │           ├── manifest.json         译本清单（前端一切数据驱动的起点）
-│           └── translations\
-│               ├── chiun\books\01.json … 66 卷切片
-│               └── chisb\books\01.json … 73 卷切片
+│           ├── translations\
+│           │   ├── chiun\books\01.json … 66 卷切片
+│           │   └── chisb\books\01.json … 73 卷切片
+│           └── commentary\           注释数据（多注释源）
+│               ├── manifest.json      注释源清单
+│               └── matthew-henry\01.json … 按卷注释
 │
 ├── src\
 │   ├── main.js                    入口：createApp + router + 全局样式
@@ -53,7 +63,7 @@ D:\Eyphka\fish\site\
 │           ├── ScripturePanel.vue    经文面板：标题、译本切换（展开式下拉）、经文列表
 │           ├── TranslationMenu.vue   展开式译本选择器（分组：译本/原文；列表过长时内部滚动）
 │           ├── VerseItem.vue         单节经文（预留 Strong annotations 插槽）
-│           └── CommentaryPanel.vue  解经面板（常驻经文右侧，v1 空状态；getCommentary() 为未来注释接口）
+│           └── CommentaryPanel.vue  解经面板（常驻经文右侧；多注释源渲染：来源标识+概要+小节注释，无注释显示空状态）
 │
 ├── package.json                  脚本入口：dev/build/preview/data（数据流水线）
 ├── vite.config.js                vite 配置（vue 插件，base: './'）

@@ -61,17 +61,14 @@
 - `src\components\brp\VerseItem.vue` 已预留具名插槽 `annotations`（当前为注释掉的 `<slot name="annotations">`），Strong 编号高亮与词义注解从此插槽注入，经文渲染不变。
 - 建议的 Strong 数据形态：独立 JSON（词条表 `{ strongNo, hebrew/greek, gloss }` + 每节经文 Strong 编号映射表），按 `bookId + chapter + verse` 对齐，与译本数据流平行——**不要写入译本切片**。
 
-## 3. 马太亨利译注接入方案（经文右侧解经面板）
+## 3. 注释数据（马太亨利等）
 
-**现状**：`CommentaryPanel` 常驻于经文右侧的面板已就绪（brp 页"解经"按钮控制显隐），v1 显示空状态；`getCommentary()` 恒返回 null。
+注释系统为**多注释源架构**（当前源：马太亨利圣经注释）。数据格式、转换管线、已知问题等详见 **`docs/COMMENTARY.md`**：
 
-**规划接入步骤**：
-
-1. 素材：`D:\Eyphka\fish\马太亨利译注\`（65 PDF + 1 DOCX + 1 EPUB，中文注释，书卷编号 1–66）
-2. 转换：用 pdftotext（或 Python 库）按卷提取文本 → 解析"本章概要 + 逐节注释"体例 → 生成 `{ bookId, chapter, summary, verses: [{ verse, text }] }` 结构
-3. 存放：`data-src\brp\commentary\<bookId>.json`（与译本平行，属于 brp 子页面的数据文件夹；bookId 复用 bible-books 编号体系，天然对齐）
-4. 构建：build-data 增加注释切片（或注释文件按章切片），manifest 增加 `commentary` 元数据
-5. 前端：`CommentaryPanel.getCommentary()` 按当前 `bookId + chapter` 查询并渲染，组件结构不变
+- 源数据：`data-src/brp/commentary/<sourceKey>/<bookId>.json`
+- 转换：`python scripts/commentary/extract.py`（pypdf，全量约 40-60 分钟，断点续传）
+- 构建：`npm run data` 自动切片到 `public/data/brp/commentary/` + manifest
+- 新增注释源：放 JSON 进 `data-src/brp/commentary/<key>/` → 重跑 data → 前端自动显示
 
 ## 4. 故障记录（重要！）
 

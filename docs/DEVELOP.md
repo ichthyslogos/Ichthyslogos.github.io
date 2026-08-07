@@ -64,9 +64,10 @@ public\data\xxx\…               # 该页运行时数据 + manifest
 BrpPage（持有 manifest/bookData/panelOpen 等全部状态）
  ├─ BookSidebar      props: translation, activeBookId      emit: select-book
  ├─ ChapterTabs      props: chapterCount, current          emit: select-chapter
- ├─ ScripturePanel   props: book, chapter, verses, …       emit: change-translation / toggle-commentary
+ ├─ ScripturePanel   props: book, chapter, verses, menuOpen, …  emit: change-translation / toggle-commentary / toggle-sidebar / toggle-menu
+ │    ├─ TranslationMenu props: open（受控）…          emit: toggle / select
  │    └─ VerseItem   props: verse, text, lang              （预留 annotations 插槽）
- └─ CommentaryPanel  props: open, book, chapter            emit: toggle
+ └─ CommentaryPanel  props: open, book, chapter            emit: toggle（内部按 book.id+chapter 加载注释，多源见 docs/COMMENTARY.md）
 ```
 
 - 页面 → 子组件：props 单向
@@ -82,4 +83,4 @@ npm run build    # 生产构建（构建前数据必须已生成）
 
 > **部署约定**：部署只能手动（见 docs/DEPLOY.md）——日常修改只 commit 不推送；只有明确要求"部署/上线"时才推送并手动触发部署。**不要在无明确要求时自行部署**。
 
-冒烟清单（brp）：默认进创世记第 1 章（和合本）→ 章节/书卷切换 URL 同步 → 译本下拉展开/选择/收起（原文与译本分组）→ 侧栏与经文正文独立滚动、页面本体不滚动 → 次经仅思高本可见 → 解经面板常驻右侧、开关按钮可收起/展开。
+冒烟清单（brp）：默认进创世记第 1 章（和合本）→ 章节/书卷切换 URL 同步 → 译本下拉展开/选择/收起（原文与译本分组）→ 侧栏与经文正文独立滚动、页面本体不滚动 → 次经仅思高本可见 → 解经面板常驻右侧、开关按钮可收起/展开、注释渲染（创1 应显示概要+小节注释；无注释卷显示空状态）。

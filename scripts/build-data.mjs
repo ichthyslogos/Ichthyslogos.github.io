@@ -11,7 +11,7 @@
  *
  * 用法：node scripts/build-data.mjs
  */
-import { mkdirSync, readdirSync, readFileSync, writeFileSync, existsSync, rmSync } from 'node:fs'
+import { mkdirSync, readdirSync, readFileSync, writeFileSync, existsSync, rmSync, copyFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { resolveBook } from './bible-books.mjs'
@@ -129,3 +129,48 @@ manifest.translations.sort((a, b) =>
 writeFileSync(join(OUT_DIR, 'manifest.json'), JSON.stringify(manifest))
 console.log(`\n[build-data] 完成：${manifest.translations.length} 个译本，共 ${totalBooks} 卷 / ${totalChapters} 章`)
 console.log(`[build-data] 输出 -> public/data/brp/manifest.json`)
+
+/* ============ 注释数据（多注释源） ============
+ * data-src/brp/commentary/<sourceKey>/<bookId>.json → public/data/brp/commentary/
+ * 新注释源 = 放入 data-src/brp/commentary/<key>/ 后重跑本脚本，前端自动显示
+ */
+const COMMENT_SRC = join(SITE_ROOT, 'data-src', 'brp', 'commentary')
+const COMMENT_OUT = join(OUT_DIR, 'commentary')
+
+function buildCommentary() {
+  if (!existsSync(COMMENT_SRC)) return
+  const sources = []
+  for (const key of readdirSync(COMMENT_SRC)) {
+    const dir = join(COMMENT_SRC, key)
+    if (!statIsDir(dir)) continue
+    const books = []
+    const outDir = join(COMMENT_OUT, key)
+    mkdirSync(outDir, { recursive: true })
+    let meta = null
+    for (const f of readdirSync(dir)) {
+      if (!f.endsWith('.json') || f === '_report.json') continue
+      const bookId = f.replace(/\.json$/, '')
+      const raw = JSON.parse(readFileSync(join(dir, f), 'utf8'))
+      meta = meta || raw.source
+      copyFileSync(join(dir, f), join(outDir, f))
+      books.push(bookId)
+    }
+    if (books.length) {
+      sources.push({ key, name: meta?.name || key, lang: meta?.lang || 'und', books })
+    }
+  }
+  if (sources.length) {
+    writeFileSync(join(COMMENT_OUT, 'manifest.json'), JSON.stringify({ sources }))
+    console.log(`[build-data] 注释源：${sources.map((s) => `${s.key}(${s.books.length}卷)`).join(', ')}`)
+  }
+}
+
+function statIsDir(p) {
+  try {
+    return statSync(p).isDirectory()
+  } catch {
+    return false
+  }
+}
+
+buildCommentary()

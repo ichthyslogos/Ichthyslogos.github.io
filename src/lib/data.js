@@ -54,6 +54,40 @@ export function resolveTranslation(manifest, key) {
   return manifest.translations[0]
 }
 
+/* ============ 注释数据（多注释源） ============
+ * 运行时数据位于 public/data/brp/commentary/：
+ *   manifest.json  注释源清单（多源架构：新注释源自动出现）
+ *   <sourceKey>/<bookId>.json  按卷注释（整卷一个文件，按需加载 + 缓存）
+ * 新注释源接入：把 JSON 放入 data-src/brp/commentary/<key>/ → npm run data
+ */
+const COMMENT_BASE = 'data/brp/commentary/'
+
+/** 加载注释源清单 */
+export async function fetchCommentaryManifest() {
+  return fetchJson(COMMENT_BASE + 'manifest.json')
+}
+
+/** 加载某注释源某卷的注释数据（含全部章节），自动缓存 */
+export async function fetchCommentary(sourceKey, bookId) {
+  return fetchJson(`${COMMENT_BASE}${sourceKey}/${bookId}.json`)
+}
+
+/** 解析注释源（找不到则回退第一个） */
+export function resolveCommentarySource(manifest, key) {
+  if (!manifest || !manifest.sources.length) return null
+  if (key) {
+    const s = manifest.sources.find((x) => x.key === key)
+    if (s) return s
+  }
+  return manifest.sources[0]
+}
+
+/** 从注释卷数据中取某章（无则返回 null） */
+export function findCommentaryChapter(book, chapter) {
+  if (!book) return null
+  return book.chapters.find((c) => c.chapter === chapter) || null
+}
+
 /** 当前选中书卷信息（找不到则回退到该译本第一卷） */
 export function resolveBook(translation, bookId) {
   return translation.books.find((b) => b.id === bookId) || translation.books[0]

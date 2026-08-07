@@ -54,7 +54,7 @@ site\
 |---|---|---|
 | 首页 Homepage | ✅ 已上线 | 品牌 + 功能卡片 + 数据统计（manifest 驱动） |
 | 读经研究平台 (brp) | ✅ 已上线 | 书卷/章节导航、多译本切换、次经支持；路由 `/brp` |
-| 马太亨利译注（解经面板） | 🚧 占位 | 经文右侧常驻面板 UI 已就绪，注释数据接口预留（见 docs/DATA.md） |
+| 马太亨利译注（解经面板） | ✅ 已接入 | 经文右侧常驻解经面板，多注释源架构（当前源：马太亨利中文译注 60+ 卷，见 docs/COMMENTARY.md） |
 | Strong 原文研究 | 🚧 占位 | 原文/译本数据流隔离架构已预留（manifest original 字段） |
 
 ## 文档索引
@@ -64,6 +64,7 @@ site\
 | [`docs/README.md`](docs/README.md) | 文档导航 |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | 架构设计：素材隔离、数据流、按子页面组织约定 |
 | [`docs/DATA.md`](docs/DATA.md) | 数据流水线：新增译本"放入即显示"步骤、原文/译本隔离、马太亨利接入方案 |
+| [`docs/COMMENTARY.md`](docs/COMMENTARY.md) | 注释系统：多源架构、马太亨利转换管线、已知问题 |
 | [`docs/DEVELOP.md`](docs/DEVELOP.md) | 开发规范：新增子页面四步、代码约定 |
 | [`docs/DEPLOY.md`](docs/DEPLOY.md) | 部署指南：GitHub Pages 两种部署方式、本地验证、常见问题 |
 | [`docs/STRUCTURE.md`](docs/STRUCTURE.md) | 目录结构详解：每个目录/关键文件的职责 |
