@@ -1,4 +1,4 @@
-# 部署 GitHub Pages —— 仅手动触发（workflow_dispatch）
+# 部署 GitHub Pages —— 临时：push 到 main 触发（本次部署用，随后恢复手动触发）
 # 约定：部署是手动操作，只有明确要求"部署/上线"时才触发；
 # 日常代码修改提交不会自动部署。
 # 手动触发方式：仓库 Actions 页 → Deploy to GitHub Pages → Run workflow
@@ -6,6 +6,8 @@ name: Deploy to GitHub Pages
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: read
