@@ -1,17 +1,7 @@
 {
   "id": "science-faith",
-  "title": {
-    "zh": "科学与信仰冲突吗？",
-    "en": "Do Science and Faith Conflict?"
-  },
-  "description": "进化论、宇宙起源与圣经记载的关系，科学方法论与信仰的边界。",
-  "tags": [
-    "科学",
-    "哲学"
-  ],
-  "sub_questions": [
-    "evolution",
-    "cosmos",
-    "conflict"
-  ]
+  "title": { "zh": "科学与信仰", "en": "Science and Faith" },
+  "description": "回应科学与基督教信仰水火不容的流行论断，辨析进化论与创造论之争的实质，说明基督教信仰既符合科学又超越科学。",
+  "tags": ["科学", "哲学"],
+  "sub_questions": ["modern-science-and-christian-faith", "creation-and-evolution"]
 }
