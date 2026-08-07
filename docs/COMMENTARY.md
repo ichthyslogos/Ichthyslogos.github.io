@@ -103,5 +103,5 @@ python scripts/commentary/extract.py --force 1    # 强制重转
 
 `src/lib/data.js` 的 `ENABLED_COMMENTARY_BOOKS` 白名单控制哪些书卷**开放注释显示**；不在白名单内的卷，前端视为"该卷注释暂时关闭"（空状态），**数据文件（data-src 源数据与 public 运行时数据）全部保留、不删除**。
 
-- 当前开放：`01`（创世记，人工精校版）
+- 当前开放：`01`（创世记）、`02`（出埃及记）（人工精校版）
 - 恢复显示：把 bookId（01-66 / ext-N）加回 `ENABLED_COMMENTARY_BOOKS` 集合即可，**无需重跑 `npm run data`**，前端刷新即生效
