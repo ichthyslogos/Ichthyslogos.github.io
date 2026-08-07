@@ -1,13 +1,18 @@
 {
   "id": "your-topic-id",
   "title": { "zh": "你的主题问题？", "en": "Your Topic Title" },
-  "description": "一句话描述该主题在讨论什么。",
-  "tags": ["哲学", "神学"],
+  "description": "《书名》第 X 章全文归档：从……到……。",
+  "tags": ["科学", "神学"],
   "categories": [
     {
-      "id": "your-category",
-      "title": "你的分类名",
-      "sub_questions": ["your-question"]
+      "id": "your-category-1",
+      "title": "分类一（如：进化论的定位）",
+      "sub_questions": ["your-question-1"]
+    },
+    {
+      "id": "your-category-2",
+      "title": "分类二（如：宇宙与生命起源）",
+      "sub_questions": ["your-question-2"]
     }
   ]
 }

@@ -3,7 +3,7 @@
 护教页用于**回应社会对基督教的常见质疑**，帮助人理解基督信仰为何具有合理性（不是"赢得辩论"，而是"帮助人理解"）。页面完全数据驱动：所有内容都来自 `data-src/apologetics/topics/` 子数据库，**编辑数据即可改内容，不需要碰代码**。
 
 - 路由：`/#/apologetics`（导航栏"护教"入口）
-- 数据：`data-src/apologetics/topics/`（子数据库：按主题分目录，**子命题为最基层**）
+- 数据：`data-src/apologetics/topics/`（子数据库：主题 → 分类 → 子命题三级，**子命题为最基层**）
 - 页面：`src/views/apologetics/ApologeticsPage.vue` + `src/components/apologetics/`（6 个组件）
 
 ---
@@ -18,37 +18,36 @@
 │  ───────────────────────────────────────── │
 │  搜索框（关键词 / 问题 / 分类搜索）            │
 │  ┌─────────┐ ┌─────────┐ ┌─────────┐      │
-│  │ 神存在吗？│ │ 科学与信仰│ │ 苦难为什么│ …  │   ← 主题卡片
-│  └─────────┘ └─────────┘ └─────────┘      │
-└────────────────────────────────────────────┘
+│  │ 创造论与进化论│ │   ……（按内容主题增长）│                    │   ← 主题卡片
+│  └──────────────┘ └──────────────────────┘                    │
+└──────────────────────────────────────────────────────────────┘
 ```
 
-- **主题卡片**显示：问题（中英双语）、一句话描述、子命题数量、领域标签（哲学/科学/神学…）。
-- **搜索**：输入关键词（如"复活""苦难"）后，卡片列表实时过滤；下方"相关问题"区列出命中的子命题，点击可直达。
+- **主题卡片**显示：问题（中英双语）、一句话描述、子命题数量、领域标签（科学/神学…）。
+- **搜索**：输入关键词（如"进化论""生命起源"）后，卡片列表实时过滤；下方"相关问题"区列出命中的子命题，点击可直达。
 - 点击"开始探索"或任意主题卡片进入主题视图。
 
 ### 2. 主题视图（阅读主界面）
 
 ```
 ← 全部主题
-科学与信仰  Science and Faith        ← 主题头（中英标题 + 描述 + 标签）
+创造论与进化论  Creationism and Evolution   ← 主题头（中英标题 + 描述 + 标签）
 ────────────────────────────────────────────
-| 子命题列表       |  科学与基督教信仰真的是水火不容的吗？
-| 01 科学与基督教…|  质疑：科学基于事实与实证，信仰只是主观臆测…
-| 02 进化论与创造…|  ┌──────────────────────────────┐
-|                 |  │ 并非水火不容  Not Irreconcilable│
-|                 |  │ 历史学视角 · 历史/科学          │
-|                 |  │ 核心思想：哥白尼伽利略事件考辨…   │
-|                 |  │ 正文（完整内容）                │
-|                 |  │ ┌ 证据支持 ─────────────────┐ │
-|                 |  │ │ 📖 圣经 创世记 1:24 … 读经→│ │
-|                 |  │ │ 🏛 历史 伽利略事件 …       │ │
-|                 |  │ └──────────────────────────┘ │
-|                 |  └──────────────────────────────┘
-|                 |  继续探索（同主题其他子命题 + 进入读经研究）
+| 子命题（按分类）  |  进化论是尚未被证实的假说？
+| ▾ 进化论的定位    |  质疑：进化论已被科学证实，进化是无可争议的事实…
+|    01 进化论是尚…|  ┌──────────────────────────────┐
+|    02 两种模式    |  │ 进化论是尚未被证实的假说        │
+| ▾ 宇宙与生命起源  |  │ 科学视角 · 科学                 │
+|    01 热力学定律…|  │ 导语：进化论在科学上远未定论…     │
+|    02 宇宙起源    |  │ 正文（书卷全文，段落化阅读排版）  │
+|  ▾ 结论与论战实质 |  │ ┌ 证据支持 ─────────────────┐ │
+|    01 创造论与进…|  │ │ 📖 圣经 创世记 1:1 … 读经→│ │
+|                  |  │ └──────────────────────────┘ │
+|                  |  └──────────────────────────────┘
+|                  |  继续探索（同主题其他子命题 + 进入读经研究）
 ```
 
-- 左侧列表点击切换子命题，右侧即时更新；列表**按分类分组**（如"神义论问题""祷告与信仰"），点击分类头可展开/折叠（默认全部展开）。
+- 左侧列表点击切换子命题，右侧即时更新；列表**按分类分组**（如"进化论的定位""宇宙与生命起源"），点击分类头可展开/折叠（默认全部展开）。
 - **质疑卡**（米白底）：该子命题最强有力的反对意见。
 - **内容卡**：子命题即最基层内容——标题（中英）+ 视角徽章 + 核心思想 + 正文 + 证据面板。
 - **证据面板**：支撑证据按类别分区（📖圣经 / 📚哲学 / 🏛️历史 / 🔬科学 / ✝️神学 / ⚖️伦理 / 📜文献）。
@@ -94,19 +93,19 @@ public/data/apologetics/
 ### 2. 目录结构与字段说明
 
 ```
-data-src/apologetics/topics/suffering/          ← 主题目录（一级：一类质疑）
+data-src/apologetics/topics/creation-and-evolution/   ← 主题目录（一级：一类质疑/一部书卷）
 ├── topic.json                                  ← 主题元数据
 │     { id, title{zh,en}, description, tags[],
 │       categories: [                           ← 分类列表（顺序 + 完整性）
-│         { id: "theodicy", title: "神义论问题",
-│           sub_questions: ["evil", "natural-disaster"] },
-│         { id: "prayer-life", title: "祷告与信仰",
-│           sub_questions: ["prayer"] } ] }
-├── theodicy/                                   ← 分类目录（二级）
-│   ├── evil/question.json                      ← 子命题（三级：最基层）★
-│   └── natural-disaster/question.json
-└── prayer-life/
-    └── prayer/question.json
+│         { id: "status-of-evolution", title: "进化论的定位",
+│           sub_questions: ["unproven-hypothesis", "two-models", "natural-selection-difficulties"] },
+│         { id: "origins", title: "宇宙与生命起源",
+│           sub_questions: ["thermodynamics", "origin-of-universe", "origin-of-life"] } ] }
+├── status-of-evolution/                        ← 分类目录（二级）
+│   ├── unproven-hypothesis/question.json       ← 子命题（三级：最基层）★
+│   └── two-models/question.json
+└── origins/                                    ← 分类目录（二级）
+    └── thermodynamics/question.json
 ```
 
 | 文件 | 字段 | 说明 |
@@ -130,24 +129,23 @@ data-src/apologetics/topics/suffering/          ← 主题目录（一级：一�
 
 ### 3. 新增 / 编辑一个子命题
 
-> **更省事的方式**：`data-src/apologetics/topics/_template/` 提供了可直接复制的模板（topic.json / your-category/your-question/question.json + `_README.md` 填写说明）。复制 → 改名 → 填写 → 登记顺序 → `npm run data`，三步完成。`_template` 不会被构建。
+> **更省事的方式**：`data-src/apologetics/topics/_template/` 提供了可直接复制的书卷归档型模板（topic.json / your-category-1/your-question-1/question.json + `_README.md` 填写说明）。复制 → 改名 → 填写 → 登记顺序 → `npm run data`，三步完成。`_template` 不会被构建。
 
-在目标主题的分类目录下新建/编辑子命题（如 `data-src/apologetics/topics/suffering/theodicy/evil/`）的 `question.json`：
+在目标主题的分类目录下新建/编辑子命题（如 `data-src/apologetics/topics/creation-and-evolution/status-of-evolution/unproven-hypothesis/`）的 `question.json`：
 
 ```json
 {
-  "id": "evil",
-  "question": "如果上帝慈爱又全能，为什么允许世上有苦难和邪恶？",
-  "objection": ""全善、全能、苦难存在"三者不可能同时成立——这是无神论最有力的论证。",
-  "title": { "zh": "自由意志回应", "en": "Free Will Defense" },
-  "perspective": "哲学视角",
-  "tags": ["哲学", "神学"],
-  "summary": "爱必须建立在自由选择之上；邪恶是滥用自由意志的后果。",
-  "text": "经典的"邪恶问题"可这样回应：第一，邪恶不是上帝创造的……（正文按需写足，建议三段式结构）",
+  "id": "unproven-hypothesis",
+  "question": "进化论是尚未被证实的假说？",
+  "objection": "进化论已被科学证实，进化是无可争议的事实。",
+  "title": { "zh": "进化论是尚未被证实的假说", "en": "Evolution: An Unproven Hypothesis" },
+  "perspective": "科学视角",
+  "tags": ["科学"],
+  "summary": "进化论在科学上远未定论，其证据链存在根本缺口。",
+  "text": "第六章 创造论与进化论\n\n前面几章已经提到……（正文按需写足，段落间用空行分隔，建议三段式结构）",
   "evidence": {
     "bible": [
-      { "ref": "启示录 21:4", "note": "神要擦去他们一切的眼泪。" },
-      { "ref": "罗马书 8:18", "note": "现在的苦楚不足介意。" }
+      { "ref": "创世记 1:1", "note": "起初，神创造天地。" }
     ]
   }
 }
@@ -183,7 +181,7 @@ data-src/apologetics/topics/suffering/          ← 主题目录（一级：一�
 | 语气 | 中文书面语，清晰平和；适度引用经文（全称"书卷 章:节"），可引哲学/历史/科学证据 |
 | 视角徽章 | `perspective` 标明内容的论证立场（哲学视角 / 圣经视角 / 历史学视角 / 牧养视角…） |
 | 证据 | 每个子命题**至少一条圣经引用**（`bible`，ref 形如"书卷 章:节"，可跳转读经研究）；其余类别（philosophy/history/science/theology/ethics/literature）按论证需要补充；`ref` 具体可查、`note` 一句话说明与内容的关系；没有证据的类别省略不写；**不要虚构经文出处** |
-| 范例 | `topics/suffering/evil/question.json`（自由意志回应）是结构与证据搭配的完整范例 |
+| 范例 | `topics/creation-and-evolution/status-of-evolution/unproven-hypothesis/question.json` 是书卷归档型结构与证据搭配的完整范例 |
 
 ### 6. 编辑注意事项
 

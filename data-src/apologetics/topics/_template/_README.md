@@ -1,24 +1,27 @@
 # 护教模板说明（_template）
 
-本目录是**护教子数据库的填写模板**，供内容编辑者复制使用。`_template` 不会被构建（构建只遍历 `content.meta.json` 的 `topics` 列表），可放心保留。
+本目录是**护教子数据库的填写模板**，以当前唯一主题「创造论与进化论」（`topics/creation-and-evolution/`）为蓝本设计，适合**书卷归档型主题**（把一本书/一篇文章按章节与论点整理为子命题）。`_template` 不会被构建（构建只遍历 `content.meta.json` 的 `topics` 列表），可放心保留。
 
 ## 结构（三级：主题 → 分类 → 子命题）
 
 ```
 _template/
-├── topic.json                      主题模板（复制为 <主题id>/topic.json）
-└── your-category/                  分类目录模板（复制为 <主题id>/<分类id>/）
-    └── your-question/
-        └── question.json           子命题模板 ★（最基层：问题 + 质疑 + 标题 + 正文 + 证据）
+├── topic.json                      主题骨架（复制为 <主题id>/topic.json）
+├── your-category-1/                分类目录 1（复制为 <主题id>/<分类id>/）
+│   └── your-question-1/
+│       └── question.json           子命题 ★（最基层：问题 + 质疑 + 标题 + 正文 + 证据）
+└── your-category-2/                分类目录 2（同上）
+    └── your-question-2/
+        └── question.json
 ```
 
-**子命题（sub_questions）就是最基层**——一个子命题 = 一个问题 + 完整内容（标题/正文/证据）。子命题归入**分类**（category）管理，分类在主题左栏可展开/折叠。
+**参考范例**：`topics/creation-and-evolution/`——3 个分类（进化论的定位 / 宇宙与生命起源 / 结论与论战实质）× 8 个子命题，书卷全文按论点切分、每个论点一个子命题。
 
-## 快速上手：新增一个子命题（三步）
+## 快速上手：新增一个书卷归档型主题（三步）
 
-1. **复制**：把 `your-category/your-question/` 复制到目标主题的分类目录下，改名为 `<主题id>/<分类id>/<子命题id>/`。
-2. **填写**：`question.json` 的全部字段（id 必须与目录名一致）。
-3. **登记顺序**：把子命题 id 追加到主题 `topic.json` 的 `categories` 列表中对应分类的 `sub_questions` 数组末尾 → 运行 `npm run data` 即可上线。
+1. **复制骨架**：把 `_template/` 内的目录复制为 `topics/<主题id>/`（`topic.json` + 分类目录 + 子命题目录），按需增删分类/子命题目录（复制 `your-category-1/` 可得到更多分类）。
+2. **填写**：`topic.json` 与各 `question.json` 的全部字段（id 必须与目录名一致）。
+3. **登记顺序**：把主题 id 追加到 `content.meta.json` 的 `topics` 列表末尾 → 运行 `npm run data` 即可上线。
 
 ## 主题（topic.json）字段说明
 
@@ -26,9 +29,9 @@ _template/
 |---|---|
 | `id` | 唯一标识，必须与目录名一致（构建时校验） |
 | `title { zh, en }` | 主题标题（中英双语，卡片显示） |
-| `description` | 一句话描述（卡片 + 主题头显示） |
+| `description` | 一句话描述（建议标注出处，如"《游子吟》第六章全文归档：…"） |
 | `tags[]` | 领域标签（卡片与主题头显示） |
-| `categories[]` | 分类列表（**顺序 + 完整性**）：`{ id, title, sub_questions[] }`——`sub_questions` 是该分类下的子命题 id 列表（顺序 + 完整性：列表中的 id 必须有对应目录） |
+| `categories[]` | 分类列表：`{ id, title, sub_questions[] }`——`sub_questions` 为该分类下的子命题 id 列表（顺序 + 完整性；**分类 id 不得与子命题 id 同名**） |
 
 ## 子命题（question.json）字段说明
 
@@ -38,10 +41,10 @@ _template/
 | `question` | 子命题问题全文（列表与详情标题） |
 | `objection` | 质疑陈述（显示在米白「质疑」卡） |
 | `title { zh, en }` | 内容标题（中英双语，概括核心主张） |
-| `perspective` | 视角徽章（可选） |
+| `perspective` | 视角徽章（可选，如：科学视角 / 圣经视角） |
 | `tags[]` | 领域标签（可选） |
 | `summary` | 核心思想一句话（斜体显示，同时进入搜索索引） |
-| `text` | 正文（完整论述，支持换行） |
+| `text` | 正文（书卷全文按段填写，**段落之间用空行分隔**；渲染时每段自动首行缩进两字符） |
 | `evidence` | 证据（可选，见下） |
 
 ## 写作规范
@@ -71,7 +74,3 @@ _template/
 - `ref` 应**具体可查**（出处/名称），`note` 一句话说明它与内容的关系。
 - 圣经引用不要虚构出处——先查证经文原文再写 note。
 - 没有证据的类别**省略不写**。
-
-## 完整范例
-
-见 `topics/suffering/`（神义论问题/祷告与信仰两个分类）——分类划分、topic.json 的 categories、子命题内容搭配的范例。
