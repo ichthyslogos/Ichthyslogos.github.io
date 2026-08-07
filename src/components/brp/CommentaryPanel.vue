@@ -16,6 +16,7 @@ import {
   fetchCommentaryManifest,
   resolveCommentarySource,
   findCommentaryChapter,
+  isCommentaryEnabled,
 } from '../../lib/data.js'
 import EmptyState from '../EmptyState.vue'
 
@@ -97,6 +98,8 @@ watch(
 
 const chapterData = computed(() => findCommentaryChapter(bookData.value, props.chapter))
 const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.value)?.name || '')
+/** 当前卷注释是否被暂时关闭（白名单外；数据保留，仅前端不显示） */
+const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.book.id))
 </script>
 
 <template>
@@ -141,8 +144,10 @@ const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.
       </template>
       <EmptyState
         v-else-if="!loading"
-        title="本卷暂无注释"
-        message="当前书卷/章节尚未收录马太亨利注释（部分书卷素材缺失，详见 docs/COMMENTARY.md）。"
+        :title="bookDisabled ? '该卷注释暂时关闭' : '本卷暂无注释'"
+        :message="bookDisabled
+          ? '当前书卷的注释已暂时关闭（数据保留，未删除）；恢复方式见 docs/COMMENTARY.md。'
+          : '当前书卷/章节尚未收录马太亨利注释（部分书卷素材缺失，详见 docs/COMMENTARY.md）。'"
       />
     </div>
   </aside>

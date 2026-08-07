@@ -67,8 +67,20 @@ export async function fetchCommentaryManifest() {
   return fetchJson(COMMENT_BASE + 'manifest.json')
 }
 
-/** 加载某注释源某卷的注释数据（含全部章节），自动缓存 */
+/* ============ 注释书卷开关 ============
+ * 临时关闭某卷注释：不在白名单内的书卷，前端一律视为"无注释"（数据文件保留，不删除）。
+ * 恢复显示：把 bookId（01-66 / ext-N）加回本集合即可，无需重跑数据构建。
+ */
+const ENABLED_COMMENTARY_BOOKS = new Set(['01'])
+
+/** 某卷注释当前是否开放显示 */
+export function isCommentaryEnabled(bookId) {
+  return ENABLED_COMMENTARY_BOOKS.has(bookId)
+}
+
+/** 加载某注释源某卷的注释数据（含全部章节），自动缓存；卷注释被暂时关闭时返回 null */
 export async function fetchCommentary(sourceKey, bookId) {
+  if (!isCommentaryEnabled(bookId)) return null
   return fetchJson(`${COMMENT_BASE}${sourceKey}/${bookId}.json`)
 }
 
