@@ -130,9 +130,18 @@ function onChangeTranslation(key) {
   navigate(book.value.id, chapter.value, key)
 }
 
-/** 串珠引用目标跳转 */
+/** 串珠引用目标跳转（记录来源，用于返回） */
+const gotoFrom = ref(null) // { bookId, chapter }
 function onGotoVerse(target) {
+  gotoFrom.value = { bookId: book.value.id, chapter: chapter.value }
   navigate(target.id, target.ch)
+}
+
+/** 串珠跳转后返回来源位置 */
+function onBackFromGoto() {
+  const from = gotoFrom.value
+  gotoFrom.value = null
+  if (from) navigate(from.bookId, from.chapter)
 }
 
 function onToggleCommentary() {
@@ -163,7 +172,10 @@ function onToggleMenu() {
     <section class="brp-main">
       <div v-if="error" class="brp-error">{{ error }}</div>
       <template v-else-if="book">
-        <ChapterTabs :chapter-count="book.chapterCount" :current="chapter" @select-chapter="onSelectChapter" />
+        <div class="chapter-row">
+          <button v-if="gotoFrom" class="back-btn" @click="onBackFromGoto" aria-label="返回跳转前位置">← 返回</button>
+          <ChapterTabs :chapter-count="book.chapterCount" :current="chapter" @select-chapter="onSelectChapter" />
+        </div>
         <ScripturePanel
           :book="book"
           :chapter="chapter"
@@ -203,6 +215,30 @@ function onToggleMenu() {
   flex-direction: column;
   min-width: 0;
   background: var(--panel);
+}
+/* 串珠返回按钮 + 章选择器同行：按钮固定左侧，选择器占满剩余宽度 */
+.chapter-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.chapter-row .back-btn {
+  flex-shrink: 0;
+  border: none;
+  border-right: 1px solid var(--line);
+  background: #fff;
+  color: var(--accent);
+  font-size: 0.85rem;
+  padding: 0 0.9rem;
+  cursor: pointer;
+}
+.chapter-row .back-btn:hover {
+  background: var(--accent-soft);
+}
+.chapter-row :deep(.chapter-tabs) {
+  flex: 1;
+  border-bottom: none;
 }
 .brp-loading,
 .brp-error {
