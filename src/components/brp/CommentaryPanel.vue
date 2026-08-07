@@ -157,8 +157,8 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
         v-else-if="!loading"
         :title="bookDisabled ? '该卷注释暂时关闭' : '本卷暂无注释'"
         :message="bookDisabled
-          ? '当前书卷的注释已暂时关闭（数据保留，未删除）；恢复方式见 docs/COMMENTARY.md。'
-          : '当前书卷/章节尚未收录马太亨利注释（部分书卷素材缺失，详见 docs/COMMENTARY.md）。'"
+          ? '当前书卷的注释暂未开放，敬请期待。'
+          : '本卷注释尚未收录，正在陆续整理中。'"
       />
     </div>
   </aside>

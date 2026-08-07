@@ -1,8 +1,8 @@
 <script setup>
 /**
- * Home — 网站首页（FISH 品牌）
+ * Home — 网站首页（FISH 圣经研究平台品牌页）
  * 风格：现代 SaaS 极简奢华——白底、古典油画横幅、衬线大字标题、非对称两列、
- *       灰度数据源信任条；大留白、无卡片、无渐变装饰。
+ *       标题下功能关键词；大留白、无卡片、无渐变装饰。
  * 数据统计从 manifest 动态读取：新增译本后自动更新。
  */
 import { ref, computed, onMounted } from 'vue'
@@ -37,35 +37,28 @@ const stats = computed(() => {
       <img :src="bannerUrl" alt="克劳德·洛兰《圣保拉在奥斯蒂亚登船》1640" />
     </div>
 
-    <!-- Hero：左衬线大标题 / 右侧描述 + 双按钮（非对称两列） -->
+    <!-- Hero：左衬线大标题 + 功能关键词 / 右侧描述 + 按钮（非对称两列） -->
     <section class="hero">
-      <h1 class="hero-title">读经<br />研究平台</h1>
+      <div class="hero-copy">
+        <h1 class="hero-title">圣经<br />研究平台</h1>
+        <p class="hero-tags">多译本对照 · 解经译注 · 串珠引用 · 原文研究</p>
+      </div>
       <div class="hero-side">
         <p class="hero-desc">
-          轻量中文读经研究工具：多译本对照、马太亨利译注、串珠交叉引用。
-          素材与框架严格隔离，数据流水线驱动——新译本放入数据库即可自动上架。
+          面向中文读者的圣经研究工具：多译本对照阅读、马太亨利译注、串珠交叉引用。
+          素材与框架严格隔离，数据流水线驱动——新内容放入数据库即可自动上架。
         </p>
         <div class="hero-actions">
           <RouterLink to="/brp" class="btn btn-primary">进入读经研究 <span class="arrow">→</span></RouterLink>
         </div>
+        <p v-if="stats" class="hero-stats">{{ stats.versions }} 个译本 · {{ stats.books }} 卷经文</p>
       </div>
-    </section>
-
-    <!-- 数据源信任条：上下细线，灰度文字 -->
-    <section id="sources" class="trust-strip">
-      <span class="trust-item">scrollmapper</span>
-      <span class="trust-dot" aria-hidden="true">·</span>
-      <span class="trust-item">SWORD ChiUns</span>
-      <span class="trust-dot" aria-hidden="true">·</span>
-      <span class="trust-item">TSK 串珠</span>
-      <span class="trust-dot" aria-hidden="true">·</span>
-      <span class="trust-item">马太亨利译注</span>
     </section>
 
     <footer class="home-footer">
       <p>
         <template v-if="stats">{{ stats.versions }} 个译本 · {{ stats.books }} 卷经文 · </template>
-        素材存放于 <code>D:\Eyphka\fish\</code>，与网站 <code>site\</code> 严格隔离，详细架构见 <code>docs\</code>。
+        FISH 圣经研究平台
       </p>
     </footer>
   </div>
@@ -151,23 +144,12 @@ const stats = computed(() => {
   line-height: 1;
 }
 
-/* 数据源信任条：上下细灰线，灰度小字横排 */
-.trust-strip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.2rem;
-  height: 72px;
-  border-top: 1px solid #e8e8e8;
-  border-bottom: 1px solid #e8e8e8;
-}
-.trust-item {
+/* 标题下方功能关键词：小字灰色横排 */
+.hero-tags {
+  margin: 1.2rem 0 0;
   font-size: 0.95rem;
-  color: #9a9a9a;
-  letter-spacing: 0.02em;
-}
-.trust-dot {
-  color: #c8c8c8;
+  color: #8a8a8a;
+  letter-spacing: 0.06em;
 }
 
 .home-footer {
@@ -175,11 +157,6 @@ const stats = computed(() => {
   text-align: center;
   font-size: 0.8rem;
   color: #999;
-}
-.home-footer code {
-  background: #f2f3f5;
-  padding: 0.05rem 0.35rem;
-  border-radius: 4px;
 }
 
 /* 响应式：平板缩小标题，移动端堆叠 */
@@ -220,18 +197,6 @@ const stats = computed(() => {
     width: 100%;
     justify-content: center;
     padding: 0.7rem 1.4rem;
-  }
-  .trust-strip {
-    flex-wrap: wrap;
-    gap: 0.55rem 1rem;
-    height: auto;
-    padding: 1rem 1.2rem;
-  }
-  .trust-item {
-    font-size: 0.88rem;
-  }
-  .trust-dot {
-    display: none;
   }
   .home-footer {
     padding: 1.5rem 1.5rem 2rem;
