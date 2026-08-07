@@ -15,7 +15,6 @@ const emit = defineEmits(['select'])
   <button class="question-item" :class="{ active }" @click="emit('select', q.id)">
     <span class="q-num">{{ String(index + 1).padStart(2, '0') }}</span>
     <span class="q-text">{{ q.question }}</span>
-    <span class="q-count">{{ q.responses.length }} 回应</span>
   </button>
 </template>
 
@@ -58,15 +57,5 @@ const emit = defineEmits(['select'])
 .q-text {
   flex: 1;
   min-width: 0;
-}
-.q-count {
-  flex-shrink: 0;
-  font-size: 0.7rem;
-  color: #a7adb6;
-  margin-top: 0.22rem;
-  white-space: nowrap;
-}
-.question-item.active .q-count {
-  color: rgba(255, 255, 255, 0.6);
 }
 </style>

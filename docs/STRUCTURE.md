@@ -41,7 +41,7 @@ D:\Eyphka\fish\site\
 │           └── commentary\           注释数据（多注释源）
 │               ├── manifest.json      注释源清单
 │               └── matthew-henry\01.json … 按卷注释
-│           └── apologetics\          护教子数据库（content.meta.json 元数据/顺序 + topics\：每主题一目录，每回答一个 JSON 文件）
+│           └── apologetics\          护教子数据库（content.meta.json 元数据/顺序 + topics\：每主题一目录，子命题为最基层——每子命题一个 question.json 含完整内容）
 │
 ├── src\
 │   ├── main.js                    入口：createApp + router + 全局样式

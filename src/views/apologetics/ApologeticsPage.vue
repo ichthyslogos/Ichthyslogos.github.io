@@ -47,11 +47,10 @@ onMounted(async () => {
 /** 探索视图用的主题元数据列表（来自索引） */
 const topics = computed(() => index.value?.topics || [])
 
-/** 全站统计：主题 / 问题 / 回应（索引驱动） */
+/** 全站统计：主题 / 问题（索引驱动） */
 const stats = computed(() => {
   const questions = topics.value.reduce((s, t) => s + (t.sqCount || 0), 0)
-  const responses = topics.value.reduce((s, t) => s + (t.responseCount || 0), 0)
-  return { topics: topics.value.length, questions, responses }
+  return { topics: topics.value.length, questions }
 })
 
 /** 当前主题完整数据（已加载的切片；未加载时 null → 主题视图显示加载态） */
@@ -165,7 +164,7 @@ const otherQuestions = computed(() => {
           <p class="hero-desc">探索基督教面对的核心问题，从哲学、历史、科学与圣经寻找答案。</p>
           <div class="hero-actions">
             <a href="#topics" class="btn-explore" @click.prevent="scrollToTopics">开始探索 <span class="arr">→</span></a>
-            <span v-if="stats.topics" class="hero-stats">{{ stats.topics }} 主题 · {{ stats.questions }} 问题 · {{ stats.responses }} 回应</span>
+            <span v-if="stats.topics" class="hero-stats">{{ stats.topics }} 主题 · {{ stats.questions }} 问题</span>
           </div>
         </div>
       </section>
@@ -252,11 +251,8 @@ const otherQuestions = computed(() => {
             <p class="obj-text">{{ currentSQ.objection }}</p>
           </div>
 
-          <!-- 回应（Responses） -->
-          <div class="responses">
-            <div class="responses-label">回应 · {{ currentSQ.responses.length }} 个观点</div>
-            <ResponseCard v-for="r in currentSQ.responses" :key="r.id" :r="r" />
-          </div>
+          <!-- 内容（子命题为最基层，question.json 即完整内容：标题/视角/核心思想/正文/证据） -->
+          <ResponseCard :r="currentSQ" />
 
           <!-- 相关学习（Related Study） -->
           <div v-if="otherQuestions.length" class="related">
