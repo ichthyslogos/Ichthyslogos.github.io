@@ -14,9 +14,10 @@ defineProps({
   verses: { type: Array, default: () => [] },
   translations: { type: Array, required: true },
   activeKey: { type: String, required: true },
+  menuOpen: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
 })
-const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar'])
+const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar', 'toggle-menu'])
 </script>
 
 <template>
@@ -32,6 +33,8 @@ const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sid
         <TranslationMenu
           :translations="translations"
           :active-key="activeKey"
+          :open="menuOpen"
+          @toggle="emit('toggle-menu')"
           @select="emit('change-translation', $event)"
         />
         <button class="btn-commentary" @click="emit('toggle-commentary')">解经</button>

@@ -27,6 +27,19 @@ const bookData = ref(null)
 const panelOpen = ref(window.innerWidth > 900)
 // 移动端侧栏抽屉开关（窄屏下书卷列表为抽屉形式）
 const sidebarOpen = ref(false)
+// 译本下拉展开（受控组件，由本页统一管理以支持移动端互斥）
+const menuOpen = ref(false)
+
+/** 移动端判定（三面板互斥仅窄屏生效，桌面三栏共存） */
+const isMobile = () => window.innerWidth <= 900
+
+/** 移动端互斥：打开任一面板时先关闭其他两个 */
+function closeOthers(except) {
+  if (!isMobile()) return
+  if (except !== 'sidebar') sidebarOpen.value = false
+  if (except !== 'menu') menuOpen.value = false
+  if (except !== 'commentary') panelOpen.value = false
+}
 const loading = ref(false)
 const error = ref('')
 
@@ -79,11 +92,12 @@ async function load() {
 
 watch([translation, book], load)
 
-// 路由变化（含外部链接/后退进入）时收起移动端抽屉，避免残留遮挡
+// 路由变化（含外部链接/后退进入）时收起移动端面板，避免残留遮挡
 watch(
   () => route.fullPath,
   () => {
     sidebarOpen.value = false
+    menuOpen.value = false
   },
 )
 
@@ -111,16 +125,24 @@ function onSelectChapter(ch) {
 }
 
 function onChangeTranslation(key) {
+  menuOpen.value = false // 选择后收起下拉
   // 译本切换后若当前书卷在新译本中不存在（如次经），resolveBook 自动回退第一卷
   navigate(book.value.id, chapter.value, key)
 }
 
 function onToggleCommentary() {
+  closeOthers('commentary')
   panelOpen.value = !panelOpen.value
 }
 
 function onToggleSidebar() {
+  closeOthers('sidebar')
   sidebarOpen.value = !sidebarOpen.value
+}
+
+function onToggleMenu() {
+  closeOthers('menu')
+  menuOpen.value = !menuOpen.value
 }
 </script>
 
@@ -138,10 +160,12 @@ function onToggleSidebar() {
           :verses="verses"
           :translations="manifest.translations"
           :active-key="translation.key"
+          :menu-open="menuOpen"
           :loading="loading"
           @change-translation="onChangeTranslation"
           @toggle-commentary="onToggleCommentary"
           @toggle-sidebar="onToggleSidebar"
+          @toggle-menu="onToggleMenu"
         />
       </template>
     </section>

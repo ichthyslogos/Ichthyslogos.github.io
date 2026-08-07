@@ -1,7 +1,7 @@
 <script setup>
 /**
- * TranslationMenu — 展开式译本选择器（brp 子组件）
- * 译本列表由 manifest 数据驱动；展开面板分组展示：译本 / 原文（original=true 隔离展示）。
+ * TranslationMenu — 展开式译本选择器（brp 子组件，受控组件）
+ * 展开状态由父组件（BrpPage）控制：移动端与侧栏抽屉、解经面板互斥（每次只开一个）。
  * 面板采用动态定位：展开时测量 trigger 与面板尺寸，将面板钳制在视口内
  * （避免窄屏下 panel-head 换行导致 trigger 靠左时面板向左溢出屏幕）。
  */
@@ -10,10 +10,10 @@ import { ref, computed, watch, nextTick } from 'vue'
 const props = defineProps({
   translations: { type: Array, required: true },
   activeKey: { type: String, required: true },
+  open: { type: Boolean, default: false },
 })
-const emit = defineEmits(['select'])
+const emit = defineEmits(['toggle', 'select'])
 
-const open = ref(false)
 const triggerEl = ref(null)
 const popEl = ref(null)
 
@@ -22,25 +22,27 @@ const originals = computed(() => props.translations.filter((t) => t.original))
 const active = computed(() => props.translations.find((t) => t.key === props.activeKey))
 
 function pick(key) {
-  open.value = false
   emit('select', key)
 }
 
 /** 展开时把面板定位到视口内：水平不超出左右缘，垂直不超出下缘 */
-watch(open, async (v) => {
-  if (!v || !triggerEl.value || !popEl.value) return
-  await nextTick()
-  const tr = triggerEl.value.getBoundingClientRect()
-  const pw = popEl.value.offsetWidth
-  const ph = popEl.value.offsetHeight
-  const gap = 6
-  let left = Math.min(tr.left, innerWidth - pw - 8)
-  left = Math.max(8, left)
-  let top = tr.bottom + gap
-  if (top + ph > innerHeight) top = Math.max(8, innerHeight - ph - 8)
-  popEl.value.style.left = `${left}px`
-  popEl.value.style.top = `${top}px`
-})
+watch(
+  () => props.open,
+  async (v) => {
+    if (!v || !triggerEl.value || !popEl.value) return
+    await nextTick()
+    const tr = triggerEl.value.getBoundingClientRect()
+    const pw = popEl.value.offsetWidth
+    const ph = popEl.value.offsetHeight
+    const gap = 6
+    let left = Math.min(tr.left, innerWidth - pw - 8)
+    left = Math.max(8, left)
+    let top = tr.bottom + gap
+    if (top + ph > innerHeight) top = Math.max(8, innerHeight - ph - 8)
+    popEl.value.style.left = `${left}px`
+    popEl.value.style.top = `${top}px`
+  },
+)
 </script>
 
 <template>
@@ -49,7 +51,7 @@ watch(open, async (v) => {
       ref="triggerEl"
       class="trans-trigger"
       :class="{ open }"
-      @click="open = !open"
+      @click="emit('toggle')"
       aria-haspopup="listbox"
     >
       <span class="trans-trigger-name">{{ active ? active.name : '译本' }}</span>
@@ -89,7 +91,7 @@ watch(open, async (v) => {
       </div>
     </Transition>
 
-    <div v-if="open" class="menu-backdrop" @click="open = false"></div>
+    <div v-if="open" class="menu-backdrop" @click="emit('toggle')"></div>
   </div>
 </template>
 
