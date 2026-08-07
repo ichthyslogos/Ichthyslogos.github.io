@@ -81,6 +81,11 @@ const searchMatches = computed(() => {
   return out
 })
 
+/** 滚动主内容区（.app-main）到顶部——页面内滚动容器，window.scrollTo 无效 */
+function scrollMainTop() {
+  document.querySelector('.app-main')?.scrollTo(0, 0)
+}
+
 /** 进入主题：默认第一个子问题 */
 function openTopic(id) {
   const t = topics.value.find((x) => x.id === id)
@@ -89,7 +94,7 @@ function openTopic(id) {
   activeSQId.value = t.sub_questions?.[0]?.id || ''
   mobileView.value = 'list'
   view.value = 'topic'
-  window.scrollTo(0, 0)
+  scrollMainTop()
 }
 
 /** 从搜索结果直达子问题 */
@@ -98,19 +103,20 @@ function openQuestion(topicId, sqId) {
   activeSQId.value = sqId
   mobileView.value = 'detail'
   view.value = 'topic'
-  window.scrollTo(0, 0)
+  scrollMainTop()
 }
 
 /** 选中子问题：移动端进入详情 */
 function selectQuestion(id) {
   activeSQId.value = id
   mobileView.value = 'detail'
+  if (window.innerWidth <= 900) scrollMainTop()
 }
 
 /** 返回探索视图 */
 function backToExplore() {
   view.value = 'explore'
-  window.scrollTo(0, 0)
+  scrollMainTop()
 }
 
 /** 滚动到探索区（不用 #锚点：与 hash 路由冲突会触发路由跳转导致空白页） */

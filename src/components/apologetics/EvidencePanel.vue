@@ -55,29 +55,21 @@ const visibleCats = computed(() => CATS.filter((c) => props.evidence?.[c.key]?.l
   margin-bottom: 0.55rem;
 }
 .ep-cat {
-  display: flex;
-  gap: 1.2rem;
-  padding: 0.35rem 0;
+  padding: 0.4rem 0;
   border-top: 1px solid #efe9dd;
-  align-items: flex-start;
 }
 .ep-cat:first-of-type {
   border-top: none;
 }
 .ep-cat-label {
-  flex-shrink: 0;
-  width: 3.6rem;
   font-size: 0.78rem;
   font-weight: 700;
   color: #1f2937;
-  padding-top: 0.12rem;
+  margin-bottom: 0.35rem;
 }
 .ep-item {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  display: block;
+  padding: 0.18rem 0;
 }
 .ep-ref-item {
   display: flex;

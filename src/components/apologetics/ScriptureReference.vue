@@ -75,12 +75,12 @@ const target = computed(() => {
 .sr-go {
   flex-shrink: 0;
   font-size: 0.75rem;
+  font-weight: 600;
   color: #8b7355;
-  opacity: 0;
-  transition: opacity 0.15s ease;
+  transition: color 0.15s ease;
 }
 .scripture-ref:hover .sr-go {
-  opacity: 1;
+  color: #1f2937;
 }
 .scripture-ref:hover .sr-ref {
   color: #8b7355;
