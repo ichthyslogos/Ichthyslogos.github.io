@@ -9,3 +9,5 @@ Thumbs.db
 
 # 注意：素材库（bible_databases 等）位于 site 目录之外，git 不会跟踪，
 # 与网站隔离约定一致；public/data 与 data-src 必须提交（CI 依赖，见 docs/DEPLOY.md）
+# 测试截图产物（gui 验证用，不入库）
+gui-test-screenshots/

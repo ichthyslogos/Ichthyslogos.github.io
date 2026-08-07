@@ -41,7 +41,7 @@ D:\Eyphka\fish\site\
 │           └── commentary\           注释数据（多注释源）
 │               ├── manifest.json      注释源清单
 │               └── matthew-henry\01.json … 按卷注释
-│           └── apologetics\          护教问答数据（content.json：分类 + 问题 + 回应）
+│           └── apologetics\          护教问答数据（content.json：categories → topics，topic = question + 多 answers，每回答带来源视角）
 │
 ├── src\
 │   ├── main.js                    入口：createApp + router + 全局样式
@@ -56,7 +56,7 @@ D:\Eyphka\fish\site\
 │   │   ├── brp\
 │   │   │   └── BrpPage.vue        读经研究平台页：全部状态 + 布局 + 数据加载
 │   │   └── apologetics\
-│   │       └── ApologeticsPage.vue 护教页：分类 chips + 问题手风琴（回应挑战）
+│   │       └── ApologeticsPage.vue 护教页：分类 chips + 两栏布局（左话题列表/右回答卡片，同话题多回答），移动端两段式（列表/详情）
 │   └── components\
 │       ├── AppHeader.vue          共享：顶栏品牌与导航（components 根目录）
 │       ├── EmptyState.vue         共享：空状态占位（占位功能复用）

@@ -192,9 +192,14 @@ function buildApologetics() {
     if (!f.endsWith('.json')) continue
     const raw = JSON.parse(readFileSync(join(APOLOG_SRC, f), 'utf8'))
     const cats = raw.categories || []
+    // 话题数：支持 topics（多回答结构）与旧 questions 字段
+    const topicCount = cats.reduce(
+      (s, c) => s + (c.topics?.length || c.questions?.length || 0),
+      0,
+    )
     copyFileSync(join(APOLOG_SRC, f), join(APOLOG_OUT, f))
     files += 1
-    console.log(`[build-data] 护教：${raw.source?.name || f}（${cats.length} 类，${cats.reduce((s, c) => s + (c.questions?.length || 0), 0)} 问）`)
+    console.log(`[build-data] 护教：${raw.source?.name || f}（${cats.length} 类，${topicCount} 话题）`)
   }
   if (files) console.log(`[build-data] 输出 -> public/data/apologetics/`)
 }
