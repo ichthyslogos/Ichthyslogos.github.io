@@ -105,6 +105,27 @@ export function resolveBook(translation, bookId) {
   return translation.books.find((b) => b.id === bookId) || translation.books[0]
 }
 
+/* ============ 串珠（交叉引用）数据 ============
+ * 运行时数据位于 public/data/brp/crossrefs/<bookId>.json（按卷切片 + 缓存）
+ * 由 scripts/build-crossrefs.mjs 从素材 TSV 构建（素材只读）
+ */
+const CROSSREF_BASE = 'data/brp/crossrefs/'
+
+/** 加载某卷串珠数据（chapters[].verses[].refs[]：anchor + targets），自动缓存 */
+export async function fetchCrossrefs(bookId) {
+  return fetchJson(`${CROSSREF_BASE}${bookId}.json`)
+}
+
+/** 从串珠卷数据中取某章的 verse → refs 映射（无则空对象） */
+export function findCrossrefChapter(book, chapter) {
+  if (!book) return {}
+  const ch = book.chapters.find((c) => c.chapter === chapter)
+  if (!ch) return {}
+  const map = {}
+  for (const v of ch.verses) map[v.verse] = v.refs
+  return map
+}
+
 /** 章号越界时钳制到有效范围 */
 export function clampChapter(book, chapter) {
   const n = Number(chapter)

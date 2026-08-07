@@ -10,8 +10,9 @@
     "preview": "vite preview",
     "data:import": "node scripts/import.mjs",
     "data:build": "node scripts/build-data.mjs",
+    "data:crossrefs": "node scripts/build-crossrefs.mjs",
     "data:commentary": "python scripts/commentary/extract.py",
-    "data": "npm run data:import && npm run data:build"
+    "data": "npm run data:import && npm run data:build && npm run data:crossrefs"
   },
   "dependencies": {
     "vue": "^3.5.13",

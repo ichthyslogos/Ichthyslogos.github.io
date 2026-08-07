@@ -4,11 +4,15 @@
  * 包含：书卷菜单按钮（移动端抽屉）、书名/章节标题、译本切换（展开式下拉）、
  *      经文列表、"解经"按钮（切换右侧解经面板）
  * 译本选择器由 manifest 数据驱动：新增译本 → 自动出现在下拉中（原文/译本分组展示）
+ * 串珠：按当前书卷加载 public/data/brp/crossrefs/<bookId>.json（缓存），
+ *      计算每节引用的目标显示名（中文书卷名 + 章节），随经文传给 VerseItem。
  */
+import { computed, ref, watch } from 'vue'
 import TranslationMenu from './TranslationMenu.vue'
 import VerseItem from './VerseItem.vue'
+import { fetchCrossrefs, findCrossrefChapter } from '../../lib/data.js'
 
-defineProps({
+const props = defineProps({
   book: { type: Object, required: true },
   chapter: { type: Number, required: true },
   verses: { type: Array, default: () => [] },
@@ -17,7 +21,48 @@ defineProps({
   menuOpen: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
 })
-const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar', 'toggle-menu'])
+const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar', 'toggle-menu', 'goto-verse'])
+
+// 串珠数据：按卷加载 + 缓存（data.js 内部缓存）
+const crossrefBook = ref(null)
+watch(
+  () => props.book?.id,
+  async (id) => {
+    if (!id) return
+    try {
+      crossrefBook.value = await fetchCrossrefs(id)
+    } catch {
+      crossrefBook.value = null // 该卷无串珠
+    }
+  },
+  { immediate: true },
+)
+
+/** 当前章 verse → refs 映射 */
+const refsByVerse = computed(() =>
+  findCrossrefChapter(crossrefBook.value, props.chapter),
+)
+
+/** 当前译本的书卷中文名表（用于串珠目标显示） */
+const zhNames = computed(() => {
+  const t = props.translations.find((x) => x.key === props.activeKey)
+  const map = {}
+  for (const b of t?.books || []) map[b.id] = b.zh
+  return map
+})
+
+/** 每节引用：目标补上显示名（"箴言 8:22-24"） */
+function verseRefs(verse) {
+  const refs = refsByVerse.value[verse]
+  if (!refs || !refs.length) return null
+  return refs.map((r) => ({
+    anchor: r.anchor,
+    targets: r.targets.map((t) => ({
+      ...t,
+      label: `${zhNames.value[t.id] || t.id} ${t.ch}:${t.vs}`,
+    })),
+  }))
+}
 </script>
 
 <template>
@@ -46,7 +91,15 @@ const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sid
         <div v-if="loading" class="scripture-loading">经文加载中…</div>
         <template v-else>
           <p v-if="!verses.length" class="scripture-empty">本章无经文数据</p>
-          <VerseItem v-for="v in verses" :key="v.verse" :verse="v.verse" :text="v.text" :lang="activeKey" />
+          <VerseItem
+            v-for="v in verses"
+            :key="v.verse"
+            :verse="v.verse"
+            :text="v.text"
+            :lang="activeKey"
+            :refs="verseRefs(v.verse)"
+            @goto="emit('goto-verse', $event)"
+          />
         </template>
       </div>
     </div>

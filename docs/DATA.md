@@ -88,3 +88,20 @@
 | kjv（英王钦定本 KJV） | 66 | 1189 | ~8.0MB | ~100–200KB |
 
 素材库 bible_databases 共 140 种译本（含 WLC/Byz 等原文、其他英文译本等），均可按第 1 节流程接入（`node scripts/import.mjs <KEY>`）；英文译本在 `META_BY_KEY` 中登记 `lang: 'en'` 即不被中文空格净化，可加 `name` 覆盖展示名。
+
+## 6. 串珠（交叉引用）数据
+
+素材：`bible-cross-references-1.0/.../kjv/crossreferences_kjv.tsv`（TSK 系短语级串珠，KJV 锚短语，CC BY 4.0，素材只读）。
+
+```
+素材 TSV（book/chapter/verse/anchor/references，目标用 | 分隔）
+  │  node scripts/build-crossrefs.mjs（npm run data 内含 data:crossrefs）
+  ▼
+public/data/brp/crossrefs/<bookId>.json   ← 按卷切片（66 卷 / 29060 节含串珠）
+  ▼
+前端 VerseItem 按节显示 🔗 串珠按钮（锚短语 + 引用目标列表，点击跳转）
+```
+
+- 每卷 JSON：`{ source, bookId, chapters: [{ chapter, verses: [{ verse, refs: [{ anchor, targets: [{ id, ch, vs }] }] }] }] }`，目标 `vs` 为字符串（支持 `22-24`、`6,9`）
+- 书卷缩写映射在 `scripts/bible-books.mjs` 的 `KJV_ABBR`（66 卷 KJV 标准缩写）
+- 前端接入：`src/lib/data.js` 的 `fetchCrossrefs(bookId)` / `findCrossrefChapter()`；引用目标显示名由 ScripturePanel 用当前译本的中文书卷名拼装（`箴言 8:22-24`）

@@ -130,6 +130,11 @@ function onChangeTranslation(key) {
   navigate(book.value.id, chapter.value, key)
 }
 
+/** 串珠引用目标跳转 */
+function onGotoVerse(target) {
+  navigate(target.id, target.ch)
+}
+
 function onToggleCommentary() {
   closeOthers('commentary')
   panelOpen.value = !panelOpen.value
@@ -171,6 +176,7 @@ function onToggleMenu() {
           @toggle-commentary="onToggleCommentary"
           @toggle-sidebar="onToggleSidebar"
           @toggle-menu="onToggleMenu"
+          @goto-verse="onGotoVerse"
         />
       </template>
     </section>

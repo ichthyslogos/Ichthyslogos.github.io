@@ -66,7 +66,7 @@ BrpPage（持有 manifest/bookData/panelOpen 等全部状态）
  ├─ ChapterTabs      props: chapterCount, current          emit: select-chapter
  ├─ ScripturePanel   props: book, chapter, verses, menuOpen, …  emit: change-translation / toggle-commentary / toggle-sidebar / toggle-menu
  │    ├─ TranslationMenu props: open（受控）…          emit: toggle / select
- │    └─ VerseItem   props: verse, text, lang              （预留 annotations 插槽）
+ │    └─ VerseItem   props: verse, text, lang, refs       emit: goto（串珠跳转）
  └─ CommentaryPanel  props: open, book, chapter            emit: toggle（内部按 book.id+chapter 加载注释，多源见 docs/COMMENTARY.md）
 ```
 
