@@ -149,7 +149,12 @@ function onToggleMenu() {
 <template>
   <div class="brp-layout" :class="{ 'sidebar-open': sidebarOpen }" v-if="manifest">
     <div v-if="sidebarOpen" class="sidebar-backdrop" @click="sidebarOpen = false"></div>
-    <BookSidebar :translation="translation" :active-book-id="book && book.id" @select-book="onSelectBook" />
+    <BookSidebar
+      :translation="translation"
+      :active-book-id="book && book.id"
+      @select-book="onSelectBook"
+      @close="sidebarOpen = false"
+    />
     <section class="brp-main">
       <div v-if="error" class="brp-error">{{ error }}</div>
       <template v-else-if="book">
