@@ -3,5 +3,5 @@
   "title": { "zh": "你的主题问题？", "en": "Your Topic Title" },
   "description": "一句话描述该主题在讨论什么。",
   "tags": ["哲学", "神学"],
-  "sub_questions": ["your-question-id"]
+  "sub_questions": ["your-question"]
 }

@@ -1,5 +1,5 @@
 {
-  "id": "your-question-id",
+  "id": "your-question",
   "question": "你的子命题问题全文？",
   "objection": "质疑者最强有力的反对意见（一句话，显示在米白「质疑」卡）。",
   "title": { "zh": "内容标题（概括核心主张）", "en": "Content Title" },
@@ -10,6 +10,9 @@
   "evidence": {
     "bible": [
       { "ref": "书卷 章:节", "note": "这句经文为何支持该内容（一句话）。" }
+    ],
+    "philosophy": [
+      { "ref": "作者《著作》", "note": "一句话说明。" }
     ]
   }
 }
