@@ -97,7 +97,7 @@ const groups = computed(() => {
   font-variant-numeric: tabular-nums;
 }
 
-/* 移动端抽屉形态：显示头部与关闭按钮 */
+/* 移动端抽屉形态：显示头部与关闭按钮（头部随列表滚动，不悬浮遮挡文本） */
 @media (max-width: 900px) {
   .sidebar-head {
     display: flex;
@@ -105,10 +105,7 @@ const groups = computed(() => {
     justify-content: space-between;
     padding: 0.7rem 1rem;
     border-bottom: 1px solid var(--line);
-    position: sticky;
-    top: 0;
     background: #fbfcfd;
-    z-index: 1;
   }
   .sidebar-head-title {
     font-size: 0.95rem;
