@@ -4,7 +4,7 @@
  * 路由：/brp（默认）与 /brp/:bookId/:chapter，URL 与阅读位置同步
  * 布局：左栏书卷列表 | 主区（章节导航 + 经文正文 + 译本切换）
  */
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   fetchManifest,
@@ -133,24 +133,45 @@ function onChangeTranslation(key) {
   navigate(book.value.id, chapter.value, key)
 }
 
-/** 串珠引用目标跳转（记录来源，用于返回） */
+/** 串珠引用目标跳转（记录来源，用于返回；悬浮按钮显示 5 秒后自动消失） */
 const gotoFrom = ref(null) // { bookId, chapter }
+const showBack = ref(false)
+const BACK_DURATION = 5000
+let backTimer = null
+
 function onGotoVerse(target) {
   gotoFrom.value = { bookId: book.value.id, chapter: chapter.value }
+  showBack.value = true
+  clearTimeout(backTimer)
+  backTimer = setTimeout(() => {
+    showBack.value = false
+  }, BACK_DURATION)
   navigate(target.id, target.ch)
 }
 
-/** 手动导航（选书/选章/切译本）清除串珠返回状态，返回按钮仅在刚跳转后出现 */
+/** 手动导航（选书/选章/切译本）清除串珠返回状态 */
 function clearGoto() {
+  clearTimeout(backTimer)
   gotoFrom.value = null
+  showBack.value = false
 }
 
 /** 串珠跳转后返回来源位置 */
 function onBackFromGoto() {
   const from = gotoFrom.value
-  gotoFrom.value = null
+  clearGoto()
   if (from) navigate(from.bookId, from.chapter)
 }
+
+/** 悬浮按钮显示文字：来源书卷名 */
+const fromLabel = computed(() => {
+  const f = gotoFrom.value
+  if (!f) return ''
+  const b = translation.value?.books.find((x) => x.id === f.bookId)
+  return b ? `${b.zh} ${f.chapter} 章` : ''
+})
+
+onBeforeUnmount(() => clearTimeout(backTimer))
 
 function onToggleCommentary() {
   closeOthers('commentary')
@@ -180,10 +201,7 @@ function onToggleMenu() {
     <section class="brp-main">
       <div v-if="error" class="brp-error">{{ error }}</div>
       <template v-else-if="book">
-        <div class="chapter-row">
-          <button v-if="gotoFrom" class="back-btn" @click="onBackFromGoto" aria-label="返回跳转前位置">← 返回</button>
-          <ChapterTabs :chapter-count="book.chapterCount" :current="chapter" @select-chapter="onSelectChapter" />
-        </div>
+        <ChapterTabs :chapter-count="book.chapterCount" :current="chapter" @select-chapter="onSelectChapter" />
         <ScripturePanel
           :book="book"
           :chapter="chapter"
@@ -206,6 +224,15 @@ function onToggleMenu() {
       :chapter="chapter"
       @toggle="onToggleCommentary"
     />
+    <!-- 串珠跳转后的悬浮返回按钮：屏幕正下方居中，数秒后自动消失 -->
+    <Transition name="fab">
+      <button
+        v-if="showBack && gotoFrom"
+        class="back-fab"
+        @click="onBackFromGoto"
+        aria-label="返回跳转前位置"
+      >← 返回{{ fromLabel ? ' ' + fromLabel : '' }}</button>
+    </Transition>
   </div>
   <div v-else-if="error" class="brp-loading">{{ error }}</div>
   <div v-else class="brp-loading">数据加载中…</div>
@@ -224,29 +251,36 @@ function onToggleMenu() {
   min-width: 0;
   background: var(--panel);
 }
-/* 串珠返回按钮 + 章选择器同行：按钮固定左侧，选择器占满剩余宽度 */
-.chapter-row {
-  display: flex;
-  align-items: stretch;
-  border-bottom: 1px solid var(--line);
-  background: #fff;
-}
-.chapter-row .back-btn {
-  flex-shrink: 0;
+/* 串珠返回悬浮按钮：屏幕正下方居中，最顶层 */
+.back-fab {
+  position: fixed;
+  left: 50%;
+  bottom: 2.2rem;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0.6rem 1.4rem;
   border: none;
-  border-right: 1px solid var(--line);
-  background: #fff;
-  color: var(--accent);
-  font-size: 0.85rem;
-  padding: 0 0.9rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
   cursor: pointer;
+  white-space: nowrap;
 }
-.chapter-row .back-btn:hover {
-  background: var(--accent-soft);
+.back-fab:hover {
+  filter: brightness(1.08);
 }
-.chapter-row :deep(.chapter-tabs) {
-  flex: 1;
-  border-bottom: none;
+.fab-enter-active,
+.fab-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.fab-enter-from,
+.fab-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
 }
 .brp-loading,
 .brp-error {
