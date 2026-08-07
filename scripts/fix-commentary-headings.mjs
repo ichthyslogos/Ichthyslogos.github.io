@@ -1,46 +1,66 @@
-// 修复翻译卷注释的 heading 问题（一次性脚本，可重复执行）
-// 1) 诗篇 119 的 94-176 段内小节：从 text 开头「」引文提取标题（原书每节标题=经文首句，翻译时丢失）
-// 2) 全部翻译卷：相邻重复 heading 置空（与中文素材"栏目标题连续重复置空"体例一致）
+// 翻译卷注释 heading 全量修复（可重复执行，幂等）
+// 1) 诗篇 119：94-176 从 text「」引文提取标题（取首句），并移除 text 开头的「」引文
+//    （标题已承载在 heading，避免正文重复）；1-93 原书无标题，保持为空
+// 2) 其他翻译卷：空 heading 恢复为原书重复标题（复制前一非空小节标题）
+// 3) 诗篇 101-150：text 行首残留的诗题行（上行之歌/大卫的诗等）移除
 import { readFileSync, writeFileSync } from 'node:fs'
 
 const DIR = 'data-src/brp/commentary/matthew-henry/'
 const TARGETS = ['19', '48', '49', '50', '51', '52', '53', '62', '63', '64', '65']
+const POEM_TITLE =
+  /^(上行之[诗歌]|大卫的?上行之[诗歌]|所罗门的?上行之[诗歌]|大卫的诗|亚萨的诗|可拉后裔的诗|（交与伶长）|交与伶长)[。.]?$/
 
 for (const id of TARGETS) {
   const path = DIR + id + '.json'
   const data = JSON.parse(readFileSync(path, 'utf8'))
   let filled = 0
-  let blanked = 0
+  let cleaned = 0
 
   for (const c of data.chapters) {
-    // 诗篇只处理 101-150（翻译范围）
     if (id === '19' && c.chapter <= 100) continue
+    const secs = c.sections || []
 
-    // 1) 119 章：从 text 开头「」引文补标题（取首句；过长标题重新提取）
-    if (id === '19' && c.chapter === 119) {
-      for (const s of c.sections || []) {
-        const tooLong = s.heading && s.heading.length > 40 && s.text.startsWith('「')
-        if ((!s.heading || tooLong) && s.text.startsWith('「')) {
-          const m = s.text.match(/^「([^」]+)」/)
-          if (m) {
-            s.heading = m[1].split(/[。！？；]/)[0]
-            filled++
-          }
+    for (let i = 0; i < secs.length; i++) {
+      const s = secs[i]
+
+      // 119：94-176 从 text 开头「」引文补标题（取首句）
+      if (id === '19' && c.chapter === 119 && !s.heading) {
+        const m = s.text.match(/^「([^」]+)」/)
+        if (m) {
+          s.heading = m[1].split(/[。！？；]/)[0]
+          filled++
         }
       }
-    }
-
-    // 2) 相邻重复标题置空
-    const secs = c.sections || []
-    for (let i = 1; i < secs.length; i++) {
-      if (secs[i].heading && secs[i].heading === secs[i - 1].heading) {
-        secs[i].heading = ''
-        blanked++
+      // 119：text 开头的「」引文移除（标题已承载在 heading）
+      if (id === '19' && c.chapter === 119) {
+        const q = s.text.match(/^「[^」]+」\s*/)
+        if (q) {
+          s.text = s.text.slice(q[0].length)
+          cleaned++
+        }
+      }
+      // 诗篇：text 行首诗题行移除（原书诗题不并入正文）
+      if (id === '19') {
+        const lines = s.text.split('\n')
+        if (lines.length && POEM_TITLE.test(lines[0].trim())) {
+          s.text = lines.slice(1).join('\n').trim()
+          cleaned++
+        }
+      }
+      // 其他翻译卷：空 heading 恢复为原书重复标题（复制前一非空小节标题）
+      if (id !== '19' && !s.heading) {
+        for (let j = i - 1; j >= 0; j--) {
+          if (secs[j].heading) {
+            s.heading = secs[j].heading
+            filled++
+            break
+          }
+        }
       }
     }
   }
 
   writeFileSync(path, JSON.stringify(data))
-  if (filled || blanked) console.log(`${id}: 补标题 ${filled} 处 / 重复置空 ${blanked} 处`)
+  if (filled || cleaned) console.log(`${id}: 填充 ${filled} 处 / 清理 ${cleaned} 处`)
 }
 console.log('完成')
