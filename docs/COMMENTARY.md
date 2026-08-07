@@ -96,7 +96,7 @@ python scripts/commentary/extract.py --force 1    # 强制重转
 ## 5. 前端接入点
 
 - `src/lib/data.js`：`fetchCommentaryManifest()` / `fetchCommentary(sourceKey, bookId)` / `findCommentaryChapter()`（按卷加载 + 缓存）
-- `src/lib/text.js`：`flowCommentary()`——渲染前智能合并 PDF 提取残留的句中硬换行（行尾句末标点/行首层级编号保留分段，其余拼接），summary 与小节正文均经过处理
+- `src/lib/text.js`：`flowCommentary()`——渲染前最简排版：除数据中已有的空行分段（换行标记）外，其余换行一律合并；不做额外排版（无上标/脚注样式），summary 与小节正文均经过处理
 - `src/components/brp/CommentaryPanel.vue`：按 `book.id + chapter` 渲染 summary + sections；无注释 → 空状态"本卷暂无注释"
 - 面板显隐/移动端覆盖层/三面板互斥逻辑与之前一致，不受注释数据影响
 
