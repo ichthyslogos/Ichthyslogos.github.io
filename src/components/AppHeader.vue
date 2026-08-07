@@ -1,11 +1,12 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import logoUrl from '../assets/logo.png'
 </script>
 
 <template>
   <header class="app-header">
     <RouterLink to="/" class="brand">
-      <span class="brand-mark">FISH</span>
+      <img :src="logoUrl" class="brand-logo" alt="FISH 读经研究平台" />
       <span class="brand-sub">读经研究平台</span>
     </RouterLink>
     <nav class="nav">
@@ -27,15 +28,14 @@ import { RouterLink } from 'vue-router'
 }
 .brand {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.6rem;
   text-decoration: none;
 }
-.brand-mark {
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  color: var(--accent);
+.brand-logo {
+  height: 1.9rem;
+  width: auto;
+  display: block;
 }
 .brand-sub {
   font-size: 0.85rem;

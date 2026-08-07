@@ -6,6 +6,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { fetchManifest } from '../lib/data.js'
+import logoUrl from '../assets/logo.png'
 
 const manifest = ref(null)
 
@@ -55,6 +56,7 @@ const features = [
 <template>
   <div class="home">
     <section class="hero">
+      <img :src="logoUrl" class="hero-logo" alt="FISH 读经研究平台" />
       <h1 class="hero-title">FISH</h1>
       <p class="hero-sub">Bible Research Platform · 读经研究平台</p>
       <p class="hero-desc">
@@ -100,6 +102,11 @@ const features = [
 .hero {
   text-align: center;
   padding: 2.5rem 1rem 2rem;
+}
+.hero-logo {
+  height: 4.6rem;
+  width: auto;
+  margin-bottom: 0.8rem;
 }
 .hero-title {
   margin: 0;
