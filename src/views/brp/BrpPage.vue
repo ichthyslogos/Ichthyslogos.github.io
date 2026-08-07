@@ -117,15 +117,18 @@ function navigate(bookId, ch, trans) {
 
 function onSelectBook(bookId) {
   sidebarOpen.value = false // 移动端选择书卷后收起抽屉
+  clearGoto() // 手动导航清除串珠返回
   navigate(bookId, 1)
 }
 
 function onSelectChapter(ch) {
+  clearGoto()
   navigate(book.value.id, ch)
 }
 
 function onChangeTranslation(key) {
   menuOpen.value = false // 选择后收起下拉
+  clearGoto()
   // 译本切换后若当前书卷在新译本中不存在（如次经），resolveBook 自动回退第一卷
   navigate(book.value.id, chapter.value, key)
 }
@@ -135,6 +138,11 @@ const gotoFrom = ref(null) // { bookId, chapter }
 function onGotoVerse(target) {
   gotoFrom.value = { bookId: book.value.id, chapter: chapter.value }
   navigate(target.id, target.ch)
+}
+
+/** 手动导航（选书/选章/切译本）清除串珠返回状态，返回按钮仅在刚跳转后出现 */
+function clearGoto() {
+  gotoFrom.value = null
 }
 
 /** 串珠跳转后返回来源位置 */
