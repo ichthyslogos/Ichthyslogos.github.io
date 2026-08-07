@@ -31,6 +31,32 @@ const sourceKey = ref('')
 const bookData = ref(null)
 const loading = ref(false)
 
+/** 小节展开状态：Set<索引>，默认全部收起 */
+const expanded = ref(new Set())
+
+function toggleSection(i) {
+  const s = new Set(expanded.value)
+  s.has(i) ? s.delete(i) : s.add(i)
+  expanded.value = s
+}
+
+const allExpanded = computed(
+  () => !!chapterData.value && chapterData.value.sections.every((_, i) => expanded.value.has(i)),
+)
+
+function toggleAll() {
+  if (!chapterData.value) return
+  expanded.value = allExpanded.value ? new Set() : new Set(chapterData.value.sections.map((_, i) => i))
+}
+
+// 切换章节时重置展开状态
+watch(
+  () => [props.book?.id, props.chapter],
+  () => {
+    expanded.value = new Set()
+  },
+)
+
 // 首次挂载加载注释源清单
 watch(
   () => props.open,
@@ -84,17 +110,33 @@ const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.
     <div class="panel-body">
       <div v-if="loading" class="commentary-state">注释加载中…</div>
       <template v-else-if="chapterData">
-        <div v-if="sourceName" class="commentary-source">{{ sourceName }}</div>
+        <div class="commentary-top">
+          <span v-if="sourceName" class="commentary-source">{{ sourceName }}</span>
+          <button
+            v-if="chapterData.sections.length"
+            class="toggle-all"
+            @click="toggleAll"
+          >
+            {{ allExpanded ? '全部收起' : '全部展开' }}
+          </button>
+        </div>
         <p v-if="chapterData.summary" class="commentary-summary">{{ chapterData.summary }}</p>
         <div v-for="(s, i) in chapterData.sections" :key="i" class="commentary-section">
-          <div v-if="s.heading" class="commentary-heading">
+          <button
+            class="commentary-heading"
+            :aria-expanded="expanded.has(i)"
+            @click="toggleSection(i)"
+          >
+            <span class="chevron" :class="{ open: expanded.has(i) }" aria-hidden="true">▸</span>
             <span v-if="s.ref" class="commentary-ref">{{ s.ref }}</span>
-            {{ s.heading }}
-          </div>
-          <div v-else-if="s.ref" class="commentary-heading">
-            <span class="commentary-ref">{{ s.ref }}</span>
-          </div>
-          <p class="commentary-text">{{ s.text }}</p>
+            <span v-if="s.heading" class="heading-text">{{ s.heading }}</span>
+            <span v-if="!s.ref && !s.heading" class="heading-text">注释</span>
+          </button>
+          <Transition name="fold">
+            <div v-if="expanded.has(i)" class="fold-wrap">
+              <p class="commentary-text">{{ s.text }}</p>
+            </div>
+          </Transition>
         </div>
       </template>
       <EmptyState
@@ -148,6 +190,13 @@ const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.
   text-align: center;
   padding: 2rem 0;
 }
+.commentary-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
 .commentary-source {
   display: inline-block;
   font-size: 0.72rem;
@@ -155,7 +204,18 @@ const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.
   background: var(--accent-soft);
   border-radius: 999px;
   padding: 0.1rem 0.6rem;
-  margin-bottom: 0.6rem;
+}
+.toggle-all {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 0.75rem;
+  padding: 0.1rem 0.55rem;
+}
+.toggle-all:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 .commentary-summary {
   font-size: 0.95rem;
@@ -167,16 +227,40 @@ const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.
   white-space: pre-line;
 }
 .commentary-section {
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.4rem;
 }
+/* 小节标题行 = 可点击的展开按钮 */
 .commentary-heading {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.4rem;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.3rem;
+  border-radius: 6px;
   font-weight: 700;
   font-size: 0.92rem;
-  margin-bottom: 0.3rem;
   color: var(--text);
+  cursor: pointer;
+}
+.commentary-heading:hover {
+  background: var(--accent-soft);
+}
+.chevron {
+  font-size: 0.7rem;
+  color: var(--muted);
+  transition: transform 0.18s ease;
+  flex-shrink: 0;
+}
+.chevron.open {
+  transform: rotate(90deg);
+}
+.heading-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .commentary-ref {
   flex-shrink: 0;
@@ -193,6 +277,24 @@ const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.
   line-height: 1.95;
   color: #3c4652;
   white-space: pre-line;
+  padding: 0.15rem 0.3rem 0.5rem;
+}
+/* 展开/收起过渡（grid-rows 高度动画） */
+.fold-wrap {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.fold-wrap > * {
+  overflow: hidden;
+}
+.fold-enter-active,
+.fold-leave-active {
+  transition: grid-template-rows 0.22s ease, opacity 0.22s ease;
+}
+.fold-enter-from,
+.fold-leave-to {
+  grid-template-rows: 0fr;
+  opacity: 0;
 }
 
 /* 窄屏（≤900px）：解经面板变为右侧覆盖层（不占布局宽度） */
