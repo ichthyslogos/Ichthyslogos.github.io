@@ -32,9 +32,9 @@ const stats = computed(() => {
 
 <template>
   <div class="home">
-    <!-- 古典油画横幅：摩西被救（克劳德·洛兰, 1639-40，公有领域） -->
-    <div class="banner" role="img" aria-label="古典油画：法老的女儿在河边发现摩西">
-      <img :src="bannerUrl" alt="克劳德·洛兰《摩西被救》1639-40" />
+    <!-- 古典油画横幅：圣保拉在奥斯蒂亚登船（克劳德·洛兰, 1640，公有领域） -->
+    <div class="banner" role="img" aria-label="古典油画：圣保拉在奥斯蒂亚港登船">
+      <img :src="bannerUrl" alt="克劳德·洛兰《圣保拉在奥斯蒂亚登船》1640" />
     </div>
 
     <!-- Hero：左衬线大标题 / 右侧描述 + 双按钮（非对称两列） -->
@@ -77,10 +77,10 @@ const stats = computed(() => {
   background: #fff;
 }
 
-/* 古典油画横幅：全宽，约 280px 高，cover 裁切 */
+/* 古典油画横幅：全宽，约 300px 高，cover 裁切 */
 .banner {
   width: 100%;
-  height: 280px;
+  height: 300px;
   overflow: hidden;
   background: #d9d3c8; /* 油画底色，加载时占位 */
 }
@@ -194,7 +194,7 @@ const stats = computed(() => {
 }
 @media (max-width: 600px) {
   .banner {
-    height: 190px;
+    height: 200px;
   }
   .hero {
     flex-direction: column;
