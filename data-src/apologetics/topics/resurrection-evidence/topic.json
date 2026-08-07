@@ -1,0 +1,40 @@
+{
+  "id": "resurrection-evidence",
+  "title": {
+    "zh": "耶稣基督复活的证据",
+    "en": "Evidence for the Resurrection of Jesus Christ"
+  },
+  "description": "《游子吟》第四章全文归档：从复活事件的直接证据、历史考证、《圣经》预言的应验、历史印痕、学者专家的证词，到复活无法推翻与最终的选择。",
+  "tags": [
+    "历史",
+    "圣经",
+    "护教"
+  ],
+  "categories": [
+    {
+      "id": "evidence-and-verification",
+      "title": "事件证据与历史考证",
+      "sub_questions": [
+        "evidence-of-the-event",
+        "historical-verification"
+      ]
+    },
+    {
+      "id": "prophecy-trace-testimony",
+      "title": "预言、印痕与证词",
+      "sub_questions": [
+        "prophecy-fulfillment",
+        "historical-traces",
+        "scholars-testimony"
+      ]
+    },
+    {
+      "id": "conclusion-and-choice",
+      "title": "结论与抉择",
+      "sub_questions": [
+        "unshakable-resurrection",
+        "the-choice"
+      ]
+    }
+  ]
+}

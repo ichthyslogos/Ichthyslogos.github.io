@@ -1,0 +1,39 @@
+{
+  "id": "bible-inspired",
+  "title": {
+    "zh": "《圣经》是神默示的",
+    "en": "The Bible Is Inspired by God"
+  },
+  "description": "《游子吟》第二章全文归档：从《圣经》的作者与正典形成、独特的教训、历史性、手抄本可靠性、预言应验，到《圣经》改变生命的力量与小结。",
+  "tags": [
+    "圣经",
+    "神学"
+  ],
+  "categories": [
+    {
+      "id": "canon-and-inspiration",
+      "title": "圣经的默示与正典",
+      "sub_questions": [
+        "authorship-and-canon",
+        "teachings-of-the-bible"
+      ]
+    },
+    {
+      "id": "historicity-and-reliability",
+      "title": "圣经的历史性与可靠性",
+      "sub_questions": [
+        "historicity-of-the-bible",
+        "manuscript-reliability"
+      ]
+    },
+    {
+      "id": "prophecy-power-conclusion",
+      "title": "预言、力量与结论",
+      "sub_questions": [
+        "prophecies-of-the-bible",
+        "power-of-the-bible",
+        "conclusion"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "eternal-life",
+  "title": {
+    "zh": "进入永生",
+    "en": "Entering Eternal Life"
+  },
+  "description": "《游子吟》第七章全文归档：从罪的普世性、天堂和地狱、人犯罪的后果、神伟大的救恩，到信主的常见疑问与拦阻，以及天国临近的呼召。",
+  "tags": [
+    "圣经",
+    "神学",
+    "牧养"
+  ],
+  "categories": [
+    {
+      "id": "sin-and-salvation",
+      "title": "罪与救恩的根基",
+      "sub_questions": [
+        "universality-of-sin",
+        "heaven-and-hell",
+        "consequences-of-sin",
+        "great-salvation"
+      ]
+    },
+    {
+      "id": "questions-and-barriers",
+      "title": "常见疑问与拦阻",
+      "sub_questions": [
+        "good-people-hell",
+        "deathbed-conversion",
+        "christians-not-perfect",
+        "too-busy",
+        "loss-of-freedom",
+        "full-assurance",
+        "not-good-enough"
+      ]
+    },
+    {
+      "id": "call-and-decision",
+      "title": "呼召与决志",
+      "sub_questions": [
+        "kingdom-is-near"
+      ]
+    }
+  ]
+}
