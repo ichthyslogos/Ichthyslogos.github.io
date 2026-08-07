@@ -80,8 +80,14 @@ def rec_text(blocks, boff, rec):
 
 
 def clean_text(raw):
-    t = TAG.sub('', raw)
+    # 丢弃脚注 note 及其内容（原文注释/脚注定位，和合本繁体版无此内容）
+    t = re.sub(r'<note\b[^>]*>.*?</note>', '', raw, flags=re.S)
+    t = re.sub(r'</?note[^>]*>', '', t)
+    t = TAG.sub('', t)
     t = FRAG.sub('', t)
+    # 转义标签实体（如 &lt;WAHb&gt; 词形标记）
+    t = re.sub(r'&lt;.*?&gt;', '', t)
+    t = t.replace('&lt;', '').replace('&gt;', '').replace('&amp;', '&')
     t = t.replace('\u3000', '').replace('\n', '').replace(' ', '')
     return t
 
