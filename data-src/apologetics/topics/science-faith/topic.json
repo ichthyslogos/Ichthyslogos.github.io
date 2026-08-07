@@ -1,0 +1,17 @@
+{
+  "id": "science-faith",
+  "title": {
+    "zh": "科学与信仰冲突吗？",
+    "en": "Do Science and Faith Conflict?"
+  },
+  "description": "进化论、宇宙起源与圣经记载的关系，科学方法论与信仰的边界。",
+  "tags": [
+    "科学",
+    "哲学"
+  ],
+  "sub_questions": [
+    "evolution",
+    "cosmos",
+    "conflict"
+  ]
+}

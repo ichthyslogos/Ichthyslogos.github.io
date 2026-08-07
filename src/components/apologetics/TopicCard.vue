@@ -16,7 +16,7 @@ const emit = defineEmits(['select'])
     <p class="t-en">{{ topic.title.en }}</p>
     <p class="t-desc">{{ topic.description }}</p>
     <div class="t-meta">
-      <span class="t-count">{{ topic.sub_questions.length }} 个相关问题</span>
+      <span class="t-count">{{ topic.sqCount ?? topic.sub_questions?.length ?? 0 }} 个相关问题</span>
       <span class="t-tags">{{ topic.tags.join(' · ') }}</span>
     </div>
   </article>

@@ -1,0 +1,9 @@
+{
+  "id": "archaeology",
+  "question": "考古学真的支持圣经吗？",
+  "objection": "圣经只是宗教文献，考古学从未证实过其中的具体记载。",
+  "responses": [
+    "archaeological-support",
+    "framework-confirmed"
+  ]
+}

@@ -177,32 +177,89 @@ function statIsDir(p) {
   }
 }
 
-/* ============ 护教数据（护教问答） ============
- * data-src/apologetics/*.json → public/data/apologetics/
- * 内容格式：{ source: {key,name,lang}, categories: [{ id, title, questions: [{ id, question, answer }] }] }
+/* ============ 护教数据（子数据库：按主题/子问题分目录，回答为单位） ============
+ * 源：data-src/apologetics/topics/<topicId>/
+ *     ├── topic.json                 主题元数据（title/description/tags/sub_questions 顺序列表）
+ *     ├── <sqId>/question.json       子问题元数据（question/objection/responses 顺序列表）
+ *     └── <sqId>/<respId>.json       一个回答一个文件
+ * 输出（public/data/apologetics/）：
+ *     ├── content.json               索引（主题元数据 + 子问题轻量搜索文本，不含正文，探索/搜索用）
+ *     └── topics/<topicId>.json      主题切片（完整数据，前端按需加载）
  */
 const APOLOG_SRC = join(SITE_ROOT, 'data-src', 'apologetics')
 const APOLOG_OUT = join(SITE_ROOT, 'public', 'data', 'apologetics') // 独立目录（与路由同名约定）
 
+function readJson(p) {
+  return JSON.parse(readFileSync(p, 'utf8'))
+}
+
 function buildApologetics() {
-  if (!existsSync(APOLOG_SRC)) return
-  mkdirSync(APOLOG_OUT, { recursive: true })
-  let files = 0
-  for (const f of readdirSync(APOLOG_SRC)) {
-    if (!f.endsWith('.json')) continue
-    const raw = JSON.parse(readFileSync(join(APOLOG_SRC, f), 'utf8'))
-    // 三层结构统计：topics（主题）→ sub_questions（子问题）→ responses（回应）
-    const topics = raw.topics || []
-    const sqCount = topics.reduce((s, t) => s + (t.sub_questions?.length || 0), 0)
-    const respCount = topics.reduce(
-      (s, t) => s + (t.sub_questions?.reduce((x, q) => x + (q.responses?.length || 0), 0) || 0),
-      0,
-    )
-    copyFileSync(join(APOLOG_SRC, f), join(APOLOG_OUT, f))
-    files += 1
-    console.log(`[build-data] 护教：${raw.source?.name || f}（${topics.length} 主题，${sqCount} 子问题，${respCount} 回应）`)
+  const topicsDir = join(APOLOG_SRC, 'topics')
+  if (!existsSync(topicsDir)) return
+  mkdirSync(join(APOLOG_OUT, 'topics'), { recursive: true })
+
+  const meta = readJson(join(APOLOG_SRC, 'content.meta.json'))
+  const indexTopics = []
+  let sqTotal = 0
+  let respTotal = 0
+
+  // 主题顺序以 content.meta.json 的 topics 列表为准（readdirSync 是字母序，不可靠）
+  const topicOrder = meta.topics || readdirSync(topicsDir)
+  for (const topicId of topicOrder) {
+    const tDir = join(topicsDir, topicId)
+    if (!statIsDir(tDir)) throw new Error(`[build-data] 护教主题目录缺失或未登记：${topicId}`)
+
+    const t = readJson(join(tDir, 'topic.json'))
+    if (t.id !== topicId) throw new Error(`[build-data] 护教 topic.json id 与目录名不符：${t.id} != ${topicId}`)
+
+    // 组装子问题与回答（按 topic.json 显式顺序；回答文件缺失即报错）
+    const sub_questions = []
+    for (const sqId of t.sub_questions) {
+      const sqDir = join(tDir, sqId)
+      const q = readJson(join(sqDir, 'question.json'))
+      const responses = q.responses.map((rid) => {
+        const f = join(sqDir, `${rid}.json`)
+        if (!existsSync(f)) throw new Error(`[build-data] 护教回答文件缺失：${sqDir}/${rid}.json`)
+        return readJson(f)
+      })
+      sub_questions.push({ id: q.id, question: q.question, objection: q.objection, responses })
+      sqTotal++
+      respTotal += responses.length
+    }
+
+    // 主题切片（完整数据，按需加载）
+    const slice = { id: t.id, title: t.title, description: t.description, tags: t.tags, sub_questions }
+    writeFileSync(join(APOLOG_OUT, 'topics', `${topicId}.json`), JSON.stringify(slice))
+
+    // 索引条目：主题元数据 + 子问题轻量搜索文本（question/objection/回答标题与核心思想，不含长正文）
+    indexTopics.push({
+      id: t.id,
+      title: t.title,
+      description: t.description,
+      tags: t.tags,
+      sqCount: sub_questions.length,
+      responseCount: sub_questions.reduce((s, sq) => s + sq.responses.length, 0),
+      searchText: t.sub_questions
+        .map((sqId) => {
+          const sq = sub_questions.find((x) => x.id === sqId)
+          return `${sq.question} ${sq.objection || ''} ${sq.responses.map((r) => `${r.title?.zh || ''} ${r.title?.en || ''} ${r.summary || ''}`).join(' ')}`
+        })
+        .join(' ')
+        .toLowerCase(),
+      questions: t.sub_questions.map((sqId) => {
+        const sq = sub_questions.find((x) => x.id === sqId)
+        return {
+          id: sqId,
+          question: sq.question,
+          searchText: `${sq.question} ${sq.objection || ''} ${sq.responses.map((r) => `${r.title?.zh || ''} ${r.title?.en || ''} ${r.summary || ''}`).join(' ')}`.toLowerCase(),
+        }
+      }),
+    })
   }
-  if (files) console.log(`[build-data] 输出 -> public/data/apologetics/`)
+
+  writeFileSync(join(APOLOG_OUT, 'content.json'), JSON.stringify({ source: meta.source, topics: indexTopics }))
+  console.log(`[build-data] 护教：${indexTopics.length} 主题 / ${sqTotal} 子问题 / ${respTotal} 回答（索引 + 主题切片）`)
+  console.log(`[build-data] 输出 -> public/data/apologetics/`)
 }
 
 buildCommentary()

@@ -1,0 +1,18 @@
+{
+  "id": "faith-life",
+  "title": {
+    "zh": "信仰与生活",
+    "en": "Faith & Life"
+  },
+  "description": "耶稣的独一性、信仰的时代意义与教会历史的诚实省思。",
+  "tags": [
+    "伦理",
+    "哲学",
+    "神学"
+  ],
+  "sub_questions": [
+    "only-way",
+    "outdated",
+    "church-darkness"
+  ]
+}

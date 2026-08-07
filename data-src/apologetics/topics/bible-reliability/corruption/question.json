@@ -1,0 +1,9 @@
+{
+  "id": "corruption",
+  "question": "圣经流传了两千多年，难道没有被篡改过吗？",
+  "objection": "手抄本历经两千年，难免被后人改动、增删。",
+  "responses": [
+    "manuscript-evidence",
+    "preserved-word"
+  ]
+}

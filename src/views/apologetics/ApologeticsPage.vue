@@ -10,14 +10,19 @@
  */
 import { ref, computed, watch, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { fetchApologetics } from '../../lib/data.js'
+import { fetchApologetics, fetchApologeticsTopic } from '../../lib/data.js'
 import EmptyState from '../../components/EmptyState.vue'
 import SearchBar from '../../components/apologetics/SearchBar.vue'
 import TopicCard from '../../components/apologetics/TopicCard.vue'
 import QuestionCard from '../../components/apologetics/QuestionCard.vue'
 import ResponseCard from '../../components/apologetics/ResponseCard.vue'
 
-const content = ref(null)
+/** 索引（探索/搜索用，不含正文） */
+const index = ref(null)
+/** 主题完整数据缓存：topicId → 主题切片（按需加载） */
+const topicsData = ref(new Map())
+/** 主题切片加载中（进入主题时短暂显示） */
+const topicLoading = ref(false)
 const loading = ref(false)
 const error = ref('')
 /** 视图：explore=主题探索 / topic=主题详情 */
@@ -31,7 +36,7 @@ const mobileView = ref('list')
 onMounted(async () => {
   loading.value = true
   try {
-    content.value = await fetchApologetics()
+    index.value = await fetchApologetics()
   } catch (e) {
     error.value = e.message
   } finally {
@@ -39,43 +44,56 @@ onMounted(async () => {
   }
 })
 
-const topics = computed(() => content.value?.topics || [])
+/** 探索视图用的主题元数据列表（来自索引） */
+const topics = computed(() => index.value?.topics || [])
 
-/** 全站统计：主题 / 问题 / 回应 */
+/** 全站统计：主题 / 问题 / 回应（索引驱动） */
 const stats = computed(() => {
-  const questions = topics.value.reduce((s, t) => s + (t.sub_questions?.length || 0), 0)
-  const responses = topics.value.reduce(
-    (s, t) => s + (t.sub_questions?.reduce((x, q) => x + (q.responses?.length || 0), 0) || 0),
-    0,
-  )
+  const questions = topics.value.reduce((s, t) => s + (t.sqCount || 0), 0)
+  const responses = topics.value.reduce((s, t) => s + (t.responseCount || 0), 0)
   return { topics: topics.value.length, questions, responses }
 })
 
-const currentTopic = computed(() => topics.value.find((t) => t.id === activeTopicId.value) || null)
+/** 当前主题完整数据（已加载的切片；未加载时 null → 主题视图显示加载态） */
+const currentTopic = computed(() => topicsData.value.get(activeTopicId.value) || null)
 const currentSQ = computed(() => currentTopic.value?.sub_questions.find((q) => q.id === activeSQId.value) || null)
 
-/** 搜索：主题级过滤（标题/描述/子问题/回应文本命中） */
+/** 确保主题切片已加载（缓存命中直接返回；否则按需 fetch） */
+async function ensureTopic(id) {
+  if (topicsData.value.has(id)) return
+  topicLoading.value = true
+  try {
+    const t = await fetchApologeticsTopic(id)
+    topicsData.value.set(id, t)
+    // 数据到达后确保子问题有效
+    if (!t.sub_questions.some((q) => q.id === activeSQId.value)) {
+      activeSQId.value = t.sub_questions?.[0]?.id || ''
+    }
+  } catch (e) {
+    error.value = e.message
+  } finally {
+    topicLoading.value = false
+  }
+}
+
+/** 搜索：主题级过滤（标题/描述/子问题轻量文本命中，索引驱动） */
 const filteredTopics = computed(() => {
   const q = query.value.trim().toLowerCase()
   if (!q) return topics.value
   return topics.value.filter((t) => {
-    const hay = [
-      t.title.zh, t.title.en, t.description,
-      ...(t.sub_questions?.map((s) => `${s.question} ${s.objection || ''} ${s.responses?.map((r) => `${r.title.zh} ${r.title.en} ${r.summary} ${r.text}`).join(' ')}`) || []),
-    ].join(' ').toLowerCase()
-    return hay.includes(q)
+    const hay = [t.title.zh, t.title.en, t.description, t.tags?.join(' '), t.searchText].filter(Boolean).join(' ')
+    return hay.toLowerCase().includes(q)
   })
 })
 
-/** 搜索：子问题级命中（可直达） */
+/** 搜索：子问题级命中（可直达，索引驱动） */
 const searchMatches = computed(() => {
   const q = query.value.trim().toLowerCase()
   if (!q) return []
   const out = []
   for (const t of topics.value) {
-    for (const sq of t.sub_questions || []) {
-      const hay = `${sq.question} ${sq.objection || ''} ${sq.responses?.map((r) => `${r.title.zh} ${r.summary} ${r.text}`).join(' ')}`.toLowerCase()
-      if (hay.includes(q)) out.push({ topic: t, sq })
+    for (const sq of t.questions || []) {
+      if (sq.searchText.includes(q)) out.push({ topic: t, sq })
     }
   }
   return out
@@ -86,24 +104,24 @@ function scrollMainTop() {
   document.querySelector('.app-main')?.scrollTo(0, 0)
 }
 
-/** 进入主题：默认第一个子问题 */
-function openTopic(id) {
-  const t = topics.value.find((x) => x.id === id)
-  if (!t) return
+/** 进入主题：加载切片（首次按需 fetch），默认第一个子问题 */
+async function openTopic(id) {
   activeTopicId.value = id
-  activeSQId.value = t.sub_questions?.[0]?.id || ''
+  activeSQId.value = ''
   mobileView.value = 'list'
   view.value = 'topic'
   scrollMainTop()
+  await ensureTopic(id)
 }
 
 /** 从搜索结果直达子问题 */
-function openQuestion(topicId, sqId) {
+async function openQuestion(topicId, sqId) {
   activeTopicId.value = topicId
   activeSQId.value = sqId
   mobileView.value = 'detail'
   view.value = 'topic'
   scrollMainTop()
+  await ensureTopic(topicId)
 }
 
 /** 选中子问题：移动端进入详情 */
@@ -192,8 +210,10 @@ const otherQuestions = computed(() => {
       </section>
     </div>
 
-    <!-- ===== 主题视图：面包屑 + 主题头 + 两栏 ===== -->
-    <div v-else-if="currentTopic" class="topic-view">
+    <!-- ===== 主题视图：面包屑 + 主题头 + 两栏（数据按需加载） ===== -->
+    <div v-else-if="view === 'topic'" class="topic-view">
+      <div v-if="!currentTopic" class="page-state">{{ topicLoading ? '主题加载中…' : '内容加载中…' }}</div>
+      <template v-else>
       <header class="topic-head">
         <button class="back-all" @click="backToExplore">← 全部主题</button>
         <div class="topic-head-main">
@@ -251,6 +271,7 @@ const otherQuestions = computed(() => {
           </div>
         </section>
       </div>
+      </template>
     </div>
   </div>
 </template>

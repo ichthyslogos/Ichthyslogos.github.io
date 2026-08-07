@@ -105,16 +105,22 @@ export function resolveBook(translation, bookId) {
   return translation.books.find((b) => b.id === bookId) || translation.books[0]
 }
 
-/* ============ 护教问答数据 ============
+/* ============ 护教问答数据（子数据库） ============
  * 运行时数据位于 public/data/apologetics/（与路由同名目录约定）：
- *   content.json  全部护教内容（分类 + 问题 + 回应），按需加载 + 缓存
- * 由 scripts/build-data.mjs 从 data-src/apologetics/ 拷贝生成
+ *   content.json            索引（主题元数据 + 子问题轻量搜索文本，探索/搜索用，不含正文）
+ *   topics/<topicId>.json   主题切片（完整数据，按需加载 + 缓存）
+ * 由 scripts/build-data.mjs 从 data-src/apologetics/topics/（每回答一个文件）组装生成
  */
 const APOLOG_BASE = 'data/apologetics/'
 
-/** 加载护教内容（{ categories: [{ id, title, questions: [{ id, question, answer }] }] }），自动缓存 */
+/** 加载护教索引（{ topics: [{ id, title, description, tags, sqCount, responseCount, questions: [...] }] }），自动缓存 */
 export async function fetchApologetics() {
   return fetchJson(APOLOG_BASE + 'content.json')
+}
+
+/** 加载单个主题的完整数据（{ id, title, description, tags, sub_questions: [...] }），按需加载 + 缓存 */
+export async function fetchApologeticsTopic(topicId) {
+  return fetchJson(`${APOLOG_BASE}topics/${topicId}.json`)
 }
 
 /* ============ 串珠（交叉引用）数据 ============

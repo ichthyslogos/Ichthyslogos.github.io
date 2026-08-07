@@ -1,0 +1,9 @@
+{
+  "id": "moral-foundation",
+  "question": "没有神，道德还有根基吗？",
+  "objection": "道德是人类进化出的社会规范，是群体生存策略的副产品，不需要神圣立法者。",
+  "responses": [
+    "moral-argument",
+    "covenant-ethics"
+  ]
+}
