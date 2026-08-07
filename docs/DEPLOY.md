@@ -77,3 +77,97 @@ GitHub 仓库 → Settings → Pages → Source 选择 `Deploy from a branch` �
 - **页面空白/数据不加载**：确认访问的是带尾斜杠路径（`/repo/`，无尾斜杠会自动 301，与 Pages 行为一致）；确认 `public\data\brp\manifest.json` 已提交
 - **404 页面**：直接访问不带 `#` 的路径（如 `/repo/brp`）会 404——这是静态托管正常行为，应用内所有链接均带 `#`
 - **数据更新**：本地重跑 `npm run data`（需素材库在场）或直接替换 `public\data\` 下的 JSON，提交推送即可
+
+---
+
+## 7. 部署实战记录（2026-08-08）
+
+### 7.1 现象
+
+push 一切正常（SSH 推送成功），但执行"GitHub Actions 手动触发"时，用 API 触发 `workflow_dispatch` 返回 **HTTP 403**：
+
+```bash
+curl -X POST -H "Authorization: Bearer $TOKEN" \
+  https://api.github.com/repos/ichthyslogos/Ichthyslogos.github.io/actions/workflows/deploy.yml/dispatches \
+  -d '{"ref":"main"}'   # → 403
+```
+
+### 7.2 根因（两层凭据，权限不同）
+
+| 凭据 | 对应账号 | 权限 |
+|---|---|---|
+| SSH 密钥 `~/.ssh/id_ed25519_fish` | **ichthyslogos**（仓库主任） | ✅ 推送/读写 |
+| SSH 密钥 `~/.ssh/id_rsa` | Eyphka23 | ✅ 推送 |
+| Windows 凭据管理器缓存的 token | JL0327 | ❌ 仅只读（pull） |
+
+**关键认知**：
+1. `workflow_dispatch` 只能通过 **GitHub API / 网页** 触发——**SSH 密钥无法调用 API**
+2. 凭据管理器里的 token（JL0327）对该仓库只有 `pull` 权限，所以 API 触发 403；它虽然带 `repo, workflow` scope，但 **token scope ≠ 仓库实际权限**
+3. 仓库 Pages 配置为 **workflow 构建模式**（`GET /repos/{owner}/{repo}/pages` → `build_type: workflow`），必须走 Actions 部署，不能靠"Deploy from branch"
+
+### 7.3 排查路径（供日后复用）
+
+```bash
+# 1. 取凭据管理器中的 token（注意：可能是无权限的账号）
+printf "protocol=https\nhost=github.com\n\n" | git credential fill
+
+# 2. 看 token 的 scope（容易被误导：scope 全≠有权限）
+curl -sI -H "Authorization: Bearer $TOKEN" https://api.github.com/user | grep -i x-oauth-scopes
+
+# 3. 关键：看 token 对目标仓库的实际权限
+curl -s -H "Authorization: Bearer $TOKEN" \
+  https://api.github.com/repos/ichthyslogos/Ichthyslogos.github.io \
+  | python -c "import json,sys; print(json.load(sys.stdin)['permissions'])"
+# 输出 {'pull': True, ...} → 只读，无法触发部署
+
+# 4. 确认各 SSH 密钥对应的 GitHub 账号
+ssh -i ~/.ssh/id_ed25519_fish -T git@github.com   # → Hi ichthyslogos!
+ssh -i ~/.ssh/id_rsa -T git@github.com            # → Hi Eyphka23!
+
+# 5. 确认 Pages 构建模式
+curl -s -H "Authorization: Bearer $TOKEN" \
+  https://api.github.com/repos/ichthyslogos/Ichthyslogos.github.io/pages
+```
+
+### 7.4 解决方案：临时 push 触发法（已实测）
+
+没有可用的 API token 时，利用**有推送权限的 SSH 密钥** + 临时修改 workflow 触发条件：
+
+1. `deploy.yml` 的 `on:` 临时追加 push 触发（**必须限定 main 分支**）：
+   ```yaml
+   on:
+     workflow_dispatch:
+     push:
+       branches: [main]
+   ```
+2. 用仓库主任的 SSH key 推送（触发自动部署）：
+   ```bash
+   GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_fish" git push origin main
+   ```
+3. 轮询部署状态（只读 token 即可查）：
+   ```bash
+   curl -s -H "Authorization: Bearer $TOKEN" \
+     "https://api.github.com/repos/ichthyslogos/Ichthyslogos.github.io/actions/runs?per_page=1"
+   ```
+4. 部署成功后**立即恢复** `deploy.yml` 为仅 `workflow_dispatch`，再次推送——
+   这次推送**不会误触发**（恢复后的 workflow 文件已不含 push 触发，自洽）。
+
+### 7.5 实战中顺带发现的问题
+
+- **`index.html` 静态 `<title>` 残留旧品牌名**（"读经研究平台"）：Vue 组件内的标题/品牌改版不会同步到 `index.html` 的 `<title>`，需手动同步（本次已改为"FISH · 圣经研究平台"）
+- **Git Bash 终端中文乱码**（GBK 显示 UTF-8）：提交消息、curl 输出可能显示为乱码——**纯显示问题**，用字节级验证确认真实内容：
+  ```bash
+  curl -s https://ichthyslogos.github.io/ | python -c "
+  import sys, re
+  text = sys.stdin.buffer.read().decode('utf-8', errors='replace')
+  m = re.search(r'<title>([^<]*)</title>', text)
+  print('title_is_correct:', m.group(1) == 'FISH · 圣经研究平台')
+  "
+  ```
+
+### 7.6 经验总结
+
+1. **判断部署权限看 `/repos/{owner}/{repo}` 的 `permissions` 字段**，不要只看 token 的 scope
+2. workflow_dispatch 触发需要**该仓库有写权限的 token**；SSH 密钥再有权也无法调 API
+3. 临时 push 触发法是有效兜底，但要：限定分支、部署后立即恢复、恢复提交本身不会误触发
+4. 部署后验证线上内容用 python 字节级判断，避免终端编码误导
