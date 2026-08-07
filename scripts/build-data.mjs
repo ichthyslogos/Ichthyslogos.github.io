@@ -177,4 +177,27 @@ function statIsDir(p) {
   }
 }
 
+/* ============ 护教数据（护教问答） ============
+ * data-src/apologetics/*.json → public/data/apologetics/
+ * 内容格式：{ source: {key,name,lang}, categories: [{ id, title, questions: [{ id, question, answer }] }] }
+ */
+const APOLOG_SRC = join(SITE_ROOT, 'data-src', 'apologetics')
+const APOLOG_OUT = join(SITE_ROOT, 'public', 'data', 'apologetics') // 独立目录（与路由同名约定）
+
+function buildApologetics() {
+  if (!existsSync(APOLOG_SRC)) return
+  mkdirSync(APOLOG_OUT, { recursive: true })
+  let files = 0
+  for (const f of readdirSync(APOLOG_SRC)) {
+    if (!f.endsWith('.json')) continue
+    const raw = JSON.parse(readFileSync(join(APOLOG_SRC, f), 'utf8'))
+    const cats = raw.categories || []
+    copyFileSync(join(APOLOG_SRC, f), join(APOLOG_OUT, f))
+    files += 1
+    console.log(`[build-data] 护教：${raw.source?.name || f}（${cats.length} 类，${cats.reduce((s, c) => s + (c.questions?.length || 0), 0)} 问）`)
+  }
+  if (files) console.log(`[build-data] 输出 -> public/data/apologetics/`)
+}
+
 buildCommentary()
+buildApologetics()

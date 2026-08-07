@@ -41,19 +41,22 @@ D:\Eyphka\fish\site\
 │           └── commentary\           注释数据（多注释源）
 │               ├── manifest.json      注释源清单
 │               └── matthew-henry\01.json … 按卷注释
+│           └── apologetics\          护教问答数据（content.json：分类 + 问题 + 回应）
 │
 ├── src\
 │   ├── main.js                    入口：createApp + router + 全局样式
 │   ├── App.vue                    根组件：AppHeader + router-view 布局
 │   ├── style.css                  全局样式变量与基础样式（无 UI 库）
 │   ├── router\
-│   │   └── index.js               路由（hash 模式）：/、/brp、/brp/:bookId/:chapter
+│   │   └── index.js               路由（hash 模式）：/、/brp、/brp/:bookId/:chapter、/apologetics
 │   ├── lib\
-│   │   └── data.js                数据访问层：fetchManifest/fetchBook/缓存、默认译本偏好、书卷解析、分组名
+│   │   └── data.js                数据访问层：fetchManifest/fetchBook/缓存、默认译本偏好、书卷解析、分组名、fetchApologetics
 │   ├── views\
-│   │   ├── Home.vue               首页：品牌 hero、功能卡片（manifest 动态统计）、页脚说明
-│   │   └── brp\
-│   │       └── BrpPage.vue        读经研究平台页：全部状态 + 布局 + 数据加载
+│   │   ├── Home.vue               首页：品牌 hero、护教入口、页脚说明
+│   │   ├── brp\
+│   │   │   └── BrpPage.vue        读经研究平台页：全部状态 + 布局 + 数据加载
+│   │   └── apologetics\
+│   │       └── ApologeticsPage.vue 护教页：分类 chips + 问题手风琴（回应挑战）
 │   └── components\
 │       ├── AppHeader.vue          共享：顶栏品牌与导航（components 根目录）
 │       ├── EmptyState.vue         共享：空状态占位（占位功能复用）
@@ -77,6 +80,7 @@ D:\Eyphka\fish\site\
 |---|---|
 | 网站首页 | `src\views\Home.vue` |
 | 读经页面整体逻辑 | `src\views\brp\BrpPage.vue` |
+| 护教页面 | `src\views\apologetics\ApologeticsPage.vue` + `data-src\apologetics\content.json` |
 | 书卷编号表 | `scripts\bible-books.mjs` |
 | 新增译本 | `data-src\brp\translations\` + `npm run data` |
 | 译本清单/数据加载 | `src\lib\data.js`、`public\data\brp\manifest.json` |

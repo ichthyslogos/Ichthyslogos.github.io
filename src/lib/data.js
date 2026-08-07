@@ -105,6 +105,18 @@ export function resolveBook(translation, bookId) {
   return translation.books.find((b) => b.id === bookId) || translation.books[0]
 }
 
+/* ============ 护教问答数据 ============
+ * 运行时数据位于 public/data/apologetics/（与路由同名目录约定）：
+ *   content.json  全部护教内容（分类 + 问题 + 回应），按需加载 + 缓存
+ * 由 scripts/build-data.mjs 从 data-src/apologetics/ 拷贝生成
+ */
+const APOLOG_BASE = 'data/apologetics/'
+
+/** 加载护教内容（{ categories: [{ id, title, questions: [{ id, question, answer }] }] }），自动缓存 */
+export async function fetchApologetics() {
+  return fetchJson(APOLOG_BASE + 'content.json')
+}
+
 /* ============ 串珠（交叉引用）数据 ============
  * 运行时数据位于 public/data/brp/crossrefs/<bookId>.json（按卷切片 + 缓存）
  * 由 scripts/build-crossrefs.mjs 从素材 TSV 构建（素材只读）
