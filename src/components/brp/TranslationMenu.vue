@@ -2,9 +2,10 @@
 /**
  * TranslationMenu — 展开式译本选择器（brp 子组件）
  * 译本列表由 manifest 数据驱动；展开面板分组展示：译本 / 原文（original=true 隔离展示）。
- * 译本数量可能很多（素材库 140 种），采用展开形式而非平铺全部。
+ * 面板采用动态定位：展开时测量 trigger 与面板尺寸，将面板钳制在视口内
+ * （避免窄屏下 panel-head 换行导致 trigger 靠左时面板向左溢出屏幕）。
  */
-import { ref, computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 
 const props = defineProps({
   translations: { type: Array, required: true },
@@ -13,6 +14,8 @@ const props = defineProps({
 const emit = defineEmits(['select'])
 
 const open = ref(false)
+const triggerEl = ref(null)
+const popEl = ref(null)
 
 const versions = computed(() => props.translations.filter((t) => !t.original))
 const originals = computed(() => props.translations.filter((t) => t.original))
@@ -22,17 +25,39 @@ function pick(key) {
   open.value = false
   emit('select', key)
 }
+
+/** 展开时把面板定位到视口内：水平不超出左右缘，垂直不超出下缘 */
+watch(open, async (v) => {
+  if (!v || !triggerEl.value || !popEl.value) return
+  await nextTick()
+  const tr = triggerEl.value.getBoundingClientRect()
+  const pw = popEl.value.offsetWidth
+  const ph = popEl.value.offsetHeight
+  const gap = 6
+  let left = Math.min(tr.left, innerWidth - pw - 8)
+  left = Math.max(8, left)
+  let top = tr.bottom + gap
+  if (top + ph > innerHeight) top = Math.max(8, innerHeight - ph - 8)
+  popEl.value.style.left = `${left}px`
+  popEl.value.style.top = `${top}px`
+})
 </script>
 
 <template>
   <div class="trans-menu">
-    <button class="trans-trigger" :class="{ open }" @click="open = !open" aria-haspopup="listbox">
+    <button
+      ref="triggerEl"
+      class="trans-trigger"
+      :class="{ open }"
+      @click="open = !open"
+      aria-haspopup="listbox"
+    >
       <span class="trans-trigger-name">{{ active ? active.name : '译本' }}</span>
       <span class="caret" aria-hidden="true">▾</span>
     </button>
 
     <Transition name="menu">
-      <div v-if="open" class="menu-pop" role="listbox">
+      <div v-if="open" ref="popEl" class="menu-pop" role="listbox">
         <div v-if="versions.length" class="menu-group">
           <div class="menu-group-title">译本</div>
           <button
@@ -101,10 +126,9 @@ function pick(key) {
 .trans-trigger.open .caret {
   transform: rotate(180deg);
 }
+/* 固定定位 + JS 动态设置 left/top，保证面板始终在视口内 */
 .menu-pop {
-  position: absolute;
-  top: calc(100% + 0.35rem);
-  right: 0;
+  position: fixed;
   min-width: 15rem;
   max-height: min(24rem, 60vh);
   overflow-y: auto;
