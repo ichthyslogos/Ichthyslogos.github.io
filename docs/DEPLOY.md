@@ -171,3 +171,32 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 2. workflow_dispatch 触发需要**该仓库有写权限的 token**；SSH 密钥再有权也无法调 API
 3. 临时 push 触发法是有效兜底，但要：限定分支、部署后立即恢复、恢复提交本身不会误触发
 4. 部署后验证线上内容用 python 字节级判断，避免终端编码误导
+
+## 8. 访问统计（Umami）
+
+站点接入 **Umami Cloud** 访问统计（开源、隐私友好，不采集原始 IP）。
+
+### 接入位置
+
+`index.html` 的 `<head>` 内动态注入：
+
+```html
+<script>
+  // Umami 访问统计：仅生产域名加载（本地开发不计入统计，避免污染数据）
+  if (location.hostname !== 'localhost') {
+    var s = document.createElement('script')
+    s.src = 'https://cloud.umami.is/script.js'
+    s.setAttribute('data-website-id', 'b589b8c3-71d5-45e9-80cc-7f0db0751d90')
+    s.setAttribute('defer', '')
+    document.head.appendChild(s)
+  }
+</script>
+```
+
+### 维护要点
+
+- **更换统计站点**：在 [umami.is](https://umami.is) 创建新网站后，替换 `data-website-id` 即可（脚本 URL 不变）
+- **本地开发**：`localhost` 下脚本不加载，开发访问不会污染线上统计数据
+- **查看数据**：部署后访问 Umami 面板（仪表盘：访问量/来源/地域/设备/页面）
+- **验证**：生产环境页面加载后，控制台 Network 中可见 `cloud.umami.is/script.js` 请求；本地无此请求
+- **故障影响**：脚本 `defer` 异步加载，失败不影响站点功能
