@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router'
 import {
   fetchManifest,
   fetchBook,
+  fetchStrong,
   resolveTranslation,
   resolveBook,
   clampChapter,
@@ -23,6 +24,8 @@ const router = useRouter()
 
 const manifest = ref(null)
 const bookData = ref(null)
+/** Strong 逐词标注（仅和合本简体 chiuns 有数据，其余译本为 null） */
+const strongData = ref(null)
 // 解经面板：桌面默认展开、窄屏默认收起（避免覆盖经文）
 const panelOpen = ref(window.innerWidth > 900)
 // 移动端侧栏抽屉开关（窄屏下书卷列表为抽屉形式）
@@ -77,12 +80,14 @@ const verses = computed(() => {
   return ch ? ch.verses : []
 })
 
-/** 从 URL 同步状态：URL 变化 → 重新拉取切片数据 */
+/** 从 URL 同步状态：URL 变化 → 重新拉取切片数据（Strong 标注仅和合本简体有） */
 async function load() {
   if (!translation.value || !book.value) return
   loading.value = true
   try {
     bookData.value = await fetchBook(translation.value.key, book.value.id)
+    strongData.value =
+      translation.value.key === 'chiuns' ? await fetchStrong(book.value.id) : null
   } catch (e) {
     error.value = e.message
   } finally {
@@ -242,6 +247,7 @@ function onToggleMenu() {
           :active-key="translation.key"
           :menu-open="menuOpen"
           :loading="loading"
+          :strong="strongData"
           @change-translation="onChangeTranslation"
           @toggle-commentary="onToggleCommentary"
           @toggle-sidebar="onToggleSidebar"

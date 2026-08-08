@@ -20,6 +20,8 @@ const props = defineProps({
   activeKey: { type: String, required: true },
   menuOpen: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
+  /** Strong 逐词标注（和合本简体 chiuns；其他译本为 null → 纯文本） */
+  strong: { type: Object, default: null },
 })
 const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar', 'toggle-menu', 'goto-verse'])
 
@@ -56,6 +58,12 @@ const zhNames = computed(() => {
   for (const b of t?.books || []) map[b.id] = b.zh
   return map
 })
+
+/** 当前章 verse → Strong 逐词映射（无标注的译本返回 null） */
+const wordsByVerse = (verse) => {
+  const ch = props.strong?.book?.chapters?.find((c) => c.chapter === props.chapter)
+  return ch?.verses?.find((v) => v.verse === verse)?.words || null
+}
 
 /** 每节引用：目标补上显示名（"箴言 8:22-24"） */
 function verseRefs(verse) {
@@ -104,6 +112,7 @@ function verseRefs(verse) {
             :text="v.text"
             :lang="activeKey"
             :refs="verseRefs(v.verse)"
+            :words="wordsByVerse(v.verse)"
             @goto="emit('goto-verse', $event)"
           />
         </template>

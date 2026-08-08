@@ -255,5 +255,27 @@ function buildApologetics() {
   console.log(`[build-data] 输出 -> public/data/apologetics/`)
 }
 
+/* ============ Strong 逐词数据（和合本简体 chiuns 标注层） ============
+ * 源：data-src/brp/strong/<bookId>.json（scripts/import-strong.mjs 从 chiuns SWORD 素材生成）
+ * 输出：public/data/brp/strong/books/<bookId>.json（按卷切片，按需加载）
+ * 结构：{ key:'chiuns', book:{ id, chapters:[{chapter, verses:[{verse, words:[{t,s,m}]}]}] } }
+ */
+const STRONG_SRC = join(SITE_ROOT, 'data-src', 'brp', 'strong')
+const STRONG_OUT = join(SITE_ROOT, 'public', 'data', 'brp', 'strong', 'books')
+
+function buildStrong() {
+  if (!existsSync(STRONG_SRC)) return
+  mkdirSync(STRONG_OUT, { recursive: true })
+  let n = 0
+  for (const f of readdirSync(STRONG_SRC)) {
+    if (!f.endsWith('.json')) continue
+    const raw = JSON.parse(readFileSync(join(STRONG_SRC, f), 'utf8'))
+    writeFileSync(join(STRONG_OUT, f), JSON.stringify(raw))
+    n++
+  }
+  if (n) console.log(`[build-data] Strong：${n} 卷 -> public/data/brp/strong/books/`)
+}
+
 buildCommentary()
 buildApologetics()
+buildStrong()

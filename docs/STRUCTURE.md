@@ -65,7 +65,7 @@ D:\Eyphka\fish\site\
 │           ├── ChapterTabs.vue       章节导航（自动滚动到当前章）
 │           ├── ScripturePanel.vue    经文面板：标题、译本切换（展开式下拉）、经文列表
 │           ├── TranslationMenu.vue   展开式译本选择器（分组：译本/原文；列表过长时内部滚动）
-│           ├── VerseItem.vue         单节经文（串珠 🔗 展开/跳转；预留 Strong annotations 插槽）
+│           ├── VerseItem.vue         单节经文（串珠 🔗 展开/跳转；和合本简体下逐词 Strong 码上标渲染）
 │           └── CommentaryPanel.vue  解经面板（常驻经文右侧；多注释源渲染：来源标识+概要+小节注释，无注释显示空状态）
 │       └── apologetics\             护教子页面组件文件夹
 │           ├── SearchBar.vue           搜索框（关键词/问题/分类搜索）

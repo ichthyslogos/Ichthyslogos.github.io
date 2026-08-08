@@ -120,3 +120,39 @@ public/data/brp/crossrefs/<bookId>.json   ← 按卷切片（66 卷 / 29060 节�
 - 模块无 `<verse>` 标记，节的边界以 bzv 索引为准（信望爱版分节）
 - 已知差异：约翰福音 7 章为 52 节（7:53 内容并入 8 章开头，源版本如此，如实保留）
 - 经文含 Strong 编号（`<w lemma="strong:Hxxxx">`），当前版本已剥离；未来 Strong 功能可直接复用源数据
+
+## Strong 逐词标注（和合本简体）
+
+读经研究页在和合本简体（chiuns）译本下显示**逐词 Strong 码**（每词右上角，悬停显示全部码与形态码）。
+
+### 数据流
+
+```
+素材（只读）：chiuns-copy/modules/texts/ztext/chiuns/{ot,nt}_full.txt
+  （SWORD OSIS 逐词：<w lemma="strong:H07225">起初</w> + robinson 形态码）
+        │  npm run data 前置脚本 scripts/import-strong.mjs（手动/CI 均可跑，幂等）
+        ▼
+data-src/brp/strong/<bookId>.json     按卷逐词数据（与 chiuns 译本逐字符对齐后按节切分）
+        │  build-data.mjs 的 buildStrong()
+        ▼
+public/data/brp/strong/books/<bookId>.json   运行时切片（按需加载 + 缓存）
+        │  前端 fetchStrong(bookId)
+        ▼
+VerseItem 逐词渲染（词 + <sup>Strong 码</sup>）
+```
+
+### 数据结构
+
+```json
+{ "key": "chiuns",
+  "book": { "id": "01",
+    "chapters": [ { "chapter": 1,
+      "verses": [ { "verse": 1,
+        "words": [ { "t": "起初", "s": "H09002 H07225", "m": null },
+                   { "t": "，", "s": null, "m": null } ] } ] } ] } }
+```
+
+- `t` 词/标点片段（含间隙标点，保证与译本文本逐字符对齐）；`s` Strong 码（空格分隔多个）；`m` Robinson 形态码
+- **对齐**：OSIS 无节标记，脚本按章节与 chiuns 译本文本做字符对齐后按节切分；含 `<note>` 脚注的个别章节因文本差异跳过（约 9 处警告，不影响其余章节）
+- **显示规则**：主码过滤希伯来词缀码段（H08xxx/H09xxx，介词/连词/直接宾语标记），悬停 title 显示全部码与形态码
+- 仅 chiuns 有标注；思高本/KJV 等无数据 → 纯文本渲染

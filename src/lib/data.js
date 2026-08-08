@@ -123,6 +123,18 @@ export async function fetchApologeticsTopic(topicId) {
   return fetchJson(`${APOLOG_BASE}topics/${topicId}.json`)
 }
 
+/* ============ Strong 逐词数据（和合本简体标注层） ============
+ * 运行时数据位于 public/data/brp/strong/books/<bookId>.json（按卷切片 + 缓存）
+ * 结构：{ key:'chiuns', book:{ id, chapters:[{chapter, verses:[{verse, words:[{t,s,m}]}]}] } }
+ * 由 scripts/import-strong.mjs（素材 OSIS）+ build-data.mjs 生成
+ */
+const STRONG_BASE = 'data/brp/strong/books/'
+
+/** 加载某卷的 Strong 逐词标注（仅和合本简体 chiuns 有），按需加载 + 缓存 */
+export async function fetchStrong(bookId) {
+  return fetchJson(`${STRONG_BASE}${bookId}.json`)
+}
+
 /* ============ 串珠（交叉引用）数据 ============
  * 运行时数据位于 public/data/brp/crossrefs/<bookId>.json（按卷切片 + 缓存）
  * 由 scripts/build-crossrefs.mjs 从素材 TSV 构建（素材只读）

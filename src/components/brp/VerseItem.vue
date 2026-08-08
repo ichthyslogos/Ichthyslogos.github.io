@@ -3,8 +3,8 @@
  * VerseItem — 单节经文（brp 子组件）
  * 串珠：refs（{ anchor, targets: [{ id, ch, vs, label }] }）非空时显示 🔗 按钮，
  * 点击展开锚短语与引用列表；点击引用目标跳转到对应书卷章节（emit goto）。
- * 预留 Future Strong 插槽：原文 Strong 编号高亮、词义注解将通过具名插槽
- * `annotations` 注入本组件的 slot（当前版本不渲染任何内容）。
+ * Strong 逐词标注：words（[{ t, s, m }]）非空时按词渲染——每词右上角显示
+ * Strong 码（过滤 H9xxx 词缀码取主码），悬停显示全部码与形态码；无标注保持纯文本。
  */
 import { ref } from 'vue'
 
@@ -13,16 +13,40 @@ const props = defineProps({
   text: { type: String, required: true },
   lang: { type: String, default: '' },
   refs: { type: Array, default: null }, // 串珠：null/[] 表示无
+  words: { type: Array, default: null }, // Strong 逐词：null 表示无标注
 })
 const emit = defineEmits(['goto'])
 
 const open = ref(false)
+
+/** 主 Strong 码：过滤希伯来词缀码（H08xxx/H09xxx 段：介词/连词/冠词/直接宾语标记），无则取第一个 */
+const primaryCode = (s) => {
+  if (!s) return null
+  const codes = s.split(' ')
+  return codes.find((c) => !/^H0[89]\d{3,4}$/.test(c)) || codes[0]
+}
+
+/** 悬停提示：全部码 + 形态码 */
+const wordTitle = (w) => {
+  const parts = []
+  if (w.s) parts.push(w.s)
+  if (w.m) parts.push('形态：' + w.m)
+  return parts.join(' · ')
+}
 </script>
 
 <template>
   <p class="verse-item" :data-verse="verse">
     <span class="verse-num">{{ verse }}</span>
-    <span class="verse-text">{{ text }}</span>
+    <template v-if="words && words.length">
+      <template v-for="(w, i) in words" :key="i">
+        <span v-if="w.s" class="w-word" :title="wordTitle(w)">
+          {{ w.t }}<sup class="w-strong">{{ primaryCode(w.s) }}</sup>
+        </span>
+        <span v-else class="w-word">{{ w.t }}</span>
+      </template>
+    </template>
+    <span v-else class="verse-text">{{ text }}</span>
     <button
       v-if="refs && refs.length"
       class="ref-btn"
@@ -30,7 +54,6 @@ const open = ref(false)
       :title="open ? '收起串珠引用' : '串珠引用'"
       @click="open = !open"
     >🔗</button>
-    <!-- Future Strong：<slot name="annotations" :verse="verse" /> -->
     <span v-if="open" class="ref-pop">
       <span v-for="(r, i) in refs" :key="i" class="ref-group">
         <span v-if="r.anchor" class="ref-anchor">「{{ r.anchor }}」</span>
@@ -71,6 +94,26 @@ const open = ref(false)
   font-family: var(--serif);
   font-size: 1.08rem;
   letter-spacing: 0.02em;
+}
+/* Strong 逐词：词与码 */
+.w-word {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  letter-spacing: 0.02em;
+  white-space: pre-wrap;
+}
+.w-strong {
+  font-family: var(--sans);
+  font-size: 0.52em;
+  font-weight: 600;
+  color: #a8b0ba;
+  margin-left: 0.1em;
+  margin-right: 0.14em;
+  user-select: none;
+  cursor: help;
+}
+.w-word:hover .w-strong {
+  color: var(--accent);
 }
 /* 串珠按钮：跟随经文行内显示 */
 .ref-btn {
