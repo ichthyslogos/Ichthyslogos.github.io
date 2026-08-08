@@ -8,7 +8,7 @@
  *   - 主题视图：面包屑 + 主题头（中英标题/描述/标签）→ 两栏（左子问题列表 / 右：质疑 → 多回应 → 证据 → 相关学习）
  *   - 移动端：探索网格单列；主题视图两段式（list/detail）
  */
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { fetchApologetics, fetchApologeticsTopic } from '../../lib/data.js'
 import EmptyState from '../../components/EmptyState.vue'
