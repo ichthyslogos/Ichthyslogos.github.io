@@ -1,10 +1,10 @@
 <script setup>
 /**
  * LexiconPopup — Strong 词义弹层（brp 子组件）
- * 点击经文中 Strong 码时弹出：希腊原形 / 音译 / 发音 / 英文释义 / 交叉引用。
- * 数据来自 src/lib/data.js 的 fetchStrongLexicon（按 1000 编号段懒加载 + 缓存）。
- * 词典仅覆盖希腊文 G 码；H 码或缺失词条显示空状态。
- * 定位：fixed 视口坐标（Teleport 到 body），弹层中心对齐点击词；滚动正文即关闭。
+ * 点击经文中 Strong 码时弹出：原形（希伯来/希腊）/ 音译 / 发音 / 词性 / 释义 / 用法 / 交叉引用。
+ * 数据来自 src/lib/data.js 的 fetchStrongLexicon（G/H 词典按 1000 编号段懒加载 + 缓存）。
+ * 定位：fixed 视口坐标（Teleport 到 body），弹层中心对齐点击词，上下左右均在视口内钳制
+ * （底部词条向上收缩，避免超出视口被遮挡）；滚动正文即关闭。
  */
 import { computed } from 'vue'
 
@@ -19,12 +19,18 @@ const emit = defineEmits(['close', 'goto'])
 
 const POP_W = 340
 
-/** 弹层定位：中心对齐点击词，视口内钳制 */
+/** 弹层最大高度：与 CSS max-height 保持一致（视口内完整可见的前提） */
+const MAX_H = () => Math.min(window.innerHeight * 0.6, 420)
+
+/** 弹层定位：中心对齐点击词；左右钳制在视口内，底部不足时向上收缩（移动端同样生效） */
 const popStyle = computed(() => {
   if (!props.pos) return {}
+  let top = props.pos.top + 8
+  const maxTop = window.innerHeight - MAX_H() - 8
+  if (top > maxTop) top = Math.max(8, maxTop)
   return {
     left: `max(8px, min(${props.pos.left - POP_W / 2}px, calc(100vw - ${POP_W + 16}px)))`,
-    top: `${props.pos.top + 8}px`,
+    top: `${top}px`,
   }
 })
 </script>

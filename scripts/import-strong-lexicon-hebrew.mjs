@@ -21,8 +21,8 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..')
 
-/** 素材 XML（FISH 素材根目录下的 HebrewLexicon，只读） */
-const SRC = join(SITE_ROOT, '..', 'HebrewLexicon', 'HebrewStrong.xml')
+/** 素材 XML（FISH 素材根 strong-lexicons/HebrewLexicon，只读；见 strong-lexicons/README.md） */
+const SRC = join(SITE_ROOT, '..', 'strong-lexicons', 'HebrewLexicon', 'HebrewStrong.xml')
 /** 输出（网站"数据库"） */
 const OUT = join(SITE_ROOT, 'data-src', 'brp', 'strong', 'lexicon-hebrew.json')
 
