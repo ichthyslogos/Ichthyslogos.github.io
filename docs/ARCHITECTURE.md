@@ -59,7 +59,7 @@ src\lib\data.js                    ← 前端数据访问层（按需 fetch + �
 
 - 路由使用 **hash 模式**（`createWebHashHistory`），纯静态托管零配置，URL 可直接分享（如 `#/brp/19/1?trans=chisb`）。
 - **URL 是状态的唯一来源**：书卷/章节/译本全部体现在 URL 中（`/brp/:bookId/:chapter?trans=<key>`），页面内不再维护重复状态；切译本时 URL 变化 → `watch` 重新拉取数据。
-- 默认译本由 `src\lib\data.js` 的 `PREFERRED_TRANS` 偏好链决定（当前 chiun 和合本优先），不依赖 manifest 顺序。
+- 默认译本由 `src\lib\data.js` 的 `PREFERRED_TRANS` 偏好链决定（当前和合本简体 chiuns 优先），不依赖 manifest 顺序。
 
 ## 6. 关键技术决策记录
 

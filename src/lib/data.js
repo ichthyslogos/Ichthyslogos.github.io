@@ -39,7 +39,7 @@ export async function fetchBook(key, bookId) {
 }
 
 /** 默认译本偏好顺序（URL 未指定译本时的回退链；新放入的译本不影响此偏好） */
-const PREFERRED_TRANS = ['chiun', 'chisb']
+const PREFERRED_TRANS = ['chiuns', 'chiun', 'chisb']
 
 /** 当前选中译本在 manifest 中的条目（按偏好顺序回退） */
 export function resolveTranslation(manifest, key) {
