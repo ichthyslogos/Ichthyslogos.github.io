@@ -135,6 +135,27 @@ export async function fetchStrong(bookId) {
   return fetchJson(`${STRONG_BASE}${bookId}.json`)
 }
 
+/* ============ Strong 希腊文词典（逐词码 → 词义） ============
+ * 运行时数据位于 public/data/brp/strong/lexicon/<seg>.json（按 1000 编号段切片 + 缓存）
+ * 结构：{ source, entries: { "G1": { orth, translit, pron, def, see } } }
+ * 由 scripts/import-strong-lexicon.mjs（StrongsGreek 素材）+ build-data.mjs 生成
+ */
+const LEXICON_BASE = 'data/brp/strong/lexicon/'
+const lexiconCache = new Map()
+
+/** 查 Strong 码词条（"G5207" → { orth, translit, pron, def, see }）；无词典数据（H 码/缺条）返回 null */
+export async function fetchStrongLexicon(code) {
+  const m = code && code.match(/^G(\d+)/)
+  if (!m) return null
+  const seg = Math.floor(Number(m[1]) / 1000) * 1000
+  let data = lexiconCache.get(seg)
+  if (!data) {
+    data = await fetchJson(`${LEXICON_BASE}${seg}.json`)
+    lexiconCache.set(seg, data)
+  }
+  return data.entries[code] || null
+}
+
 /* ============ 串珠（交叉引用）数据 ============
  * 运行时数据位于 public/data/brp/crossrefs/<bookId>.json（按卷切片 + 缓存）
  * 由 scripts/build-crossrefs.mjs 从素材 TSV 构建（素材只读）

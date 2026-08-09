@@ -10,7 +10,8 @@
 import { computed, ref, watch } from 'vue'
 import TranslationMenu from './TranslationMenu.vue'
 import VerseItem from './VerseItem.vue'
-import { fetchCrossrefs, findCrossrefChapter } from '../../lib/data.js'
+import LexiconPopup from './LexiconPopup.vue'
+import { fetchCrossrefs, findCrossrefChapter, fetchStrongLexicon } from '../../lib/data.js'
 
 const props = defineProps({
   book: { type: Object, required: true },
@@ -74,6 +75,39 @@ function toggleStrong() {
   localStorage.setItem('brp-strong', strongOn.value ? 'on' : 'off')
 }
 
+/* ============ Strong 词义弹层（点击 Strong 码 → 词典词条） ============ */
+const lexCode = ref('')
+const lexEntry = ref(null)
+const lexLoading = ref(false)
+const lexPos = ref(null) // { left, top }：点击词中心 x 与底部 y
+
+async function loadLexicon(code) {
+  lexCode.value = code
+  lexLoading.value = true
+  lexEntry.value = null
+  const entry = await fetchStrongLexicon(code)
+  if (lexCode.value !== code) return // 期间已关闭/切换
+  lexEntry.value = entry
+  lexLoading.value = false
+}
+
+/** 点击经文中 Strong 码：记录点击位置并加载词条 */
+function showLexicon(code, el) {
+  const rect = el.getBoundingClientRect()
+  lexPos.value = { left: rect.left + rect.width / 2, top: rect.bottom }
+  loadLexicon(code)
+}
+
+function closeLexicon() {
+  lexCode.value = ''
+  lexEntry.value = null
+  lexLoading.value = false
+  lexPos.value = null
+}
+
+// 正文滚动或章节/译本变化时关闭弹层（位置坐标已失效）
+watch(() => [props.chapter, props.activeKey], closeLexicon)
+
 /** 每节引用：目标补上显示名（"箴言 8:22-24"） */
 function verseRefs(verse) {
   const refs = refsByVerse.value[verse]
@@ -120,7 +154,7 @@ function verseRefs(verse) {
       </div>
     </header>
 
-    <div class="scripture-scroll">
+    <div class="scripture-scroll" @scroll="closeLexicon">
       <div class="scripture-body">
         <div v-if="loading" class="scripture-loading">经文加载中…</div>
         <template v-else>
@@ -134,10 +168,19 @@ function verseRefs(verse) {
             :refs="verseRefs(v.verse)"
             :words="wordsByVerse(v.verse)"
             @goto="emit('goto-verse', $event)"
+            @lexicon="showLexicon($event.code, $event.el)"
           />
         </template>
       </div>
     </div>
+    <LexiconPopup
+      :code="lexCode"
+      :entry="lexEntry"
+      :loading="lexLoading"
+      :pos="lexPos"
+      @close="closeLexicon"
+      @goto="loadLexicon"
+    />
   </div>
 </template>
 

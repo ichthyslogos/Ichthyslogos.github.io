@@ -268,7 +268,7 @@ function buildStrong() {
   mkdirSync(STRONG_OUT, { recursive: true })
   let n = 0
   for (const f of readdirSync(STRONG_SRC)) {
-    if (!f.endsWith('.json')) continue
+    if (!f.endsWith('.json') || f.startsWith('lexicon')) continue // lexicon 词典走 buildStrongLexicon
     const raw = JSON.parse(readFileSync(join(STRONG_SRC, f), 'utf8'))
     writeFileSync(join(STRONG_OUT, f), JSON.stringify(raw))
     n++
@@ -276,6 +276,33 @@ function buildStrong() {
   if (n) console.log(`[build-data] Strong：${n} 卷 -> public/data/brp/strong/books/`)
 }
 
+/* ============ Strong 希腊文词典（逐词码 → 词义） ============
+ * 源：data-src/brp/strong/lexicon-greek.json（scripts/import-strong-lexicon.mjs 从 StrongsGreek 素材生成）
+ * 输出：public/data/brp/strong/lexicon/<seg>.json（按 1000 编号段切片，按需加载）
+ * 结构：{ source, entries: { "G1": { orth, translit, pron, def, see } } }
+ */
+const LEX_OUT = join(SITE_ROOT, 'public', 'data', 'brp', 'strong', 'lexicon')
+
+function buildStrongLexicon() {
+  const src = join(STRONG_SRC, 'lexicon-greek.json')
+  if (!existsSync(src)) return
+  mkdirSync(LEX_OUT, { recursive: true })
+  const raw = JSON.parse(readFileSync(src, 'utf8'))
+  const segs = new Map()
+  for (const [code, entry] of Object.entries(raw.entries)) {
+    const m = code.match(/^G(\d+)/)
+    if (!m) continue
+    const seg = Math.floor(Number(m[1]) / 1000) * 1000
+    if (!segs.has(seg)) segs.set(seg, {})
+    segs.get(seg)[code] = entry
+  }
+  for (const [seg, entries] of segs) {
+    writeFileSync(join(LEX_OUT, `${seg}.json`), JSON.stringify({ source: raw.source, entries }))
+  }
+  console.log(`[build-data] Strong 词典：${segs.size} 段 -> public/data/brp/strong/lexicon/`)
+}
+
 buildCommentary()
 buildApologetics()
 buildStrong()
+buildStrongLexicon()

@@ -156,3 +156,30 @@ VerseItem 逐词渲染（词 + <sup>Strong 码</sup>）
 - **对齐**：OSIS 无节标记，脚本按章节与 chiuns 译本文本做字符对齐后按节切分；含 `<note>` 脚注的个别章节因文本差异跳过（约 9 处警告，不影响其余章节）
 - **显示规则**：主码过滤希伯来词缀码段（H08xxx/H09xxx，介词/连词/直接宾语标记），悬停 title 显示全部码与形态码
 - 仅 chiuns 有标注；思高本/KJV 等无数据 → 纯文本渲染
+
+## Strong 希腊文词典（文中解码）
+
+点击经文中任意 Strong 码弹出**词义卡片**（希腊原形 / 音译 / 发音 / 英文释义 / 交叉引用），"文中解码"。
+
+### 数据流
+
+```
+素材（只读）：StrongsGreek/modules/lexdict/zld/strongsgreek/
+  （SWORD zLD 词典模块 strongsgreek v2.0，TEI 标记，Public Domain）
+        │  node scripts/import-strong-lexicon.mjs（npm run data:strong-lexicon，幂等；素材缺失跳过）
+        ▼
+data-src/brp/strong/lexicon-greek.json   词典（5489 词条：G 码 → {orth, translit, pron, def, see}）
+        │  build-data.mjs 的 buildStrongLexicon()（按 1000 编号段切片）
+        ▼
+public/data/brp/strong/lexicon/<seg>.json   运行时切片（0/1000/…/5000 六段，按需加载 + 缓存）
+        │  前端 fetchStrongLexicon(code)
+        ▼
+LexiconPopup 弹层（点击 Strong 码打开；滚动/切换章节/点外部关闭）
+```
+
+### 说明
+
+- **key 与 chiuns 逐词码直接对齐**（"G5207" 无零填充）；词典仅覆盖希腊文 G 码——旧约 H 码点击显示空状态提示
+- 词条 `see` 为交叉引用（G 码可点击跳转；H 码引用置灰——词典无希伯来数据）
+- 词条文本为英文原文（源模块 Public Domain，Lang=en）
+- 块结构（zLD 格式）：`dict.zdx` 块表 → `dict.zdt` 串联 zlib 流 → 块内 `[count][off0][(size,nextOff)…]` + TEI 条目文本；占位条目（`@@@@`）解析时丢弃

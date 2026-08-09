@@ -15,7 +15,7 @@ const props = defineProps({
   refs: { type: Array, default: null }, // 串珠：null/[] 表示无
   words: { type: Array, default: null }, // Strong 逐词：null 表示无标注
 })
-const emit = defineEmits(['goto'])
+const emit = defineEmits(['goto', 'lexicon'])
 
 const open = ref(false)
 
@@ -41,7 +41,11 @@ const wordTitle = (w) => {
     <template v-if="words && words.length">
       <template v-for="(w, i) in words" :key="i">
         <span v-if="w.s" class="w-word" :title="wordTitle(w)">
-          {{ w.t }}<sup class="w-strong">{{ primaryCode(w.s) }}</sup>
+          {{ w.t }}<sup
+            class="w-strong"
+            :title="wordTitle(w)"
+            @click.stop="emit('lexicon', { code: primaryCode(w.s), el: $event.currentTarget })"
+          >{{ primaryCode(w.s) }}</sup>
         </span>
         <span v-else class="w-word">{{ w.t }}</span>
       </template>
@@ -110,7 +114,7 @@ const wordTitle = (w) => {
   margin-left: 0.1em;
   margin-right: 0.14em;
   user-select: none;
-  cursor: help;
+  cursor: pointer;
 }
 .w-word:hover .w-strong {
   color: var(--accent);
