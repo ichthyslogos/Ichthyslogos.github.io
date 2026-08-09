@@ -59,10 +59,19 @@ const zhNames = computed(() => {
   return map
 })
 
-/** 当前章 verse → Strong 逐词映射（无标注的译本返回 null） */
+/** 当前章 verse → Strong 逐词映射（无标注的译本或开关关闭时返回 null） */
 const wordsByVerse = (verse) => {
+  if (!strongOn.value) return null
   const ch = props.strong?.book?.chapters?.find((c) => c.chapter === props.chapter)
   return ch?.verses?.find((v) => v.verse === verse)?.words || null
+}
+
+/** Strong 标注开关（仅和合本简体有数据时显示）；偏好持久化 localStorage */
+const strongOn = ref(localStorage.getItem('brp-strong') !== 'off')
+
+function toggleStrong() {
+  strongOn.value = !strongOn.value
+  localStorage.setItem('brp-strong', strongOn.value ? 'on' : 'off')
 }
 
 /** 每节引用：目标补上显示名（"箴言 8:22-24"） */
@@ -89,6 +98,17 @@ function verseRefs(verse) {
         </h1>
       </div>
       <div class="panel-actions">
+        <button
+          v-if="strong"
+          class="strong-toggle"
+          :class="{ on: strongOn }"
+          :aria-pressed="strongOn"
+          :title="strongOn ? '关闭原文 Strong 标注' : '显示原文 Strong 标注'"
+          @click="toggleStrong"
+        >
+          <span class="st-label">原文标注</span>
+          <span class="st-switch"><span class="st-knob"></span></span>
+        </button>
         <TranslationMenu
           :translations="translations"
           :active-key="activeKey"
@@ -171,6 +191,54 @@ function verseRefs(verse) {
   display: flex;
   align-items: center;
   gap: 0.7rem;
+}
+/* Strong 原文标注开关（胶囊开关） */
+.strong-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  padding: 0.24rem 0.55rem 0.24rem 0.7rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.strong-toggle:hover {
+  border-color: var(--accent);
+}
+.st-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.strong-toggle.on .st-label {
+  color: var(--text);
+  font-weight: 600;
+}
+.st-switch {
+  position: relative;
+  width: 1.7rem;
+  height: 0.95rem;
+  border-radius: 999px;
+  background: #cfd5dc;
+  transition: background 0.18s ease;
+}
+.strong-toggle.on .st-switch {
+  background: var(--accent);
+}
+.st-knob {
+  position: absolute;
+  top: 0.12rem;
+  left: 0.14rem;
+  width: 0.71rem;
+  height: 0.71rem;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.18s ease;
+}
+.strong-toggle.on .st-knob {
+  transform: translateX(0.72rem);
 }
 .btn-commentary {
   padding: 0.3rem 1rem;

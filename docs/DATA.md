@@ -123,7 +123,7 @@ public/data/brp/crossrefs/<bookId>.json   ← 按卷切片（66 卷 / 29060 节�
 
 ## Strong 逐词标注（和合本简体）
 
-读经研究页在和合本简体（chiuns）译本下显示**逐词 Strong 码**（每词右上角，悬停显示全部码与形态码）。
+读经研究页在和合本简体（chiuns）译本下显示**逐词 Strong 码**（每词右上角，悬停显示全部码与形态码）。经文面板头部提供「原文标注」开关（仅该译本有数据时可见）：可随时隐藏/显示 Strong 码，偏好持久化于 localStorage（`brp-strong`，默认开）。
 
 ### 数据流
 
