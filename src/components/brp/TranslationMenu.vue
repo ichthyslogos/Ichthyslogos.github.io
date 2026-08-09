@@ -190,4 +190,17 @@ watch(
   opacity: 0;
   transform: translateY(-4px);
 }
+/* 窄屏适配：触发按钮紧凑化，避免头部换行过宽 */
+@media (max-width: 900px) {
+  .trans-trigger {
+    padding: 0.25rem 0.6rem;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    max-width: 9.5rem;
+  }
+  .menu-pop {
+    min-width: 13rem;
+    max-width: calc(100vw - 1.5rem);
+  }
+}
 </style>

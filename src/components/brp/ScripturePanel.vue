@@ -315,19 +315,48 @@ function verseRefs(verse) {
   padding: 2rem 0;
 }
 
-/* 窄屏适配：显示汉堡按钮、压缩头部 */
+/* 窄屏适配：显示汉堡按钮、头部与正文紧凑化 */
 @media (max-width: 900px) {
   .menu-btn {
     display: inline-flex;
   }
   .panel-head {
-    padding: 0.6rem 0.8rem;
+    padding: 0.5rem 0.8rem;
+    gap: 0.35rem;
   }
   .panel-title {
-    font-size: 1.15rem;
+    font-size: 1.08rem;
+  }
+  .panel-actions {
+    gap: 0.4rem;
+  }
+  /* 头部按钮紧凑化：原文标注开关缩小、解经按钮收窄 */
+  .strong-toggle {
+    padding: 0.18rem 0.4rem 0.18rem 0.5rem;
+    gap: 0.32rem;
+  }
+  .st-label {
+    font-size: 0.72rem;
+  }
+  .st-switch {
+    width: 1.5rem;
+    height: 0.85rem;
+  }
+  .st-knob {
+    top: 0.11rem;
+    left: 0.12rem;
+    width: 0.63rem;
+    height: 0.63rem;
+  }
+  .strong-toggle.on .st-knob {
+    transform: translateX(0.63rem);
+  }
+  .btn-commentary {
+    padding: 0.25rem 0.7rem;
+    font-size: 0.85rem;
   }
   .scripture-body {
-    padding: 0.8rem 1rem 2.5rem;
+    padding: 0.75rem 0.9rem 2.5rem;
   }
 }
 </style>

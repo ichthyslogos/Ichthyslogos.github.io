@@ -75,4 +75,15 @@ watch(
   color: #fff;
   font-weight: 700;
 }
+/* 窄屏适配：章节条紧凑化（减少头部占用） */
+@media (max-width: 900px) {
+  .chapter-tabs {
+    padding: 0.4rem 0.7rem;
+  }
+  .chapter-tab {
+    min-width: 2rem;
+    padding: 0.18rem 0.35rem;
+    font-size: 0.78rem;
+  }
+}
 </style>
