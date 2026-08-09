@@ -17,9 +17,6 @@ const props = defineProps({
 })
 const emit = defineEmits(['close', 'goto'])
 
-/** 词典仅覆盖希腊文 G 码：H 码引用不可查（置灰） */
-const isGreek = (s) => /^G\d+$/.test(s)
-
 const POP_W = 340
 
 /** 弹层定位：中心对齐点击词，视口内钳制 */
@@ -41,25 +38,25 @@ const popStyle = computed(() => {
         <template v-else-if="entry">
           <div class="lex-head">
             <span class="lex-code">{{ code }}</span>
+            <span v-if="entry.pos" class="lex-pos">{{ entry.pos }}</span>
             <span v-if="entry.orth" class="lex-orth">{{ entry.orth }}</span>
             <span v-if="entry.translit" class="lex-trans">{{ entry.translit }}</span>
           </div>
           <div v-if="entry.pron" class="lex-pron">{{ entry.pron }}</div>
           <div class="lex-def">{{ entry.def }}</div>
+          <div v-if="entry.usage" class="lex-usage">{{ entry.usage }}</div>
           <div v-if="entry.see && entry.see.length" class="lex-see">
             <span class="lex-see-label">引用</span>
             <button
               v-for="s in entry.see"
               :key="s"
               class="lex-see-btn"
-              :class="{ 'is-h': !isGreek(s) }"
-              :disabled="!isGreek(s)"
-              :title="isGreek(s) ? '查看 ' + s : '词典无希伯来（H）数据'"
+              :title="'查看 ' + s"
               @click="emit('goto', s)"
             >{{ s }}</button>
           </div>
         </template>
-        <div v-else class="lex-state">暂无词义数据<br /><span class="lex-state-sub">词典仅覆盖希腊文 G 码</span></div>
+        <div v-else class="lex-state">暂无词义数据</div>
       </div>
     </div>
   </Teleport>
@@ -109,9 +106,6 @@ const popStyle = computed(() => {
   font-size: 0.9rem;
   line-height: 1.8;
 }
-.lex-state-sub {
-  font-size: 0.78rem;
-}
 .lex-head {
   display: flex;
   align-items: baseline;
@@ -125,6 +119,15 @@ const popStyle = computed(() => {
   font-weight: 700;
   color: var(--accent);
   border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.08rem 0.35rem;
+  user-select: none;
+}
+.lex-pos {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--accent-soft);
   border-radius: 4px;
   padding: 0.08rem 0.35rem;
   user-select: none;
@@ -148,6 +151,14 @@ const popStyle = computed(() => {
   font-size: 0.88rem;
   line-height: 1.75;
   color: var(--text);
+  white-space: pre-line;
+}
+/* 希伯来词条用法（usage）：与释义区分开 */
+.lex-usage {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--muted);
   white-space: pre-line;
 }
 .lex-see {
@@ -175,12 +186,5 @@ const popStyle = computed(() => {
 .lex-see-btn:hover {
   border-color: var(--accent);
   background: var(--accent-soft);
-}
-.lex-see-btn.is-h {
-  opacity: 0.45;
-  cursor: default;
-  border-color: var(--line);
-  background: #f5f6f7;
-  color: var(--muted);
 }
 </style>

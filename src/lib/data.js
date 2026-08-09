@@ -135,25 +135,35 @@ export async function fetchStrong(bookId) {
   return fetchJson(`${STRONG_BASE}${bookId}.json`)
 }
 
-/* ============ Strong 希腊文词典（逐词码 → 词义） ============
- * 运行时数据位于 public/data/brp/strong/lexicon/<seg>.json（按 1000 编号段切片 + 缓存）
- * 结构：{ source, entries: { "G1": { orth, translit, pron, def, see } } }
- * 由 scripts/import-strong-lexicon.mjs（StrongsGreek 素材）+ build-data.mjs 生成
+/* ============ Strong 词典（逐词码 → 词义） ============
+ * 运行时数据位于 public/data/brp/strong/lexicon/<g|h><seg>.json
+ *   g*：希腊文词典（G 码，StrongsGreek 素材）；h*：希伯来词典（H 码，OSHB HebrewLexicon 素材）
+ * 均按 1000 编号段切片 + 缓存；结构：{ source, entries: { "G1"/"H430": {…} } }
+ * 由 scripts/import-strong-lexicon*.mjs（素材）+ build-data.mjs 生成
  */
 const LEXICON_BASE = 'data/brp/strong/lexicon/'
 const lexiconCache = new Map()
 
-/** 查 Strong 码词条（"G5207" → { orth, translit, pron, def, see }）；无词典数据（H 码/缺条）返回 null */
+/** 归一化 Strong 码：去前导零（chiuns 逐词码 H0430 → 词典 key H430；G 码本无前导零） */
+export function normalizeStrongCode(code) {
+  const m = code && code.match(/^([GH])0*(\d+)/)
+  return m ? m[1] + m[2] : null
+}
+
+/** 查 Strong 码词条（"G5207"/"H07225" → { orth, translit, pron, def, … }）；无数据返回 null */
 export async function fetchStrongLexicon(code) {
-  const m = code && code.match(/^G(\d+)/)
-  if (!m) return null
-  const seg = Math.floor(Number(m[1]) / 1000) * 1000
-  let data = lexiconCache.get(seg)
+  const norm = normalizeStrongCode(code)
+  if (!norm) return null
+  const prefix = norm[0]
+  const n = Number(norm.slice(1))
+  const seg = Math.floor(n / 1000) * 1000
+  const file = `${prefix === 'G' ? 'g' : 'h'}${seg}.json`
+  let data = lexiconCache.get(file)
   if (!data) {
-    data = await fetchJson(`${LEXICON_BASE}${seg}.json`)
-    lexiconCache.set(seg, data)
+    data = await fetchJson(`${LEXICON_BASE}${file}`)
+    lexiconCache.set(file, data)
   }
-  return data.entries[code] || null
+  return data.entries[norm] || null
 }
 
 /* ============ 串珠（交叉引用）数据 ============
