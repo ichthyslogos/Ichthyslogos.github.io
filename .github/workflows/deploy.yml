@@ -6,6 +6,8 @@ name: Deploy to GitHub Pages
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main] # 临时：本次部署用，部署完成后恢复为仅手动
 
 permissions:
   contents: read
