@@ -118,15 +118,21 @@ async function loadSources() {
   }
 }
 
-// 书卷变化：当前源若无此卷注释，自动回落到该卷可用的源（resolveCommentarySource 保证）
+// 书卷变化：当前源若无此卷注释，自动回落到该卷可用的源（resolveCommentarySource 保证）；
+// 404（源无此卷数据）与数据缺失（返回 null）都触发回退。
+/** 序号守卫：快速切换书卷/章节/源时丢弃过期响应 */
+let loadSeq = 0
 watch(
   () => [props.book?.id, props.chapter, sourceKey.value],
   async ([bookId]) => {
     if (!bookId || !sourceKey.value) return
+    const seq = ++loadSeq
     loading.value = true
     try {
-      bookData.value = await fetchCommentary(sourceKey.value, bookId)
-      if (bookData.value === null && sources.value.length) {
+      const data = await fetchCommentary(sourceKey.value, bookId)
+      if (seq !== loadSeq) return // 已有更新的请求
+      if (data === null && sources.value.length) {
+        // 该书卷在当前源不可用：回落到可用源（偏好链优先）
         const s = resolveCommentarySource(
           { sources: sources.value },
           localStorage.getItem(SOURCE_STORAGE),
@@ -137,10 +143,24 @@ watch(
           return // watch 重新触发加载
         }
       }
+      bookData.value = data
     } catch {
+      if (seq !== loadSeq) return
+      // 404（该源无此卷）也回退可用源，避免面板永远"本卷暂无注释"
+      if (sources.value.length) {
+        const s = resolveCommentarySource(
+          { sources: sources.value },
+          localStorage.getItem(SOURCE_STORAGE),
+          bookId,
+        )
+        if (s.key !== sourceKey.value) {
+          sourceKey.value = s.key
+          return
+        }
+      }
       bookData.value = null // 该卷无注释
     } finally {
-      loading.value = false
+      if (seq === loadSeq) loading.value = false
     }
   },
 )

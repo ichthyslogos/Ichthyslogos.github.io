@@ -45,13 +45,13 @@ function closeOthers(except) {
 }
 const loading = ref(false)
 const error = ref('')
+/** 加载序号守卫：快速切换书卷/译本时丢弃过期响应（防旧数据覆盖新卷） */
+let loadSeq = 0
 
 onMounted(async () => {
   try {
     manifest.value = await fetchManifest()
     syncFromRoute()
-    // URL 本就合法时 syncFromRoute 不会触发导航，需手动拉取一次
-    if (!bookData.value) await load()
   } catch (e) {
     error.value = e.message
   }
@@ -80,18 +80,26 @@ const verses = computed(() => {
   return ch ? ch.verses : []
 })
 
-/** 从 URL 同步状态：URL 变化 → 重新拉取切片数据（Strong 标注仅和合本简体有） */
+/** 从 URL 同步状态：URL 变化 → 重新拉取切片数据（Strong 标注仅和合本简体有）。
+ * 带序号守卫：快速切换时旧响应直接丢弃。 */
 async function load() {
   if (!translation.value || !book.value) return
+  const seq = ++loadSeq
   loading.value = true
+  error.value = '' // 成功路径清除历史错误
   try {
-    bookData.value = await fetchBook(translation.value.key, book.value.id)
-    strongData.value =
-      translation.value.key === 'chiuns' ? await fetchStrong(book.value.id) : null
+    const [bd, sd] = await Promise.all([
+      fetchBook(translation.value.key, book.value.id),
+      translation.value.key === 'chiuns' ? fetchStrong(book.value.id) : Promise.resolve(null),
+    ])
+    if (seq !== loadSeq) return // 已有更新的加载请求，丢弃本次结果
+    bookData.value = bd
+    strongData.value = sd
   } catch (e) {
+    if (seq !== loadSeq) return
     error.value = e.message
   } finally {
-    loading.value = false
+    if (seq === loadSeq) loading.value = false
   }
 }
 

@@ -73,12 +73,14 @@ function langBadge(s) {
   return g ? g.langs.map((l) => l.lang).join('/') : s.lang
 }
 
-/** 展开时把面板定位到视口内（水平/垂直钳制，移动端覆盖层内同样适用） */
+/** 展开时把面板定位到视口内（水平/垂直钳制，移动端覆盖层内同样适用）。
+ * flush: 'post'——等待 pop 挂载后再测量定位（pre-flush 时 popEl 尚为 null，定位会跳过）。 */
 watch(
   () => props.open,
   async (v) => {
-    if (!v || !triggerEl.value || !popEl.value) return
+    if (!v) return
     await nextTick()
+    if (!triggerEl.value || !popEl.value) return
     const tr = triggerEl.value.getBoundingClientRect()
     const pw = popEl.value.offsetWidth
     const ph = popEl.value.offsetHeight
@@ -89,6 +91,7 @@ watch(
     popEl.value.style.left = `${left}px`
     popEl.value.style.top = `${top}px`
   },
+  { flush: 'post' },
 )
 </script>
 

@@ -23,6 +23,20 @@ public/data/brp/commentary/manifest.json + <sourceKey>/<bookId>.json（运行时
 
 **传统分类（tradition，9 个固定 key）**：`church-fathers` 教父著作 / `catholic` 天主教传统 / `lutheran` 路德宗 / `reformed` 改革宗 / `baptist` 浸信会 / `methodist` 卫理公会 / `anglican` 圣公会 / `pentecostal` 五旬节派 / `evangelical` 福音派（各传统下的候选源清单见 ROADMAP）。
 
+### 数据总览（按宗派 / 作者 / 语言）
+
+| 宗派 | 作者（key） | 语言 | 覆盖 | 状态 |
+|---|---|---|---|---|
+| 教父著作 | Catena Aurea 金链（`catena`） | en | 四福音 | ✅ 已接入 |
+| 改革宗 | 马太亨利（`matthew-henry`） | zh | 66 卷 | ✅ 已接入（精校版） |
+| 改革宗 | 马太亨利英文原版（`matthew-henry-en`） | en | 66 卷 | ✅ 已接入 |
+| 改革宗 | 加尔文（`calvin`） | en | 47 卷 | ✅ 已接入 |
+| 浸信会 | 罗伯逊字义（`rwp`） | en | 新约 27 卷 | ✅ 已接入 |
+| 福音派 | 雅博特新约（`abbott`） | en | 新约 27 卷 | ✅ 已接入 |
+| 天主教 / 路德宗 / 卫理公会 / 圣公会 / 五旬节派 | — | — | — | 规划中（见 ROADMAP） |
+
+> manifest.sources 按宗派（固定顺序）→ 语言（zh 优先）→ key 排序，前端源菜单分组顺序与之一致。
+
 **新增注释源三步**（放入 `data-src/brp/commentary/<tradition>/<key>/<bookId>.json` 后）：
 1. 生成符合格式的 JSON（模板见 `data-src/brp/commentary/_template/`，含填写说明）
 2. 运行 `npm run data`

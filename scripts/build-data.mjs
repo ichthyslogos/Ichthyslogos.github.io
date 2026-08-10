@@ -178,9 +178,24 @@ function buildCommentary() {
       }
     }
   }
+  // 注释源排序：按固定宗派顺序（ROADMAP 9 传统），组内按语言（zh 优先）→ key，保证前端菜单分组整齐
+  const TRADITION_ORDER = [
+    'church-fathers', 'catholic', 'lutheran', 'reformed',
+    'baptist', 'methodist', 'anglican', 'pentecostal', 'evangelical',
+  ]
+  const tradOrder = (t) => {
+    const i = TRADITION_ORDER.indexOf(t)
+    return i === -1 ? 1e5 : i
+  }
+  sources.sort((a, b) => {
+    const d = tradOrder(a.tradition) - tradOrder(b.tradition)
+    if (d) return d
+    if (a.lang !== b.lang) return a.lang === 'zh' ? -1 : b.lang === 'zh' ? 1 : a.lang.localeCompare(b.lang)
+    return a.key.localeCompare(b.key)
+  })
   if (sources.length) {
     writeFileSync(join(COMMENT_OUT, 'manifest.json'), JSON.stringify({ sources }))
-    console.log(`[build-data] 注释源：${sources.map((s) => `${s.tradition}/${s.key}(${s.books.length}卷)`).join(', ')}`)
+    console.log(`[build-data] 注释源：${sources.map((s) => `${s.tradition}/${s.key}(${s.books.length}卷,${s.lang})`).join(', ')}`)
   }
 }
 

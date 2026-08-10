@@ -19,13 +19,29 @@ export const GROUPS = {
   ext: '次经 / 第二正典',
 }
 
-async function fetchJson(url) {
-  if (cache.has(url)) return cache.get(url)
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`数据加载失败：${url} (${res.status})`)
-  const data = await res.json()
-  cache.set(url, data)
-  return data
+/**
+ * 统一取数：并发去重（同 URL 共享同一 Promise）+ 成功缓存。
+ * 失败不缓存（下次重试）；catch 由调用方处理。
+ */
+function fetchJson(url) {
+  let p = cache.get(url)
+  if (!p) {
+    p = fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error(`数据加载失败：${url} (${res.status})`)
+        return res.json()
+      })
+      .then((data) => {
+        cache.set(url, data)
+        return data
+      })
+      .catch((e) => {
+        cache.delete(url) // 失败不缓存，允许下次重试
+        throw e
+      })
+    cache.set(url, p) // 先缓存 Promise 实现 in-flight 去重
+  }
+  return p
 }
 
 /** 加载译本清单 manifest.json */

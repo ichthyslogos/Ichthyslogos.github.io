@@ -29,17 +29,23 @@ const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sid
 // 串珠数据：按卷加载 + 缓存（data.js 内部缓存）；加载失败的卷记入集合，避免反复请求
 const crossrefBook = ref(null)
 const failedCrossrefs = new Set()
+/** 序号守卫：快速切卷时丢弃过期串珠响应 */
+let crossrefSeq = 0
 watch(
   () => props.book?.id,
   async (id) => {
     if (!id) return
+    const seq = ++crossrefSeq
     if (failedCrossrefs.has(id)) {
       crossrefBook.value = null
       return
     }
     try {
-      crossrefBook.value = await fetchCrossrefs(id)
+      const data = await fetchCrossrefs(id)
+      if (seq !== crossrefSeq) return
+      crossrefBook.value = data
     } catch {
+      if (seq !== crossrefSeq) return
       failedCrossrefs.add(id)
       crossrefBook.value = null // 该卷无串珠
     }
@@ -85,10 +91,15 @@ async function loadLexicon(code) {
   lexCode.value = code
   lexLoading.value = true
   lexEntry.value = null
-  const entry = await fetchStrongLexicon(code)
-  if (lexCode.value !== code) return // 期间已关闭/切换
-  lexEntry.value = entry
-  lexLoading.value = false
+  try {
+    const entry = await fetchStrongLexicon(code)
+    if (lexCode.value !== code) return // 期间已关闭/切换
+    lexEntry.value = entry
+  } catch {
+    if (lexCode.value === code) lexEntry.value = null // 词条加载失败：保持弹层显示"未找到"
+  } finally {
+    if (lexCode.value === code) lexLoading.value = false
+  }
 }
 
 /** 点击经文中 Strong 码：记录点击位置并加载词条 */
@@ -105,8 +116,8 @@ function closeLexicon() {
   lexPos.value = null
 }
 
-// 正文滚动或章节/译本变化时关闭弹层（位置坐标已失效）
-watch(() => [props.chapter, props.activeKey], closeLexicon)
+// 正文滚动或书卷/章节/译本变化时关闭弹层（位置坐标已失效；跨卷但章号相同时也必须关闭）
+watch(() => [props.book?.id, props.chapter, props.activeKey], closeLexicon)
 
 /** 每节引用：目标补上显示名（"箴言 8:22-24"） */
 function verseRefs(verse) {
