@@ -87,18 +87,49 @@ export async function fetchCommentary(sourceKey, bookId) {
 /** 默认注释源偏好（URL/存储未指定时优先：马太亨利主源；新源不影响此偏好） */
 const PREFERRED_COMMENTARY_SOURCE = ['matthew-henry']
 
-/** 解析注释源（优先指定 key → 偏好链 → 第一个源） */
-export function resolveCommentarySource(manifest, key) {
+/**
+ * 注释源语言组：同一部注释的多语言版本在源选择器中合并为一项，
+ * 选定后通过语言标签（LanguageTag）在组内源之间切换。
+ * 组定义：{ baseKey, label, langs: [{ lang, key, label }] }（langs[0] 为组默认语言）
+ */
+export const COMMENTARY_LANG_GROUPS = [
+  {
+    baseKey: 'matthew-henry',
+    label: '马太亨利圣经注释',
+    langs: [
+      { lang: 'zh', key: 'matthew-henry', label: '中文' },
+      { lang: 'en', key: 'matthew-henry-en', label: 'English' },
+    ],
+  },
+]
+
+/** 某源是否属于某个语言组（按 baseKey） */
+export function groupOfSource(sourceKey) {
+  return COMMENTARY_LANG_GROUPS.find((g) => g.langs.some((l) => l.key === sourceKey)) || null
+}
+
+/** 源选择器展示列表：语言组成员只保留主条目（langs[0]），其余由语言标签切换 */
+export function displaySources(sources) {
+  const hidden = new Set()
+  for (const g of COMMENTARY_LANG_GROUPS) {
+    for (const l of g.langs.slice(1)) hidden.add(l.key)
+  }
+  return sources.filter((s) => !hidden.has(s.key))
+}
+
+/** 解析注释源（优先指定 key → 偏好链 → 第一个源；可按当前书卷过滤可用性） */
+export function resolveCommentarySource(manifest, key, bookId) {
   if (!manifest || !manifest.sources.length) return null
+  const usable = (s) => !bookId || !Array.isArray(s.books) || s.books.includes(bookId)
   if (key) {
     const s = manifest.sources.find((x) => x.key === key)
-    if (s) return s
+    if (s && usable(s)) return s
   }
   for (const k of PREFERRED_COMMENTARY_SOURCE) {
     const s = manifest.sources.find((x) => x.key === k)
-    if (s) return s
+    if (s && usable(s)) return s
   }
-  return manifest.sources[0]
+  return manifest.sources.find(usable) || manifest.sources[0]
 }
 
 /** 从注释卷数据中取某章（无则返回 null） */

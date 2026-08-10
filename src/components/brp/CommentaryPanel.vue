@@ -17,6 +17,8 @@ import {
   resolveCommentarySource,
   findCommentaryChapter,
   isCommentaryEnabled,
+  displaySources,
+  groupOfSource,
 } from '../../lib/data.js'
 import EmptyState from '../EmptyState.vue'
 import CommentarySourceMenu from './CommentarySourceMenu.vue'
@@ -29,7 +31,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['toggle'])
 
-const sources = ref([])
+const sources = ref([]) // 全量源（含语言组成员）
 const sourceKey = ref('')
 const sourceMenuOpen = ref(false)
 const bookData = ref(null)
@@ -39,9 +41,30 @@ const loading = ref(false)
 const SOURCE_STORAGE = 'brp-commentary-source'
 
 function pickSource(key) {
-  sourceKey.value = key
+  // 语言组成员：选中时切到组默认语言（langs[0]），组内语言由语言标签切换
+  const g = groupOfSource(key)
+  sourceKey.value = g ? g.langs[0].key : key
   sourceMenuOpen.value = false
-  localStorage.setItem(SOURCE_STORAGE, key)
+  localStorage.setItem(SOURCE_STORAGE, sourceKey.value)
+}
+
+/** 当前源的语言组（中英文同书源合并后，显示语言标签切换） */
+const langGroup = computed(() => groupOfSource(sourceKey.value))
+
+/** 语言标签：当前语言名（如"中文"/"English"），点击切到组内下一语言 */
+const langLabel = computed(() => {
+  const g = langGroup.value
+  if (!g) return ''
+  return g.langs.find((l) => l.key === sourceKey.value)?.label || g.langs[0].label
+})
+
+function toggleLang() {
+  const g = langGroup.value
+  if (!g) return
+  const idx = g.langs.findIndex((l) => l.key === sourceKey.value)
+  const next = g.langs[(idx + 1) % g.langs.length]
+  sourceKey.value = next.key
+  localStorage.setItem(SOURCE_STORAGE, next.key)
 }
 
 /** 小节展开状态：Set<索引>，默认全部收起 */
@@ -85,9 +108,10 @@ async function loadSources() {
     const m = await fetchCommentaryManifest()
     sources.value = m.sources || []
     if (sources.value.length) {
-      // 优先恢复用户上次选择的源（localStorage），否则第一个可用源
+      // 优先恢复用户上次选择的源（localStorage），否则第一个可用源；
+      // 当前书卷不可用时自动回落到该卷可用的偏好源
       const saved = localStorage.getItem(SOURCE_STORAGE)
-      const s = resolveCommentarySource(m, saved)
+      const s = resolveCommentarySource(m, saved, props.book?.id)
       sourceKey.value = s.key
     }
   } catch {
@@ -95,7 +119,7 @@ async function loadSources() {
   }
 }
 
-// 书卷/章节/注释源变化 → 加载对应卷注释
+// 书卷变化：当前源若无此卷注释，自动回落到该卷可用的源（resolveCommentarySource 保证）
 watch(
   () => [props.book?.id, props.chapter, sourceKey.value],
   async ([bookId]) => {
@@ -103,6 +127,17 @@ watch(
     loading.value = true
     try {
       bookData.value = await fetchCommentary(sourceKey.value, bookId)
+      if (bookData.value === null && sources.value.length) {
+        const s = resolveCommentarySource(
+          { sources: sources.value },
+          localStorage.getItem(SOURCE_STORAGE),
+          bookId,
+        )
+        if (s.key !== sourceKey.value) {
+          sourceKey.value = s.key
+          return // watch 重新触发加载
+        }
+      }
     } catch {
       bookData.value = null // 该卷无注释
     } finally {
@@ -135,13 +170,25 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
     <div class="panel-body">
       <!-- 源选择器常驻（空状态/加载中也可见）：当前源无此卷注释时可切换其他源 -->
       <div v-if="sources.length" class="commentary-top">
-        <CommentarySourceMenu
-          :sources="sources"
-          :active-key="sourceKey"
-          :open="sourceMenuOpen"
-          @toggle="sourceMenuOpen = !sourceMenuOpen"
-          @select="pickSource"
-        />
+        <div class="source-row">
+          <CommentarySourceMenu
+            :sources="displaySources(sources)"
+            :active-key="sourceKey"
+            :open="sourceMenuOpen"
+            :book-id="book && book.id"
+            @toggle="sourceMenuOpen = !sourceMenuOpen"
+            @select="pickSource"
+          />
+          <!-- 语言标签：中英文同书源合并后，在此切换语言（如马太亨利 中文/English） -->
+          <button
+            v-if="langGroup"
+            class="lang-tag"
+            :title="'切换语言（' + langLabel + '）'"
+            @click="toggleLang"
+          >
+            {{ langLabel }}
+          </button>
+        </div>
         <button
           v-if="chapterData && chapterData.sections.length"
           class="toggle-all"
@@ -232,6 +279,30 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   justify-content: space-between;
   gap: 0.5rem;
   margin-bottom: 0.6rem;
+}
+/* 源选择 + 语言标签同行（版本选择按钮旁） */
+.source-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+/* 语言标签：版本选择按钮旁的小胶囊，点击切换组内语言 */
+.lang-tag {
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.12rem 0.55rem;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.lang-tag:hover {
+  background: var(--accent);
+  color: #fff;
 }
 .toggle-all {
   border: 1px solid var(--line);

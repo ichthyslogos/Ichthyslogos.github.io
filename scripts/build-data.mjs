@@ -129,10 +129,14 @@ for (const file of files) {
   console.log(`[build-data] ${key}: ${books.length} 卷 / ${manifest.translations.at(-1).books.reduce((s, b) => s + b.chapterCount, 0)} 章`)
 }
 
-// 排序：译本在前（按 key），原文（original）在后，保证 manifest 顺序稳定可预期
-manifest.translations.sort((a, b) =>
-  a.original !== b.original ? (a.original ? 1 : -1) : a.key.localeCompare(b.key),
-)
+// 译本顺序：显式顺序表（和合本简中 → 繁中 → 思高本 → 英文 → 法文），未登记 key 按字母序排后；
+// 原文（original）始终排在译本之后，保证 manifest 顺序稳定可预期
+const TRANSLATION_ORDER = ['chiuns', 'chiun', 'chisb', 'kjv', 'frebdm1744']
+const orderOf = (t) => {
+  const i = TRANSLATION_ORDER.indexOf(t.key)
+  return t.original ? 1e6 + i : (i === -1 ? 1e5 : i)
+}
+manifest.translations.sort((a, b) => orderOf(a) - orderOf(b))
 
 writeFileSync(join(OUT_DIR, 'manifest.json'), JSON.stringify(manifest))
 console.log(`\n[build-data] 完成：${manifest.translations.length} 个译本，共 ${totalBooks} 卷 / ${totalChapters} 章`)

@@ -3,10 +3,12 @@
  * CommentarySourceMenu — 注释源选择器（brp 子组件，受控组件）
  * 解经面板按「传统 → 作者（源）」两级选择：下拉按 tradition 分组，
  * 组标题为传统中文名，组内列出该传统的注释源，当前源高亮。
+ * - 可用性过滤：传 bookId 时仅显示覆盖该书卷的源（manifest.sources[].books）
+ * - 语言组折叠：中英文同书源（如马太亨利中/英）合并为一项，语言切换由语言标签负责
  * 展开状态由父组件控制；面板 fixed 定位并钳制在视口内（参照 TranslationMenu）。
- * 数据驱动：manifest.sources[] 的 { key, tradition, name } 即全部来源。
  */
 import { ref, computed, watch, nextTick } from 'vue'
+import { groupOfSource } from '../../lib/data.js'
 
 /** 传统 key → 中文名（9 个固定传统，与 docs/COMMENTARY-ROADMAP.md 一致） */
 const TRADITION_NAMES = {
@@ -22,25 +24,48 @@ const TRADITION_NAMES = {
 }
 
 const props = defineProps({
-  sources: { type: Array, default: () => [] },
+  sources: { type: Array, default: () => [] }, // 已按 displaySources 折叠语言组的列表
   activeKey: { type: String, default: '' },
   open: { type: Boolean, default: false },
+  bookId: { type: String, default: '' }, // 仅显示覆盖此卷的源；空 = 全部
 })
 const emit = defineEmits(['toggle', 'select'])
 
 const triggerEl = ref(null)
 const popEl = ref(null)
-const active = computed(() => props.sources.find((s) => s.key === props.activeKey))
 
-/** 按传统分组（保持 manifest 顺序）：[{ tradition, name, sources[] }] */
+/** 当前激活项：语言组成员时显示组 label（如"马太亨利圣经注释"） */
+const active = computed(() => {
+  const g = groupOfSource(props.activeKey)
+  if (g) {
+    const base = props.sources.find((s) => s.key === g.baseKey)
+    if (base) return base // 显示组主条目（label 由组定义）
+  }
+  return props.sources.find((s) => s.key === props.activeKey)
+})
+
+/** 按传统分组（保持 manifest 顺序，过滤当前卷不可用的源）：[{ tradition, name, sources[] }] */
 const groups = computed(() => {
   const map = new Map()
   for (const s of props.sources) {
+    if (props.bookId && Array.isArray(s.books) && !s.books.includes(props.bookId)) continue
     if (!map.has(s.tradition)) map.set(s.tradition, { tradition: s.tradition, sources: [] })
     map.get(s.tradition).sources.push(s)
   }
   return [...map.values()]
 })
+
+/** 菜单项是否高亮：语言组成员按组高亮（组内任意语言均算选中） */
+function isActive(s) {
+  if (s.key === props.activeKey) return true
+  const g = groupOfSource(s.key)
+  return !!g && g.baseKey === groupOfSource(props.activeKey)?.baseKey
+}
+
+/** 选中语言组条目时，父组件按组默认语言（langs[0]）切换 */
+function onSelect(s) {
+  emit('select', s.key)
+}
 
 /** 展开时把面板定位到视口内（水平/垂直钳制，移动端覆盖层内同样适用） */
 watch(
@@ -77,21 +102,24 @@ watch(
 
     <Transition name="menu">
       <div v-if="open" ref="popEl" class="source-pop" role="listbox">
-        <div v-for="g in groups" :key="g.tradition" class="source-group">
-          <div class="source-group-title">{{ TRADITION_NAMES[g.tradition] || g.tradition }}</div>
-          <button
-            v-for="s in g.sources"
-            :key="s.key"
-            class="source-item"
-            :class="{ active: s.key === activeKey }"
-            role="option"
-            :aria-selected="s.key === activeKey"
-            @click="emit('select', s.key)"
-          >
-            {{ s.name }}
-            <span v-if="s.lang" class="source-lang">{{ s.lang }}</span>
-          </button>
-        </div>
+        <template v-if="groups.length">
+          <div v-for="g in groups" :key="g.tradition" class="source-group">
+            <div class="source-group-title">{{ TRADITION_NAMES[g.tradition] || g.tradition }}</div>
+            <button
+              v-for="s in g.sources"
+              :key="s.key"
+              class="source-item"
+              :class="{ active: isActive(s) }"
+              role="option"
+              :aria-selected="isActive(s)"
+              @click="onSelect(s)"
+            >
+              {{ s.name }}
+              <span v-if="s.lang" class="source-lang">{{ s.lang }}</span>
+            </button>
+          </div>
+        </template>
+        <div v-else class="source-empty">本卷暂无可用注释源</div>
       </div>
     </Transition>
 
@@ -136,7 +164,7 @@ watch(
 /* 固定定位 + JS 动态设置 left/top，保证面板始终在视口内 */
 .source-pop {
   position: fixed;
-  min-width: 13rem;
+  min-width: 14rem;
   max-height: min(22rem, 60vh);
   overflow-y: auto;
   scrollbar-gutter: stable;
@@ -165,15 +193,15 @@ watch(
   gap: 0.4rem;
   width: 100%;
   text-align: left;
-  padding: 0.3rem 0.6rem;
+  padding: 0.32rem 0.6rem;
   border: none;
   border-radius: 6px;
   background: transparent;
   color: var(--text);
   font-size: 0.88rem;
-  white-space: nowrap;
-  overflow: hidden;
   cursor: pointer;
+  /* 长名称（如英中双语名）最多两行，移动端不截断 */
+  line-height: 1.45;
 }
 .source-item:hover {
   background: var(--accent-soft);
@@ -185,6 +213,7 @@ watch(
 }
 .source-lang {
   margin-left: auto;
+  flex-shrink: 0;
   font-size: 0.68rem;
   color: var(--muted);
   border: 1px solid currentColor;
@@ -194,6 +223,12 @@ watch(
 }
 .source-item.active .source-lang {
   color: #fff;
+}
+.source-empty {
+  padding: 0.8rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
 }
 .source-backdrop {
   position: fixed;
@@ -209,15 +244,25 @@ watch(
   opacity: 0;
   transform: translateY(-4px);
 }
-/* 窄屏：trigger 限宽，面板贴视口 */
+/* 窄屏：trigger 限宽，面板贴近视口、列表项加高便于点按 */
 @media (max-width: 900px) {
   .source-trigger {
     max-width: 8.5rem;
     font-size: 0.72rem;
   }
   .source-pop {
-    min-width: 12rem;
+    min-width: calc(100vw - 1.5rem);
     max-width: calc(100vw - 1.5rem);
+    max-height: min(20rem, 55vh);
+  }
+  .source-item {
+    padding: 0.55rem 0.6rem;
+    font-size: 0.92rem;
+  }
+  .source-group-title {
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+    font-size: 0.74rem;
   }
 }
 </style>
