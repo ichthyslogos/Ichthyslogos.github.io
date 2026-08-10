@@ -15,6 +15,7 @@ import { mkdirSync, readdirSync, readFileSync, writeFileSync, existsSync, rmSync
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { resolveBook, BOOK_ORDER } from './bible-books.mjs'
+import { TRANSLATION_BOOK_NAMES } from './books-i18n.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..')
@@ -95,12 +96,14 @@ for (const file of files) {
       chapter: ch.chapter,
       verses: ch.verses.map((v) => ({ verse: v.verse, text: cleanText(v.text, meta.lang) })),
     }))
+    // 书卷显示名随译本（books-i18n.mjs 名表覆盖；未登记译本沿用标准和合本译名）
+    const zh = TRANSLATION_BOOK_NAMES[key]?.[std.id] ?? std.zh
     const book = {
       translation: raw.translation,
       key,
       book: {
         id: std.id,
-        zh: std.zh,
+        zh,
         en: std.en,
         group: std.group,
         chapterCount: chapters.length,
@@ -108,7 +111,7 @@ for (const file of files) {
       },
     }
     writeFileSync(join(bookOutDir, `${std.id}.json`), JSON.stringify(book))
-    books.push({ id: std.id, zh: std.zh, en: std.en, group: std.group, chapterCount: chapters.length })
+    books.push({ id: std.id, zh, en: std.en, group: std.group, chapterCount: chapters.length })
     totalBooks += 1
     totalChapters += chapters.length
   }
