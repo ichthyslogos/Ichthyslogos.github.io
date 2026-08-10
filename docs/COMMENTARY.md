@@ -169,7 +169,30 @@ npm run data                                  # 切片 + manifest（五源共存
 - 内容为英文原文（RWP 含希腊文词形）；sID/eID 成对去重后按唯一 ref 聚合，同节多段以空行连接
 - 模块格式注记：cz 变体（czz）与 b 变体同构（zlib 流、无文件头，实测三个 cz 模块均从 offset 0 起即 zlib 魔数）；早期"czz 有 10 字节头"的说法不适用本批模块
 
-## 9. 前端多源切换
+## 9. 马太亨利英文原版（reformed/matthew-henry-en，英文）
+
+第六个注释源：马太亨利注释**英文原版全集**（与中文精校版同书同源，互为对照）。
+
+### 数据获取（完整记录）
+
+| 项 | 内容 |
+|---|---|
+| 数据 | `工作区/解经校验/马太亨利/数据/json_en/`（66 卷，精校工作区整理的英文全量数据） |
+| 上游 | Unabridged Matthew Henrys Commentary on the Whole Bible（英文 EPUB，`源文件/` 归档） |
+| 许可 | **Public Domain**（马太亨利 1714 年去世，作品公有领域） |
+| 结构 | 与中文版完全同构：`{source, bookId, chapters:[{chapter, summary, sections:[{ref, heading, text}]}]}`，英文小节标题（如 "The Creation."） |
+
+### 录入方式
+
+从解经校验**只读复制**（不改动源文件），批量改写 `source.key` 为 `matthew-henry-en`（避免与中文版 key 冲突）落盘到 `data-src/brp/commentary/reformed/matthew-henry-en/`，`npm run data` 自动上架。
+
+### 覆盖与已知问题
+
+- **66 卷 / 1189 章 / 4259 节段**（章数与标准一致，ref 缺口 0，audit 通过）
+- 与中文版（`matthew-henry`）同书：中文版为精校译本（含从英文补充翻译的 86 个单元），英文版为原版全文，小节划分一致（创 1 均为 10 小节等）
+- 前端默认仍优先中文版（`PREFERRED_COMMENTARY_SOURCE`），英文版供对照阅读
+
+## 10. 前端多源切换
 
 - 源选择器（`CommentarySourceMenu.vue`）按 **tradition 分组**展示所有源（manifest.sources 带 tradition 字段），选择持久化到 `localStorage('brp-commentary-source')`
 - 默认源偏好链：`PREFERRED_COMMENTARY_SOURCE = ['matthew-henry', …]`（src/lib/data.js `resolveCommentarySource`）

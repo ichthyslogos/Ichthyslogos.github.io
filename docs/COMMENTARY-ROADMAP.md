@@ -52,7 +52,7 @@
 | 作品 | 作者 | 性质 | 许可 | 数字化来源 |
 |---|---|---|---|---|
 | Calvin's Commentaries（加尔文注释） | 加尔文 | 全 66 卷逐节 | ✅ PD | CCEL / e-Sword / SWORD ★ |
-| Matthew Henry（马太亨利） | 马太亨利 | 全 66 卷（已接入中文精校版） | ✅ PD | 已上线 |
+| Matthew Henry（马太亨利） | 马太亨利 | 全 66 卷（已接入中文精校版） | ✅ PD | 已上线 ✅ 另有**英文原版**（`reformed/matthew-henry-en`，66 卷，2026-08 接入，与中文版对照） |
 | Banner of Truth 资源 | 多位 | 现代重印 | ⚠️ 版权 | — |
 
 - **优先级 P1 ★**：Calvin 是改革宗第二源，模块化获取成熟
