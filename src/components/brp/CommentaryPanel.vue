@@ -133,24 +133,25 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
       <button class="panel-close" @click="emit('toggle')" aria-label="收起解经面板">✕</button>
     </header>
     <div class="panel-body">
+      <!-- 源选择器常驻（空状态/加载中也可见）：当前源无此卷注释时可切换其他源 -->
+      <div v-if="sources.length" class="commentary-top">
+        <CommentarySourceMenu
+          :sources="sources"
+          :active-key="sourceKey"
+          :open="sourceMenuOpen"
+          @toggle="sourceMenuOpen = !sourceMenuOpen"
+          @select="pickSource"
+        />
+        <button
+          v-if="chapterData && chapterData.sections.length"
+          class="toggle-all"
+          @click="toggleAll"
+        >
+          {{ allExpanded ? '全部收起' : '全部展开' }}
+        </button>
+      </div>
       <div v-if="loading" class="commentary-state">注释加载中…</div>
       <template v-else-if="chapterData">
-        <div class="commentary-top">
-          <CommentarySourceMenu
-            :sources="sources"
-            :active-key="sourceKey"
-            :open="sourceMenuOpen"
-            @toggle="sourceMenuOpen = !sourceMenuOpen"
-            @select="pickSource"
-          />
-          <button
-            v-if="chapterData.sections.length"
-            class="toggle-all"
-            @click="toggleAll"
-          >
-            {{ allExpanded ? '全部收起' : '全部展开' }}
-          </button>
-        </div>
         <p v-if="chapterData.summary" class="commentary-summary">{{ chapterData.summary }}</p>
         <div v-for="(s, i) in chapterData.sections" :key="i" class="commentary-section">
           <button
