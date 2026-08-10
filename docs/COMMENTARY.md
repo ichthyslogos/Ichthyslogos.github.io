@@ -1,27 +1,30 @@
 # 注释系统文档（COMMENTARY）
 
-本文档说明 FISH 平台的**解经注释**系统：数据格式、多注释源扩展方法、马太亨利译注的转换管线与已知问题。
+本文档说明 FISH 平台的**解经注释**系统：数据格式、多注释源扩展方法、马太亨利译注的转换管线与已知问题。扩展规划（按传统分类的候选注释源清单）见 [COMMENTARY-ROADMAP.md](COMMENTARY-ROADMAP.md)。
 
 ## 1. 多注释源架构
 
-注释按**来源（人/注释集）**组织，数据流与译本管线同构：
+注释按**传统 → 来源（人/注释集）**两级组织，数据流与译本管线同构：
 
 ```
 素材（马太亨利译注 PDF/DOCX）
   │  python scripts/commentary/extract.py（pypdf 提取 + 解析）
   ▼
-data-src/brp/commentary/<sourceKey>/<bookId>.json   ← 源数据（第一个源：matthew-henry）
-  │  npm run data（build-data.mjs 扫描切片）
+data-src/brp/commentary/<tradition>/<sourceKey>/<bookId>.json
+  │    ← 源数据（当前源：reformed/matthew-henry）
+  │  npm run data（build-data.mjs 两级扫描切片）
   ▼
-public/data/brp/commentary/manifest.json + <sourceKey>/<bookId>.json
+public/data/brp/commentary/manifest.json + <sourceKey>/<bookId>.json（运行时扁平）
   ▼
 前端 CommentaryPanel 按 bookId + chapter 渲染
 ```
 
+**传统分类（tradition，9 个固定 key）**：`church-fathers` 教父著作 / `catholic` 天主教传统 / `lutheran` 路德宗 / `reformed` 改革宗 / `baptist` 浸信会 / `methodist` 卫理公会 / `anglican` 圣公会 / `pentecostal` 五旬节派 / `evangelical` 福音派（各传统下的候选源清单见 ROADMAP）。
+
 **新增注释源三步**（未来增加第二个人/注释集）：
-1. 生成符合格式的 JSON 放入 `data-src/brp/commentary/<key>/<bookId>.json`
+1. 生成符合格式的 JSON 放入 `data-src/brp/commentary/<tradition>/<key>/<bookId>.json`
 2. 运行 `npm run data`
-3. 前端自动多出该源（`CommentaryPanel` 显示来源标识；面板已预留多源切换结构）
+3. 前端自动多出该源（`CommentaryPanel` 显示来源标识与 tradition；面板已预留多源切换结构）
 
 ## 2. 数据格式
 
