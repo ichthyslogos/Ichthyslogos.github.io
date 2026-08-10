@@ -66,7 +66,7 @@ const wordTitle = (w) => {
             v-for="(t, j) in r.targets"
             :key="j"
             class="ref-target"
-            @click="emit('goto', t)"
+            @click="emit('goto', { ...t, from: verse })"
           >{{ t.label }}</button>
         </span>
       </span>

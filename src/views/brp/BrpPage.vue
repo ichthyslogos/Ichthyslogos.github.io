@@ -144,51 +144,63 @@ function onChangeTranslation(key) {
 }
 
 /** 串珠引用目标跳转（记录来源与目标节，用于返回与跳转后定位） */
-const gotoFrom = ref(null) // { bookId, chapter, verse, targetId, targetCh }
+const gotoFrom = ref(null) // { bookId, chapter, verse, targetId, targetCh, targetVs }
 const showBack = ref(false)
-/** 本次串珠跳转是否已滚动定位到目标经文（只执行一次） */
-let scrolledForGoto = false
+/** 待滚动定位的经文（跳转目标或返回来源）；渲染就绪后定位，成功后清空 */
+const pendingScroll = ref(null) // { bookId, ch, vsNum }
+
+/** vs 字符串（"22-24"/"6,9"）→ 首个节号 */
+const firstVerseOf = (vs) => Number(String(vs).match(/\d+/)?.[0])
+
+/** 尝试滚动定位 pendingScroll；条件满足（目标章已渲染）则滚动并清空 */
+function tryScroll() {
+  const p = pendingScroll.value
+  if (!p) return
+  const onTarget = book.value?.id === p.bookId && chapter.value === p.ch
+  if (!onTarget) return // 目标章节尚未加载（跨章跳转等待路由）
+  const sc = document.querySelector('.scripture-scroll')
+  const el = sc?.querySelector(`[data-verse="${p.vsNum}"]`)
+  if (!sc || !el) return // 目标节不存在（vs 越界等）
+  const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 8
+  sc.scrollTop = Math.max(0, top)
+  pendingScroll.value = null
+}
 
 function onGotoVerse(target) {
   gotoFrom.value = {
     bookId: book.value.id,
     chapter: chapter.value,
-    verse: target.vs,
+    verse: target.from ?? null, // 来源节（VerseItem 提供）
     targetId: target.id,
     targetCh: target.ch,
+    targetVs: target.vs,
   }
   showBack.value = true
-  scrolledForGoto = false
+  pendingScroll.value = { bookId: target.id, ch: target.ch, vsNum: firstVerseOf(target.vs) }
   navigate(target.id, target.ch)
+  // 同章跳转：路由不变，nextTick 后直接定位；跨章由下方 watch 兜底
+  nextTick().then(tryScroll)
 }
 
-/** 串珠跳转后：章节渲染完成，把目标经文滚动到经文区顶部优先展示 */
-watch([book, chapter, verses], async () => {
-  const f = gotoFrom.value
-  if (!f?.verse || scrolledForGoto) return
-  if (book.value?.id !== f.targetId || chapter.value !== f.targetCh) return // 尚未到达目标章节
-  await nextTick()
-  const sc = document.querySelector('.scripture-scroll')
-  const el = sc?.querySelector(`[data-verse="${f.verse}"]`)
-  if (sc && el) {
-    const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 8
-    sc.scrollTop = Math.max(0, top)
-    scrolledForGoto = true
-  }
-})
+/** 路由/数据变化后尝试定位待滚动经文（跨章跳转与返回均走此兜底） */
+watch([book, chapter, verses], () => nextTick().then(tryScroll))
 
 /** 手动导航（选书/选章/切译本）清除串珠返回状态 */
 function clearGoto() {
   gotoFrom.value = null
   showBack.value = false
-  scrolledForGoto = false
+  pendingScroll.value = null
 }
 
-/** 串珠跳转后返回来源位置 */
+/** 串珠跳转后返回来源位置（并定位到来源节） */
 function onBackFromGoto() {
   const from = gotoFrom.value
   clearGoto()
-  if (from) navigate(from.bookId, from.chapter)
+  if (from) {
+    pendingScroll.value = { bookId: from.bookId, ch: from.chapter, vsNum: from.verse }
+    navigate(from.bookId, from.chapter)
+    nextTick().then(tryScroll)
+  }
 }
 
 /** 悬浮按钮显示文字：来源书卷名 */
