@@ -17,7 +17,6 @@ import {
   resolveCommentarySource,
   findCommentaryChapter,
   isCommentaryEnabled,
-  displaySources,
   groupOfSource,
 } from '../../lib/data.js'
 import EmptyState from '../EmptyState.vue'
@@ -172,7 +171,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
       <div v-if="sources.length" class="commentary-top">
         <div class="source-row">
           <CommentarySourceMenu
-            :sources="displaySources(sources)"
+            :sources="sources"
             :active-key="sourceKey"
             :open="sourceMenuOpen"
             :book-id="book && book.id"

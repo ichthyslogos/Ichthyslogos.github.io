@@ -4,7 +4,8 @@
  * 解经面板按「传统 → 作者（源）」两级选择：下拉按 tradition 分组，
  * 组标题为传统中文名，组内列出该传统的注释源，当前源高亮。
  * - 可用性过滤：传 bookId 时仅显示覆盖该书卷的源（manifest.sources[].books）
- * - 语言组折叠：中英文同书源（如马太亨利中/英）合并为一项，语言切换由语言标签负责
+ * - 语言版本：同书多语言（如马太亨利中/英）在组内各列一项，带语言徽章（zh/en），
+ *   另配语言标签按钮（面板顶部）快速切换
  * 展开状态由父组件控制；面板 fixed 定位并钳制在视口内（参照 TranslationMenu）。
  */
 import { ref, computed, watch, nextTick } from 'vue'
@@ -24,7 +25,7 @@ const TRADITION_NAMES = {
 }
 
 const props = defineProps({
-  sources: { type: Array, default: () => [] }, // 已按 displaySources 折叠语言组的列表
+  sources: { type: Array, default: () => [] }, // 全量源（含同书各语言版本）
   activeKey: { type: String, default: '' },
   open: { type: Boolean, default: false },
   bookId: { type: String, default: '' }, // 仅显示覆盖此卷的源；空 = 全部
@@ -34,14 +35,12 @@ const emit = defineEmits(['toggle', 'select'])
 const triggerEl = ref(null)
 const popEl = ref(null)
 
-/** 当前激活项：语言组成员时显示组 label（如"马太亨利圣经注释"） */
+/** 当前激活项；语言组成员用组名 + 语言徽章显示（避免英文长名撑爆按钮） */
 const active = computed(() => {
-  const g = groupOfSource(props.activeKey)
-  if (g) {
-    const base = props.sources.find((s) => s.key === g.baseKey)
-    if (base) return base // 显示组主条目（label 由组定义）
-  }
-  return props.sources.find((s) => s.key === props.activeKey)
+  const s = props.sources.find((x) => x.key === props.activeKey)
+  if (!s) return null
+  const g = groupOfSource(s.key)
+  return g ? { ...s, name: `${g.label} · ${g.langs.find((l) => l.key === s.key)?.label || s.lang}` } : s
 })
 
 /** 按传统分组（保持 manifest 顺序，过滤当前卷不可用的源）：[{ tradition, name, sources[] }] */
@@ -54,18 +53,6 @@ const groups = computed(() => {
   }
   return [...map.values()]
 })
-
-/** 菜单项是否高亮：语言组成员按组高亮（组内任意语言均算选中） */
-function isActive(s) {
-  if (s.key === props.activeKey) return true
-  const g = groupOfSource(s.key)
-  return !!g && g.baseKey === groupOfSource(props.activeKey)?.baseKey
-}
-
-/** 选中语言组条目时，父组件按组默认语言（langs[0]）切换 */
-function onSelect(s) {
-  emit('select', s.key)
-}
 
 /** 展开时把面板定位到视口内（水平/垂直钳制，移动端覆盖层内同样适用） */
 watch(
@@ -109,10 +96,10 @@ watch(
               v-for="s in g.sources"
               :key="s.key"
               class="source-item"
-              :class="{ active: isActive(s) }"
+              :class="{ active: s.key === activeKey }"
               role="option"
-              :aria-selected="isActive(s)"
-              @click="onSelect(s)"
+              :aria-selected="s.key === activeKey"
+              @click="emit('select', s.key)"
             >
               {{ s.name }}
               <span v-if="s.lang" class="source-lang">{{ s.lang }}</span>
