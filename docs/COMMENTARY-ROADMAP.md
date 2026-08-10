@@ -24,9 +24,9 @@
 |---|---|---|---|---|
 | Nicene & Post-Nicene Fathers（NPNF） | 多位教父 | 逐节布道（Chrysostom 新约布道集等） | ✅ PD | CCEL / New Advent / e-Sword |
 | Ante-Nicene Fathers（ANF） | 多位教父 | 神学著作（非逐节注释） | ✅ PD | CCEL / New Advent |
-| Catena Aurea（金链） | 阿奎那 | 四福音合参（逐节汇集教父注解） | ✅ PD | CCEL / e-Sword |
+| Catena Aurea（金链） | 阿奎那 | 四福音合参（逐节汇集教父注解） | ✅ PD | CCEL / e-Sword ✅ **已接入**（CrossWire 模块 → `church-fathers/catena`，四福音 821 节段，2026-08） |
 
-- **优先级 P2**：Chrysostom 布道集最接近"逐节注释"格式；ANF 多为神学论著，与现有 sections 结构差异大
+- **优先级 P2**：Chrysostom 布道集最接近"逐节注释"格式；ANF 多为神学论著，与现有 sections 结构差异大；Catena 已先行接入（同一素材源的教父注解）
 
 ## 二、Catholic Tradition 天主教传统
 
@@ -63,10 +63,11 @@
 |---|---|---|---|---|
 | Expositor's Bible Commentary | 多位 | 现代注释 | ⚠️ 版权 | — |
 | Baker Commentary | Baker | 现代注释 | ⚠️ 版权 | — |
+| Robertson's Word Pictures | A.T. Robertson | 新约 27 卷逐节（浸信会经典字义注释） | ✅ PD（第 5/6 卷版权 2006/2007 已到期） | CrossWire ✅ **已接入**（`baptist/rwp`，7201 节段，2026-08） |
 | Gill's Exposition of the Bible | John Gill | 全 66 卷逐节（浸信会经典） | ✅ PD | e-Sword / CCEL ★ |
 | Treasury of David | Spurgeon | 诗篇逐节 | ✅ PD | CCEL / e-Sword |
 
-- **优先级 P1 ★**（Gill）/ **P2**（Spurgeon 仅诗篇 1 卷）
+- **优先级 P1 ★**（Gill；RWP 已先行接入）/ **P2**（Spurgeon 仅诗篇 1 卷）
 
 ## 六、Methodist 卫理公会
 
@@ -102,11 +103,12 @@
 | IVP Background Commentary | IVP | 现代 | ⚠️ 版权 | — |
 | WBC（Word Biblical Commentary） | 多位 | 现代学术 | ⚠️ 版权 | — |
 | NICNT / NICOT | Eerdmans | 现代学术 | ⚠️ 版权 | — |
+| Abbott's Illustrated NT | J.S.C. & J. Abbott | 新约 27 卷逐节（1878） | ✅ PD | CrossWire ✅ **已接入**（`evangelical/abbott`，3340 节段，2026-08） |
 | Jamieson-Fausset-Brown（JFB） | 三位作者 | 全 66 卷逐节 | ✅ PD | e-Sword / CCEL ★ |
 | Keil & Delitzsch | 德利茨施等 | 旧约全卷逐节（学术经典） | ✅ PD | e-Sword / CCEL ★ |
 | Pulpit Commentary | 多位 | 全 66 卷（讲道+注释双层） | ✅ PD | e-Sword |
 
-- **优先级 P1 ★**（JFB / Keil-Delitzsch / Pulpit 模块化）
+- **优先级 P1 ★**（JFB / Keil-Delitzsch / Pulpit；Abbott 已先行接入）
 
 ## 十、接入优先级总览
 
@@ -114,14 +116,16 @@
 |---|---|---|---|
 | **P0** | Matthew Henry（中文） | reformed | ✅ 已上线，66 卷全开放 |
 | **P0** | **Calvin（英文）** | reformed | ✅ **已接入**（2026-08，47 卷，CrossWire 模块 → `reformed/calvin/`，见 docs/COMMENTARY.md §7） |
-| **P1** | Gill / Wesley / Clarke / Barnes / JFB / Keil-Delitzsch / Pulpit | 多传统 | ✅ PD；⚠️ **CrossWire 版 Wesley/Clarke/Barnes 模块为无逐节结构文本流（节号缺失/内嵌不连续），不可直接接入**——需走 CCEL 结构化 HTML 或 e-Sword 模块路径 |
-| **P2** | Chrysostom（NPNF）/ Catena Aurea / Haydock / Spurgeon / Ryle / Lange | 教父/各传统 | ✅ PD，但需结构调整或覆盖不全 |
+| **P0** | **RWP / Catena / Abbott（英文）** | baptist / church-fathers / evangelical | ✅ **已接入**（2026-08，CrossWire 模块 → `baptist/rwp` 27 卷、`church-fathers/catena` 四福音、`evangelical/abbott` 27 卷，见 docs/COMMENTARY.md §8） |
+| **P1** | Gill / JFB / Keil-Delitzsch / Pulpit | baptist / evangelical | ✅ PD；⚠️ **CrossWire 版 Wesley/Clarke/Barnes 模块为无逐节结构文本流（节号缺失/内嵌不连续），不可直接接入**——需走 CCEL 结构化 HTML 或 e-Sword 模块路径 |
+| **P2** | Chrysostom（NPNF）/ Haydock / Spurgeon / Ryle / Lange | 教父/各传统 | ✅ PD，但需结构调整或覆盖不全 |
 | **P3** | Luther 德语版 | lutheran | ✅ PD 但 OCR+翻译成本高 |
 | **放弃** | Banner / EBC / Baker / Tyndale / Full Life / IVP / WBC / NICNT / NICOT / Concordia / LW 英文 | 各传统 | ⚠️ 版权保护，需授权 |
+| **评估未采用** | Geneva（日内瓦边注）/ Luther 英文选篇 / Lightfoot / TSK | 各传统 | ✅ PD 但结构不适配：边注型/仅 6 卷选篇/纯文本流/引用集（详见 `../crosswire-commentaries/README.md`） |
 
 ## 十一、架构建议（随源增多逐步落地）
 
-1. **前端多源切换 UI**：`CommentaryPanel` 增加源选择器（当前仅显示源徽章；切换器结构已预留），按 `tradition` 分组展示
-2. **数据格式不变**：仍为 `{source, bookId, chapters:[{chapter, summary, sections}]}`；教父类（P2）如接入再评估 sections 语义（按布道/篇章而非节段）
-3. **获取管线**：e-Sword/SWORD 模块 → 解析脚本（参考 `import-strong-lexicon*.mjs` 与 `extract.py`）→ data-src → 人工抽查精校 → `npm run data` 自动上架
+1. **前端多源切换 UI**：✅ **已实现**（2026-08）——`CommentarySourceMenu.vue` 按 tradition 分组选择源，持久化 `localStorage('brp-commentary-source')`，默认偏好链 `PREFERRED_COMMENTARY_SOURCE`（src/lib/data.js）
+2. **数据格式不变**：仍为 `{source, bookId, chapters:[{chapter, summary, sections}]}`；教父类已按此格式接入（catena 逐节）
+3. **获取管线**：e-Sword/SWORD 模块 → 解析脚本（`import-calvin.mjs` / `import-crosswire.mjs`）→ data-src → 人工抽查精校 → `npm run data` 自动上架
 4. **素材只读、产物入库**的约定适用于所有新源；每个源接入时在 `docs/COMMENTARY.md` 补记录（源 key、传统、许可、管线、已知问题）

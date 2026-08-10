@@ -7,24 +7,26 @@
 注释按**传统 → 来源（人/注释集）**两级组织，数据流与译本管线同构：
 
 ```
-素材（马太亨利译注 PDF/DOCX）
-  │  python scripts/commentary/extract.py（pypdf 提取 + 解析）
+素材（马太亨利译注 PDF/DOCX / CrossWire SWORD 模块）
+  │  python scripts/commentary/extract.py（马太亨利中文）
+  │  node scripts/commentary/import-calvin.mjs / import-crosswire.mjs（SWORD 模块）
   ▼
 data-src/brp/commentary/<tradition>/<sourceKey>/<bookId>.json
-  │    ← 源数据（当前源：reformed/matthew-henry）
+  │    ← 源数据（当前 5 源：reformed/matthew-henry、reformed/calvin、
+  │       baptist/rwp、church-fathers/catena、evangelical/abbott）
   │  npm run data（build-data.mjs 两级扫描切片）
   ▼
 public/data/brp/commentary/manifest.json + <sourceKey>/<bookId>.json（运行时扁平）
   ▼
-前端 CommentaryPanel 按 bookId + chapter 渲染
+前端 CommentaryPanel 按 bookId + chapter 渲染（源选择器按 tradition 分组）
 ```
 
 **传统分类（tradition，9 个固定 key）**：`church-fathers` 教父著作 / `catholic` 天主教传统 / `lutheran` 路德宗 / `reformed` 改革宗 / `baptist` 浸信会 / `methodist` 卫理公会 / `anglican` 圣公会 / `pentecostal` 五旬节派 / `evangelical` 福音派（各传统下的候选源清单见 ROADMAP）。
 
-**新增注释源三步**（未来增加第二个人/注释集）：
-1. 生成符合格式的 JSON 放入 `data-src/brp/commentary/<tradition>/<key>/<bookId>.json`（模板见 `data-src/brp/commentary/_template/`，含填写说明）
+**新增注释源三步**（放入 `data-src/brp/commentary/<tradition>/<key>/<bookId>.json` 后）：
+1. 生成符合格式的 JSON（模板见 `data-src/brp/commentary/_template/`，含填写说明）
 2. 运行 `npm run data`
-3. 前端自动多出该源（`CommentaryPanel` 显示来源标识与 tradition；面板已预留多源切换结构）
+3. 前端自动多出该源（`CommentaryPanel` 源选择器按 tradition 分组展示，无需改前端代码）
 
 ## 2. 数据格式
 
@@ -107,7 +109,7 @@ python scripts/commentary/extract.py --force 1    # 强制重转
 
 `src/lib/data.js` 的 `ENABLED_COMMENTARY_BOOKS` 白名单控制哪些书卷**开放注释显示**；不在白名单内的卷，前端视为"该卷注释暂时关闭"（空状态），**数据文件（data-src 源数据与 public 运行时数据）全部保留、不删除**。
 
-- 当前开放：`01` 创世记、`02` 出埃及记、`03` 利未记（人工精校版）；翻译卷（诗篇 101-150、加拉太～犹大）注释数据保留但暂不显示
+- 当前开放：**66 卷正典全部开放**（`ENABLED_COMMENTARY_BOOKS` = 01-66；不含次经 ext-N）
 - 恢复显示：把 bookId（01-66 / ext-N）加回 `ENABLED_COMMENTARY_BOOKS` 集合即可，**无需重跑 `npm run data`**，前端刷新即生效
 
 ## 7. Calvin 注释（reformed/calvin，英文）
@@ -137,4 +139,38 @@ npm run data                                # 切片 + manifest（两源共存�
 - **47 卷 / 770 章 / 13072 节段**（英文原文，逐节 sections，ref 单节）
 - **上游覆盖不全**（CCEL 文本特性，如实保留）：诗篇缺 53、70 篇；以赛亚缺 49-66 章；耶利米缺 52 章；以西结缺 22-48 章
 - **节段粒度**：加尔文按段注释，缺节（如创 1:7-8）是注释本身未覆盖（annotateRef 只标首节），非数据丢失；创 1:1 注释在模块序言部分、无独立节段
-- 白名单（`ENABLED_COMMENTARY_BOOKS`）全局控制两源显示；前端多源切换 UI 为后续项（当前显示第一个可用源）
+- 白名单（`ENABLED_COMMENTARY_BOOKS`）全局控制所有源显示；源切换 UI 见 §9
+
+## 8. CrossWire 三源接入（baptist/rwp、church-fathers/catena、evangelical/abbott，英文）
+
+第三至第五个注释源，均来自 CrossWire 官方 SWORD 模块，由通用脚本 `scripts/commentary/import-crosswire.mjs` 导入（一次导入三源，幂等）。
+
+### 数据获取（完整记录）
+
+| 源 | 模块（版本） | 内容 | 许可 | 传统 |
+|---|---|---|---|---|
+| **rwp** | RWP v2.0（2013-01-10） | Robertson's Word Pictures in the New Testament（A.T. Robertson）新约 27 卷逐节 | conf 标注 "Copyrighted; Free non-commercial distribution"；第 5/6 卷版权 2006/2007 到期（conf 自注），现属公有领域 | `baptist` 浸信会 |
+| **catena** | Catena v1.0.1 | Catena Aurea 金链——托马斯·阿奎那汇集教父（奥古斯丁、金口约翰、耶柔米等）四福音逐节注解 | **Public Domain** | `church-fathers` 教父 |
+| **abbott** | Abbott v1.1 | Illustrated New Testament（John S.C. Abbott & Jacob Abbott, 1878）新约 27 卷逐节 | **Public Domain** | `evangelical` 福音派 |
+
+下载（2026-08-10）：`https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/<Key>.zip`（Key ∈ {RWP, Catena, Abbott}）。素材归档（只读）见 `../crosswire-commentaries/README.md`——其中还记录了 Geneva / Luther / Lightfoot / TSK 四个**评估未采用**模块的原因（边注型/选篇/纯文本流/引用集，不适配 sections 结构）。
+
+### 转换管线
+
+```bash
+node scripts/commentary/import-crosswire.mjs   # 三源素材 → data-src/brp/commentary/<tradition>/<key>/
+npm run data                                  # 切片 + manifest（五源共存）
+```
+
+### 覆盖与已知问题
+
+- **rwp：27 卷 / 260 章 / 7201 节段**；**catena：4 卷（四福音）/ 89 章 / 821 节段**；**abbott：27 卷 / 260 章 / 3340 节段**（章级覆盖与标准一致，audit 通过）
+- **节级为选节注释**（英文原作风貌）：RWP 等只注释重点节（如太 1 仅 10 节），未注释节在数据中不存在——非数据丢失
+- 内容为英文原文（RWP 含希腊文词形）；sID/eID 成对去重后按唯一 ref 聚合，同节多段以空行连接
+- 模块格式注记：cz 变体（czz）与 b 变体同构（zlib 流、无文件头，实测三个 cz 模块均从 offset 0 起即 zlib 魔数）；早期"czz 有 10 字节头"的说法不适用本批模块
+
+## 9. 前端多源切换
+
+- 源选择器（`CommentarySourceMenu.vue`）按 **tradition 分组**展示所有源（manifest.sources 带 tradition 字段），选择持久化到 `localStorage('brp-commentary-source')`
+- 默认源偏好链：`PREFERRED_COMMENTARY_SOURCE = ['matthew-henry', …]`（src/lib/data.js `resolveCommentarySource`）
+- 某源在某卷无数据时（如 calvin 无约二/约三），自动回落到该卷可用的下一个源；某卷全源无注释 → 空状态提示（选择器常驻，不影响切换）
