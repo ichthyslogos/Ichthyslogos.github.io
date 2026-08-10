@@ -109,3 +109,32 @@ python scripts/commentary/extract.py --force 1    # 强制重转
 
 - 当前开放：`01` 创世记、`02` 出埃及记、`03` 利未记（人工精校版）；翻译卷（诗篇 101-150、加拉太～犹大）注释数据保留但暂不显示
 - 恢复显示：把 bookId（01-66 / ext-N）加回 `ENABLED_COMMENTARY_BOOKS` 集合即可，**无需重跑 `npm run data`**，前端刷新即生效
+
+## 7. Calvin 注释（reformed/calvin，英文）
+
+第二个注释源：加尔文注释合集（改革宗传统，与马太亨利同属 `reformed`）。
+
+### 数据获取（完整记录）
+
+| 项 | 内容 |
+|---|---|
+| 模块 | CalvinCommentaries **v1.1**（2022-08-01，CrossWire 官方 SWORD 模块） |
+| 下载 | `https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/CalvinCommentaries.zip` |
+| 内容 | Calvin's Collected Commentaries——**47 卷**（旧约 24 + 新约 23，无约二/约三） |
+| 上游 | CCEL（Christian Classics Ethereal Library）文本，Luke Plant 转 SWORD |
+| 许可 | **Public Domain**（模块 conf 标注；素材归档见 `../calvin-commentaries/README.md`） |
+| 格式 | zCom（bzs 块表 / bzz zlib 流 / bzv 节索引；OSIS 节段按节 `annotateRef` 定位） |
+
+### 转换管线
+
+```bash
+node scripts/commentary/import-calvin.mjs   # 素材 → data-src/brp/commentary/reformed/calvin/
+npm run data                                # 切片 + manifest（两源共存）
+```
+
+### 覆盖与已知问题
+
+- **47 卷 / 770 章 / 13072 节段**（英文原文，逐节 sections，ref 单节）
+- **上游覆盖不全**（CCEL 文本特性，如实保留）：诗篇缺 53、70 篇；以赛亚缺 49-66 章；耶利米缺 52 章；以西结缺 22-48 章
+- **节段粒度**：加尔文按段注释，缺节（如创 1:7-8）是注释本身未覆盖（annotateRef 只标首节），非数据丢失；创 1:1 注释在模块序言部分、无独立节段
+- 白名单（`ENABLED_COMMENTARY_BOOKS`）全局控制两源显示；前端多源切换 UI 为后续项（当前显示第一个可用源）

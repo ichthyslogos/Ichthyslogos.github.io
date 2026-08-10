@@ -113,7 +113,8 @@
 | 优先级 | 源 | 传统 | 说明 |
 |---|---|---|---|
 | **P0** | Matthew Henry（中文） | reformed | ✅ 已上线，66 卷全开放 |
-| **P1** | Calvin / Gill / Wesley / Clarke / Barnes / JFB / Keil-Delitzsch / Pulpit | 多传统 | ✅ PD + e-Sword/SWORD 模块化获取（复用 strongsgreek 解析经验），逐节格式直接对齐 |
+| **P0** | **Calvin（英文）** | reformed | ✅ **已接入**（2026-08，47 卷，CrossWire 模块 → `reformed/calvin/`，见 docs/COMMENTARY.md §7） |
+| **P1** | Gill / Wesley / Clarke / Barnes / JFB / Keil-Delitzsch / Pulpit | 多传统 | ✅ PD + e-Sword/SWORD 模块化获取（复用 strongsgreek/calvin 解析经验），逐节格式直接对齐 |
 | **P2** | Chrysostom（NPNF）/ Catena Aurea / Haydock / Spurgeon / Ryle / Lange | 教父/各传统 | ✅ PD，但需结构调整或覆盖不全 |
 | **P3** | Luther 德语版 | lutheran | ✅ PD 但 OCR+翻译成本高 |
 | **放弃** | Banner / EBC / Baker / Tyndale / Full Life / IVP / WBC / NICNT / NICOT / Concordia / LW 英文 | 各传统 | ⚠️ 版权保护，需授权 |
