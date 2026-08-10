@@ -110,7 +110,7 @@ public/data/brp/crossrefs/<bookId>.json   ← 按卷切片（66 卷 / 29060 节�
 
 素材：`chiuns-copy/`（e-Sword/SWORD zText 模块解包，和合本简体，zh-Hans，Public Domain，来源 bible.fhl.net；原始 zip 由 bible_databases sources 提供，整理后保留解包副本）。
 
-解包流程（**只读素材，全部工作在副本 `D:/Eyphka/fish/chiuns-copy/` 进行**）：
+解包流程（**只读素材，全部工作在副本 `D:/Eyphka/fish/素材/chiuns-copy/` 进行**）：
 1. 解压 zip → `modules/texts/ztext/chiuns/{ot,nt}.bzz/.bzv`
 2. `.bzz` 为 ZIP 压缩（BlockType=BOOK，每卷一个 zlib 流，流 0 为模块标记）
 3. `.bzv` 为节索引：每条 10 字节 `{块号(4), 块内字节偏移(4), 大小(2)}`，记录顺序 = 书卷头(div book sID) → 章头(chapter n=) → 各节内容（OSIS 片段，含 Strong `<w>` 标签）

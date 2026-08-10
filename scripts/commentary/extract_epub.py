@@ -16,7 +16,7 @@ import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SITE_ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
-MATERIAL_DIR = os.path.join(SITE_ROOT, '..', '马太亨利译注')
+MATERIAL_DIR = os.path.join(SITE_ROOT, '..', '素材', '马太亨利译注')
 EPUB = os.path.join(MATERIAL_DIR, 'Unabridged Matthew Henrys Commentary on the Whole Bible (Matthew Henry [Henry, Matthew]).epub')
 OUT_DIR = os.path.join(SITE_ROOT, 'data-src', 'brp', 'commentary', 'en-raw')
 

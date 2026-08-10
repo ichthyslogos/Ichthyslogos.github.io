@@ -24,7 +24,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..')
 
 /** 素材模块目录（FISH 素材根 strong-lexicons/StrongsGreek，只读；见 strong-lexicons/README.md） */
-const MOD_DIR = join(SITE_ROOT, '..', 'strong-lexicons', 'StrongsGreek', 'modules', 'lexdict', 'zld', 'strongsgreek')
+const MOD_DIR = join(SITE_ROOT, '..', '素材', 'strong-lexicons', 'StrongsGreek', 'modules', 'lexdict', 'zld', 'strongsgreek')
 /** 输出（网站"数据库"） */
 const OUT = join(SITE_ROOT, 'data-src', 'brp', 'strong', 'lexicon-greek.json')
 

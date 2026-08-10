@@ -21,7 +21,7 @@ import zlib
 from pathlib import Path
 
 SITE = Path(__file__).resolve().parent.parent
-CHIUNS_DIR = Path('D:/Eyphka/fish/chiuns-copy/modules/texts/ztext/chiuns')
+CHIUNS_DIR = Path('D:/Eyphka/fish/素材/chiuns-copy/modules/texts/ztext/chiuns')
 OUT = SITE / 'data-src' / 'brp' / 'translations' / 'ChiUns.json'
 
 # OSIS 缩写 → build-data resolveBook 的 srcName（与 bible_databases JSON 一致）

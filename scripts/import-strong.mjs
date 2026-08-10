@@ -9,7 +9,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const ASSETS = join(__dirname, '..', '..') // FISH 素材根（site 的上一级）
+const ASSETS = join(__dirname, '..', '..', '素材') // FISH 素材根（site 的上一级）
 const SRC_OT = join(ASSETS, 'chiuns-copy', 'modules', 'texts', 'ztext', 'chiuns', 'ot_full.txt')
 const SRC_NT = join(ASSETS, 'chiuns-copy', 'modules', 'texts', 'ztext', 'chiuns', 'nt_full.txt')
 const TRANS_SRC = 'data-src/brp/translations/ChiUns.json'

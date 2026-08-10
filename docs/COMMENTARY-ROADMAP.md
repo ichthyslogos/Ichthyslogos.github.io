@@ -121,7 +121,7 @@
 | **P2** | Chrysostom（NPNF）/ Haydock / Spurgeon / Ryle / Lange | 教父/各传统 | ✅ PD，但需结构调整或覆盖不全 |
 | **P3** | Luther 德语版 | lutheran | ✅ PD 但 OCR+翻译成本高 |
 | **放弃** | Banner / EBC / Baker / Tyndale / Full Life / IVP / WBC / NICNT / NICOT / Concordia / LW 英文 | 各传统 | ⚠️ 版权保护，需授权 |
-| **评估未采用** | Geneva（日内瓦边注）/ Luther 英文选篇 / Lightfoot / TSK | 各传统 | ✅ PD 但结构不适配：边注型/仅 6 卷选篇/纯文本流/引用集（详见 `../crosswire-commentaries/README.md`） |
+| **评估未采用** | Geneva（日内瓦边注）/ Luther 英文选篇 / Lightfoot / TSK | 各传统 | ✅ PD 但结构不适配：边注型/仅 6 卷选篇/纯文本流/引用集（详见 `../素材/crosswire-commentaries/README.md`） |
 
 ## 十一、架构建议（随源增多逐步落地）
 

@@ -10,7 +10,7 @@
 ## 2. 四层数据流
 
 ```
-素材库（D:\Eyphka\fish\，只读）
+素材库（D:\Eyphka\fish\素材\，只读）
    │  scripts\import.mjs （复制所选译本）
    ▼
 data-src\brp\translations\*.json   ← 网站"数据库"（素材投影，可移植）

@@ -16,7 +16,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..')
 
 /** 素材库源目录（FISH 素材根目录下的 bible_databases） */
-const SOURCE_DIR = join(SITE_ROOT, '..', 'bible_databases', 'formats', 'json')
+const SOURCE_DIR = join(SITE_ROOT, '..', '素材', 'bible_databases', 'formats', 'json')
 /** 网站数据库目标目录 */
 const TARGET_DIR = join(SITE_ROOT, 'data-src', 'brp', 'translations')
 

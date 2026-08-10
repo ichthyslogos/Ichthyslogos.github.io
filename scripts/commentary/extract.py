@@ -41,7 +41,7 @@ from pypdf import PdfReader
 # ---------------- 路径 ----------------
 HERE = os.path.dirname(os.path.abspath(__file__))
 SITE_ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
-MATERIAL_DIR = os.path.join(SITE_ROOT, '..', '马太亨利译注')
+MATERIAL_DIR = os.path.join(SITE_ROOT, '..', '素材', '马太亨利译注')
 SOURCE_KEY = 'matthew-henry'
 OUT_DIR = os.path.join(SITE_ROOT, 'data-src', 'brp', 'commentary', SOURCE_KEY)
 REPORT_PATH = os.path.join(OUT_DIR, '_report.json')

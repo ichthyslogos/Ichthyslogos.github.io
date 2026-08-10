@@ -20,7 +20,7 @@ import { KJV_ABBR } from './bible-books.mjs'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..')
 const SOURCE = join(
-  SITE_ROOT, '..', 'bible-cross-references',
+  SITE_ROOT, '..', '素材', 'bible-cross-references',
   'kjv', 'crossreferences_kjv.tsv',
 )
 const OUT_DIR = join(SITE_ROOT, 'public', 'data', 'brp', 'crossrefs')

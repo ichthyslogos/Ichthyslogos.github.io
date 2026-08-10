@@ -124,7 +124,7 @@ python scripts/commentary/extract.py --force 1    # 强制重转
 | 下载 | `https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/CalvinCommentaries.zip` |
 | 内容 | Calvin's Collected Commentaries——**47 卷**（旧约 24 + 新约 23，无约二/约三） |
 | 上游 | CCEL（Christian Classics Ethereal Library）文本，Luke Plant 转 SWORD |
-| 许可 | **Public Domain**（模块 conf 标注；素材归档见 `../calvin-commentaries/README.md`） |
+| 许可 | **Public Domain**（模块 conf 标注；素材归档见 `../素材/calvin-commentaries/README.md`） |
 | 格式 | zCom（bzs 块表 / bzz zlib 流 / bzv 节索引；OSIS 节段按节 `annotateRef` 定位） |
 
 ### 转换管线
@@ -153,7 +153,7 @@ npm run data                                # 切片 + manifest（两源共存�
 | **catena** | Catena v1.0.1 | Catena Aurea 金链——托马斯·阿奎那汇集教父（奥古斯丁、金口约翰、耶柔米等）四福音逐节注解 | **Public Domain** | `church-fathers` 教父 |
 | **abbott** | Abbott v1.1 | Illustrated New Testament（John S.C. Abbott & Jacob Abbott, 1878）新约 27 卷逐节 | **Public Domain** | `evangelical` 福音派 |
 
-下载（2026-08-10）：`https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/<Key>.zip`（Key ∈ {RWP, Catena, Abbott}）。素材归档（只读）见 `../crosswire-commentaries/README.md`——其中还记录了 Geneva / Luther / Lightfoot / TSK 四个**评估未采用**模块的原因（边注型/选篇/纯文本流/引用集，不适配 sections 结构）。
+下载（2026-08-10）：`https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/<Key>.zip`（Key ∈ {RWP, Catena, Abbott}）。素材归档（只读）见 `../素材/crosswire-commentaries/README.md`——其中还记录了 Geneva / Luther / Lightfoot / TSK 四个**评估未采用**模块的原因（边注型/选篇/纯文本流/引用集，不适配 sections 结构）。
 
 ### 转换管线
 

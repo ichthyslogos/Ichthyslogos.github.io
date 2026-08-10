@@ -35,7 +35,7 @@ import { inflateSync } from 'node:zlib'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..', '..')
-const ASSETS_ROOT = join(SITE_ROOT, '..', 'crosswire-commentaries')
+const ASSETS_ROOT = join(SITE_ROOT, '..', '素材', 'crosswire-commentaries')
 
 /** OSIS 书卷缩写（无空格风格，如 1Cor）→ bible-books 编号（66 卷全集） */
 const OSIS_TO_ID = {

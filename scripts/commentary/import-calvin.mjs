@@ -33,7 +33,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..', '..')
 
 /** 素材模块目录（FISH 素材根 calvin-commentaries，只读） */
-const MOD_DIR = join(SITE_ROOT, '..', 'calvin-commentaries', 'modules', 'comments', 'zcom', 'calvincommentaries')
+const MOD_DIR = join(SITE_ROOT, '..', '素材', 'calvin-commentaries', 'modules', 'comments', 'zcom', 'calvincommentaries')
 /** 输出（网站"数据库"：改革宗传统下第二源） */
 const OUT_DIR = join(SITE_ROOT, 'data-src', 'brp', 'commentary', 'reformed', 'calvin')
 
