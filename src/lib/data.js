@@ -84,11 +84,18 @@ export async function fetchCommentary(sourceKey, bookId) {
   return fetchJson(`${COMMENT_BASE}${sourceKey}/${bookId}.json`)
 }
 
-/** 解析注释源（找不到则回退第一个） */
+/** 默认注释源偏好（URL/存储未指定时优先：马太亨利主源；新源不影响此偏好） */
+const PREFERRED_COMMENTARY_SOURCE = ['matthew-henry']
+
+/** 解析注释源（优先指定 key → 偏好链 → 第一个源） */
 export function resolveCommentarySource(manifest, key) {
   if (!manifest || !manifest.sources.length) return null
   if (key) {
     const s = manifest.sources.find((x) => x.key === key)
+    if (s) return s
+  }
+  for (const k of PREFERRED_COMMENTARY_SOURCE) {
+    const s = manifest.sources.find((x) => x.key === k)
     if (s) return s
   }
   return manifest.sources[0]

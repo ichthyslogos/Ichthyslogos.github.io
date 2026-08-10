@@ -19,6 +19,7 @@ import {
   isCommentaryEnabled,
 } from '../../lib/data.js'
 import EmptyState from '../EmptyState.vue'
+import CommentarySourceMenu from './CommentarySourceMenu.vue'
 import { flowCommentary } from '../../lib/text.js'
 
 const props = defineProps({
@@ -30,8 +31,18 @@ const emit = defineEmits(['toggle'])
 
 const sources = ref([])
 const sourceKey = ref('')
+const sourceMenuOpen = ref(false)
 const bookData = ref(null)
 const loading = ref(false)
+
+/** 源选择偏好持久化：localStorage('brp-commentary-source') */
+const SOURCE_STORAGE = 'brp-commentary-source'
+
+function pickSource(key) {
+  sourceKey.value = key
+  sourceMenuOpen.value = false
+  localStorage.setItem(SOURCE_STORAGE, key)
+}
 
 /** 小节展开状态：Set<索引>，默认全部收起 */
 const expanded = ref(new Set())
@@ -59,11 +70,12 @@ watch(
   },
 )
 
-// 首次挂载加载注释源清单
+// 首次挂载加载注释源清单；关闭面板时收起源菜单
 watch(
   () => props.open,
   (v) => {
     if (v && !sources.value.length) loadSources()
+    if (!v) sourceMenuOpen.value = false
   },
   { immediate: true },
 )
@@ -73,7 +85,9 @@ async function loadSources() {
     const m = await fetchCommentaryManifest()
     sources.value = m.sources || []
     if (sources.value.length) {
-      const s = resolveCommentarySource(m, sourceKey.value)
+      // 优先恢复用户上次选择的源（localStorage），否则第一个可用源
+      const saved = localStorage.getItem(SOURCE_STORAGE)
+      const s = resolveCommentarySource(m, saved)
       sourceKey.value = s.key
     }
   } catch {
@@ -107,8 +121,6 @@ const chapterData = computed(() => {
     sections: c.sections.map((s) => ({ ...s, text: flowCommentary(s.text) })),
   }
 })
-const sourceName = computed(() => sources.value.find((s) => s.key === sourceKey.value)?.name || '')
-/** 当前卷注释是否被暂时关闭（白名单外；数据保留，仅前端不显示） */
 const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.book.id))
 </script>
 
@@ -124,7 +136,13 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
       <div v-if="loading" class="commentary-state">注释加载中…</div>
       <template v-else-if="chapterData">
         <div class="commentary-top">
-          <span v-if="sourceName" class="commentary-source">{{ sourceName }}</span>
+          <CommentarySourceMenu
+            :sources="sources"
+            :active-key="sourceKey"
+            :open="sourceMenuOpen"
+            @toggle="sourceMenuOpen = !sourceMenuOpen"
+            @select="pickSource"
+          />
           <button
             v-if="chapterData.sections.length"
             class="toggle-all"
@@ -213,14 +231,6 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   justify-content: space-between;
   gap: 0.5rem;
   margin-bottom: 0.6rem;
-}
-.commentary-source {
-  display: inline-block;
-  font-size: 0.72rem;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border-radius: 999px;
-  padding: 0.1rem 0.6rem;
 }
 .toggle-all {
   border: 1px solid var(--line);
