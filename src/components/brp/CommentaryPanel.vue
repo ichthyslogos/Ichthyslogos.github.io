@@ -17,6 +17,7 @@ import {
   resolveCommentarySource,
   findCommentaryChapter,
   isCommentaryEnabled,
+  displaySources,
   groupOfSource,
 } from '../../lib/data.js'
 import EmptyState from '../EmptyState.vue'
@@ -46,7 +47,6 @@ function pickSource(key) {
   sourceMenuOpen.value = false
   localStorage.setItem(SOURCE_STORAGE, sourceKey.value)
 }
-
 /** 当前源的语言组（中英文同书源合并后，显示语言标签切换） */
 const langGroup = computed(() => groupOfSource(sourceKey.value))
 
@@ -171,7 +171,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
       <div v-if="sources.length" class="commentary-top">
         <div class="source-row">
           <CommentarySourceMenu
-            :sources="sources"
+            :sources="displaySources(sources)"
             :active-key="sourceKey"
             :open="sourceMenuOpen"
             :book-id="book && book.id"

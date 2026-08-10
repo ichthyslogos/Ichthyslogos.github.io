@@ -108,6 +108,15 @@ export function groupOfSource(sourceKey) {
   return COMMENTARY_LANG_GROUPS.find((g) => g.langs.some((l) => l.key === sourceKey)) || null
 }
 
+/** 源选择器展示列表：语言组成员只保留主条目（langs[0]），其余由语言标签切换 */
+export function displaySources(sources) {
+  const hidden = new Set()
+  for (const g of COMMENTARY_LANG_GROUPS) {
+    for (const l of g.langs.slice(1)) hidden.add(l.key)
+  }
+  return sources.filter((s) => !hidden.has(s.key))
+}
+
 /** 解析注释源（优先指定 key → 偏好链 → 第一个源；可按当前书卷过滤可用性） */
 export function resolveCommentarySource(manifest, key, bookId) {
   if (!manifest || !manifest.sources.length) return null

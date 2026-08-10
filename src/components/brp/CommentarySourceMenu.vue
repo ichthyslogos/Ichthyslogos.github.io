@@ -35,12 +35,18 @@ const emit = defineEmits(['toggle', 'select'])
 const triggerEl = ref(null)
 const popEl = ref(null)
 
-/** 当前激活项；语言组成员用组名 + 语言徽章显示（避免英文长名撑爆按钮） */
+/** 当前激活项；语言组成员用组名 + 语言徽章显示（避免英文长名撑爆按钮）。
+ * 折叠列表中可能只有组主条目（如 activeKey=matthew-henry-en 时列表只有 matthew-henry），
+ * 回退到组主条目再按当前语言显示。 */
 const active = computed(() => {
-  const s = props.sources.find((x) => x.key === props.activeKey)
+  let s = props.sources.find((x) => x.key === props.activeKey)
+  if (!s) {
+    const g = groupOfSource(props.activeKey)
+    if (g) s = props.sources.find((x) => x.key === g.baseKey)
+  }
   if (!s) return null
   const g = groupOfSource(s.key)
-  return g ? { ...s, name: `${g.label} · ${g.langs.find((l) => l.key === s.key)?.label || s.lang}` } : s
+  return g ? { ...s, name: `${g.label} · ${g.langs.find((l) => l.key === props.activeKey)?.label || s.lang}` } : s
 })
 
 /** 按传统分组（保持 manifest 顺序，过滤当前卷不可用的源）：[{ tradition, name, sources[] }] */
@@ -53,6 +59,19 @@ const groups = computed(() => {
   }
   return [...map.values()]
 })
+
+/** 菜单项是否高亮：语言组成员按组高亮（组内任意语言均算选中） */
+function isActive(s) {
+  if (s.key === props.activeKey) return true
+  const g = groupOfSource(s.key)
+  return !!g && g.baseKey === groupOfSource(props.activeKey)?.baseKey
+}
+
+/** 语言徽章文字：语言组成员显示全部可用语言（如 "zh/en"），其余显示自身语言码 */
+function langBadge(s) {
+  const g = groupOfSource(s.key)
+  return g ? g.langs.map((l) => l.lang).join('/') : s.lang
+}
 
 /** 展开时把面板定位到视口内（水平/垂直钳制，移动端覆盖层内同样适用） */
 watch(
@@ -96,13 +115,13 @@ watch(
               v-for="s in g.sources"
               :key="s.key"
               class="source-item"
-              :class="{ active: s.key === activeKey }"
+              :class="{ active: isActive(s) }"
               role="option"
-              :aria-selected="s.key === activeKey"
+              :aria-selected="isActive(s)"
               @click="emit('select', s.key)"
             >
               {{ s.name }}
-              <span v-if="s.lang" class="source-lang">{{ s.lang }}</span>
+              <span v-if="langBadge(s)" class="source-lang">{{ langBadge(s) }}</span>
             </button>
           </div>
         </template>
