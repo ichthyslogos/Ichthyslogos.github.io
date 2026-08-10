@@ -1,7 +1,7 @@
 /**
  * build-crossrefs.mjs — 串珠（交叉引用）数据构建
  *
- * 素材（只读）：bible-cross-references-1.0/.../kjv/crossreferences_kjv.tsv
+ * 素材（只读）：bible-cross-references/kjv/crossreferences_kjv.tsv
  *   （TSK 系短语级串珠，KJV 锚短语，CC BY 4.0）
  * 输出：public/data/brp/crossrefs/<bookId>.json（按卷切片）
  *
@@ -20,7 +20,7 @@ import { KJV_ABBR } from './bible-books.mjs'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SITE_ROOT = join(__dirname, '..')
 const SOURCE = join(
-  SITE_ROOT, '..', 'bible-cross-references-1.0', 'bible-cross-references-1.0',
+  SITE_ROOT, '..', 'bible-cross-references',
   'kjv', 'crossreferences_kjv.tsv',
 )
 const OUT_DIR = join(SITE_ROOT, 'public', 'data', 'brp', 'crossrefs')

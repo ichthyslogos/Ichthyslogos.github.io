@@ -70,7 +70,7 @@ GitHub 仓库 → Settings → Pages → Source 选择 `Deploy from a branch` �
 | `dist\` | ❌ 忽略 | 构建产物 |
 | `public\data\` | ✅ 提交 | 运行时数据，CI 构建直接打包（素材库在本地，CI 无法重新导入） |
 | `data-src\` | ✅ 提交（可选） | 数据源投影（~16MB），保留可复现；不需要时也可忽略 |
-| 素材库（`..\bible_databases` 等） | ❌ 不入库 | 素材与网站隔离，体积 18GB+ |
+| 素材库（`..\bible_databases` 等） | ❌ 不入库 | 素材与网站隔离，只保留站点消费的 `formats\json`（约 1GB，其余格式已整理删除） |
 
 ## 6. 常见问题
 

@@ -5,10 +5,13 @@
 //   2. 与站点已导入的 chiuns 译本文本做字符对齐（同源）→ 按节切分
 // 输出：data-src/brp/strong/<bookId>.json（{ key, book: { id, chapters: [{chapter, verses: [{verse, words}]}] } }）
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const SRC_OT = 'D:/Eyphka/fish/chiuns-copy/modules/texts/ztext/chiuns/ot_full.txt'
-const SRC_NT = 'D:/Eyphka/fish/chiuns-copy/modules/texts/ztext/chiuns/nt_full.txt'
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const ASSETS = join(__dirname, '..', '..') // FISH 素材根（site 的上一级）
+const SRC_OT = join(ASSETS, 'chiuns-copy', 'modules', 'texts', 'ztext', 'chiuns', 'ot_full.txt')
+const SRC_NT = join(ASSETS, 'chiuns-copy', 'modules', 'texts', 'ztext', 'chiuns', 'nt_full.txt')
 const TRANS_SRC = 'data-src/brp/translations/ChiUns.json'
 const OUT = 'data-src/brp/strong'
 

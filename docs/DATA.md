@@ -91,7 +91,7 @@
 
 ## 6. 串珠（交叉引用）数据
 
-素材：`bible-cross-references-1.0/.../kjv/crossreferences_kjv.tsv`（TSK 系短语级串珠，KJV 锚短语，CC BY 4.0，素材只读）。
+素材：`bible-cross-references/kjv/crossreferences_kjv.tsv`（TSK 系短语级串珠，KJV 锚短语，CC BY 4.0，素材只读）。
 
 ```
 素材 TSV（book/chapter/verse/anchor/references，目标用 | 分隔）
@@ -108,7 +108,7 @@ public/data/brp/crossrefs/<bookId>.json   ← 按卷切片（66 卷 / 29060 节�
 
 ## 7. 简体译本（ChiUns，SWORD 模块解包）
 
-素材：`bible_databases/sources/zh-hans/ChiUns.zip`（e-Sword/SWORD zText 模块，和合本简体，zh-Hans，Public Domain，来源 bible.fhl.net）。
+素材：`chiuns-copy/`（e-Sword/SWORD zText 模块解包，和合本简体，zh-Hans，Public Domain，来源 bible.fhl.net；原始 zip 由 bible_databases sources 提供，整理后保留解包副本）。
 
 解包流程（**只读素材，全部工作在副本 `D:/Eyphka/fish/chiuns-copy/` 进行**）：
 1. 解压 zip → `modules/texts/ztext/chiuns/{ot,nt}.bzz/.bzv`

@@ -94,4 +94,4 @@ D:\Eyphka\fish\site\
 | 解经占位与未来接口 | `src\components\brp\CommentaryPanel.vue` |
 | 添加路由 | `src\router\index.js` |
 | 全局配色/字体 | `src\style.css`（CSS 变量） |
-| 目录之外 | 素材库 `D:\Eyphka\fish\` 下：`bible_databases\`、`马太亨利译注\`、`bible-cross-references-1.0\`（均只读） |
+| 目录之外 | 素材库 `D:\Eyphka\fish\` 下：`bible_databases\`、`马太亨利译注\`、`bible-cross-references\`、`chiuns-copy\`、`strong-lexicons\`、`calvin-commentaries\`、`crosswire-commentaries\`（均只读，目录导航见根 README.md） |
