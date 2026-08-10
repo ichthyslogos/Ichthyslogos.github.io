@@ -22,7 +22,7 @@ public/data/brp/commentary/manifest.json + <sourceKey>/<bookId>.json（运行时
 **传统分类（tradition，9 个固定 key）**：`church-fathers` 教父著作 / `catholic` 天主教传统 / `lutheran` 路德宗 / `reformed` 改革宗 / `baptist` 浸信会 / `methodist` 卫理公会 / `anglican` 圣公会 / `pentecostal` 五旬节派 / `evangelical` 福音派（各传统下的候选源清单见 ROADMAP）。
 
 **新增注释源三步**（未来增加第二个人/注释集）：
-1. 生成符合格式的 JSON 放入 `data-src/brp/commentary/<tradition>/<key>/<bookId>.json`
+1. 生成符合格式的 JSON 放入 `data-src/brp/commentary/<tradition>/<key>/<bookId>.json`（模板见 `data-src/brp/commentary/_template/`，含填写说明）
 2. 运行 `npm run data`
 3. 前端自动多出该源（`CommentaryPanel` 显示来源标识与 tradition；面板已预留多源切换结构）
 

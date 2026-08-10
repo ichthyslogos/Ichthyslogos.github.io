@@ -147,9 +147,11 @@ function buildCommentary() {
   if (!existsSync(COMMENT_SRC)) return
   const sources = []
   for (const tradition of readdirSync(COMMENT_SRC)) {
+    if (tradition.startsWith('_')) continue // 模板目录（_template）不参与构建
     const tDir = join(COMMENT_SRC, tradition)
     if (!statIsDir(tDir)) continue
     for (const key of readdirSync(tDir)) {
+      if (key.startsWith('_')) continue
       const dir = join(tDir, key)
       if (!statIsDir(dir)) continue
       const books = []
