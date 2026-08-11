@@ -1,0 +1,11 @@
+[
+  { "id": "commentaries", "zh": "注释书", "en": "Commentaries", "desc": "逐卷/逐节圣经注释" },
+  { "id": "church-fathers", "zh": "教父著作", "en": "Church Fathers", "desc": "早期教会教父的作品与布道" },
+  { "id": "reformed", "zh": "改革宗经典", "en": "Reformed Classics", "desc": "宗教改革及改革宗神学经典" },
+  { "id": "theology", "zh": "神学论著", "en": "Theology", "desc": "系统神学、释经学、护教学著作" },
+  { "id": "devotion", "zh": "灵修作品", "en": "Devotion", "desc": "灵修、祷告、默想类作品" },
+  { "id": "history", "zh": "教会历史", "en": "Church History", "desc": "教会历史与传记" },
+  { "id": "scripture-tools", "zh": "圣经工具", "en": "Scripture Tools", "desc": "词典、汇编、串珠、原文工具" },
+  { "id": "music", "zh": "圣乐音频", "en": "Sacred Music", "desc": "圣诗、咏唱、讲道音频" },
+  { "id": "images", "zh": "图册", "en": "Images", "desc": "圣像、地图、图解资料" }
+]

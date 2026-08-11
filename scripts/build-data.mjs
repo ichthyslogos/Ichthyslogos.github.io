@@ -345,7 +345,71 @@ function buildStrongLexicon() {
   console.log(`[build-data] Strong 词典合计 ${totalSegs} 段`)
 }
 
+/* ============ 图书馆书目（子数据库：分类 → 书目 → 文件直链） ============
+ * 源：data-src/library/
+ *     ├── content.meta.json   分类顺序（与护教约定一致）
+ *     ├── categories.json     分类定义（id/zh/en/desc）
+ *     └── books/<bookId>.json 书目详情（元数据 + files[] 文件直链，_ 前缀文件跳过）
+ * 输出（public/data/library/）：
+ *     ├── content.json        索引（分类 + 书目轻量条目含搜索文本，书架/搜索用）
+ *     └── books/<bookId>.json 书目详情切片（按需加载）
+ * 书籍文件本体不在本站：按类别存放于独立 GitHub 仓库（library-books-*，Pages 直链），
+ * 收录流程与存储约束见 docs/LIBRARY.md。
+ */
+const LIB_SRC = join(SITE_ROOT, 'data-src', 'library')
+const LIB_OUT = join(SITE_ROOT, 'public', 'data', 'library')
+
+function buildLibrary() {
+  if (!existsSync(LIB_SRC)) return
+  mkdirSync(join(LIB_OUT, 'books'), { recursive: true })
+
+  const meta = readJson(join(LIB_SRC, 'content.meta.json'))
+  const categories = readJson(join(LIB_SRC, 'categories.json'))
+  const catById = new Map(categories.map((c) => [c.id, c]))
+
+  const booksDir = join(LIB_SRC, 'books')
+  const indexBooks = []
+  let total = 0
+  // 书目顺序：分类顺序 → 书名（readdirSync 是字母序，按 meta.categories 归并）
+  const byCat = new Map()
+  for (const f of readdirSync(booksDir)) {
+    if (!f.endsWith('.json') || f.startsWith('_')) continue
+    const book = readJson(join(booksDir, f))
+    if (book.id !== f.replace(/\.json$/, '')) {
+      throw new Error(`[build-data] 书目 id 与文件名不符：${book.id} != ${f}`)
+    }
+    if (!catById.has(book.category)) {
+      throw new Error(`[build-data] 书目 ${book.id} 的分类未登记：${book.category}`)
+    }
+    // 详情切片（原样）
+    writeFileSync(join(LIB_OUT, 'books', `${book.id}.json`), JSON.stringify(book))
+    // 索引条目（轻量：元数据 + 搜索文本，不含 description 长文）
+    indexBooks.push({
+      id: book.id,
+      category: book.category,
+      title: book.title,
+      author: book.author || '',
+      lang: book.lang || 'und',
+      year: book.year || '',
+      tags: book.tags || [],
+      cover: book.cover || '',
+      fileCount: (book.files || []).length,
+      formats: [...new Set((book.files || []).map((f) => f.format))],
+      searchText: `${book.title} ${book.author || ''} ${(book.tags || []).join(' ')} ${book.category}`.toLowerCase(),
+    })
+    total++
+  }
+  indexBooks.sort((a, b) => {
+    const d = (meta.categories.indexOf(a.category) - meta.categories.indexOf(b.category)) || a.title.localeCompare(b.title, 'zh')
+    return d
+  })
+  writeFileSync(join(LIB_OUT, 'content.json'), JSON.stringify({ source: meta.source, categories, books: indexBooks }))
+  console.log(`[build-data] 图书馆：${categories.length} 分类 / ${total} 书目（索引 + 详情切片）`)
+  console.log(`[build-data] 输出 -> public/data/library/`)
+}
+
 buildCommentary()
 buildApologetics()
+buildLibrary()
 buildStrong()
 buildStrongLexicon()

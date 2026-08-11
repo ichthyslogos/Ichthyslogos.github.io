@@ -177,6 +177,24 @@ export async function fetchApologeticsTopic(topicId) {
   return fetchJson(`${APOLOG_BASE}topics/${topicId}.json`)
 }
 
+/* ============ 图书馆书目数据 ============
+ * 运行时数据位于 public/data/library/：
+ *   content.json        索引（分类定义 + 书目轻量条目，书架/搜索用）
+ *   books/<bookId>.json 书目详情（元数据 + 文件直链清单，按需加载 + 缓存）
+ * 书籍文件本体存放于独立 GitHub 仓库（library-books-*，Pages 直链），不在本站。
+ */
+const LIB_BASE = 'data/library/'
+
+/** 加载图书馆索引（{ source, categories: [...], books: [...] }），自动缓存 */
+export async function fetchLibraryIndex() {
+  return fetchJson(LIB_BASE + 'content.json')
+}
+
+/** 加载单本书目详情（{ id, title, author, description, files: [{url, format, size, title}] }），按需加载 + 缓存 */
+export async function fetchLibraryBook(bookId) {
+  return fetchJson(`${LIB_BASE}books/${bookId}.json`)
+}
+
 /* ============ Strong 逐词数据（和合本简体标注层） ============
  * 运行时数据位于 public/data/brp/strong/books/<bookId>.json（按卷切片 + 缓存）
  * 结构：{ key:'chiuns', book:{ id, chapters:[{chapter, verses:[{verse, words:[{t,s,m}]}]}] } }

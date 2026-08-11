@@ -16,6 +16,7 @@
     "data": "npm run data:import && npm run data:build && npm run data:crossrefs"
   },
   "dependencies": {
+    "epubjs": "^0.3.93",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },

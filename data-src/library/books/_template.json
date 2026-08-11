@@ -1,0 +1,19 @@
+{
+  "id": "your-book-id",
+  "category": "commentaries",
+  "title": "书名",
+  "author": "作者（生卒年）",
+  "lang": "zh",
+  "year": "出版年份（可空）",
+  "description": "简介（2-4 句，将展示在详情页）",
+  "tags": ["标签", "用于搜索"],
+  "cover": "封面图 URL（可空）",
+  "files": [
+    {
+      "title": "文件说明（如：PDF 扫描版 / EPUB 电子版）",
+      "format": "pdf",
+      "size": 1234567,
+      "url": "https://ichthyslogos.github.io/library-books-<类别>/路径/文件.pdf"
+    }
+  ]
+}
