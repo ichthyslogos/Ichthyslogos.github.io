@@ -200,3 +200,14 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 - **查看数据**：部署后访问 Umami 面板（仪表盘：访问量/来源/地域/设备/页面）
 - **验证**：生产环境页面加载后，控制台 Network 中可见 `cloud.umami.is/script.js` 请求；本地无此请求
 - **故障影响**：脚本 `defer` 异步加载，失败不影响站点功能
+
+### 页面展示累计访问（首页页脚小字）
+
+首页页脚通过**不蒜子（busuanzi）**低调展示累计访问量（免费、无需注册/token），实现在 `index.html` 脚本注入 + `src/views/Home.vue` 主动拉取：
+
+- **脚本**：`index.html` 注入 `https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js`（async）
+- **读取**：busuanzi 暴露全局 `bszCaller.fetch`（JSONP），`Home.vue` 轮询等其就绪后主动拉取 `site_pv`（不依赖脚本自动填充 span 的时序——Vue 渲染 span 前脚本可能已执行完）；成功或 30s 超时即停
+- **展示**：页脚第二行小字「本站累计访问 N 次」（0.68rem 淡灰，不起眼位置；万单位格式化）
+- **⚠️ 本地数值**：busuanzi 把所有 `localhost` 访问归入同一**共享计数池**（全球累计，非本站数据）；生产域名按域名独立计数，部署后显示本站真实累计
+- **容错**：脚本加载失败 / 接口超时 → 访问量静默隐藏，不影响页面与其他统计项
+- **更换**：如 busuanzi 服务不可用，可替换为同协议的自建/镜像地址（占位 ID 不变）

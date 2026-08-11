@@ -49,8 +49,8 @@ watch(
   display: flex;
   gap: 2px;
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid var(--line);
-  background: #fff;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--panel);
   overflow-x: auto;
   scrollbar-gutter: stable;
   flex-shrink: 0;
@@ -58,16 +58,17 @@ watch(
 .chapter-tab {
   min-width: 2.1rem;
   padding: 0.2rem 0.4rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-soft);
   border-radius: 4px;
-  background: #fff;
+  background: var(--panel);
   color: var(--muted);
   font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .chapter-tab:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--gold);
+  color: var(--gold);
 }
 .chapter-tab.active {
   background: var(--accent);

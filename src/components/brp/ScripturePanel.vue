@@ -209,7 +209,7 @@ function verseRefs(verse) {
   flex-wrap: wrap;
   gap: 0.6rem;
   padding: 0.9rem 1.4rem;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--line-soft);
 }
 .head-left {
   display: flex;
@@ -221,24 +221,31 @@ function verseRefs(verse) {
 .menu-btn {
   display: none;
   border: 1px solid var(--line);
-  border-radius: 6px;
-  background: #fff;
+  border-radius: var(--radius-md);
+  background: var(--panel);
   color: var(--text);
   font-size: 1.05rem;
   line-height: 1;
   padding: 0.32rem 0.55rem;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .menu-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--gold);
+  color: var(--gold);
 }
+/* 标题：衬线书名 + 金棕章节小字 */
 .panel-title {
   margin: 0;
-  font-size: 1.35rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text);
 }
 .chapter-label {
-  font-size: 1rem;
-  color: var(--muted);
+  font-size: 1.02rem;
+  color: var(--gold);
   font-weight: 500;
 }
 .panel-actions {
@@ -252,14 +259,14 @@ function verseRefs(verse) {
   align-items: center;
   gap: 0.45rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #fff;
+  border-radius: var(--radius-pill);
+  background: var(--panel);
   padding: 0.24rem 0.55rem 0.24rem 0.7rem;
   cursor: pointer;
-  transition: border-color 0.15s ease;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 .strong-toggle:hover {
-  border-color: var(--accent);
+  border-color: var(--gold);
 }
 .st-label {
   font-size: 0.78rem;
@@ -274,12 +281,12 @@ function verseRefs(verse) {
   position: relative;
   width: 1.7rem;
   height: 0.95rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: #cfd5dc;
   transition: background 0.18s ease;
 }
 .strong-toggle.on .st-switch {
-  background: var(--accent);
+  background: var(--gold);
 }
 .st-knob {
   position: absolute;
@@ -294,17 +301,23 @@ function verseRefs(verse) {
 .strong-toggle.on .st-knob {
   transform: translateX(0.72rem);
 }
+/* 解经按钮：墨黑胶囊主按钮 */
 .btn-commentary {
-  padding: 0.3rem 1rem;
+  padding: 0.34rem 1.05rem;
   border: none;
-  border-radius: 6px;
-  background: #1f6f4a;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
   color: #fff;
   font-size: 0.9rem;
+  font-weight: 600;
   white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 .btn-commentary:hover {
-  background: #185a3d;
+  background: #000;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 /* 滚动容器贴面板右缘（紧邻解经面板），滚动条显示在容器边缘 */
 .scripture-scroll {
@@ -363,8 +376,14 @@ function verseRefs(verse) {
     transform: translateX(0.63rem);
   }
   .btn-commentary {
-    padding: 0.25rem 0.7rem;
+    padding: 0.26rem 0.75rem;
     font-size: 0.85rem;
+  }
+  .panel-title {
+    font-size: 1.12rem;
+  }
+  .chapter-label {
+    font-size: 0.9rem;
   }
   .scripture-body {
     padding: 0.75rem 0.9rem 2.5rem;

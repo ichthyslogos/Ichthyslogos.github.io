@@ -28,18 +28,18 @@ const emit = defineEmits(['select'])
   border: none;
   background: transparent;
   padding: 0.75rem 0.8rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 0.93rem;
-  color: #3f4a56;
+  color: #4a5662;
   cursor: pointer;
   line-height: 1.55;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .question-item:hover {
-  background: #f8f5ef;
+  background: var(--gold-soft);
 }
 .question-item.active {
-  background: #1f2937;
+  background: var(--ink);
   color: #fff;
   font-weight: 600;
 }
@@ -47,7 +47,7 @@ const emit = defineEmits(['select'])
   flex-shrink: 0;
   font-size: 0.75rem;
   font-weight: 700;
-  color: #8b7355;
+  color: var(--gold);
   margin-top: 0.22rem;
   font-variant-numeric: tabular-nums;
 }

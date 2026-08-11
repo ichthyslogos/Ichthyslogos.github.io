@@ -255,21 +255,24 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--line);
-  background: #fbfcfd;
+  border-left: 1px solid var(--line-soft);
+  background: var(--panel);
 }
 .panel-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.7rem 1rem;
-  border-bottom: 1px solid var(--line);
-  background: #fff;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--panel);
 }
 .panel-title {
   margin: 0;
-  font-size: 1rem;
-  color: var(--accent);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.04em;
 }
 .panel-close {
   border: none;
@@ -277,9 +280,12 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   color: var(--muted);
   font-size: 0.95rem;
   padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-sm);
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 .panel-close:hover {
   color: var(--text);
+  background: var(--line-soft);
 }
 .panel-body {
   flex: 1;
@@ -309,7 +315,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
 /* 语言标签：版本选择按钮旁的小胶囊，点击切换组内语言 */
 .lang-tag {
   border: 1px solid var(--accent);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--accent-soft);
   color: var(--accent);
   font-size: 0.72rem;
@@ -318,6 +324,7 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .lang-tag:hover {
   background: var(--accent);
@@ -325,23 +332,26 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
 }
 .toggle-all {
   border: 1px solid var(--line);
-  border-radius: 6px;
-  background: #fff;
+  border-radius: var(--radius-pill);
+  background: var(--panel);
   color: var(--muted);
   font-size: 0.75rem;
-  padding: 0.1rem 0.55rem;
+  padding: 0.12rem 0.6rem;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .toggle-all:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--gold);
+  color: var(--gold);
 }
+/* 章概要：金棕左边线导语 */
 .commentary-summary {
   font-size: 0.95rem;
   color: var(--text);
   line-height: 1.9;
   margin: 0 0 1.2rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 1px solid var(--line);
+  padding: 0.15rem 0 0.8rem 0.85rem;
+  border-left: 3px solid var(--gold);
   white-space: pre-line;
 }
 .commentary-section {
@@ -357,14 +367,15 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   border: none;
   background: transparent;
   padding: 0.35rem 0.3rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-weight: 700;
   font-size: 0.92rem;
   color: var(--text);
   cursor: pointer;
+  transition: background var(--dur) var(--ease);
 }
 .commentary-heading:hover {
-  background: var(--accent-soft);
+  background: var(--gold-soft);
 }
 .chevron {
   font-size: 0.7rem;
@@ -384,14 +395,15 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* 经节范围徽章：金棕 */
 .commentary-ref {
   flex-shrink: 0;
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border-radius: 4px;
-  padding: 0.05rem 0.4rem;
+  color: var(--gold);
+  background: var(--gold-soft);
+  border-radius: var(--radius-sm);
+  padding: 0.05rem 0.45rem;
 }
 .commentary-text {
   margin: 0;

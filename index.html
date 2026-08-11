@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <title>FISH 鱼与饼 · 基督教研究平台</title>
+    <title>FISH · 基督教研究平台</title>
     <script>
       // Umami 访问统计：仅生产域名加载（本地开发不计入统计，避免污染数据）
       if (location.hostname !== 'localhost') {
@@ -14,6 +14,14 @@
         s.setAttribute('defer', '')
         document.head.appendChild(s)
       }
+      // 不蒜子（busuanzi）访问计数：免费、无注册；按域名隔离统计（localhost 不影响线上）。
+      // 脚本加载后填充 <span id="busuanzi_value_site_pv">，首页统计带读取该值展示。
+      ;(function () {
+        var s = document.createElement('script')
+        s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js'
+        s.async = true
+        document.head.appendChild(s)
+      })()
     </script>
   </head>
   <body>

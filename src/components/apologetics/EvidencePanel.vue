@@ -42,21 +42,21 @@ const visibleCats = computed(() => CATS.filter((c) => props.evidence?.[c.key]?.l
 <style scoped>
 .evidence-panel {
   margin-top: 1.1rem;
-  background: #f8f5ef;
-  border: 1px solid #efe9dd;
-  border-radius: 8px;
+  background: var(--gold-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
   padding: 0.9rem 1.1rem 1rem;
 }
 .ep-title {
   font-size: 0.72rem;
   font-weight: 700;
-  color: #8b7355;
+  color: var(--gold);
   letter-spacing: 0.14em;
   margin-bottom: 0.55rem;
 }
 .ep-cat {
   padding: 0.4rem 0;
-  border-top: 1px solid #efe9dd;
+  border-top: 1px solid var(--line);
 }
 .ep-cat:first-of-type {
   border-top: none;
@@ -64,7 +64,7 @@ const visibleCats = computed(() => CATS.filter((c) => props.evidence?.[c.key]?.l
 .ep-cat-label {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text);
   margin-bottom: 0.35rem;
 }
 .ep-item {
@@ -80,13 +80,13 @@ const visibleCats = computed(() => CATS.filter((c) => props.evidence?.[c.key]?.l
   flex-shrink: 0;
   font-size: 0.85rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text);
 }
 .ep-note {
   flex: 1;
   min-width: 0;
   font-size: 0.8rem;
-  color: #8a93a0;
+  color: var(--muted);
   line-height: 1.6;
 }
 </style>

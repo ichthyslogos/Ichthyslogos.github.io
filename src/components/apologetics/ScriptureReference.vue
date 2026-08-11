@@ -63,26 +63,26 @@ const target = computed(() => {
   flex-shrink: 0;
   font-size: 0.85rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text);
 }
 .sr-note {
   flex: 1;
   min-width: 0;
   font-size: 0.8rem;
-  color: #8a93a0;
+  color: var(--muted);
   line-height: 1.6;
 }
 .sr-go {
   flex-shrink: 0;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #8b7355;
-  transition: color 0.15s ease;
+  color: var(--gold);
+  transition: color var(--dur) var(--ease);
 }
 .scripture-ref:hover .sr-go {
-  color: #1f2937;
+  color: var(--text);
 }
 .scripture-ref:hover .sr-ref {
-  color: #8b7355;
+  color: var(--gold);
 }
 </style>

@@ -94,9 +94,10 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
   margin: 0.9rem;
 }
@@ -106,8 +107,8 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   gap: 0.6rem;
   padding: 0.55rem 0.9rem;
-  border-bottom: 1px solid var(--line);
-  background: #fbfcfd;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--panel);
 }
 .reader-title {
   font-size: 0.9rem;
@@ -126,10 +127,10 @@ onBeforeUnmount(() => {
 .btn {
   font-size: 0.78rem;
   padding: 0.24rem 0.75rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--accent);
   color: var(--accent);
-  background: #fff;
+  background: var(--panel);
   cursor: pointer;
   text-decoration: none;
 }
@@ -149,20 +150,20 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   border: none;
-  background: #f4f5f6;
+  background: var(--bg);
 }
 .epub-holder {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  background: #f4f5f6;
+  background: var(--bg);
 }
 .audio-wrap {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f4f5f6;
+  background: var(--bg);
 }
 .audio-player {
   width: min(26rem, 90%);
@@ -172,7 +173,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f4f5f6;
+  background: var(--bg);
   padding: 0.6rem;
 }
 .image-wrap img {

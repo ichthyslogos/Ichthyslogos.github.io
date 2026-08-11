@@ -72,8 +72,8 @@ watch(() => props.activeBookId, scrollActiveIntoView)
   flex-shrink: 0;
   overflow-y: auto;
   scrollbar-gutter: stable;
-  background: #fbfcfd;
-  border-right: 1px solid var(--line);
+  background: var(--panel);
+  border-right: 1px solid var(--line-soft);
   padding: 0.8rem 0;
 }
 /* 抽屉头部：仅移动端（≤900px）显示关闭按钮 */
@@ -125,8 +125,8 @@ watch(() => props.activeBookId, scrollActiveIntoView)
     align-items: center;
     justify-content: space-between;
     padding: 0.7rem 1rem;
-    border-bottom: 1px solid var(--line);
-    background: #fbfcfd;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--panel);
   }
   .sidebar-head-title {
     font-size: 0.95rem;

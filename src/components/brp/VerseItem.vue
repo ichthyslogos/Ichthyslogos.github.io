@@ -57,7 +57,12 @@ const wordTitle = (w) => {
       :aria-expanded="open"
       :title="open ? '收起串珠引用' : '串珠引用'"
       @click="open = !open"
-    >🔗</button>
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+      </svg>
+    </button>
     <span v-if="open" class="ref-pop">
       <span v-for="(r, i) in refs" :key="i" class="ref-group">
         <span v-if="r.anchor" class="ref-anchor">「{{ r.anchor }}」</span>
@@ -82,17 +87,20 @@ const wordTitle = (w) => {
   line-height: 2;
 }
 .verse-item:hover {
-  background: #fafafb;
+  background: rgba(139, 115, 85, 0.045);
 }
+/* 节号：金棕衬线小号 */
 .verse-num {
   display: inline-block;
   min-width: 1.6rem;
-  font-size: 0.78rem;
+  font-family: var(--serif);
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--gold);
   text-align: right;
   margin-right: 0.6rem;
   user-select: none;
+  font-variant-numeric: tabular-nums;
 }
 .verse-text {
   font-family: var(--serif);
@@ -121,28 +129,36 @@ const wordTitle = (w) => {
 }
 /* 串珠按钮：跟随经文行内显示 */
 .ref-btn {
-  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.45rem;
   border: none;
   background: transparent;
-  font-size: 0.85rem;
-  line-height: 1;
-  padding: 0.1rem 0.25rem;
+  color: var(--gold);
+  padding: 0.12rem;
   cursor: pointer;
-  opacity: 0.55;
+  opacity: 0.5;
   vertical-align: middle;
+  border-radius: 6px;
+  transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.ref-btn svg {
+  width: 0.82rem;
+  height: 0.82rem;
 }
 .ref-btn:hover,
 .ref-btn[aria-expanded='true'] {
   opacity: 1;
+  background: var(--gold-soft);
 }
-/* 串珠面板：独立成行，跟随节后 */
+/* 串珠面板：独立成行，米金底 + 金棕左边线（与护教质疑卡呼应） */
 .ref-pop {
   display: block;
   margin: 0.15rem 0 0.35rem 2.3rem;
-  padding: 0.35rem 0.6rem;
-  background: #f4f7fb;
-  border-left: 3px solid var(--accent);
-  border-radius: 0 6px 6px 0;
+  padding: 0.4rem 0.65rem;
+  background: var(--gold-soft);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-size: 0.82rem;
   line-height: 1.8;
 }
@@ -160,11 +176,12 @@ const wordTitle = (w) => {
   margin: 0.1rem 0.25rem 0.1rem 0;
   padding: 0.05rem 0.5rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #fff;
+  border-radius: var(--radius-pill);
+  background: var(--panel);
   color: var(--accent);
   font-size: 0.78rem;
   cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 .ref-target:hover {
   border-color: var(--accent);

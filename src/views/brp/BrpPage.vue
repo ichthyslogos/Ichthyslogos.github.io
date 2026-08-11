@@ -160,7 +160,7 @@ const pendingScroll = ref(null) // { bookId, ch, vsNum }
 /** vs 字符串（"22-24"/"6,9"）→ 首个节号 */
 const firstVerseOf = (vs) => Number(String(vs).match(/\d+/)?.[0])
 
-/** 尝试滚动定位 pendingScroll；条件满足（目标章已渲染）则滚动并清空 */
+/** 尝试滚动定位 pendingScroll；条件满足（目标章已渲染）则滚动、高亮并清空 */
 function tryScroll() {
   const p = pendingScroll.value
   if (!p) return
@@ -172,6 +172,10 @@ function tryScroll() {
   const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 8
   sc.scrollTop = Math.max(0, top)
   pendingScroll.value = null
+  // 目标节高亮（金棕底 + 描边，2.2s 后自动消退；重复跳转会重置计时）
+  el.classList.add('goto-highlight')
+  if (el._hlTimer) clearTimeout(el._hlTimer)
+  el._hlTimer = setTimeout(() => el.classList.remove('goto-highlight'), 2200)
 }
 
 function onGotoVerse(target) {
@@ -318,18 +322,20 @@ function onToggleMenu() {
   z-index: 100;
   padding: 0.6rem 1.4rem;
   border: none;
-  border-radius: 999px;
-  background: var(--accent);
+  border-radius: var(--radius-pill);
+  background: var(--ink);
   color: #fff;
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   white-space: nowrap;
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .back-fab:hover {
-  filter: brightness(1.08);
+  background: #000;
+  transform: translateX(-50%) translateY(-1px);
 }
 .fab-enter-active,
 .fab-leave-active {

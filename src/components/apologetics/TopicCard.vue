@@ -26,17 +26,18 @@ const emit = defineEmits(['select'])
 .topic-card {
   display: flex;
   flex-direction: column;
-  border: 1px solid #eae5db;
-  border-radius: 10px;
-  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  background: var(--panel);
   padding: 1.4rem 1.5rem 1.3rem;
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .topic-card:hover,
 .topic-card:focus-visible {
-  border-color: #8b7355;
-  box-shadow: 0 6px 20px rgba(31, 41, 55, 0.07);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
   outline: none;
 }
@@ -50,17 +51,17 @@ const emit = defineEmits(['select'])
   margin: 0;
   font-size: 1.28rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text);
   line-height: 1.4;
 }
 .t-arrow {
   flex-shrink: 0;
   font-size: 1.15rem;
-  color: #8a93a0;
-  transition: color 0.15s ease, transform 0.15s ease;
+  color: var(--muted);
+  transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .topic-card:hover .t-arrow {
-  color: #8b7355;
+  color: var(--gold);
   transform: translateX(3px);
 }
 .t-en {
@@ -82,12 +83,12 @@ const emit = defineEmits(['select'])
   justify-content: space-between;
   gap: 0.6rem;
   padding-top: 0.75rem;
-  border-top: 1px solid #f0ece2;
+  border-top: 1px solid var(--line-soft);
 }
 .t-count {
   font-size: 0.78rem;
   font-weight: 600;
-  color: #8b7355;
+  color: var(--gold);
 }
 .t-tags {
   font-size: 0.75rem;

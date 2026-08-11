@@ -31,22 +31,24 @@ const FORMAT_NAMES = { pdf: 'PDF', epub: 'EPUB', audio: '音频', image: '图' }
 .book-card {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
   text-align: left;
   padding: 0;
   cursor: pointer;
-  transition: box-shadow 0.18s ease, transform 0.18s ease;
+  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 .book-card:hover {
-  box-shadow: 0 6px 18px rgba(20, 28, 38, 0.12);
-  transform: translateY(-2px);
+  border-color: var(--line);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
 }
 .book-cover {
   aspect-ratio: 3 / 4;
-  background: var(--accent-soft);
+  background: linear-gradient(160deg, var(--accent-soft) 0%, var(--gold-soft) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,7 +65,7 @@ const FORMAT_NAMES = { pdf: 'PDF', epub: 'EPUB', audio: '音频', image: '图' }
   opacity: 0.85;
 }
 .book-meta {
-  padding: 0.55rem 0.7rem 0.65rem;
+  padding: 0.6rem 0.75rem 0.7rem;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -95,7 +97,7 @@ const FORMAT_NAMES = { pdf: 'PDF', epub: 'EPUB', audio: '音频', image: '图' }
   font-size: 0.66rem;
   color: var(--accent);
   border: 1px solid var(--accent);
-  border-radius: 3px;
+  border-radius: 4px;
   padding: 0 0.28rem;
   opacity: 0.85;
 }

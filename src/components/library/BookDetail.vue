@@ -99,8 +99,8 @@ function fmtSize(n) {
   overflow-y: auto;
   scrollbar-gutter: stable;
   padding: 1.2rem 1.3rem 2rem;
-  border-right: 1px solid var(--line);
-  background: #fbfcfd;
+  border-right: 1px solid var(--line-soft);
+  background: var(--panel);
 }
 .back-btn {
   border: none;
@@ -117,13 +117,14 @@ function fmtSize(n) {
 .detail-cover {
   width: 7.5rem;
   aspect-ratio: 3 / 4;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background: var(--accent-soft);
+  background: linear-gradient(160deg, var(--accent-soft) 0%, var(--gold-soft) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 0.9rem;
+  box-shadow: var(--shadow-sm);
 }
 .detail-cover img {
   width: 100%;
@@ -175,9 +176,10 @@ function fmtSize(n) {
   gap: 0.45rem;
 }
 .file-item {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
   padding: 0.55rem 0.8rem;
 }
 .file-info {
@@ -217,10 +219,10 @@ function fmtSize(n) {
 .btn {
   font-size: 0.78rem;
   padding: 0.26rem 0.8rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--accent);
   color: var(--accent);
-  background: #fff;
+  background: var(--panel);
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
@@ -242,7 +244,7 @@ function fmtSize(n) {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  background: #f4f5f6;
+  background: var(--bg);
 }
 .preview-placeholder {
   flex: 1;

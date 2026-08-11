@@ -30,19 +30,20 @@ const emit = defineEmits(['update:modelValue'])
   align-items: center;
   gap: 0.6rem;
   max-width: 34rem;
-  border: 1px solid #e4dfd4;
-  border-radius: 999px;
-  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--panel);
   padding: 0.5rem 1rem;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 .search-bar:focus-within {
-  border-color: #8b7355;
+  border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
 }
 .search-icon {
   flex-shrink: 0;
-  color: #8a93a0;
+  color: var(--muted);
 }
 .search-input {
   flex: 1;
@@ -51,7 +52,7 @@ const emit = defineEmits(['update:modelValue'])
   outline: none;
   background: transparent;
   font-size: 0.92rem;
-  color: #1f2937;
+  color: var(--text);
 }
 .search-input::placeholder {
   color: #a7adb6;
@@ -63,10 +64,10 @@ const emit = defineEmits(['update:modelValue'])
   color: #a7adb6;
   font-size: 0.8rem;
   padding: 0.2rem 0.4rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 .search-clear:hover {
-  color: #1f2937;
-  background: #f3f4f6;
+  color: var(--text);
+  background: var(--line-soft);
 }
 </style>

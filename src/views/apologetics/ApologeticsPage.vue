@@ -3,10 +3,12 @@
  * ApologeticsPage — 护教页面（帮助人理解基督信仰为何具有合理性）
  * 数据驱动：public/data/apologetics/content.json
  *   结构：topics[].sub_questions[].{ question, objection, responses: [{ title, summary, text, evidence }] }
- * 布局（设计语言：Minimal / Elegant / Sacred / Academic / Readable）：
- *   - 探索视图：Hero（米白纸感 + 金棕细线装饰）→ 搜索 → 主题卡片网格 → 相关问题直达
- *   - 主题视图：面包屑 + 主题头（中英标题/描述/标签）→ 两栏（左子问题列表 / 右：质疑 → 多回应 → 证据 → 相关学习）
+ * 布局（设计语言：现代出版风浅色 + 金棕学术点缀）：
+ *   - 探索视图：Hero（眉题/大标题/副题/CTA/统计）→ 搜索 → 主题卡片网格 → 相关问题直达
+ *   - 主题视图：面包屑 + 主题头（中英标题/描述/标签）→ 两栏（左子问题列表 / 右：质疑 → 回应 → 证据 → 相关学习）
  *   - 移动端：探索网格单列；主题视图两段式（list/detail）
+ * 版权合规：主题描述标记「《游子吟》全文归档」的内容为受版权保护全文，
+ *   恢复展示时正文（text）不渲染，改以摘要 + 版权提示呈现（详见 markCopyright）。
  */
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -44,8 +46,13 @@ onMounted(async () => {
   }
 })
 
-/** 探索视图用的主题元数据列表（来自索引） */
-const topics = computed(() => index.value?.topics || [])
+/** 探索视图用的主题元数据列表（来自索引；描述清洗「全文归档」字样为中性表达） */
+const topics = computed(() => (index.value?.topics || []).map((t) => ({ ...t, description: cleanDesc(t.description) })))
+
+/** 描述清洗：「《游子吟》第X章全文归档：」→「《游子吟》第X章 · 」 */
+function cleanDesc(d) {
+  return (d || '').replace(/(《游子吟》第[一二三四五六七八九十]+章)全文归档：/, '$1 · ')
+}
 
 /** 全站统计：主题 / 问题（索引驱动） */
 const stats = computed(() => {
@@ -53,8 +60,12 @@ const stats = computed(() => {
   return { topics: topics.value.length, questions }
 })
 
-/** 当前主题完整数据（已加载的切片；未加载时 null → 主题视图显示加载态） */
-const currentTopic = computed(() => topicsData.value.get(activeTopicId.value) || null)
+/** 当前主题完整数据（已加载的切片；未加载时 null → 主题视图显示加载态）
+ *  描述同样清洗「全文归档」字样 */
+const currentTopic = computed(() => {
+  const t = topicsData.value.get(activeTopicId.value) || null
+  return t ? { ...t, description: cleanDesc(t.description) } : null
+})
 const currentSQ = computed(() => currentTopic.value?.sub_questions.find((q) => q.id === activeSQId.value) || null)
 
 /** 分类展开状态（默认全展开；Set 存展开的分类 id） */
@@ -66,6 +77,7 @@ async function ensureTopic(id) {
   topicLoading.value = true
   try {
     const t = await fetchApologeticsTopic(id)
+    markCopyright(t)
     topicsData.value.set(id, t)
     // 数据到达后确保子问题有效
     if (!t.sub_questions.some((q) => q.id === activeSQId.value)) {
@@ -77,6 +89,19 @@ async function ensureTopic(id) {
     return null
   } finally {
     topicLoading.value = false
+  }
+}
+
+/**
+ * 版权合规标记：主题描述含「《游子吟》…全文归档」→ 该主题全部子命题正文
+ * 为受版权保护全文（里程《游子吟》现代作品，不可公开展示全文）。
+ * 运行时为每个子命题派生 copyrighted 标志（不改动数据源），
+ * ResponseCard 据此隐藏全文、改显摘要与版权提示。
+ */
+function markCopyright(t) {
+  const flagged = /全文归档/.test(t.description || '')
+  for (const q of t.sub_questions || []) {
+    q.copyrighted = flagged || /游子吟/.test(q.text || '')
   }
 }
 
@@ -275,8 +300,9 @@ const otherQuestions = computed(() => {
             <p class="obj-text">{{ currentSQ.objection }}</p>
           </div>
 
-          <!-- 内容（子命题为最基层，question.json 即完整内容：标题/视角/核心思想/正文/证据） -->
-          <ResponseCard :r="currentSQ" />
+          <!-- 内容（子命题为最基层，question.json 即完整内容：标题/视角/核心思想/正文/证据；
+               copyrighted 子命题为受版权保护全文，正文隐藏改显摘要+提示） -->
+          <ResponseCard :r="currentSQ" :copyrighted="currentSQ.copyrighted" />
 
           <!-- 相关学习（Related Study） -->
           <div v-if="otherQuestions.length" class="related">
@@ -297,32 +323,23 @@ const otherQuestions = computed(() => {
 </template>
 
 <style scoped>
+/* 页面级色调：全局 token（现代出版风浅色）+ 金棕学术点缀（护教特色） */
 .apologetics {
-  /* 页面级色板（设计语言：灰黑学术 / 米白经典 / 金棕神圣） */
-  --p: #1f2937;
-  --p-soft: #f3f4f6;
-  --sec: #f8f5ef;
-  --acc: #8b7355;
-  --acc-soft: #f1ece2;
-  --line: #eae5db;
-  --line-soft: #f0ece2;
-  --text: #3f4a56;
-  --muted: #8a93a0;
   flex: 1;
-  background: #fff;
+  background: var(--bg);
 }
 
 .page-state {
   text-align: center;
   padding: 4rem 0;
-  color: #8a93a0;
+  color: var(--muted);
 }
 
-/* ===== Hero：米白纸感 + 金棕装饰线 ===== */
+/* ===== Hero：浅暖底 + 金棕装饰线 ===== */
 .hero {
   position: relative;
-  background: var(--sec);
-  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--gold-soft) 0%, var(--bg) 100%);
+  border-bottom: 1px solid var(--line-soft);
 }
 /* 左缘细十字线稿（低调装饰，非宗教渲染） */
 .hero::before {
@@ -346,36 +363,36 @@ const otherQuestions = computed(() => {
   transform: translateX(16px);
 }
 .hero-inner {
-  max-width: 68rem;
+  max-width: var(--content-w);
   margin: 0 auto;
-  padding: 5rem 6rem 4.4rem;
+  padding: 4.6rem 2rem 4rem;
 }
 .hero-eyebrow {
-  margin: 0 0 1.2rem;
-  font-size: 0.78rem;
+  margin: 0 0 1.1rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
-  color: var(--acc);
-  letter-spacing: 0.28em;
+  color: var(--gold);
+  letter-spacing: 0.26em;
 }
 .hero-title {
   margin: 0;
   font-family: var(--serif);
-  font-size: 3.4rem;
+  font-size: var(--fs-3xl);
   line-height: 1.18;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: var(--p);
+  color: var(--text);
 }
 .hero-sub {
-  margin: 1.1rem 0 0;
-  font-size: 1rem;
-  color: var(--acc);
+  margin: 1rem 0 0;
+  font-size: var(--fs-sm);
+  color: var(--gold);
   letter-spacing: 0.18em;
 }
 .hero-desc {
   margin: 1.1rem 0 0;
   max-width: 30rem;
-  font-size: 0.95rem;
+  font-size: var(--fs-sm);
   line-height: 1.95;
   color: var(--muted);
 }
@@ -383,24 +400,27 @@ const otherQuestions = computed(() => {
   display: flex;
   align-items: center;
   gap: 1.4rem;
-  margin-top: 2.2rem;
+  margin-top: 2.1rem;
   flex-wrap: wrap;
 }
 .btn-explore {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--p);
+  background: var(--ink);
   color: #fff;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
   padding: 0.62rem 1.6rem;
-  border-radius: 999px;
-  transition: background 0.15s ease;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 .btn-explore:hover {
-  background: #10161d;
+  background: #000;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
   text-decoration: none;
 }
 .btn-explore .arr {
@@ -408,16 +428,16 @@ const otherQuestions = computed(() => {
   line-height: 1;
 }
 .hero-stats {
-  font-size: 0.82rem;
+  font-size: var(--fs-xs);
   color: #a2957e;
   letter-spacing: 0.05em;
 }
 
 /* ===== 探索区 ===== */
 .explorer {
-  max-width: 68rem;
+  max-width: var(--content-w);
   margin: 0 auto;
-  padding: 2.8rem 6rem 4.5rem;
+  padding: 2.8rem 2rem 4.5rem;
   scroll-margin-top: 1rem;
 }
 .explorer-head {
@@ -428,11 +448,11 @@ const otherQuestions = computed(() => {
   font-family: var(--serif);
   font-size: 1.7rem;
   font-weight: 600;
-  color: var(--p);
+  color: var(--text);
 }
 .section-sub {
   margin: 0.4rem 0 0;
-  font-size: 0.88rem;
+  font-size: var(--fs-sm);
   color: var(--muted);
 }
 
@@ -440,16 +460,17 @@ const otherQuestions = computed(() => {
 .search-matches {
   margin-top: 1.4rem;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 .sm-title {
   margin: 0;
   padding: 0.6rem 1rem;
-  font-size: 0.75rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
-  color: var(--acc);
-  background: var(--sec);
+  color: var(--gold);
+  background: var(--gold-soft);
   letter-spacing: 0.1em;
 }
 .sm-item {
@@ -459,24 +480,24 @@ const otherQuestions = computed(() => {
   width: 100%;
   border: none;
   border-top: 1px solid var(--line-soft);
-  background: #fff;
+  background: var(--panel);
   padding: 0.7rem 1rem;
   text-align: left;
   cursor: pointer;
   font-size: 0.9rem;
   color: var(--text);
-  transition: background 0.12s ease;
+  transition: background var(--dur) var(--ease);
 }
 .sm-item:hover {
-  background: var(--sec);
+  background: var(--gold-soft);
 }
 .sm-topic {
   flex-shrink: 0;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
-  color: var(--acc);
+  color: var(--gold);
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 0.1rem 0.55rem;
 }
 .sm-q {
@@ -485,7 +506,7 @@ const otherQuestions = computed(() => {
 }
 .sm-arrow {
   flex-shrink: 0;
-  color: var(--acc);
+  color: var(--gold);
 }
 
 /* 主题网格 */
@@ -498,21 +519,23 @@ const otherQuestions = computed(() => {
 
 /* ===== 主题视图（全宽 padding：两栏阅读需要横向空间，正文行宽才舒适） ===== */
 .topic-head {
-  padding: 2.2rem 6rem 1.6rem;
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 2.2rem 2rem 1.6rem;
 }
 .back-all {
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--p);
-  font-size: 0.85rem;
+  border-radius: var(--radius-pill);
+  background: var(--panel);
+  color: var(--text);
+  font-size: var(--fs-sm);
   padding: 0.32rem 1.05rem;
   margin-bottom: 1.2rem;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .back-all:hover {
-  border-color: var(--acc);
-  color: var(--acc);
+  border-color: var(--gold);
+  color: var(--gold);
 }
 .topic-head-main {
   display: flex;
@@ -525,7 +548,7 @@ const otherQuestions = computed(() => {
   font-family: var(--serif);
   font-size: 2.4rem;
   font-weight: 600;
-  color: var(--p);
+  color: var(--text);
 }
 .topic-en {
   font-size: 1rem;
@@ -535,7 +558,7 @@ const otherQuestions = computed(() => {
 .topic-desc {
   margin: 0.8rem 0 0;
   max-width: 36rem;
-  font-size: 0.92rem;
+  font-size: var(--fs-sm);
   line-height: 1.8;
   color: var(--muted);
 }
@@ -546,21 +569,23 @@ const otherQuestions = computed(() => {
   flex-wrap: wrap;
 }
 .tag {
-  font-size: 0.75rem;
+  font-size: var(--fs-xs);
   font-weight: 600;
-  color: var(--acc);
-  background: var(--acc-soft);
-  border-radius: 999px;
+  color: var(--gold);
+  background: var(--gold-soft);
+  border-radius: var(--radius-pill);
   padding: 0.16rem 0.7rem;
 }
 
 /* 两栏布局 */
 .layout {
-  padding: 1.4rem 6rem 4.5rem;
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 1.4rem 2rem 4.5rem;
   display: flex;
   align-items: flex-start;
   gap: 2.6rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-soft);
 }
 
 /* 左栏：子问题列表 */
@@ -574,7 +599,7 @@ const otherQuestions = computed(() => {
 }
 .ql-title {
   padding: 0.2rem 0.8rem 0.75rem;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   color: #a7adb6;
   letter-spacing: 0.16em;
@@ -593,17 +618,17 @@ const otherQuestions = computed(() => {
   border: none;
   background: transparent;
   padding: 0.5rem 0.8rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background var(--dur) var(--ease);
 }
 .cat-group:hover {
-  background: #f8f5ef;
+  background: var(--gold-soft);
 }
 .cg-arrow {
   flex-shrink: 0;
   font-size: 0.7rem;
-  color: #8b7355;
+  color: var(--gold);
   transition: transform 0.18s ease;
 }
 .cat-group.collapsed .cg-arrow {
@@ -614,7 +639,7 @@ const otherQuestions = computed(() => {
   min-width: 0;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text);
   letter-spacing: 0.04em;
 }
 .cg-count {
@@ -637,9 +662,9 @@ const otherQuestions = computed(() => {
   font-size: 1.6rem;
   line-height: 1.5;
   font-weight: 700;
-  color: var(--p);
+  color: var(--text);
   padding: 0 0 1.1rem 1.1rem;
-  border-left: 3px solid var(--acc);
+  border-left: 3px solid var(--gold);
 }
 
 /* 质疑卡 */
@@ -647,10 +672,10 @@ const otherQuestions = computed(() => {
   display: flex;
   gap: 0.9rem;
   align-items: flex-start;
-  background: var(--sec);
+  background: var(--gold-soft);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--acc);
-  border-radius: 8px;
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius-sm);
   padding: 0.95rem 1.2rem;
   margin-bottom: 1.8rem;
 }
@@ -659,8 +684,8 @@ const otherQuestions = computed(() => {
   font-size: 0.7rem;
   font-weight: 700;
   color: #fff;
-  background: var(--p);
-  border-radius: 999px;
+  background: var(--ink);
+  border-radius: var(--radius-pill);
   padding: 0.14rem 0.6rem;
   margin-top: 0.1rem;
 }
@@ -674,7 +699,7 @@ const otherQuestions = computed(() => {
 
 /* 回应列表 */
 .responses-label {
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   color: #a7adb6;
   letter-spacing: 0.14em;
@@ -685,13 +710,13 @@ const otherQuestions = computed(() => {
 .related {
   margin-top: 2.2rem;
   padding-top: 1.6rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-soft);
 }
 .related-title {
   margin: 0 0 0.8rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   font-weight: 700;
-  color: var(--acc);
+  color: var(--gold);
   letter-spacing: 0.12em;
 }
 .related-item {
@@ -704,24 +729,24 @@ const otherQuestions = computed(() => {
   font-size: 0.92rem;
   color: var(--text);
   cursor: pointer;
-  transition: color 0.12s ease;
+  transition: color var(--dur) var(--ease);
 }
 .related-item:hover {
-  color: var(--acc);
+  color: var(--gold);
 }
 .btn-brp {
   display: inline-block;
   margin-top: 0.9rem;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--p);
-  border: 1px solid var(--p);
-  border-radius: 999px;
+  color: var(--text);
+  border: 1px solid var(--text);
+  border-radius: var(--radius-pill);
   padding: 0.45rem 1.3rem;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .btn-brp:hover {
-  background: var(--p);
+  background: var(--text);
   color: #fff;
   text-decoration: none;
 }
@@ -733,19 +758,6 @@ const otherQuestions = computed(() => {
 
 /* ===== 中间宽度 ===== */
 @media (max-width: 1100px) {
-  .hero-inner {
-    padding: 4.2rem 2.5rem 3.6rem;
-  }
-  .explorer {
-    padding: 2.4rem 2.5rem 3.6rem;
-  }
-  .topic-head {
-    padding: 2rem 2.5rem 1.4rem;
-  }
-  .layout {
-    padding: 1.3rem 2.5rem 3.6rem;
-    gap: 2rem;
-  }
   .topic-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -759,10 +771,10 @@ const otherQuestions = computed(() => {
     top: 2.2rem;
   }
   .hero-inner {
-    padding: 3.6rem 1.5rem 3rem;
+    padding: 3.4rem 1.5rem 3rem;
   }
   .hero-title {
-    font-size: 2.4rem;
+    font-size: 2.3rem;
   }
   .hero-sub {
     font-size: 0.9rem;
@@ -806,10 +818,10 @@ const otherQuestions = computed(() => {
   }
   .question-item.active {
     background: transparent;
-    color: var(--p);
+    color: var(--text);
   }
   .question-item.active .q-num {
-    color: var(--acc);
+    color: var(--gold);
   }
   .question-item.active .q-count {
     color: var(--muted);
@@ -817,10 +829,10 @@ const otherQuestions = computed(() => {
   .back-questions {
     display: inline-block;
     border: 1px solid var(--line);
-    border-radius: 999px;
-    background: #fff;
-    color: var(--p);
-    font-size: 0.85rem;
+    border-radius: var(--radius-pill);
+    background: var(--panel);
+    color: var(--text);
+    font-size: var(--fs-sm);
     padding: 0.32rem 1rem;
     margin-bottom: 1.1rem;
   }

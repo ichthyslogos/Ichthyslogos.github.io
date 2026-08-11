@@ -8,7 +8,7 @@ defineProps({
 
 <template>
   <div class="empty-state">
-    <div class="empty-icon">⛵</div>
+    <div class="empty-icon" aria-hidden="true">⛵</div>
     <div class="empty-title">{{ title }}</div>
     <div v-if="message" class="empty-message">{{ message }}</div>
   </div>
@@ -26,8 +26,14 @@ defineProps({
   color: var(--muted);
 }
 .empty-icon {
-  font-size: 2.2rem;
-  opacity: 0.55;
+  width: 3.4rem;
+  height: 3.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
 }
 .empty-title {
   font-size: 1.05rem;

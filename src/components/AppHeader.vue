@@ -17,13 +17,14 @@ const flat = computed(() => route.name === 'home')
   <header class="app-header" :class="{ flat }">
     <div class="header-inner">
       <RouterLink to="/" class="brand">
-        <img :src="logoUrl" class="brand-logo" alt="FISH 鱼与饼 · 基督教研究平台" />
-        <span class="brand-name">FISH 鱼与饼</span>
+        <img :src="logoUrl" class="brand-logo" alt="FISH · 基督教研究平台" />
+        <span class="brand-name">FISH</span>
       </RouterLink>
 
       <nav class="nav">
         <RouterLink to="/">首页</RouterLink>
         <RouterLink to="/brp">读经研究</RouterLink>
+        <RouterLink to="/apologetics">护教</RouterLink>
         <RouterLink to="/library">图书馆</RouterLink>
       </nav>
     </div>
@@ -79,6 +80,7 @@ const flat = computed(() => route.name === 'home')
 .nav a {
   color: #4a4a4a;
   padding: 0.2rem 0.1rem;
+  transition: color var(--dur) var(--ease);
 }
 .nav a:hover {
   color: #101010;
@@ -87,21 +89,50 @@ const flat = computed(() => route.name === 'home')
 .nav a.router-link-active {
   color: #101010;
   font-weight: 600;
+  /* active 指示：底部金棕短线（移动端更清晰） */
+  position: relative;
+}
+.nav a.router-link-active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold);
 }
 
-/* 窄屏：紧凑品牌与导航 */
+/* 窄屏：紧凑品牌与导航（导航可横向滚动，防止溢出折行） */
 @media (max-width: 600px) {
   .header-inner {
     height: 54px;
-    padding: 0 1rem;
-    gap: 0.8rem;
+    padding: 0 0.9rem;
+    gap: 0.6rem;
+  }
+  .brand-logo {
+    height: 1.4rem;
   }
   .brand-name {
     display: none;
   }
   .nav {
-    gap: 1.2rem;
-    font-size: 0.88rem;
+    position: static;
+    transform: none;
+    gap: 1.1rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+  .nav a.router-link-active::after {
+    width: 14px;
+    bottom: -3px;
   }
 }
 </style>
