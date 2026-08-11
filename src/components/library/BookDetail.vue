@@ -1,10 +1,11 @@
 <script setup>
 /**
- * BookDetail — 书目详情（图书馆）
- * 元信息 + 描述 + 文件清单（每项：格式/大小/预览/下载）；
- * 预览由 ReaderPanel 按格式分发（PDF 内嵌 / EPUB epub.js / 音频 / 图片）。
+ * BookDetail — 书目详情（图书馆，左右分栏）
+ * 左栏：返回 + 封面 + 元信息 + 描述 + 文件清单（内容多时内部滚动）
+ * 右栏：预览常驻（自动预览第一个可预览文件；无预览时显示占位提示）
+ * 页面本身不滚动（整屏布局）；移动端退回上下布局（信息 + 下方预览）。
  */
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import ReaderPanel from './ReaderPanel.vue'
 
 const props = defineProps({
@@ -15,6 +16,13 @@ const emit = defineEmits(['back'])
 /** 当前预览中的文件（null = 无预览） */
 const activeFile = ref(null)
 
+/** 首个可预览文件（自动预览用） */
+const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
+const firstPreviewable = computed(
+  () => (props.book.files || []).find((f) => PREVIEWABLE.has(f.format)) || null,
+)
+activeFile.value = firstPreviewable.value
+
 const LANG_NAMES = { zh: '中文', en: '英文', la: '拉丁文', grc: '希腊文', he: '希伯来文', fr: '法文' }
 
 /** 字节 → 可读大小 */
@@ -24,65 +32,75 @@ function fmtSize(n) {
   if (n >= 1024) return `${(n / 1024).toFixed(0)} KB`
   return `${n} B`
 }
-
-/** 预览能力：当前支持的格式 */
-const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
 </script>
 
 <template>
   <div class="book-detail">
-    <button class="back-btn" @click="emit('back')">← 返回书架</button>
-    <div class="detail-head">
+    <!-- 左栏：书目信息 + 文件清单 -->
+    <aside class="detail-left">
+      <button class="back-btn" @click="emit('back')">← 返回书架</button>
       <div class="detail-cover">
         <img v-if="book.cover" :src="book.cover" :alt="book.title" />
         <div v-else class="cover-fallback">{{ (book.title || '?')[0] }}</div>
       </div>
-      <div class="detail-info">
-        <h1 class="detail-title">{{ book.title }}</h1>
-        <div class="detail-author">{{ book.author || '佚名' }}</div>
-        <div class="detail-tags">
-          <span v-if="book.year" class="tag">{{ book.year }}</span>
-          <span class="tag">{{ LANG_NAMES[book.lang] || book.lang || '未标注' }}</span>
-          <span v-for="t in book.tags" :key="t" class="tag">{{ t }}</span>
-        </div>
-        <p v-if="book.description" class="detail-desc">{{ book.description }}</p>
+      <h1 class="detail-title">{{ book.title }}</h1>
+      <div class="detail-author">{{ book.author || '佚名' }}</div>
+      <div class="detail-tags">
+        <span v-if="book.year" class="tag">{{ book.year }}</span>
+        <span class="tag">{{ LANG_NAMES[book.lang] || book.lang || '未标注' }}</span>
+        <span v-for="t in book.tags" :key="t" class="tag">{{ t }}</span>
       </div>
-    </div>
+      <p v-if="book.description" class="detail-desc">{{ book.description }}</p>
 
-    <h2 class="files-title">资料文件（{{ book.files?.length || 0 }}）</h2>
-    <div v-if="book.files?.length" class="file-list">
-      <div v-for="(f, i) in book.files" :key="i" class="file-item">
-        <div class="file-info">
-          <span class="file-fmt">{{ f.format }}</span>
-          <span class="file-name">{{ f.title || f.url }}</span>
-          <span v-if="f.size" class="file-size">{{ fmtSize(f.size) }}</span>
-        </div>
-        <div class="file-actions">
-          <button
-            v-if="PREVIEWABLE.has(f.format)"
-            class="btn"
-            :class="{ primary: activeFile === f }"
-            @click="activeFile = activeFile === f ? null : f"
-          >
-            {{ activeFile === f ? '收起预览' : '预览' }}
-          </button>
-          <a class="btn" :href="f.url" download :download="`${book.title}.${f.format}`">下载</a>
+      <h2 class="files-title">资料文件（{{ book.files?.length || 0 }}）</h2>
+      <div v-if="book.files?.length" class="file-list">
+        <div v-for="(f, i) in book.files" :key="i" class="file-item">
+          <div class="file-info">
+            <span class="file-fmt">{{ f.format }}</span>
+            <span class="file-name" :title="f.title || f.url">{{ f.title || f.url }}</span>
+            <span v-if="f.size" class="file-size">{{ fmtSize(f.size) }}</span>
+          </div>
+          <div class="file-actions">
+            <button
+              v-if="PREVIEWABLE.has(f.format)"
+              class="btn"
+              :class="{ primary: activeFile === f }"
+              @click="activeFile = activeFile === f ? null : f"
+            >
+              {{ activeFile === f ? '收起预览' : '预览' }}
+            </button>
+            <a class="btn" :href="f.url" download :download="`${book.title}.${f.format}`">下载</a>
+          </div>
         </div>
       </div>
-    </div>
-    <p v-else class="no-files">本书暂未提供文件。</p>
+      <p v-else class="no-files">本书暂未提供文件。</p>
+    </aside>
 
-    <ReaderPanel v-if="activeFile" :file="activeFile" :book-title="book.title" @close="activeFile = null" />
+    <!-- 右栏：预览常驻 -->
+    <section class="detail-right">
+      <ReaderPanel v-if="activeFile" :file="activeFile" :book-title="book.title" @close="activeFile = null" />
+      <div v-else class="preview-placeholder">
+        <p>选择上方文件即可预览</p>
+      </div>
+    </section>
   </div>
 </template>
 
 <style scoped>
+/* 整屏左右分栏：页面本身不滚动（删除滚轮），左栏内容多时内部滚动 */
 .book-detail {
   flex: 1;
+  display: flex;
+  min-height: 0;
+}
+.detail-left {
+  width: min(21rem, 30vw);
+  flex-shrink: 0;
   overflow-y: auto;
   scrollbar-gutter: stable;
-  padding: 1.2rem 1.4rem 3rem;
-  max-width: 52rem;
+  padding: 1.2rem 1.3rem 2rem;
+  border-right: 1px solid var(--line);
+  background: #fbfcfd;
 }
 .back-btn {
   border: none;
@@ -90,20 +108,14 @@ const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
   color: var(--accent);
   font-size: 0.9rem;
   padding: 0.2rem 0;
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
   cursor: pointer;
 }
 .back-btn:hover {
   text-decoration: underline;
 }
-.detail-head {
-  display: flex;
-  gap: 1.2rem;
-  margin-bottom: 1.6rem;
-}
 .detail-cover {
-  width: 8.5rem;
-  flex-shrink: 0;
+  width: 7.5rem;
   aspect-ratio: 3 / 4;
   border-radius: 8px;
   overflow: hidden;
@@ -111,6 +123,7 @@ const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 0.9rem;
 }
 .detail-cover img {
   width: 100%;
@@ -118,29 +131,26 @@ const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
   object-fit: cover;
 }
 .cover-fallback {
-  font-size: 3rem;
+  font-size: 2.6rem;
   font-weight: 700;
   color: var(--accent);
   opacity: 0.85;
 }
-.detail-info {
-  min-width: 0;
-}
 .detail-title {
   margin: 0 0 0.3rem;
-  font-size: 1.35rem;
-  line-height: 1.4;
+  font-size: 1.2rem;
+  line-height: 1.45;
 }
 .detail-author {
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   margin-bottom: 0.6rem;
 }
 .detail-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.8rem;
 }
 .tag {
   font-size: 0.72rem;
@@ -150,35 +160,32 @@ const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
   padding: 0.1rem 0.55rem;
 }
 .detail-desc {
-  font-size: 0.93rem;
-  line-height: 1.85;
+  font-size: 0.9rem;
+  line-height: 1.8;
   color: #3c4652;
-  margin: 0;
+  margin: 0 0 1.1rem;
 }
 .files-title {
-  font-size: 1.05rem;
-  margin: 0 0 0.7rem;
+  font-size: 1rem;
+  margin: 0 0 0.6rem;
 }
 .file-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 .file-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
-  padding: 0.6rem 0.9rem;
+  padding: 0.55rem 0.8rem;
 }
 .file-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   min-width: 0;
+  margin-bottom: 0.45rem;
 }
 .file-fmt {
   font-size: 0.66rem;
@@ -190,25 +197,26 @@ const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
   flex-shrink: 0;
 }
 .file-name {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
 }
 .file-size {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--muted);
   flex-shrink: 0;
+  margin-left: auto;
 }
 .file-actions {
   display: flex;
   gap: 0.4rem;
-  flex-shrink: 0;
 }
 .btn {
-  font-size: 0.8rem;
-  padding: 0.28rem 0.85rem;
+  font-size: 0.78rem;
+  padding: 0.26rem 0.8rem;
   border-radius: 6px;
   border: 1px solid var(--accent);
   color: var(--accent);
@@ -226,30 +234,41 @@ const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
 }
 .no-files {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
+/* 右栏：预览占满剩余空间 */
+.detail-right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f4f5f6;
+}
+.preview-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* 移动端：退回上下布局（信息 + 文件 + 下方预览，右栏占满高度） */
 @media (max-width: 900px) {
   .book-detail {
-    padding: 1rem 0.9rem 2.5rem;
-  }
-  .detail-head {
     flex-direction: column;
-    gap: 0.8rem;
+    overflow-y: auto;
   }
-  .detail-cover {
-    width: 6.5rem;
-  }
-  .file-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  .file-actions {
+  .detail-left {
     width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 0.9rem;
+    overflow: visible;
   }
-  .file-actions .btn {
-    flex: 1;
-    text-align: center;
+  .detail-right {
+    flex: none;
+    height: 78vh;
   }
 }
 </style>

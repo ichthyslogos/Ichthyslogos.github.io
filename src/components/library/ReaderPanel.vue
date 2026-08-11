@@ -90,11 +90,15 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .reader-panel {
-  margin-top: 1.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: #fff;
   overflow: hidden;
+  margin: 0.9rem;
 }
 .reader-bar {
   display: flex;
@@ -137,7 +141,9 @@ onBeforeUnmount(() => {
   color: #fff;
 }
 .reader-body {
-  height: min(72vh, 40rem);
+  flex: 1;
+  min-height: 0;
+  position: relative;
 }
 .reader-frame {
   width: 100%;
