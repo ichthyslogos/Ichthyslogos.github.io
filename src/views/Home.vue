@@ -43,11 +43,11 @@ const stats = computed(() => {
         <p class="hero-eyebrow">FISH · 基督教研究平台</p>
         <h1 class="hero-title">鱼与饼</h1>
         <p class="hero-sub">五饼二鱼，众人吃饱（约翰福音 6:1-14）</p>
-        <p class="hero-tags">多译本对照 · 解经译注 · 串珠引用 · 护教问答 · 原文研究</p>
+        <p class="hero-tags">多译本对照 · 解经译注 · 串珠引用 · 原文研究</p>
       </div>
       <div class="hero-side">
         <p class="hero-desc">
-          面向中文读者的基督教研究与学习平台：多译本对照阅读、马太亨利译注、串珠交叉引用、护教问答。
+          面向中文读者的基督教研究与学习平台：多译本对照阅读、马太亨利译注、串珠交叉引用。
           素材与框架严格隔离，数据流水线驱动——新内容放入数据库即可自动上架。
         </p>
         <div class="hero-actions">

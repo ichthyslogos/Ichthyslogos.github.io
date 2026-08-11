@@ -24,7 +24,6 @@ const flat = computed(() => route.name === 'home')
       <nav class="nav">
         <RouterLink to="/">首页</RouterLink>
         <RouterLink to="/brp">读经研究</RouterLink>
-        <RouterLink to="/apologetics">护教</RouterLink>
         <RouterLink to="/library">图书馆</RouterLink>
       </nav>
     </div>
