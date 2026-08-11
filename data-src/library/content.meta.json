@@ -5,13 +5,15 @@
     "desc": "经典文献资料库（多格式：PDF/EPUB/音频/图片）。书籍文件按类别存放于独立 GitHub 仓库（library-books-*，每仓开 Pages），本索引只存元数据与文件直链。收录流程见 docs/LIBRARY.md。"
   },
   "categories": [
+    "scripture-tools",
+    "creeds",
+    "sermons",
     "commentaries",
     "church-fathers",
     "reformed",
     "theology",
     "devotion",
     "history",
-    "scripture-tools",
     "music",
     "images"
   ]
