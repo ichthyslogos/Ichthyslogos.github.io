@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import BrpPage from '../views/brp/BrpPage.vue'
 import ApologeticsPage from '../views/apologetics/ApologeticsPage.vue'
 import LibraryPage from '../views/library/LibraryPage.vue'
+import ChurchHistoryPage from '../views/church-history/ChurchHistoryPage.vue'
 
 /**
  * 路由约定：新增子页面在 views/[子页面名]/ 下建页面，并在本文件注册
@@ -17,6 +18,8 @@ const router = createRouter({
     { path: '/apologetics', name: 'apologetics', component: ApologeticsPage },
     { path: '/library', name: 'library', component: LibraryPage },
     { path: '/library/:bookId', name: 'library-book', component: LibraryPage },
+    { path: '/history', name: 'history', component: ChurchHistoryPage },
+    { path: '/history/:part(\\d+)/:chapter', name: 'history-doc', component: ChurchHistoryPage },
   ],
 })
 

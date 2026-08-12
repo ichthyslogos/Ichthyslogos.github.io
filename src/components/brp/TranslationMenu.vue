@@ -196,6 +196,7 @@ watch(
 /* 窄屏适配：触发按钮紧凑化，避免头部换行过宽 */
 @media (max-width: 900px) {
   .trans-trigger {
+    min-height: 2.75rem;
     padding: 0.25rem 0.6rem;
     gap: 0.3rem;
     font-size: 0.85rem;

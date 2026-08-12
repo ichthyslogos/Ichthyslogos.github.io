@@ -8,7 +8,7 @@
   --line: #e7e3dc;
   --line-soft: #f0ede6;
   --text: #232a33;
-  --muted: #7b8494;
+  --muted: #667085;
   --accent: #2f5d9e;
   --accent-soft: #e8eff8;
   --gold: #8b7355;
@@ -74,6 +74,36 @@ html, body {
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+
+/* 键盘焦点可见（ui-ux-pro-max: Accessibility CRITICAL）
+   :focus-visible 仅在键盘导航时显示，鼠标点击不打扰 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+button:focus-visible,
+a:focus-visible {
+  outline-offset: 2px;
+}
+
+/* 减弱动态偏好（ui-ux-pro-max: Performance HIGH）
+   用户开启系统"减少动态效果"时，关闭动画与平滑滚动 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 移动端可读字号下限（ui-ux-pro-max: readable-font-size，≥16px） */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+}
 
 /* 全局滚动条：胶囊小条，默认完全隐藏；滚动中（html.sb-scrolling）或悬停区域时淡入，
    停止滚动约 0.6s 后淡出。视觉宽度 4px（6px 槽位 + 内缩边）。样式由 src/lib/scrollbars.js 驱动。 */

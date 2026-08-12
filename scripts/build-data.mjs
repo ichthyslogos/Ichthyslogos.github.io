@@ -408,8 +408,29 @@ function buildLibrary() {
   console.log(`[build-data] 输出 -> public/data/library/`)
 }
 
+/* ============ 教会史数据（《历史的轨迹——二千年教会史》） ============
+ * 源：data-src/church-history/（工作区 convert-chm.mjs 生成）
+ *     content.json  书目索引    partN.json  按部切片（intro + chapters）
+ * 输出：public/data/church-history/（JSON 原样复制；插图已在转换时复制到 images/）
+ */
+const HISTORY_SRC = join(SITE_ROOT, 'data-src', 'church-history')
+const HISTORY_OUT = join(SITE_ROOT, 'public', 'data', 'church-history')
+
+function buildChurchHistory() {
+  if (!existsSync(HISTORY_SRC)) return
+  mkdirSync(HISTORY_OUT, { recursive: true })
+  for (const f of readdirSync(HISTORY_SRC)) {
+    if (!f.endsWith('.json')) continue
+    copyFileSync(join(HISTORY_SRC, f), join(HISTORY_OUT, f))
+  }
+  const meta = readJson(join(HISTORY_SRC, 'content.json'))
+  console.log(`[build-data] 教会史：${meta.title}（${meta.parts.length} 部 / ${meta.parts.reduce((n, p) => n + p.chapterCount, 0)} 章）`)
+  console.log(`[build-data] 输出 -> public/data/church-history/`)
+}
+
 buildCommentary()
 buildApologetics()
 buildLibrary()
+buildChurchHistory()
 buildStrong()
 buildStrongLexicon()

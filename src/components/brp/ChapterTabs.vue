@@ -83,7 +83,8 @@ watch(
   }
   .chapter-tab {
     min-width: 2rem;
-    padding: 0.18rem 0.35rem;
+    min-height: 2.75rem;
+    padding: 0.3rem 0.45rem;
     font-size: 0.78rem;
   }
 }

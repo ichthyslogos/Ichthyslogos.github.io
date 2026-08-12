@@ -24,8 +24,8 @@ const MIME = {
 
 createServer((req, res) => {
   const urlPath = decodeURIComponent((req.url || '/').split('?')[0])
-  // 无尾斜杠 → 301（GitHub Pages 同款行为）
-  if (urlPath === basePath) {
+  // 无尾斜杠 → 301（GitHub Pages 同款行为；根路径 basePath='/' 时无需重定向）
+  if (basePath !== '/' && urlPath === basePath) {
     res.writeHead(301, { Location: basePath + '/' })
     res.end()
     return

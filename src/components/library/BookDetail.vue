@@ -40,7 +40,7 @@ function fmtSize(n) {
     <aside class="detail-left">
       <button class="back-btn" @click="emit('back')">← 返回书架</button>
       <div class="detail-cover">
-        <img v-if="book.cover" :src="book.cover" :alt="book.title" />
+        <img v-if="book.cover" :src="book.cover" :alt="book.title" loading="lazy" />
         <div v-else class="cover-fallback">{{ (book.title || '?')[0] }}</div>
       </div>
       <h1 class="detail-title">{{ book.title }}</h1>

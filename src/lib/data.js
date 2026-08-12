@@ -195,6 +195,30 @@ export async function fetchLibraryBook(bookId) {
   return fetchJson(`${LIB_BASE}books/${bookId}.json`)
 }
 
+/* ============ 教会史数据（《历史的轨迹——二千年教会史》） ============
+ * 运行时数据位于 public/data/church-history/：
+ *   content.json  书目索引（书名/作者/译者 + 5 部元数据）
+ *   partN.json    按部切片（intro 部导论 + chapters 章，含小节/段落/插图块）
+ *   图片           data/church-history/images/（转换脚本已复制）
+ * 由工作区 scripts 生成数据 → build-data.mjs 复制到 public/data
+ */
+const HISTORY_BASE = 'data/church-history/'
+
+/** 加载教会史书目索引，自动缓存 */
+export async function fetchChurchHistory() {
+  return fetchJson(HISTORY_BASE + 'content.json')
+}
+
+/** 加载第 n 部（1-5）的完整数据（intro + chapters），按需加载 + 缓存 */
+export async function fetchChurchHistoryPart(n) {
+  return fetchJson(`${HISTORY_BASE}part${n}.json`)
+}
+
+/** 教会史插图 URL：数据内 src 为相对路径（images/xxx.jpg），拼上运行时前缀 */
+export function churchHistoryImg(src) {
+  return HISTORY_BASE + src
+}
+
 /* ============ Strong 逐词数据（和合本简体标注层） ============
  * 运行时数据位于 public/data/brp/strong/books/<bookId>.json（按卷切片 + 缓存）
  * 结构：{ key:'chiuns', book:{ id, chapters:[{chapter, verses:[{verse, words:[{t,s,m}]}]}] } }

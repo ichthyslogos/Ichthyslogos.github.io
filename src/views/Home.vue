@@ -56,9 +56,17 @@ let statAnimated = false
 const statsRoot = ref(null)
 let statsIo = null
 
+/** 系统减弱动态偏好：开启时跳过数字滚动动画（ui-ux-pro-max: reduced-motion） */
+const prefersReducedMotion = () =>
+  typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 /** 单项目标值动画（key → target） */
 function animateOne(key, target) {
   const t = target || 0
+  if (prefersReducedMotion()) {
+    statNums.value[key] = t // 直接落定，不做滚动动画
+    return
+  }
   statNums.value[key] = 0 // 先落零再递增，避免首帧闪烁
   const start = performance.now()
   const dur = 1000

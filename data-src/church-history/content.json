@@ -1,0 +1,49 @@
+{
+  "title": "历史的轨迹——二千年教会史",
+  "subtitle": "The Church in History",
+  "author": "祁伯尔 B. K. Kuiper",
+  "translator": "赵中辉",
+  "source": "《历史的轨迹——二千年教会史》插图版 CHM",
+  "parts": [
+    {
+      "no": "壹",
+      "title": "初期教会",
+      "period": "基督降生—754年",
+      "chapterCount": 7,
+      "firstChapter": 1,
+      "lastChapter": 7
+    },
+    {
+      "no": "贰",
+      "title": "中世纪教会",
+      "period": "632—1517年",
+      "chapterCount": 13,
+      "firstChapter": 8,
+      "lastChapter": 20
+    },
+    {
+      "no": "叁",
+      "title": "改教时期的教会",
+      "period": "1517—1648年",
+      "chapterCount": 10,
+      "firstChapter": 21,
+      "lastChapter": 30
+    },
+    {
+      "no": "肆",
+      "title": "改教后的教会",
+      "period": "1558年至今",
+      "chapterCount": 10,
+      "firstChapter": 31,
+      "lastChapter": 40
+    },
+    {
+      "no": "伍",
+      "title": "新大陆的教会",
+      "period": "17世纪至今",
+      "chapterCount": 10,
+      "firstChapter": 41,
+      "lastChapter": 50
+    }
+  ]
+}

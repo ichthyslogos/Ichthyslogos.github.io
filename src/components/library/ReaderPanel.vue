@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
       </div>
       <!-- 图片 -->
       <div v-else-if="file.format === 'image'" class="image-wrap">
-        <img :src="file.url" :alt="file.title || bookTitle" />
+        <img :src="file.url" :alt="file.title || bookTitle" loading="lazy" />
       </div>
       <p v-else class="reader-err">该格式暂不支持在线预览，请下载后查看。</p>
       <!-- EPUB 加载错误提示（独立于格式分发链之外） -->

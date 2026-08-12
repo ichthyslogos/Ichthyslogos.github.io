@@ -255,6 +255,9 @@ watch(
 }
 /* 窄屏：trigger 限宽，面板贴近视口、列表项加高便于点按 */
 @media (max-width: 900px) {
+  .source-item {
+    min-height: 2.75rem;
+  }
   .source-trigger {
     max-width: 8.5rem;
     font-size: 0.72rem;
