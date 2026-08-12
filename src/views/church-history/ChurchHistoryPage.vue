@@ -6,7 +6,7 @@
  * 结构：50 章按 5 部组织，每部有部导论（intro）；章内容为块序列：
  *   h 小节标题 / p 正文段落（首行缩进）/ img 插图（附【图注】）
  */
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { fetchChurchHistory, fetchChurchHistoryPart, churchHistoryImg } from '../../lib/data.js'
 
@@ -35,6 +35,9 @@ const chapterKey = computed(() => {
 onMounted(async () => {
   try {
     index.value = await fetchChurchHistory()
+    // 数据就绪后按当前选择居中移动端目录
+    centerActive(chSide, '.ch-part.active .ch-part-btn')
+    centerActive(chMobileNav, '.ch-mobile-chip.active')
   } catch (e) {
     error.value = e.message
   }
@@ -145,6 +148,36 @@ const nextDoc = computed(() =>
 /** 当前部信息（来自索引，含章节数/时期） */
 const partMeta = computed(() => index.value?.parts[partNo.value - 1] || null)
 
+/* ---------- 移动端目录选中项自动居中（横滑 chips） ----------
+ * 两组横滑容器：部 chips（.ch-side）与章 chips（.ch-mobile-nav）。
+ * 点击/切换后自动横向滚动，使选中项居中；桌面为竖向列表，不处理。
+ */
+const chSide = ref(null)
+const chMobileNav = ref(null)
+
+function centerActive(container, activeSel) {
+  if (!container.value || window.innerWidth > 860) return
+  nextTick(() => {
+    const el = container.value.querySelector(activeSel)
+    if (!el) return
+    // 用 rect 差值（不依赖 offsetParent），元素在容器内容中的 x = scrollLeft + (elRect.left - cRect.left)
+    const cRect = container.value.getBoundingClientRect()
+    const eRect = el.getBoundingClientRect()
+    const target = container.value.scrollLeft + (eRect.left - cRect.left) - (cRect.width - eRect.width) / 2
+    container.value.scrollTo({ left: Math.max(0, target), behavior: 'smooth' })
+  })
+}
+
+watch(
+  partNo,
+  () => {
+    centerActive(chSide, '.ch-part.active .ch-part-btn')
+    centerActive(chMobileNav, '.ch-mobile-chip.active')
+  },
+  { immediate: true },
+)
+watch(chapterKey, () => centerActive(chMobileNav, '.ch-mobile-chip.active'), { immediate: true })
+
 /* ---------- 阅读进度（书眉条金线） ---------- */
 const chMain = ref(null) // 阅读区滚动容器
 const progress = ref(0)
@@ -182,7 +215,7 @@ onBeforeUnmount(() => {
 
       <div class="ch-body">
         <!-- 目录栏 -->
-        <aside class="ch-side">
+        <aside ref="chSide" class="ch-side">
           <div
             v-for="(p, i) in index.parts"
             :key="p.no"
@@ -228,7 +261,7 @@ onBeforeUnmount(() => {
           <template v-else-if="currentDoc">
             <article class="ch-doc">
               <!-- 移动端章选择（桌面隐藏） -->
-              <nav v-if="part" class="ch-mobile-nav" aria-label="章节">
+              <nav ref="chMobileNav" v-if="part" class="ch-mobile-nav" aria-label="章节">
                 <button
                   class="ch-mobile-chip"
                   :class="{ active: chapterKey === 'intro' }"
@@ -570,6 +603,7 @@ onBeforeUnmount(() => {
 /* 移动端章选择 chips（仅移动端显示） */
 .ch-mobile-nav {
   display: none;
+  position: relative; /* 成为 chips 的 offsetParent，scroll 定位更稳 */
   gap: 0.45rem;
   padding-bottom: 1rem;
   margin-bottom: 1.2rem;
@@ -665,6 +699,7 @@ onBeforeUnmount(() => {
     display: flex;
     gap: 0.5rem;
     overflow-x: auto;
+    position: relative; /* 成为部 chips 的 offsetParent */
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
