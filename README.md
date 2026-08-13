@@ -1,6 +1,6 @@
-# FISH 鱼与饼 · 基督教研究平台
+# FISH · 基督教研究平台
 
-面向中文读者的基督教研究与学习平台（Bible & Apologetics Research Platform）：多译本读经、解经译注、串珠引用、护教问答。Vue 3 + Vite，纯前端静态站，无后端依赖。
+面向中文读者的基督教研究与学习平台（Bible & Apologetics Research Platform）：多译本读经、解经译注、串珠引用、护教问答、教会史、图书馆。Vue 3 + Vite，纯前端静态站，无后端依赖。
 
 > 本文件是项目根目录文档，是后人开发的第一入口。更详细的内容见 [`docs/`](docs/README.md) 索引。
 
@@ -22,9 +22,12 @@ site\
 ├── scripts\               ← 数据流水线脚本（Node 零依赖）
 │   ├── bible-books.mjs      标准 66 卷 + 7 卷次经元数据（编号唯一权威）
 │   ├── import.mjs           素材库 → data-src\brp\translations\
-│   └── build-data.mjs       data-src → public\data\brp\（切片 + manifest）
+│   └── build-data.mjs       data-src → public\data\（切片 + manifest）
 ├── data-src\              ← 网站"数据库"（素材投影，可移植、可扩展）
-│   └── brp\translations\    译本 JSON（符合统一格式即可放入）
+│   ├── brp\                 读经数据（translations/commentary/strong/crossrefs）
+│   ├── apologetics\         护教问答数据
+│   ├── church-history\      教会史数据（5 部切片，见 docs/CHURCH-HISTORY.md）
+│   └── library\             图书馆书目数据
 ├── public\data\           ← 运行时数据（构建产物，勿手改）
 │   └── brp\
 │       ├── manifest.json     译本清单（"放入即自动显示"的核心）
@@ -33,7 +36,10 @@ site\
     ├── main.js / App.vue / style.css / router\ / lib\
     ├── views\             ← 子页面（每页一个文件夹）
     │   ├── Home.vue         首页
-    │   └── brp\             读经研究平台（第一个功能）
+    │   ├── brp\             读经研究平台
+    │   ├── apologetics\     护教问答
+    │   ├── church-history\  教会史
+    │   └── library\         图书馆
     └── components\        ← 组件（共享组件在根目录，子页面组件按子页面建文件夹）
         ├── AppHeader.vue    共享
         ├── EmptyState.vue   共享
@@ -53,10 +59,11 @@ site\
 | 功能 | 状态 | 说明 |
 |---|---|---|
 | 首页 Homepage | ✅ 已上线 | 品牌 + 功能卡片 + 数据统计（manifest 驱动） |
-| 读经研究平台 (brp) | ✅ 已上线 | 书卷/章节导航、多译本切换、次经支持；路由 `/brp` |
-| 马太亨利译注（解经面板） | ✅ 已接入 | 经文右侧常驻解经面板，多注释源架构（当前源：马太亨利中文译注 60+ 卷，见 docs/COMMENTARY.md） |
-| 护教问答 | ✅ 已上线 | 回应当今世界对基督教信仰的挑战（探索视图：Hero/搜索/主题网格；主题视图：质疑→多回应→证据→相关学习，经文可跳读经研究）；路由 `/apologetics` |
-| Strong 原文研究 | 🚧 占位 | 原文/译本数据流隔离架构已预留（manifest original 字段） |
+| 读经研究平台 (brp) | ✅ 已上线 | 书卷/章节导航、多译本切换、原文标注（Strong）、串珠引用、次经支持；路由 `/brp` |
+| 解经面板 | ✅ 已接入 | 经文旁常驻解经面板，多注释源架构（马太亨利/加尔文/RWP/Abbott/Catena，见 docs/COMMENTARY.md） |
+| 护教问答 | ✅ 已上线 | 探索/主题视图、搜索、证据、经文跳转；路由 `/apologetics` |
+| 教会史 | ✅ 已上线 | 《历史的轨迹》50 章在线阅读器（5 部导论 + 158 插图，word joiner 混排保护）；路由 `/history` |
+| 图书馆 | 🚧 筹备中 | 分类体系就绪（9 分类），书目暂空（书架筹备中）；路由 `/library` |
 
 ## 文档索引
 
@@ -68,6 +75,8 @@ site\
 | [`docs/COMMENTARY.md`](docs/COMMENTARY.md) | 注释系统：多源架构、马太亨利转换管线、已知问题 |
 | [`docs/COMMENTARY-ROADMAP.md`](docs/COMMENTARY-ROADMAP.md) | 注释扩展路线图：传统分类 × 候选源（许可/优先级） |
 | [`docs/APOLOGETICS.md`](docs/APOLOGETICS.md) | 护教页面：使用说明 + 数据编辑指南（三层结构、新增内容示例） |
+| [`docs/LIBRARY.md`](docs/LIBRARY.md) | 图书馆：架构、存储约束、收录流程、数据格式 |
+| [`docs/CHURCH-HISTORY.md`](docs/CHURCH-HISTORY.md) | 教会史：页面/路由、数据管线、版权提示 |
 | [`docs/DEVELOP.md`](docs/DEVELOP.md) | 开发规范：新增子页面四步、代码约定 |
-| [`docs/DEPLOY.md`](docs/DEPLOY.md) | 部署指南：GitHub Pages 两种部署方式、本地验证、常见问题 |
+| [`docs/DEPLOY.md`](docs/DEPLOY.md) | 部署指南：GitHub Pages 部署方式、子路径验证、实战记录 |
 | [`docs/STRUCTURE.md`](docs/STRUCTURE.md) | 目录结构详解：每个目录/关键文件的职责 |

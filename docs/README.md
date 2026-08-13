@@ -10,7 +10,8 @@
 | [COMMENTARY-ROADMAP.md](COMMENTARY-ROADMAP.md) | 注释扩展路线图：9 传统分类 × 候选注释源（许可/数字化来源/优先级） | 规划新增注释源 |
 | [APOLOGETICS.md](APOLOGETICS.md) | 护教页面：使用说明（探索/主题视图、搜索、证据、经文跳转）+ 数据编辑指南（三层结构与字段、新增内容示例、注意事项） | 使用护教页、编辑护教数据 |
 | [LIBRARY.md](LIBRARY.md) | 图书馆：架构（主站索引 + 多书籍仓库）、存储约束（100MB/1GB 限制）、收录一本书的两步流程、数据格式 | 收录书籍、维护图书馆 |
-| [DEPLOY.md](DEPLOY.md) | 部署指南：GitHub Pages 手动/CI 两种方式、子路径验证、仓库文件策略 | 发布上线、配置 CI |
+| [CHURCH-HISTORY.md](CHURCH-HISTORY.md) | 教会史：页面/路由、数据管线（CHM 转换）、版权提示 | 维护教会史内容 |
+| [DEPLOY.md](DEPLOY.md) | 部署指南：GitHub Pages 手动/CI 两种方式、子路径验证、仓库文件策略、部署实战记录 | 发布上线、配置 CI |
 | [DEVELOP.md](DEVELOP.md) | 开发规范：新增子页面四步流程、路由/组件/数据约定 | 开发新功能、改动代码前 |
 | [STRUCTURE.md](STRUCTURE.md) | 目录结构详解：每个目录与关键文件的职责 | 快速定位代码、找文件 |
 

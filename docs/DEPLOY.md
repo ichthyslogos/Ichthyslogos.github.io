@@ -6,7 +6,7 @@
 > - 只有**明确要求"部署/上线"**时，才执行部署（见下方"如何部署"）
 > - 历史遗留：此前版本曾为 push 自动部署，已按约定改为手动
 
-> **实际部署状态（2026-08-07）**：已上线 ✅
+> **实际部署状态（2026-08-13）**：已上线 ✅
 > - 仓库：`git@github.com:ichthyslogos/Ichthyslogos.github.io.git`（用户站点）
 > - 线上地址：https://ichthyslogos.github.io/
 > - 部署用专用 SSH key：`~/.ssh/id_ed25519_fish`（repo 级 `core.sshCommand` 指定，不影响其他仓库）
@@ -56,6 +56,20 @@ npx gh-pages -d dist        # 把 dist/ 推送到 gh-pages 分支
 ```
 
 GitHub 仓库 → Settings → Pages → Source 选择 `Deploy from a branch` → 分支 `gh-pages`。
+
+### 方式三：临时 push trigger（2026-08 起实际使用）
+
+本机无 gh CLI、API token 权限受限时使用（历史实践，见 §7.4）：
+
+1. `deploy.yml` 的 `on:` 临时追加 `push: branches: [main]`（加注释「部署完成后恢复 manual-only」）
+2. commit + push → Actions 自动构建部署
+3. **部署完成后立即移除 push trigger** 并再次 commit + push（恢复仅手动约定）
+
+```bash
+# 1. 编辑 .github/workflows/deploy.yml 加 push 触发 → commit → push（自动部署）
+# 2. 验证线上 bundle 与本地 dist 一致（curl https://ichthyslogos.github.io/ 对比 assets/index-*.js）
+# 3. 移除 push 触发 → commit「ci: 恢复仅手动触发（manual-only）」→ push
+```
 
 ## 4. 自定义域名（可选）
 
@@ -211,3 +225,16 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 - **⚠️ 本地数值**：busuanzi 把所有 `localhost` 访问归入同一**共享计数池**（全球累计，非本站数据）；生产域名按域名独立计数，部署后显示本站真实累计
 - **容错**：脚本加载失败 / 接口超时 → 访问量静默隐藏，不影响页面与其他统计项
 - **更换**：如 busuanzi 服务不可用，可替换为同协议的自建/镜像地址（占位 ID 不变）
+
+### 7.4 部署记录（2026-08-12 / 08-13，方式三：临时 push trigger）
+
+| 日期 | 内容 | 提交 |
+|---|---|---|
+| 08-12 | 教会史子页面 + ui-ux-pro-max 全站规范对齐 | `fb63802` |
+| 08-13 | 教会史移动端目录居中（offsetParent 修复） | `0134e13` |
+| 08-13 | 教会史中英混排防断行（word joiner，仅数据文件） | `e9f6d47` |
+
+流程要点（复用）：
+1. push 偶发瞬时失败（"could not read from remote"）→ 重试即可
+2. 部署验证：`curl https://ichthyslogos.github.io/ | grep assets/index-*.js` 与本地 `dist/index.html` 对比；数据类改动 bundle 不变（仅 public/data JSON 变化），对比数据文件内容（如 `curl …/part2.json | grep u2060`）
+3. 每次部署后三连 commit：功能改动 → `ci: 临时 push 触发部署` → `ci: 恢复仅手动触发（manual-only）`
