@@ -6,7 +6,7 @@
 > - 只有**明确要求"部署/上线"**时，才执行部署（见下方"如何部署"）
 > - 历史遗留：此前版本曾为 push 自动部署，已按约定改为手动
 
-> **实际部署状态（2026-08-13）**：已上线 ✅
+> **实际部署状态（2026-08-14）**：已上线 ✅
 > - 仓库：`git@github.com:ichthyslogos/Ichthyslogos.github.io.git`（用户站点）
 > - 线上地址：https://ichthyslogos.github.io/
 > - 部署用专用 SSH key：`~/.ssh/id_ed25519_fish`（repo 级 `core.sshCommand` 指定，不影响其他仓库）
@@ -226,15 +226,16 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 - **容错**：脚本加载失败 / 接口超时 → 访问量静默隐藏，不影响页面与其他统计项
 - **更换**：如 busuanzi 服务不可用，可替换为同协议的自建/镜像地址（占位 ID 不变）
 
-### 7.4 部署记录（2026-08-12 / 08-13，方式三：临时 push trigger）
+### 7.4 部署记录（2026-08-12 ~ 08-14，方式三：临时 push trigger）
 
 | 日期 | 内容 | 提交 |
 |---|---|---|
 | 08-12 | 教会史子页面 + ui-ux-pro-max 全站规范对齐 | `fb63802` |
 | 08-13 | 教会史移动端目录居中（offsetParent 修复） | `0134e13` |
 | 08-13 | 教会史中英混排防断行（word joiner，仅数据文件） | `e9f6d47` |
+| 08-14 | 马太亨利 66 卷空 section 修复 + 新增 ASV/DRC 译本 + 菜单宗派分组 + 面板拖拽调宽 + 中文注释暂时关闭 + 规划文档 | `9250387` |
 
 流程要点（复用）：
 1. push 偶发瞬时失败（"could not read from remote"）→ 重试即可
-2. 部署验证：`curl https://ichthyslogos.github.io/ | grep assets/index-*.js` 与本地 `dist/index.html` 对比；数据类改动 bundle 不变（仅 public/data JSON 变化），对比数据文件内容（如 `curl …/part2.json | grep u2060`）
+2. 部署验证：`curl https://ichthyslogos.github.io/ | grep assets/index-*.js` 与本地 `dist/index.html` 对比；**注意**：bundle hash 因 CI（Linux/node20）与本地（Windows/node24）构建平台差异可能不同，数据类改动以**数据文件内容**为准（manifest 译本/注释源清单、切片 200/404 状态）
 3. 每次部署后三连 commit：功能改动 → `ci: 临时 push 触发部署` → `ci: 恢复仅手动触发（manual-only）`
