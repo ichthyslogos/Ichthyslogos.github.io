@@ -11,7 +11,7 @@
 《历史的轨迹——二千年教会史》The Church in History（祁伯尔 B. K. Kuiper 著 / 赵中辉 译，50 章按 5 部组织）
 
 ```
-素材/library/采纳/历史的轨迹——二千年教会史 插图版v2.CHM   ← 源（只读）
+工作区/library/采纳/历史的轨迹——二千年教会史 插图版v2.CHM   ← 源（只读；2026-08-13 前位于 素材/library/采纳/）
   ↓ hh.exe -decompile 解包（工作区/library/chm-extract/html/）
   ↓ iconv gb18030 → utf8（工作区/library/chm-extract/utf8/）
   ↓ 工作区/library/chm-extract/convert-chm.mjs
