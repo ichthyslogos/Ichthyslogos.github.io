@@ -124,10 +124,15 @@ export function groupOfSource(sourceKey) {
   return COMMENTARY_LANG_GROUPS.find((g) => g.langs.some((l) => l.key === sourceKey)) || null
 }
 
-/** 源选择器展示列表：语言组成员只保留主条目（langs[0]），其余由语言标签切换 */
+/**
+ * 源选择器展示列表：语言组成员只保留主条目（langs[0]），其余由语言标签切换；
+ * 组主条目不存在（如中文源被关闭）时组失效，组内语言独立展示，避免整组消失。
+ */
 export function displaySources(sources) {
   const hidden = new Set()
   for (const g of COMMENTARY_LANG_GROUPS) {
+    const mainKey = g.langs[0].key
+    if (!sources.some((s) => s.key === mainKey)) continue // 主源缺失 → 不合并组
     for (const l of g.langs.slice(1)) hidden.add(l.key)
   }
   return sources.filter((s) => !hidden.has(s.key))

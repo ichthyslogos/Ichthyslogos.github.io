@@ -10,7 +10,7 @@
  * 渲染：当前书卷+章节 → 概要（summary）+ 小节注释列表（ref + heading + text）
  * 无注释（卷/章缺失）→ 空状态提示。
  */
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted, onUnmounted } from 'vue'
 import {
   fetchCommentary,
   fetchCommentaryManifest,
@@ -47,8 +47,12 @@ function pickSource(key) {
   sourceMenuOpen.value = false
   localStorage.setItem(SOURCE_STORAGE, sourceKey.value)
 }
-/** 当前源的语言组（中英文同书源合并后，显示语言标签切换） */
-const langGroup = computed(() => groupOfSource(sourceKey.value))
+/** 当前源的语言组（中英文同书源合并后，显示语言标签切换）；组主源缺失（如中文已关闭）时组失效，不显示标签 */
+const langGroup = computed(() => {
+  const g = groupOfSource(sourceKey.value)
+  if (!g) return null
+  return sources.value.some((s) => s.key === g.langs[0].key) ? g : null
+})
 
 /** 语言标签：当前语言名（如"中文"/"English"），点击切到组内下一语言 */
 const langLabel = computed(() => {
@@ -176,10 +180,78 @@ const chapterData = computed(() => {
   }
 })
 const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.book.id))
+
+// —— 拖拽调宽：面板左边缘手柄，按住左右拖动改变面板宽度（桌面分栏 / 移动端覆盖层通用）——
+const RESIZE_STORAGE = 'brp-commentary-panel-width'
+const rootEl = ref(null)
+const panelWidth = ref(null) // null = 默认宽度（CSS）
+const dragging = ref(false)
+let resizeStartX = 0
+let resizeStartW = 0
+
+/** 宽度限制：移动端 55vw~100vw，桌面 18rem~62vw（给经文留出空间） */
+function clampWidth(w) {
+  const mobile = window.matchMedia('(max-width: 900px)').matches
+  const min = mobile ? Math.round(window.innerWidth * 0.55) : 288
+  const max = mobile ? window.innerWidth : Math.round(window.innerWidth * 0.62)
+  return Math.min(Math.max(Math.round(w), min), max)
+}
+
+const panelStyle = computed(() => (panelWidth.value ? { width: panelWidth.value + 'px' } : null))
+
+function startResize(e) {
+  e.preventDefault()
+  dragging.value = true
+  resizeStartX = e.clientX
+  resizeStartW = panelWidth.value ?? rootEl.value?.getBoundingClientRect().width ?? 0
+  document.body.classList.add('resizing-panel')
+  e.currentTarget.setPointerCapture?.(e.pointerId)
+}
+
+function onResizeMove(e) {
+  if (!dragging.value) return
+  const dx = resizeStartX - e.clientX // 向左拖动（dx>0）面板变宽
+  panelWidth.value = clampWidth(resizeStartW + dx)
+}
+
+function endResize() {
+  if (!dragging.value) return
+  dragging.value = false
+  document.body.classList.remove('resizing-panel')
+  if (panelWidth.value) localStorage.setItem(RESIZE_STORAGE, String(panelWidth.value))
+}
+
+// 恢复用户上次拖拽的宽度；窗口尺寸变化（旋转/缩放）时重新限制
+onMounted(() => {
+  const saved = Number(localStorage.getItem(RESIZE_STORAGE))
+  if (saved) panelWidth.value = clampWidth(saved)
+  window.addEventListener('resize', onWindowResize)
+})
+onUnmounted(() => window.removeEventListener('resize', onWindowResize))
+function onWindowResize() {
+  if (panelWidth.value) panelWidth.value = clampWidth(panelWidth.value)
+}
 </script>
 
 <template>
-  <aside v-show="open" class="commentary-panel" aria-label="解经">
+  <aside
+    ref="rootEl"
+    v-show="open"
+    class="commentary-panel"
+    :style="panelStyle"
+    aria-label="解经"
+  >
+    <div
+      class="resize-handle"
+      :class="{ dragging }"
+      role="separator"
+      aria-orientation="vertical"
+      aria-label="拖动调整解经面板宽度"
+      @pointerdown="startResize"
+      @pointermove="onResizeMove"
+      @pointerup="endResize"
+      @pointercancel="endResize"
+    ></div>
     <header class="panel-head">
       <h2 class="panel-title">
         解经<template v-if="book"> · {{ book.zh }} 第 {{ chapter }} 章</template>
@@ -251,12 +323,47 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
 
 <style scoped>
 .commentary-panel {
+  position: relative;
   width: min(24rem, 34vw);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   border-left: 1px solid var(--line-soft);
   background: var(--panel);
+}
+/* 拖拽手柄：面板左边缘细条，按住左右拖动调整宽度 */
+.resize-handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 2;
+  touch-action: none;
+  background: transparent;
+}
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  width: 2px;
+  height: 2.1rem;
+  transform: translateY(-50%);
+  border-radius: 1px;
+  background: var(--line);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.resize-handle:hover::after,
+.resize-handle.dragging::after {
+  opacity: 1;
+  background: var(--gold);
+}
+:global(.resizing-panel) {
+  user-select: none;
+  cursor: col-resize;
 }
 .panel-head {
   display: flex;

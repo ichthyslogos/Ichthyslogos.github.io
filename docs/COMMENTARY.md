@@ -119,12 +119,22 @@ python scripts/commentary/extract.py --force 1    # 强制重转
 - `src/components/brp/CommentaryPanel.vue`：按 `book.id + chapter` 渲染 summary + sections；无注释 → 空状态"本卷暂无注释"
 - 面板显隐/移动端覆盖层/三面板互斥逻辑与之前一致，不受注释数据影响
 
-## 6. 临时关闭某卷注释（非删除）
+## 6. 临时关闭注释（非删除）
+
+### 6.1 按书卷关闭
 
 `src/lib/data.js` 的 `ENABLED_COMMENTARY_BOOKS` 白名单控制哪些书卷**开放注释显示**；不在白名单内的卷，前端视为"该卷注释暂时关闭"（空状态），**数据文件（data-src 源数据与 public 运行时数据）全部保留、不删除**。
 
 - 当前开放：**66 卷正典全部开放**（`ENABLED_COMMENTARY_BOOKS` = 01-66；不含次经 ext-N）
 - 恢复显示：把 bookId（01-66 / ext-N）加回 `ENABLED_COMMENTARY_BOOKS` 集合即可，**无需重跑 `npm run data`**，前端刷新即生效
+
+### 6.2 按源关闭（DISABLED_SOURCES）
+
+`scripts/build-data.mjs` 的 `DISABLED_SOURCES` 集合控制**整个注释源**不参与构建与显示（data-src 源数据保留；public 输出目录每次构建前整体重建，被关闭源不残留）。
+
+- 当前关闭：**matthew-henry（马太亨利中文）**（2026-08-13 暂时关闭）；`matthew-henry-en`（英文）不受影响，独立显示
+- 恢复显示：从 `DISABLED_SOURCES` 移除该 key 后重跑 `npm run data:build` + `npm run build`
+- **语言组合并注意事项**：`data.js` 的 `COMMENTARY_LANG_GROUPS` 把中英文马太亨利合并为一组（菜单只显示主条目 zh，英文经语言标签切换）。主源（langs[0]）被关闭时，`displaySources` / `langGroup` / `langBadge` 自动退化为「不合并组」——英文源独立出现在菜单、语言标签不显示、徽章只显示自身语言（en）。若未来关闭的是组内**非主**语言（如英文），无需改动（主源存在时组行为不变）
 
 ## 7. Calvin 注释（reformed/calvin，英文）
 

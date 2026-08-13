@@ -38,14 +38,15 @@
 {
   "generatedAt": "…",
   "translations": [
-    { "key": "chiun", "name": "和合本 (繁體字)", "original": false, "lang": "zh-Hant",
+    { "key": "chiun", "name": "和合本 (繁體字)", "original": false, "lang": "zh-Hant", "tradition": "protestant",
       "books": [ { "id": "01", "zh": "创世记", "en": "Genesis", "group": "ot", "chapterCount": 50 } ] }
   ]
 }
 ```
 
 - `key`：文件名小写（URL 中 `?trans=<key>` 使用）
-- 排序：非原文在前按 key 排序、原文（original=true）在后，保证 UI 顺序稳定
+- `tradition`：宗派归属（`protestant`/`catholic`），由 `META_BY_KEY` 登记，译本菜单据此分组（新教译本/天主教译本），未登记的译本归入「其他译本」
+- 排序：非原文在前按 key 排序、原文（original=true）在后，保证 UI 顺序稳定；菜单组内按语言排列（中文简→繁 → 英文 → 其他）
 - 前端 `src\lib\data.js` 按需 fetch 切片 `translations\<key>\books\<id>.json` 并缓存
 
 ## 2. 原文与译本隔离（Strong 预留）
@@ -86,6 +87,9 @@
 | chiun（和合本繁体） | 66 | 1189 | ~7.4MB | ~100–200KB |
 | chisb（思高本，含 7 卷次经） | 73 | 1328 | ~8.3MB | ~100–200KB |
 | kjv（英王钦定本 KJV） | 66 | 1189 | ~8.0MB | ~100–200KB |
+| asv（美国标准译本 ASV） | 66 | 1189 | ~8.0MB | ~100–200KB |
+| drc（杜埃-兰斯译本 DRC，含 7 卷次经） | 73 | 1334 | ~9.3MB | ~100–200KB |
+| frebdm1744（法语 Martin 1744） | 66 | 1189 | ~7MB | ~100–200KB |
 
 素材库 bible_databases 共 140 种译本（含 WLC/Byz 等原文、其他英文译本等），均可按第 1 节流程接入（`node scripts/import.mjs <KEY>`）；英文译本在 `META_BY_KEY` 中登记 `lang: 'en'` 即不被中文空格净化，可加 `name` 覆盖展示名。
 

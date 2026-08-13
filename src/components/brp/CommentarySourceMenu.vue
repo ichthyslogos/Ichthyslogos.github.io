@@ -67,10 +67,14 @@ function isActive(s) {
   return !!g && g.baseKey === groupOfSource(props.activeKey)?.baseKey
 }
 
-/** 语言徽章文字：语言组成员显示全部可用语言（如 "zh/en"），其余显示自身语言码 */
+/** 语言徽章文字：语言组成员显示全部可用语言（如 "zh/en"）；组主源缺失（如中文关闭）时只显示自身语言 */
 function langBadge(s) {
   const g = groupOfSource(s.key)
-  return g ? g.langs.map((l) => l.lang).join('/') : s.lang
+  if (!g) return s.lang
+  const mainKey = g.langs[0].key
+  return props.sources.some((x) => x.key === mainKey)
+    ? g.langs.map((l) => l.lang).join('/')
+    : s.lang
 }
 
 /** 展开时把面板定位到视口内（水平/垂直钳制，移动端覆盖层内同样适用）。

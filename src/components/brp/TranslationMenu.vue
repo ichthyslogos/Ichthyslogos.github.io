@@ -21,6 +21,30 @@ const versions = computed(() => props.translations.filter((t) => !t.original))
 const originals = computed(() => props.translations.filter((t) => t.original))
 const active = computed(() => props.translations.find((t) => t.key === props.activeKey))
 
+/** 语言显示顺序：中文（简→繁）→ 英文 → 其他按代码字母序；同语言保持 manifest 顺序（stable sort） */
+const LANG_ORDER = { 'zh-Hans': 0, 'zh-Hant': 1, en: 2 }
+function langRank(lang) {
+  return lang in LANG_ORDER ? LANG_ORDER[lang] : 3
+}
+function sortByLang(list) {
+  return [...list].sort((a, b) => langRank(a.lang) - langRank(b.lang))
+}
+
+/** 宗派分组（新教 / 天主教 / 其他未登记），组内按语言排列 */
+const traditionGroups = computed(() => {
+  const groups = [
+    { key: 'protestant', title: '新教译本', list: [] },
+    { key: 'catholic', title: '天主教译本', list: [] },
+    { key: 'other', title: '其他译本', list: [] },
+  ]
+  for (const t of versions.value) {
+    const g = groups.find((x) => x.key === (t.tradition || 'other'))
+    g.list.push(t)
+  }
+  for (const g of groups) g.list = sortByLang(g.list)
+  return groups.filter((g) => g.list.length)
+})
+
 function pick(key) {
   emit('select', key)
 }
@@ -63,10 +87,10 @@ watch(
 
     <Transition name="menu">
       <div v-if="open" ref="popEl" class="menu-pop" role="listbox">
-        <div v-if="versions.length" class="menu-group">
-          <div class="menu-group-title">译本</div>
+        <div v-for="g in traditionGroups" :key="g.key" class="menu-group">
+          <div class="menu-group-title">{{ g.title }}</div>
           <button
-            v-for="t in versions"
+            v-for="t in g.list"
             :key="t.key"
             class="menu-item"
             :class="{ active: t.key === activeKey }"

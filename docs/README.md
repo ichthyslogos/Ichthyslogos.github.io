@@ -14,6 +14,9 @@
 | [DEPLOY.md](DEPLOY.md) | 部署指南：GitHub Pages 手动/CI 两种方式、子路径验证、仓库文件策略、部署实战记录 | 发布上线、配置 CI |
 | [DEVELOP.md](DEVELOP.md) | 开发规范：新增子页面四步流程、路由/组件/数据约定 | 开发新功能、改动代码前 |
 | [STRUCTURE.md](STRUCTURE.md) | 目录结构详解：每个目录与关键文件的职责 | 快速定位代码、找文件 |
+| [PLAN.md](PLAN.md) | **未来规划**：FISH 综合性基督教平台开发计划（定位/模块架构/阅读-探索-研究三层/开发阶段） | 规划平台方向、评估新功能 |
+| [DISCOVERY.md](DISCOVERY.md) | **未来规划**：FISH Discovery 知识发现与智能搜索系统（实体系统/知识图谱/搜索流水线/开发阶段） | 规划搜索与知识关联能力 |
+| [GITHUB-REFERENCE.md](GITHUB-REFERENCE.md) | **资料库参考**：GitHub 开源项目归档（STEPBible/SWORD/UBS/KJV Study/Biblos/知识图谱等 12 项目，含优先级/研究顺序/许可原则/研究记录模板） | 评估开源项目、寻找数据源与架构参考 |
 
 ## 核心约定速览（全部文档都围绕这几条）
 

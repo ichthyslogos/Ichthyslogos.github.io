@@ -30,12 +30,14 @@ const OUT_DIR = join(SITE_ROOT, 'public', 'data', 'brp')
  * - lang: BCP47 语言代码，zh* 文本在切片时做空格净化
  */
 const META_BY_KEY = {
-  ChiUn: { lang: 'zh-Hant', original: false },
-  ChiSB: { lang: 'zh-Hant', original: false },
-  ChiUnL: { lang: 'zh-Hant', original: false },
-  ChiUns: { lang: 'zh-Hans', original: false },
-  KJV: { lang: 'en', original: false, name: '英王钦定本 (KJV)' },
-  FreBDM1744: { lang: 'fr', original: false, name: '法语 Martin 1744' },
+  ChiUn: { lang: 'zh-Hant', original: false, tradition: 'protestant' },
+  ChiSB: { lang: 'zh-Hant', original: false, tradition: 'catholic' },
+  ChiUnL: { lang: 'zh-Hant', original: false, tradition: 'protestant' },
+  ChiUns: { lang: 'zh-Hans', original: false, tradition: 'protestant' },
+  KJV: { lang: 'en', original: false, name: '英王钦定本 (KJV)', tradition: 'protestant' },
+  ASV: { lang: 'en', original: false, name: '美国标准译本 (ASV)', tradition: 'protestant' },
+  DRC: { lang: 'en', original: false, name: '杜埃-兰斯译本 (DRC)', tradition: 'catholic' },
+  FreBDM1744: { lang: 'fr', original: false, name: '法语 Martin 1744', tradition: 'protestant' },
   WLC: { lang: 'hbo', original: true }, // 希伯来文马所拉文本
   Byz: { lang: 'grc', original: true }, // 希腊文拜占庭文本
   TR: { lang: 'grc', original: true }, // 希腊文公认文本
@@ -124,6 +126,7 @@ for (const file of files) {
     name: meta.name || displayName(raw.translation),
     original: meta.original,
     lang: meta.lang,
+    tradition: meta.tradition, // 宗派归属（protestant/catholic），译本菜单分组用
     books,
   })
   console.log(`[build-data] ${key}: ${books.length} 卷 / ${manifest.translations.at(-1).books.reduce((s, b) => s + b.chapterCount, 0)} 章`)
@@ -150,8 +153,13 @@ console.log(`[build-data] 输出 -> public/data/brp/manifest.json`)
 const COMMENT_SRC = join(SITE_ROOT, 'data-src', 'brp', 'commentary')
 const COMMENT_OUT = join(OUT_DIR, 'commentary')
 
+/** 暂时关闭的注释源：data-src 数据保留，构建/显示时排除（恢复 = 从集合移除后重跑） */
+const DISABLED_SOURCES = new Set(['matthew-henry'])
+
 function buildCommentary() {
   if (!existsSync(COMMENT_SRC)) return
+  // 重建输出目录，保证被关闭的源不残留旧切片
+  rmSync(COMMENT_OUT, { recursive: true, force: true })
   const sources = []
   for (const tradition of readdirSync(COMMENT_SRC)) {
     if (tradition.startsWith('_')) continue // 模板目录（_template）不参与构建
@@ -159,14 +167,17 @@ function buildCommentary() {
     if (!statIsDir(tDir)) continue
     for (const key of readdirSync(tDir)) {
       if (key.startsWith('_')) continue
+      if (DISABLED_SOURCES.has(key)) continue // 暂时关闭的源
       const dir = join(tDir, key)
       if (!statIsDir(dir)) continue
+      // 空目录（历史残留）不生成输出
+      const jsonFiles = readdirSync(dir).filter((f) => f.endsWith('.json') && f !== '_report.json')
+      if (!jsonFiles.length) continue
       const books = []
       const outDir = join(COMMENT_OUT, key)
       mkdirSync(outDir, { recursive: true })
       let meta = null
-      for (const f of readdirSync(dir)) {
-        if (!f.endsWith('.json') || f === '_report.json') continue
+      for (const f of jsonFiles) {
         const bookId = f.replace(/\.json$/, '')
         const raw = JSON.parse(readFileSync(join(dir, f), 'utf8'))
         meta = meta || raw.source
