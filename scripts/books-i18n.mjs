@@ -63,4 +63,42 @@ export const TRANSLATION_BOOK_NAMES = {
     '61': '2 Pierre', '62': '1 Jean', '63': '2 Jean', '64': '3 Jean', '65': 'Jude',
     '66': 'Apocalypse',
   },
+
+  // 美国标准译本（ASV，英文名；66 卷正典，与 KJV 同名）
+  asv: {
+    '01': 'Genesis', '02': 'Exodus', '03': 'Leviticus', '04': 'Numbers', '05': 'Deuteronomy',
+    '06': 'Joshua', '07': 'Judges', '08': 'Ruth', '09': '1 Samuel', '10': '2 Samuel',
+    '11': '1 Kings', '12': '2 Kings', '13': '1 Chronicles', '14': '2 Chronicles', '15': 'Ezra',
+    '16': 'Nehemiah', '17': 'Esther', '18': 'Job', '19': 'Psalms', '20': 'Proverbs',
+    '21': 'Ecclesiastes', '22': 'Song of Solomon', '23': 'Isaiah', '24': 'Jeremiah', '25': 'Lamentations',
+    '26': 'Ezekiel', '27': 'Daniel', '28': 'Hosea', '29': 'Joel', '30': 'Amos',
+    '31': 'Obadiah', '32': 'Jonah', '33': 'Micah', '34': 'Nahum', '35': 'Habakkuk',
+    '36': 'Zephaniah', '37': 'Haggai', '38': 'Zechariah', '39': 'Malachi', '40': 'Matthew',
+    '41': 'Mark', '42': 'Luke', '43': 'John', '44': 'Acts', '45': 'Romans',
+    '46': '1 Corinthians', '47': '2 Corinthians', '48': 'Galatians', '49': 'Ephesians', '50': 'Philippians',
+    '51': 'Colossians', '52': '1 Thessalonians', '53': '2 Thessalonians', '54': '1 Timothy', '55': '2 Timothy',
+    '56': 'Titus', '57': 'Philemon', '58': 'Hebrews', '59': 'James', '60': '1 Peter',
+    '61': '2 Peter', '62': '1 John', '63': '2 John', '64': '3 John', '65': 'Jude',
+    '66': 'Revelation',
+  },
+
+  // 杜埃-兰斯译本（DRC，英文名；66 卷正典 + 7 卷次经，与现代英文名一致，次经用 Douay 拼写）
+  drc: {
+    '01': 'Genesis', '02': 'Exodus', '03': 'Leviticus', '04': 'Numbers', '05': 'Deuteronomy',
+    '06': 'Joshua', '07': 'Judges', '08': 'Ruth', '09': '1 Samuel', '10': '2 Samuel',
+    '11': '1 Kings', '12': '2 Kings', '13': '1 Chronicles', '14': '2 Chronicles', '15': 'Ezra',
+    '16': 'Nehemiah', '17': 'Esther', '18': 'Job', '19': 'Psalms', '20': 'Proverbs',
+    '21': 'Ecclesiastes', '22': 'Song of Solomon', '23': 'Isaiah', '24': 'Jeremiah', '25': 'Lamentations',
+    '26': 'Ezekiel', '27': 'Daniel', '28': 'Hosea', '29': 'Joel', '30': 'Amos',
+    '31': 'Obadiah', '32': 'Jonah', '33': 'Micah', '34': 'Nahum', '35': 'Habakkuk',
+    '36': 'Zephaniah', '37': 'Haggai', '38': 'Zechariah', '39': 'Malachi', '40': 'Matthew',
+    '41': 'Mark', '42': 'Luke', '43': 'John', '44': 'Acts', '45': 'Romans',
+    '46': '1 Corinthians', '47': '2 Corinthians', '48': 'Galatians', '49': 'Ephesians', '50': 'Philippians',
+    '51': 'Colossians', '52': '1 Thessalonians', '53': '2 Thessalonians', '54': '1 Timothy', '55': '2 Timothy',
+    '56': 'Titus', '57': 'Philemon', '58': 'Hebrews', '59': 'James', '60': '1 Peter',
+    '61': '2 Peter', '62': '1 John', '63': '2 John', '64': '3 John', '65': 'Jude',
+    '66': 'Revelation',
+    'ext-1': 'Tobias', 'ext-2': 'Judith', 'ext-3': 'Wisdom', 'ext-4': 'Ecclesiasticus',
+    'ext-5': 'Baruch', 'ext-6': '1 Machabees', 'ext-7': '2 Machabees',
+  },
 }

@@ -30,6 +30,8 @@ const strongData = ref(null)
 const panelOpen = ref(window.innerWidth > 900)
 // 移动端侧栏抽屉开关（窄屏下书卷列表为抽屉形式）
 const sidebarOpen = ref(false)
+// 移动端沉浸阅读：隐藏头部（标题/章节标签）扩大阅读区；桌面端无意义但状态无害
+const immersive = ref(false)
 // 译本下拉展开（受控组件，由本页统一管理以支持移动端互斥）
 const menuOpen = ref(false)
 
@@ -253,6 +255,13 @@ function onToggleMenu() {
 <template>
   <div class="brp-layout" :class="{ 'sidebar-open': sidebarOpen }" v-if="manifest">
     <div v-if="sidebarOpen" class="sidebar-backdrop" @click="sidebarOpen = false"></div>
+    <!-- 沉浸阅读退出按钮（移动端）：悬浮右上角，点击恢复头部标题/章节标签 -->
+    <button
+      v-if="immersive && isMobile()"
+      class="immersive-exit"
+      aria-label="退出沉浸阅读，显示头部"
+      @click="immersive = false"
+    >⤡</button>
     <BookSidebar
       :translation="translation"
       :active-book-id="book && book.id"
@@ -262,7 +271,8 @@ function onToggleMenu() {
     <section class="brp-main">
       <div v-if="error" class="brp-error">{{ error }}</div>
       <template v-else-if="book">
-        <ChapterTabs :chapter-count="book.chapterCount" :current="chapter" @select-chapter="onSelectChapter" />
+        <!-- 移动端沉浸阅读：隐藏头部（标题/章节标签）后章节条一同收起，退出按钮为悬浮键 -->
+        <ChapterTabs v-show="!immersive || !isMobile()" :chapter-count="book.chapterCount" :current="chapter" @select-chapter="onSelectChapter" />
         <ScripturePanel
           :book="book"
           :chapter="chapter"
@@ -272,11 +282,13 @@ function onToggleMenu() {
           :menu-open="menuOpen"
           :loading="loading"
           :strong="strongData"
+          :immersive="immersive"
           @change-translation="onChangeTranslation"
           @toggle-commentary="onToggleCommentary"
           @toggle-sidebar="onToggleSidebar"
           @toggle-menu="onToggleMenu"
           @goto-verse="onGotoVerse"
+          @toggle-immersive="immersive = !immersive"
         />
       </template>
     </section>
@@ -358,6 +370,30 @@ function onToggleMenu() {
 /* 移动端遮罩（仅侧栏抽屉打开时显示） */
 .sidebar-backdrop {
   display: none;
+}
+
+/* 沉浸阅读退出按钮：悬浮右上角，移动端沉浸时显示（头部隐藏后唯一的恢复入口） */
+.immersive-exit {
+  position: fixed;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 41;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--text);
+  font-size: 1.1rem;
+  line-height: 1;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+}
+.immersive-exit:hover {
+  color: var(--gold);
+  border-color: var(--gold);
 }
 
 /* 窄屏（≤900px）：侧栏变抽屉、解经面板变覆盖层 */

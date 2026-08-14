@@ -1,0 +1,30 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "60",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "The same great doctrines, as in St. Paul's epistles, are here applied to same practical purposes. And this epistle is remarkable for the sweetness, gentleness, and humble love, with which it is written. It gives a short, and yet a very clear summary, both of the consolations and the instructions needful for the encouragement and direction of a Christian in his journey to heaven, raising his thoughts and desires to that happiness, and strengthening him against all opposition in the way, both from corruption within, and temptations and afflictions without."
+    },
+    {
+      "chapter": 2,
+      "summary": "A temper suitable to the Christian character as born again, is recommended. (1-10) Holy conversation among the Gentiles directed. (11,12) Subjects exhorted to pay all proper obedience to their civil governors. (13-17) Also servants to their masters, and all to be patient, according to the example of the suffering Saviour. (18-25)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The duties of wives and husbands. (1-7) Christians exhorted to agree. (8-13) And encouraged to patience under persecutions for righteousness' sake, considering that Christ suffered patiently. (14-22)"
+    },
+    {
+      "chapter": 4,
+      "summary": "The consideration of Christ's sufferings is urged for purity and holiness. (1-6) And the approaching end of the Jewish state, as a reason for sobriety, watchfulness, and prayer. (7-11) Believers encouraged to rejoice and glory in reproaches and sufferings for Christ, and to commit their souls to the care of a faithful God. (12-19)"
+    },
+    {
+      "chapter": 5,
+      "summary": "Elders exhorted and encouraged. (1-4) Younger Christians are to submit to their elders, and to yield with humility and patience to God, and to be sober, watchful, and stedfast in faith. (5-9) Prayers for their growth and establishment. (10-14)"
+    }
+  ]
+}

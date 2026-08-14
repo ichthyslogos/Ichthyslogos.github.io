@@ -16,7 +16,7 @@
   - 需**署名 STEP Bible** 并链接 www.STEPBible.org；请勿自行再分发（引导至 GitHub 源）
 - **获取**：`素材/stepbible-tipnr/TIPNR.txt`（raw GitHub 下载，8.6MB，见素材 README）
 
-## 数据结构（data-src/brp/notes/tipnr/）
+## 数据结构（data-src/brp/commentary/notes/tipnr/）
 
 - `entries.json`：全量轻量索引 `{ source, count, entries: [{ name, strong, type }] }`（供将来词条高亮匹配）
 - `books/<bookId>.json`：按卷分片（当前章词条列表）：
@@ -35,12 +35,13 @@
 
 - `type`：Male/Female/Group/Place/Language/Time/Supernatural/Musical/Star/Title/Other（前端徽章：人名/群体/地名/其他）
 - `refs`：该词条**在本章**的出现节（列表展示用；全量出现经节不存，词条详情按需扩展）
+- **描述清理**：TIPNR 原文描述含 HTML 标记（`<ref="1Ki.1.7">…</ref>` / `<strong=…>` / `<br>`），导入时由 `cleanDesc()` 剥除——`<br>` 转段落分隔、其余标签删除保留内部文本（全库校验 0 残留，2026-08-14）
 
 ## 上架流程
 
 1. 素材已归档（`素材/stepbible-tipnr/`，只读）
-2. `node scripts/commentary/import-tipnr.mjs` → 重写 `data-src/brp/notes/tipnr/`（4259 词条 / 66 卷 / 1088 章）
-3. `npm run data` → `buildNotes()` 复制到 `public/data/brp/notes/` + manifest
+2. `node scripts/commentary/import-tipnr.mjs` → 重写 `data-src/brp/commentary/notes/tipnr/`（4259 词条 / 66 卷 / 1088 章）
+3. `npm run data` → `buildCommentary()` 的 notes 栏目处理复制到 `public/data/brp/commentary/notes/tipnr/` + manifest（category='notes'）
 4. 前端 `data.js`：`fetchNotes(bookId)` / `findNotesChapter(book, chapter)`（no-store）；`CommentaryPanel.vue`「背景注释」层
 
 ## 已接入范围

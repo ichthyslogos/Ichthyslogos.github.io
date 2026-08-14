@@ -1,0 +1,30 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "25",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "It is evident that Jeremiah was the author of the Lamentations which bear his name. The book was not written till after the destruction of Jerusalem by the Chaldeans. May we be led to consider sin as the cause of all our calamities, and under trials exercise submission, repentance, faith, and prayer, with the hope of promised deliverance through God's mercy."
+    },
+    {
+      "chapter": 2,
+      "summary": "Lamentation for the misery of Jerusalem."
+    },
+    {
+      "chapter": 3,
+      "summary": "The faithful lament their calamities, and hope in God's mercies."
+    },
+    {
+      "chapter": 4,
+      "summary": "The deplorable state of the nation is contrasted with its ancient prosperity."
+    },
+    {
+      "chapter": 5,
+      "summary": "The Jewish nation supplicating the Divine favour."
+    }
+  ]
+}

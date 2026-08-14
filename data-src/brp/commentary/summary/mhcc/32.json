@@ -1,0 +1,26 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "32",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "Jonah was a native of Galilee, 2Ki 14:25. His miraculous deliverance from out of the fish, rendered him a type of our blessed Lord, who mentions it, so as to show the certain truth of the narrative. All that was done was easy to the almighty power of the Author and Sustainer of life. This book shows us, by the example of the Ninevites, how great are the Divine forbearance and long-suffering towards sinners. It shows a most striking contrast between the goodness and mercy of God, and the rebellion, impatience, and peevishness of his servant; and it will be best understood by those who are most acquainted with their own hearts."
+    },
+    {
+      "chapter": 2,
+      "summary": "The prayer of Jonah. (1-9) He is delivered from the fish. (10)"
+    },
+    {
+      "chapter": 3,
+      "summary": "Jonah sent again to Nineveh, preaches there. (1-4) Nineveh is spared upon the repentance of the inhabitants. (5-10)"
+    },
+    {
+      "chapter": 4,
+      "summary": "Jonah repines at God's mercy to Nineveh, and is reproved. (1-4) He is taught by the withering of a gourd, that he did wrong. (5-11)"
+    }
+  ]
+}

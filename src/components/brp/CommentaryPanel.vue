@@ -21,6 +21,7 @@ import {
   groupOfSource,
   fetchNotes,
   findNotesChapter,
+  sourcesOfCategory,
 } from '../../lib/data.js'
 import EmptyState from '../EmptyState.vue'
 import CommentarySourceMenu from './CommentarySourceMenu.vue'
@@ -41,13 +42,13 @@ const loading = ref(false)
 
 // —— 解经层结构 ——
 // 术语约定：解经 = 对经文本身的解释（FISH 六层 + 多来源解经）；注释 = 作者/地点/背景等简要介绍（背景注释层 = TIPNR，不单列）。
-// 一句话总结层 = 简要版（concise 类源，当前为 MHCC，summary + 逐节可折叠）；
+// 总结层 = summary 栏目源（当前为 MHCC 概览段，一句话总结）；
+// 「经文解释」层 = 同源简要版的逐节讲解（MHCC #N 段，前端折叠展示）；
 // 背景注释层 = STEP TIPNR 专有名词（人名/地名/背景词条，按当前章列出，可展开文章级描述）；
-// 其余四层内容留空 → 「待整理…」占位；「完整解经」层 = 完整版多来源解经（按宗派分组：马太亨利/加尔文/RWP/Abbott/Catena）
+// 其余层内容留空 → 「待整理…」占位；「完整解经」层 = 完整版多来源解经（按宗派分组：马太亨利/加尔文/RWP/Abbott/Catena）
 const STUDY_LAYERS = [
-  { key: 'summary', label: '一句话总结' },
+  { key: 'summary', label: '总结' },
   { key: 'keyPoints', label: '要点' },
-  { key: 'context', label: '上下文' },
   { key: 'interpretation', label: '经文解释' },
   { key: 'theology', label: '神学意义' },
   { key: 'application', label: '应用' },
@@ -58,62 +59,219 @@ const STUDY_LAYERS = [
 /** 前七层（字段型）；「完整解经」层由多来源解经（马太亨利/加尔文等）承载 */
 const SIX_LAYERS = computed(() => STUDY_LAYERS.filter((l) => l.key !== 'fullCommentary'))
 
-/** 解经层折叠状态：默认全部展开（保持显示），点击标题可逐层收起 */
-const openLayers = ref(new Set(STUDY_LAYERS.map((l) => l.key)))
+/** 解经层折叠状态：默认全部收起（点击标题展开；切换书卷/章节/打开抽屉时全部关闭） */
+const openLayers = ref(new Set())
 
-function toggleLayer(key) {
-  const s = new Set(openLayers.value)
-  s.has(key) ? s.delete(key) : s.add(key)
-  openLayers.value = s
+/** 当前查看的层（点击展开时滚动置顶，标题常驻顶部可一键收起） */
+const activeLayer = ref('')
+
+/** 正在阅读的节/词条（最小单元）：面板右上角「关闭」按钮据此显示，点击只关闭该项（展开层本身不算） */
+/** 正在看 = 浏览器视口内正在显示的展开词条（滚动时实时切换；展开即显示） */
+const activeItem = ref(null) // { kind: 'verse'|'note'|'section', idx, label }
+/** 顶部「关闭」按钮显隐：视口内有正在显示的词条即显示 */
+const itemCloseVisible = ref(false)
+
+/** 节/词条 kind → 所在层 data-layer */
+const LAYER_OF_KIND = { verse: 'interpretation', note: 'notes', section: 'fullCommentary' }
+
+/** 收集全部展开的节/词条（带词条块元素 + 位置缓存，按位置排序） */
+function collectExpanded() {
+  const items = []
+  for (const i of openVerses.value) {
+    const sec = interpretationChapter.value?.sections?.[i]
+    items.push({ kind: 'verse', idx: i, label: sec?.ref || '节' })
+  }
+  for (const i of openNotes.value) {
+    const n = notesChapter.value?.entries?.[i]
+    items.push({ kind: 'note', idx: i, label: n?.name || '词条' })
+  }
+  for (const i of expanded.value) {
+    const sec = chapterData.value?.sections?.[i]
+    items.push({ kind: 'section', idx: i, label: sec?.ref || sec?.heading || '节' })
+  }
+  const body = panelBodyEl.value
+  const withEl = items
+    .map((it) => {
+      // 词条块 = 标题 + 内容整体（判断「正在看」用块，而非仅标题，滚动切换更灵敏）
+      const toggle = body?.querySelector(`[data-layer="${LAYER_OF_KIND[it.kind]}"] [data-item-idx="${it.idx}"]`)
+      const el = toggle?.closest('.study-verse, .note-entry, .commentary-section') || toggle
+      if (!el) return null
+      const r = el.getBoundingClientRect()
+      return { ...it, el, top: r.top, bottom: r.bottom }
+    })
+    .filter(Boolean)
+  withEl.sort((a, b) => a.top - b.top)
+  return withEl
 }
 
-/** 一句话总结层内的逐节展开状态（默认收起） */
+/** 按视口顶部线重算「正在看」：顶部线穿过的词条块；无穿过则取上方最近（刚看完的） */
+function computeActive() {
+  const items = collectExpanded()
+  const body = panelBodyEl.value
+  if (!items.length || !body) {
+    activeItem.value = null
+    return null
+  }
+  const bodyRect = body.getBoundingClientRect()
+  if (bodyRect.height <= 0) {
+    // 面板隐藏（v-show=false）时不做判断
+    activeItem.value = null
+    return null
+  }
+  const bodyTop = bodyRect.top
+  const probe = bodyTop + 4 // 视口顶部线（略下移，避免贴边误差）
+  const crossing = items.find((it) => it.top <= probe && it.bottom > probe)
+  let current
+  if (crossing) {
+    current = crossing
+  } else {
+    // 顶部线未穿过任何块（如滚动到层间隙）：取上方最近的（刚看完的）；没有则取第一个
+    const above = items.filter((it) => it.bottom <= probe)
+    current = above.length ? above[above.length - 1] : items[0]
+  }
+  activeItem.value = { kind: current.kind, idx: current.idx, label: current.label }
+  return current
+}
+
+/** 滚动监听：实时跟随视口顶部正在显示的词条（按钮对应变化） */
+function onPanelScroll() {
+  itemCloseVisible.value = !!computeActive()
+}
+
+/** 收起/关闭后：重算视口内正在显示的词条 */
+function refreshItemClose() {
+  itemCloseVisible.value = !!computeActive()
+}
+
+/** 层 key → 显示名 */
+function layerLabel(key) {
+  return STUDY_LAYERS.find((l) => l.key === key)?.label || key
+}
+
+/** 只关闭正在看的节/词条；关闭后自动切到视口内下一个正在显示的 */
+function closeItem() {
+  const it = activeItem.value
+  if (!it) return
+  if (it.kind === 'verse') {
+    const s = new Set(openVerses.value)
+    s.delete(it.idx)
+    openVerses.value = s
+  } else if (it.kind === 'note') {
+    const s = new Set(openNotes.value)
+    s.delete(it.idx)
+    openNotes.value = s
+  } else {
+    const s = new Set(expanded.value)
+    s.delete(it.idx)
+    expanded.value = s
+  }
+  refreshItemClose()
+}
+
+function toggleLayer(key) {
+  const opening = !openLayers.value.has(key)
+  const s = new Set(openLayers.value)
+  opening ? s.add(key) : s.delete(key)
+  openLayers.value = s
+  // 展开层不跳转：保持当前阅读位置（切换书卷/章节时才从头显示）
+  if (opening) activeLayer.value = key
+}
+
+/** 经文解释层（简要版分节讲解）内的逐节展开状态（默认收起）；展开的节记为正在阅读项 */
 const openVerses = ref(new Set())
 
 function toggleVerse(i) {
+  const opening = !openVerses.value.has(i)
   const s = new Set(openVerses.value)
-  s.has(i) ? s.delete(i) : s.add(i)
+  opening ? s.add(i) : s.delete(i)
   openVerses.value = s
+  if (opening) {
+    // 展开的节 = 正在看：右上角立即显示其关闭按钮（滚动时按视口实时切换）
+    const sec = interpretationChapter.value?.sections?.[i]
+    activeItem.value = { kind: 'verse', idx: i, label: sec?.ref || '节' }
+    itemCloseVisible.value = true
+  } else {
+    refreshItemClose()
+  }
 }
 
-// —— 一句话总结层数据（简要版源，concise 类，当前为 MHCC）——
-// 结构同注释卷数据：{ summary, sections: [{ ref, text }] }，前端逐节折叠展开
-const conciseManifest = ref(null) // 注释源清单缓存（一句话总结层共用）
-const conciseData = ref(null) // 简要版源整卷数据
-const conciseKey = ref('')
-const conciseError = ref('')
+// —— 总结 / 经文解释层数据（简要版源按栏目拆分，当前均为 MHCC）——
+// 总结层 = summary 切片（每章 summary 一句话总结）；
+// 经文解释层 = interpretation 切片（每章 sections 逐节讲解，前端折叠展示）
+// 来源选择与完整解经层同款（CommentarySourceMenu；当前各一个源，多源时自动可切）
+const conciseManifest = ref(null) // 注释源清单缓存（各栏目共用）
+const summaryData = ref(null) // 总结源整卷数据
+const summaryError = ref('')
+const interpretationData = ref(null) // 经文解释源整卷数据
+const interpretationError = ref('')
 const studyChapter = computed(() => {
-  if (!conciseData.value) return null
-  return findCommentaryChapter(conciseData.value, props.chapter)
+  if (!summaryData.value) return null
+  return findCommentaryChapter(summaryData.value, props.chapter)
+})
+const interpretationChapter = computed(() => {
+  if (!interpretationData.value) return null
+  return findCommentaryChapter(interpretationData.value, props.chapter)
 })
 
-// 简要版源（tradition = 'concise'；目前仅 mhcc）：一句话总结层专用，不进入「完整解经」层菜单
-function firstConciseSource(m) {
-  return (m.sources || []).find((s) => s.tradition === 'concise') || null
+/** 总结层源（category='summary'）+ 源选择状态 */
+const summarySources = computed(() => displaySources(sourcesOfCategory(conciseManifest.value, 'summary')))
+const summaryKey = ref('')
+const summaryMenuOpen = ref(false)
+function pickSummarySource(key) {
+  summaryKey.value = key
+  summaryMenuOpen.value = false
 }
 
+/** 经文解释层源（category='interpretation'）+ 源选择状态 */
+const interpretationSources = computed(() => displaySources(sourcesOfCategory(conciseManifest.value, 'interpretation')))
+const interpretationKey = ref('')
+const interpretationMenuOpen = ref(false)
+function pickInterpretationSource(key) {
+  interpretationKey.value = key
+  interpretationMenuOpen.value = false
+}
+
+/** 上次加载的书卷（换卷判定用；immediate 时 oldValue 为 undefined，解构会抛错，故用模块级变量） */
+let concisePrevBookId = null
 let conciseSeq = 0
 watch(
   () => [props.book?.id, props.chapter, props.open],
   async ([bookId]) => {
+    // 换卷立即清空旧卷数据，避免新章号在旧卷数据中误匹配（串章）
+    if (bookId !== concisePrevBookId) {
+      concisePrevBookId = bookId
+      summaryData.value = null
+      interpretationData.value = null
+    }
     if (!bookId || !props.open) return
     const seq = ++conciseSeq
     try {
       const m = conciseManifest.value || (await fetchCommentaryManifest())
-      const cs = firstConciseSource(m)
-      if (!cs) {
-        conciseData.value = null
+      const summary = sourcesOfCategory(m, 'summary')[0]
+      const interp = sourcesOfCategory(m, 'interpretation')[0]
+      if (!summary || !interp) {
+        summaryData.value = null
+        interpretationData.value = null
         return
       }
-      conciseKey.value = cs.key
-      const data = await fetchCommentary(cs.key, bookId)
+      summaryKey.value = summary.key
+      interpretationKey.value = interp.key
+      // 两栏同源不同切片：并发加载
+      const [sd, id] = await Promise.all([
+        fetchCommentary(summaryKey.value, bookId, 'summary'),
+        fetchCommentary(interpretationKey.value, bookId, 'interpretation'),
+      ])
       if (seq !== conciseSeq) return
-      conciseData.value = data
-      conciseError.value = ''
+      summaryData.value = sd
+      interpretationData.value = id
+      summaryError.value = ''
+      interpretationError.value = ''
     } catch (e) {
       if (seq !== conciseSeq) return
-      conciseData.value = null
-      conciseError.value = String(e?.message || e)
+      summaryData.value = null
+      interpretationData.value = null
+      summaryError.value = String(e?.message || e)
+      interpretationError.value = String(e?.message || e)
     }
   },
   { immediate: true },
@@ -122,20 +280,36 @@ watch(
 // —— 背景注释层数据（STEP TIPNR 专有名词：人名/地名/背景词条，按当前章）——
 const notesData = ref(null) // 当前卷注释数据
 const notesError = ref('')
+/** 背景注释来源（标注用，同完整解经层显示来源；当前仅 tipnr 一个源） */
+const notesSource = computed(() => sourcesOfCategory(conciseManifest.value, 'notes')[0] || null)
 /** 当前章背景注释（无数据返回 null → 「本章暂无背景注释」） */
 const notesChapter = computed(() => findNotesChapter(notesData.value, props.chapter))
-/** 词条展开状态：Set<索引>，默认收起 */
+/** 词条展开状态：Set<索引>，默认收起；展开的词条记为正在阅读项 */
 const openNotes = ref(new Set())
 function toggleNote(i) {
+  const opening = !openNotes.value.has(i)
   const s = new Set(openNotes.value)
-  s.has(i) ? s.delete(i) : s.add(i)
+  opening ? s.add(i) : s.delete(i)
   openNotes.value = s
+  if (opening) {
+    const n = notesChapter.value?.entries?.[i]
+    activeItem.value = { kind: 'note', idx: i, label: n?.name || '词条' }
+    itemCloseVisible.value = true
+  } else {
+    refreshItemClose()
+  }
 }
 
+let notesPrevBookId = null
 let notesSeq = 0
 watch(
   () => [props.book?.id, props.chapter, props.open],
   async ([bookId]) => {
+    // 换卷立即清空旧卷数据，避免新章号在旧卷数据中误匹配（串章）
+    if (bookId !== notesPrevBookId) {
+      notesPrevBookId = bookId
+      notesData.value = null
+    }
     if (!bookId || !props.open) return
     const seq = ++notesSeq
     try {
@@ -186,13 +360,21 @@ function toggleLang() {
   localStorage.setItem(SOURCE_STORAGE, next.key)
 }
 
-/** 小节展开状态：Set<索引>，默认全部收起 */
+/** 小节展开状态：Set<索引>，默认全部收起；展开的小节记为正在阅读项 */
 const expanded = ref(new Set())
 
 function toggleSection(i) {
+  const opening = !expanded.value.has(i)
   const s = new Set(expanded.value)
-  s.has(i) ? s.delete(i) : s.add(i)
+  opening ? s.add(i) : s.delete(i)
   expanded.value = s
+  if (opening) {
+    const sec = chapterData.value?.sections?.[i]
+    activeItem.value = { kind: 'section', idx: i, label: sec?.ref || sec?.heading || '节' }
+    itemCloseVisible.value = true
+  } else {
+    refreshItemClose()
+  }
 }
 
 const allExpanded = computed(
@@ -204,11 +386,32 @@ function toggleAll() {
   expanded.value = allExpanded.value ? new Set() : new Set(chapterData.value.sections.map((_, i) => i))
 }
 
-// 切换章节时重置展开状态
+// 切换书卷/章节：所有展开项全部关闭 + 面板回到顶部（不保留上次进度）
 watch(
   () => [props.book?.id, props.chapter],
   () => {
     expanded.value = new Set()
+    openVerses.value = new Set()
+    openNotes.value = new Set()
+    openLayers.value = new Set()
+    activeLayer.value = ''
+    activeItem.value = null
+    itemCloseVisible.value = false
+    if (panelBodyEl.value) panelBodyEl.value.scrollTop = 0
+  },
+)
+
+// 打开抽屉时同样全部收起（保持初始为标题列表）
+watch(
+  () => props.open,
+  (v) => {
+    if (!v) return
+    openVerses.value = new Set()
+    openNotes.value = new Set()
+    openLayers.value = new Set()
+    activeLayer.value = ''
+    activeItem.value = null
+    itemCloseVisible.value = false
   },
 )
 
@@ -222,8 +425,8 @@ watch(
   { immediate: true },
 )
 
-/** 完整解经层源列表：排除简要版源（concise，供「一句话总结」层使用） */
-const fullSources = computed(() => sources.value.filter((s) => s.tradition !== 'concise'))
+/** 完整解经层源列表：按栏目过滤（fullCommentary），总结/经文解释/背景注释不进入完整解经层菜单 */
+const fullSources = computed(() => sourcesOfCategory(conciseManifest.value, 'fullCommentary'))
 
 async function loadSources() {
   try {
@@ -246,10 +449,16 @@ async function loadSources() {
 // 书卷变化：当前源若无此卷注释，自动回落到该卷可用的源（resolveCommentarySource 保证）；
 // 404（源无此卷数据）与数据缺失（返回 null）都触发回退。
 /** 序号守卫：快速切换书卷/章节/源时丢弃过期响应 */
+let loadPrevBookId = null
 let loadSeq = 0
 watch(
   () => [props.book?.id, props.chapter, sourceKey.value],
   async ([bookId]) => {
+    // 换卷立即清空旧卷数据，避免新章号在旧卷数据中误匹配（串章）
+    if (bookId !== loadPrevBookId) {
+      loadPrevBookId = bookId
+      bookData.value = null
+    }
     if (!bookId || !sourceKey.value) return
     const seq = ++loadSeq
     loading.value = true
@@ -305,6 +514,8 @@ const bookDisabled = computed(() => !!props.book && !isCommentaryEnabled(props.b
 // —— 拖拽调宽：面板左边缘手柄，按住左右拖动改变面板宽度（桌面分栏 / 移动端覆盖层通用）——
 const RESIZE_STORAGE = 'brp-commentary-panel-width'
 const rootEl = ref(null)
+/** 面板滚动容器（「正在看」词条判断与回顶共用，避免高频滚动时全局查询） */
+const panelBodyEl = ref(null)
 const panelWidth = ref(null) // null = 默认宽度（CSS）
 const dragging = ref(false)
 let resizeStartX = 0
@@ -432,14 +643,33 @@ function endSheetResize() {
     ></div>
     <header class="panel-head">
       <h2 class="panel-title">
-        解经<template v-if="book"> · {{ book.zh }} 第 {{ chapter }} 章</template>
+        <span class="panel-title-label">解经</span>
+        <span v-if="book" class="panel-title-ref">{{ book.zh }} · 第 {{ chapter }} 章</span>
       </h2>
-      <button class="panel-close" @click="emit('toggle')" aria-label="收起解经面板">✕</button>
+      <div class="panel-head-actions">
+        <!-- 关闭正在阅读的节/词条：仅向下滑动且阅读项滚出顶部时显示 -->
+        <button
+          v-if="itemCloseVisible"
+          class="panel-item-close"
+          @click="closeItem"
+          :title="'关闭正在阅读的『' + (activeItem && activeItem.label) + '』'"
+        >
+          <span class="rc-x" aria-hidden="true">✕</span>
+          <span>关闭 · {{ activeItem && activeItem.label }}</span>
+        </button>
+        <button class="panel-close" @click="emit('toggle')" aria-label="收起解经面板">✕</button>
+      </div>
     </header>
-    <div class="panel-body">
-      <!-- 六层结构化解经（默认展开，可逐层折叠；一句话总结层 = 简要版 MHCC，其余留空 → 「待整理…」） -->
+    <div ref="panelBodyEl" class="panel-body" @scroll.passive="onPanelScroll">
+      <!-- 分层结构化解经（默认展开，可逐层折叠；点击展开的层滚动置顶；切换书卷回到顶部） -->
       <div class="study-body">
-        <div v-for="layer in SIX_LAYERS" :key="layer.key" class="study-layer">
+        <div
+          v-for="layer in SIX_LAYERS"
+          :key="layer.key"
+          class="study-layer"
+          :data-layer="layer.key"
+          :class="{ active: activeLayer === layer.key && openLayers.has(layer.key) }"
+        >
           <button
             class="study-layer-toggle"
             :aria-expanded="openLayers.has(layer.key)"
@@ -450,12 +680,44 @@ function endSheetResize() {
           </button>
           <div v-if="openLayers.has(layer.key)" class="study-layer-content">
             <template v-if="layer.key === 'summary'">
-              <template v-if="studyChapter">
-                <p v-if="studyChapter.summary" class="study-text">{{ studyChapter.summary }}</p>
-                <!-- 简要版（MHCC）逐节简注：与完整解经同款折叠，每节单独展开 -->
-                <div v-for="(s, i) in studyChapter.sections" :key="i" class="study-verse">
+              <!-- 来源选择（与完整解经层同款；当前单源 mhcc） -->
+              <div v-if="summarySources.length" class="source-row summary-source-row">
+                <CommentarySourceMenu
+                  :sources="summarySources"
+                  :active-key="summaryKey"
+                  :open="summaryMenuOpen"
+                  :book-id="book && book.id"
+                  @toggle="summaryMenuOpen = !summaryMenuOpen"
+                  @select="pickSummarySource"
+                />
+              </div>
+              <p v-if="studyChapter && studyChapter.summary" class="study-text">{{ studyChapter.summary }}</p>
+              <p v-else class="study-placeholder">待整理…<template v-if="summaryError">（{{ summaryError }}）</template></p>
+            </template>
+            <template v-else-if="layer.key === 'keyPoints'">
+              <ul v-if="studyChapter && studyChapter.keyPoints && studyChapter.keyPoints.length" class="study-keypoints">
+                <li v-for="(p, i) in studyChapter.keyPoints" :key="i">{{ p }}</li>
+              </ul>
+              <p v-else class="study-placeholder">待整理…</p>
+            </template>
+            <!-- 经文解释层 = 简要版（MHCC）分节讲解：逐节折叠，每节单独展开 -->
+            <template v-else-if="layer.key === 'interpretation'">
+              <!-- 来源选择（与完整解经层同款；当前单源 mhcc） -->
+              <div v-if="interpretationSources.length" class="source-row summary-source-row">
+                <CommentarySourceMenu
+                  :sources="interpretationSources"
+                  :active-key="interpretationKey"
+                  :open="interpretationMenuOpen"
+                  :book-id="book && book.id"
+                  @toggle="interpretationMenuOpen = !interpretationMenuOpen"
+                  @select="pickInterpretationSource"
+                />
+              </div>
+              <template v-if="interpretationChapter && interpretationChapter.sections && interpretationChapter.sections.length">
+                <div v-for="(s, i) in interpretationChapter.sections" :key="i" class="study-verse">
                   <button
                     class="study-verse-toggle"
+                    :data-item-idx="i"
                     :aria-expanded="openVerses.has(i)"
                     @click="toggleVerse(i)"
                   >
@@ -466,22 +728,18 @@ function endSheetResize() {
                     <p class="commentary-text">{{ s.text }}</p>
                   </div>
                 </div>
-                <p v-if="!studyChapter.summary && !studyChapter.sections.length" class="study-placeholder">待整理…</p>
               </template>
-              <p v-else class="study-placeholder">待整理…<template v-if="conciseError">（{{ conciseError }}）</template></p>
-            </template>
-            <template v-else-if="layer.key === 'keyPoints'">
-              <ul v-if="studyChapter && studyChapter.keyPoints && studyChapter.keyPoints.length" class="study-keypoints">
-                <li v-for="(p, i) in studyChapter.keyPoints" :key="i">{{ p }}</li>
-              </ul>
               <p v-else class="study-placeholder">待整理…</p>
             </template>
             <!-- 背景注释层 = STEP TIPNR 专有名词（人名/地名/背景），按当前章列出词条，可展开文章级描述 -->
             <template v-else-if="layer.key === 'notes'">
+              <!-- 来源标注（同完整解经层显示来源；当前仅 TIPNR 一个源） -->
+              <p v-if="notesSource" class="notes-source"><span class="notes-source-tag">{{ notesSource.name }}</span></p>
               <template v-if="notesChapter && notesChapter.entries && notesChapter.entries.length">
                 <div v-for="(n, i) in notesChapter.entries" :key="i" class="note-entry">
                   <button
                     class="note-toggle"
+                    :data-item-idx="i"
                     :aria-expanded="openNotes.has(i)"
                     @click="toggleNote(i)"
                   >
@@ -505,7 +763,11 @@ function endSheetResize() {
         </div>
       </div>
       <!-- 完整解经层 = 完整版多来源解经（按宗派分组：马太亨利/加尔文/RWP/Abbott/Catena，即解经正文），可折叠 -->
-      <div class="study-layer full-commentary-layer">
+      <div
+        class="study-layer full-commentary-layer"
+        :data-layer="'fullCommentary'"
+        :class="{ active: activeLayer === 'fullCommentary' && openLayers.has('fullCommentary') }"
+      >
         <button
           class="study-layer-toggle"
           :aria-expanded="openLayers.has('fullCommentary')"
@@ -550,6 +812,7 @@ function endSheetResize() {
         <div v-for="(s, i) in chapterData.sections" :key="i" class="commentary-section">
           <button
             class="commentary-heading"
+            :data-item-idx="i"
             :aria-expanded="expanded.has(i)"
             :title="s.heading || '注释'"
             @click="toggleSection(i)"
@@ -627,58 +890,114 @@ function endSheetResize() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.7rem 1rem;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem 0.7rem;
   border-bottom: 1px solid var(--line-soft);
-  background: var(--panel);
+  background: linear-gradient(180deg, rgba(139, 115, 85, 0.06), transparent);
 }
 .panel-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  min-width: 0;
   margin: 0;
+}
+.panel-title-label {
   font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 1.08rem;
+  font-weight: 700;
   color: var(--gold);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+.panel-title-ref {
+  font-size: 0.82rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.panel-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+.panel-item-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--gold);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.14rem 0.65rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.panel-item-close:hover {
+  background: var(--gold);
+  color: #fff;
+}
+.rc-x {
+  font-size: 0.7rem;
+  line-height: 1;
 }
 .panel-close {
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
   color: var(--muted);
-  font-size: 0.95rem;
-  padding: 0.1rem 0.45rem;
-  border-radius: var(--radius-sm);
-  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+  font-size: 0.9rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 .panel-close:hover {
-  color: var(--text);
-  background: var(--line-soft);
+  color: var(--gold);
+  background: var(--gold-soft);
+  border-color: var(--gold-soft);
 }
-/* 完整解经层（多来源解经：马太亨利/加尔文等）：与六层同款金棕左线，上方虚线分隔 */
+/* 完整解经层（多来源解经：马太亨利/加尔文等）：与各层同款卡片，上方虚线分隔 */
 .full-commentary-layer {
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
+  margin-top: 0.6rem;
   border-top: 1px dashed var(--line);
-  border-left: 3px solid var(--gold);
 }
-/* 解经层：可折叠小节（默认展开，点击标题收起/展开） */
+/* 解经层：卡片式分组（金棕左线 + 浅底 + 圆角），展开的层（active）金色描边高亮 */
 .study-body {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.55rem;
 }
 .study-layer {
+  border: 1px solid var(--line-soft);
   border-left: 3px solid var(--gold);
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.study-layer.active {
+  border-color: var(--gold-soft);
+  box-shadow: 0 2px 10px rgba(139, 115, 85, 0.14);
 }
 /* 层标题 = 可点击折叠按钮（与注释小节同款交互） */
 .study-layer-toggle {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   width: 100%;
   text-align: left;
   border: none;
-  background: transparent;
-  padding: 0.3rem 0.3rem 0.3rem 0.85rem;
-  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, rgba(139, 115, 85, 0.05), rgba(139, 115, 85, 0.02));
+  padding: 0.6rem 0.85rem;
   cursor: pointer;
   transition: background var(--dur) var(--ease);
 }
@@ -686,14 +1005,14 @@ function endSheetResize() {
   background: var(--gold-soft);
 }
 .study-layer-title {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--gold);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
 }
 /* 层内容（展开区） */
 .study-layer-content {
-  padding: 0.1rem 0.3rem 0.5rem 0.85rem;
+  padding: 0.35rem 0.95rem 0.95rem;
 }
 .study-text {
   margin: 0;
@@ -701,6 +1020,10 @@ function endSheetResize() {
   line-height: 1.9;
   color: #3c4652;
   white-space: pre-line;
+}
+/* 总结/经文解释层的来源选择行（与完整解经层同款胶囊按钮） */
+.summary-source-row {
+  margin: 0.35rem 0 0.55rem;
 }
 .study-keypoints {
   margin: 0;
@@ -715,20 +1038,32 @@ function endSheetResize() {
   color: var(--muted);
   font-style: italic;
 }
-/* MHCC 逐节（一句话总结层内）：与完整解经/注释小节同款折叠 */
+/* 折叠指示：旋转动画（150-300ms 微交互） */
+.chevron {
+  display: inline-block;
+  color: var(--gold);
+  font-size: 0.72rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease);
+}
+.chevron.open {
+  transform: rotate(90deg);
+}
+/* MHCC 逐节（经文解释层内）：与完整解经/注释小节同款折叠 */
 .study-verse {
-  margin: 0.15rem 0;
+  margin: 0.2rem 0;
 }
 .study-verse-toggle {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   width: 100%;
   text-align: left;
   border: none;
   background: transparent;
-  padding: 0.25rem 0.3rem;
-  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
   cursor: pointer;
   transition: background var(--dur) var(--ease);
 }
@@ -736,22 +1071,36 @@ function endSheetResize() {
   background: var(--gold-soft);
 }
 .study-verse-content {
-  padding: 0.1rem 0.3rem 0.4rem;
+  padding: 0.1rem 0.4rem 0.5rem;
 }
-/* 背景注释（TIPNR 词条）：同款折叠样式，词条名 + 类型徽章 */
+/* 背景注释（TIPNR 词条）：来源标注 + 同款折叠样式，词条名 + 类型徽章 */
+.notes-source {
+  margin: 0.3rem 0 0.2rem;
+}
+.notes-source-tag {
+  display: inline-block;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.12rem 0.55rem;
+  white-space: nowrap;
+}
 .note-entry {
-  margin: 0.15rem 0;
+  margin: 0.2rem 0;
 }
 .note-toggle {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   width: 100%;
   text-align: left;
   border: none;
   background: transparent;
-  padding: 0.25rem 0.3rem;
-  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
   cursor: pointer;
   transition: background var(--dur) var(--ease);
 }
@@ -759,19 +1108,20 @@ function endSheetResize() {
   background: var(--gold-soft);
 }
 .note-name {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--ink);
 }
 .note-type {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--gold);
   border: 1px solid var(--gold-soft);
   border-radius: 999px;
   padding: 0 0.45rem;
-  line-height: 1.3;
+  line-height: 1.35;
+  background: rgba(139, 115, 85, 0.05);
 }
 .note-content {
-  padding: 0.15rem 0.3rem 0.5rem 1.5rem;
+  padding: 0.15rem 0.4rem 0.5rem 1.6rem;
 }
 .note-short {
   color: var(--ink);
@@ -795,6 +1145,7 @@ function endSheetResize() {
   font-size: 0.95rem;
 }
 .panel-body {
+  position: relative; /* 滚动定位基准（层置顶 scrollTo 用 offsetTop） */
   flex: 1;
   overflow-y: auto;
   scrollbar-gutter: stable;
@@ -883,15 +1234,6 @@ function endSheetResize() {
 }
 .commentary-heading:hover {
   background: var(--gold-soft);
-}
-.chevron {
-  font-size: 0.7rem;
-  color: var(--muted);
-  transition: transform 0.18s ease;
-  flex-shrink: 0;
-}
-.chevron.open {
-  transform: rotate(90deg);
 }
 /* 小节标题：长标题换行完整显示（最多 2 行，超出省略；min-width:0 保证 flex 内可收缩） */
 .heading-text {

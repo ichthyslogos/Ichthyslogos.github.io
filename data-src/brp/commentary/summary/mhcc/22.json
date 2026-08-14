@@ -1,0 +1,42 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "22",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "This book is a Divine allegory, which represents the love between Christ and his church of true believers, under figures taken from the relation and affection that subsist between a bridegroom and his espoused bride; an emblem often employed in Scripture, as describing the nearest, firmest, and most sure relation: see Ps 45; Isa 54:5,6; 62:5; Jer 2:2; 3:1; also in Ezekiel, Hosea, and by our Lord himself, Mt 9:15; 25:1: see also Re 21:2,9; Eph 5:27. There is no character in the church of Christ, and no situation in which the believer is placed, but what may be traced in this book, as humble inquirers will find, on comparing it with other Scriptures, by the assistance of God the Holy Spirit, in answer to their supplications. Much, however, of the language has been misunderstood by expositors and translators. The difference between the customs and manners of Europe, and those of the East, must especially be kept in view. The little acquaintance with eastern customs possessed by most of our early expositors and translators, has in many cases prevented a correct rendering. Also, the changes in our own language, during the last two or three centuries, affect the manner in which some expressions are viewed, and they must not be judged by modern notions. But the great outlines, rightly interpreted, fully accord with the affections and experience of the sincere Christian."
+    },
+    {
+      "chapter": 2,
+      "summary": "The mutual love of Christ and his church. (1-7) The hope and calling of the church. (8-13) Christ's care of the church, Her faith and hope. (14-17)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The trials of the church by the withdrawing of Christ. (1-5) The excellences of the church, The care of Christ for her. (6-11)"
+    },
+    {
+      "chapter": 4,
+      "summary": "Christ sets forth the graces of the church. (1-7) Christ's love to the church. (8-15) The church desires further influences of Divine grace. (16)"
+    },
+    {
+      "chapter": 5,
+      "summary": "Christ's answer. (1) The disappointments of the church from her own folly. (2-8) The excellences of Christ. (9-16)"
+    },
+    {
+      "chapter": 6,
+      "summary": "Inquiry where Christ must be sought. (1) Where Christ may be found. (2,3) Christ's commendations of the church. (4-10) The work of grace in the believer. (11-13)"
+    },
+    {
+      "chapter": 7,
+      "summary": "The graces of the church. (1-9) The delight of the church in Christ. (10-13)"
+    },
+    {
+      "chapter": 8,
+      "summary": "Desire for communion with Christ. (1-4) The vehemence of this desire. (5-7) The church pleads for others. (8-12) And prays for Christ's coming. (13,14)"
+    }
+  ]
+}

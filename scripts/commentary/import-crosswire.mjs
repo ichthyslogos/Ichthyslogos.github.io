@@ -7,11 +7,11 @@
  *     1. RWP    — Robertson's Word Pictures in the New Testament（A.T. Robertson）
  *                 新约 27 卷逐节；conf 标注 "Copyrighted; Free non-commercial distribution"，
  *                 第 5/6 卷版权 2006/2007 到期（conf 自注），现属公有领域
- *                 → data-src/brp/commentary/baptist/rwp/
+ *                 → data-src/brp/commentary/fullCommentary/rwp/
  *     2. Catena — Catena Aurea（托马斯·阿奎那编"金链"，汇集教父注解，四福音逐节，Public Domain）
- *                 → data-src/brp/commentary/church-fathers/catena/
+ *                 → data-src/brp/commentary/fullCommentary/catena/
  *     3. Abbott — Illustrated New Testament（John S.C. Abbott & Jacob Abbott, 1878，新约 27 卷逐节，Public Domain）
- *                 → data-src/brp/commentary/evangelical/abbott/
+ *                 → data-src/brp/commentary/fullCommentary/abbott/
  *
  * 模块格式（zCom 通用，与 import-calvin.mjs 同族，实测结论）：
  *   .bzs/.czs 块表：每条 12 字节 {offset(4), size(4), sizeUncomp(4)}
@@ -22,7 +22,7 @@
  *     <div annotateRef="Book.Ch.V" sID="xxx" type="section"/>…<div …eID="xxx"…/>
  *     （ref 无 "Bible:" 前缀；Calvin 模块有前缀，本脚本兼容两者）
  *
- * 输出：data-src/brp/commentary/<tradition>/<key>/<bookId>.json
+ * 输出：data-src/brp/commentary/fullCommentary/<key>/<bookId>.json（宗派为元数据，见 build-data.mjs）
  *   结构：{ source: { key, name, lang:'en' }, bookId,
  *           chapters: [{ chapter, summary:'', sections: [{ heading:'', ref:'N', text }] }] }
  *
@@ -143,7 +143,7 @@ for (const src of SOURCES) {
   }
 
   // 3) 聚合输出
-  const outDir = join(SITE_ROOT, 'data-src', 'brp', 'commentary', src.tradition, src.key)
+  const outDir = join(SITE_ROOT, 'data-src', 'brp', 'commentary', 'fullCommentary', src.key)
   mkdirSync(outDir, { recursive: true })
   let bookCount = 0
   let totalChapters = 0
@@ -164,5 +164,5 @@ for (const src of SOURCES) {
     bookCount++
     totalChapters += chapters.length
   }
-  console.log(`[crosswire:${src.key}] ${bookCount} 卷 / ${totalChapters} 章 / ${sections} 节段（跳过 ${skipped}） -> data-src/brp/commentary/${src.tradition}/${src.key}/`)
+  console.log(`[crosswire:${src.key}] ${bookCount} 卷 / ${totalChapters} 章 / ${sections} 节段（跳过 ${skipped}） -> data-src/brp/commentary/fullCommentary/${src.key}/`)
 }

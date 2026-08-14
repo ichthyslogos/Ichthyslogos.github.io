@@ -1,0 +1,26 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "39",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "Malachi was the last of the prophets, and is supposed to have prophesied B.C. 420. He reproves the priests and the people for the evil practices into which they had fallen, and invites them to repentance and reformation, with promises of the blessings to be bestowed at the coming of the Messiah. And now that prophecy was to cease, he speaks clearly of the Messiah, as nigh at hand, and directs the people of God to keep in rememberance the law of Moses, while they were in expectation of the gospel of Christ."
+    },
+    {
+      "chapter": 2,
+      "summary": "The priests reproved for neglecting their covenant. (1-9) The people reproved for their evil practices. (10-17)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The coming of Christ. (1-6) The Jews reproved for their corruptions. (7-12) God's care of his people; The distinction between the righteous and the wicked. (13-18)"
+    },
+    {
+      "chapter": 4,
+      "summary": "The judgements on the wicked, and the happiness of the righteous. (1-3) Regard to be had to the law; John the Baptist promised as the forerunner of Messiah. (4-6)"
+    }
+  ]
+}

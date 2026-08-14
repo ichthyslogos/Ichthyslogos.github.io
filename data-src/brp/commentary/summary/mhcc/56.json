@@ -1,0 +1,22 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "56",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "This epistle chiefly contains directions to Titus concerning the elders of the Church, and the manner in which he should give instruction; and the latter part tells him to urge obedience to magistrates, to enforce good works, avoid foolish questions, and shun heresies. The instructions the apostle gave are all plain and simple. The Christian religion was not formed to answer worldly or selfish views, but it is the wisdom of God and the power of God."
+    },
+    {
+      "chapter": 2,
+      "summary": "The duties which become sound doctrine. (1-8) Believing servants must be obedient. (9,10) All is enforced from the holy design of the gospel, which concerns all believers. (11-15)"
+    },
+    {
+      "chapter": 3,
+      "summary": "Obedience to magistrates, and becoming behaviour towards all, are enforced from what believers were before conversion, and what they are made, through Christ. (1-7) Good works to be done, and useless disputes avoided. (8-11) Directions and exhortations. (12-15)"
+    }
+  ]
+}

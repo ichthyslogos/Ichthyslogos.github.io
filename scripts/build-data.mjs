@@ -145,10 +145,12 @@ writeFileSync(join(OUT_DIR, 'manifest.json'), JSON.stringify(manifest))
 console.log(`\n[build-data] 完成：${manifest.translations.length} 个译本，共 ${totalBooks} 卷 / ${totalChapters} 章`)
 console.log(`[build-data] 输出 -> public/data/brp/manifest.json`)
 
-/* ============ 注释数据（多注释源，按传统两级组织） ============
- * data-src/brp/commentary/<tradition>/<sourceKey>/<bookId>.json → public/data/brp/commentary/（运行时扁平）
- * 新注释源 = 放入 data-src/brp/commentary/<tradition>/<key>/ 后重跑本脚本，前端自动显示
- * tradition 分类（9 个）：church-fathers/catholic/lutheran/reformed/baptist/methodist/anglican/pentecostal/evangelical
+/* ============ 注释数据（多注释源，按解经抽屉栏目两级组织） ============
+ * data-src/brp/commentary/<category>/<sourceKey>/<bookId>.json → public/data/brp/commentary/<category>/<key>/（运行时同构分层）
+ * category 与解经抽屉栏目一一对应：summary（一句话总结）/ interpretation（经文解释）/ notes（背景注释）/ fullCommentary（完整解经）
+ * 新注释源 = 放入对应栏目目录后重跑本脚本，前端自动显示
+ * 完整版源（fullCommentary/）的宗派作为元数据写入 manifest（tradition），前端源菜单按宗派分组展示；
+ * 简要版源（summary|interpretation/）tradition 按作者宗派归属（见 CONCISE_SOURCE_TRADITIONS，如 mhcc = 改革宗）；notes 源（背景注释）tradition = 'notes'
  */
 const COMMENT_SRC = join(SITE_ROOT, 'data-src', 'brp', 'commentary')
 const COMMENT_OUT = join(OUT_DIR, 'commentary')
@@ -156,10 +158,14 @@ const COMMENT_OUT = join(OUT_DIR, 'commentary')
 /** 暂时关闭的注释源：data-src 数据保留，构建/显示时排除（恢复 = 从集合移除后重跑） */
 const DISABLED_SOURCES = new Set(['matthew-henry'])
 
+/** 栏目目录顺序（manifest 排序用） */
+const CATEGORY_ORDER = ['summary', 'interpretation', 'notes', 'fullCommentary']
+
 /**
- * 完整版源（full/）的宗派归属——数据目录保持 full 平铺（2026-08-14 整理），
+ * 完整版源（fullCommentary/）的宗派归属——数据目录保持栏目平铺，
  * 宗派作为元数据写入 manifest，前端「完整解经」层源菜单按宗派分组展示。
- * 简要版源（concise/）固定 tradition = 'concise'，供「一句话总结」层使用。
+ * 简要版源（summary|interpretation/）同样按宗派归属（同作者完整版归同派，如 mhcc = 马太亨利 = 改革宗）；
+ * notes 源（背景注释）固定 'notes'。
  */
 const FULL_SOURCE_TRADITIONS = {
   'matthew-henry-en': 'reformed',
@@ -170,65 +176,116 @@ const FULL_SOURCE_TRADITIONS = {
   abbott: 'evangelical',
 }
 
+/** 简要版源（summary|interpretation 栏目）的宗派归属：与同作者完整版保持一致 */
+const CONCISE_SOURCE_TRADITIONS = {
+  mhcc: 'reformed',
+}
+
 function buildCommentary() {
   if (!existsSync(COMMENT_SRC)) return
   // 重建输出目录，保证被关闭的源不残留旧切片
   rmSync(COMMENT_OUT, { recursive: true, force: true })
   const sources = []
-  for (const tradition of readdirSync(COMMENT_SRC)) {
-    if (tradition.startsWith('_')) continue // 模板目录（_template）不参与构建
-    const tDir = join(COMMENT_SRC, tradition)
-    if (!statIsDir(tDir)) continue
-    for (const key of readdirSync(tDir)) {
+  for (const category of readdirSync(COMMENT_SRC)) {
+    if (!CATEGORY_ORDER.includes(category)) continue // 只认已知栏目（_template/en-raw 等目录不参与）
+    const cDir = join(COMMENT_SRC, category)
+    if (!statIsDir(cDir)) continue
+    for (const key of readdirSync(cDir)) {
       if (key.startsWith('_')) continue
       if (DISABLED_SOURCES.has(key)) continue // 暂时关闭的源
-      const dir = join(tDir, key)
+      const dir = join(cDir, key)
       if (!statIsDir(dir)) continue
-      // 空目录（历史残留）不生成输出
-      const jsonFiles = readdirSync(dir).filter((f) => f.endsWith('.json') && f !== '_report.json')
-      if (!jsonFiles.length) continue
-      const books = []
-      const outDir = join(COMMENT_OUT, key)
-      mkdirSync(outDir, { recursive: true })
       let meta = null
-      for (const f of jsonFiles) {
-        const bookId = f.replace(/\.json$/, '')
-        const raw = JSON.parse(readFileSync(join(dir, f), 'utf8'))
-        meta = meta || raw.source
-        copyFileSync(join(dir, f), join(outDir, f))
-        books.push(bookId)
+      let entryCount = 0
+      let chapterCount = 0
+      const books = []
+      if (category === 'notes') {
+        // 背景注释源：entries.json（全量词条索引）+ books/<bookId>.json（按卷分片）原样复制
+        const booksDir = join(dir, 'books')
+        if (!existsSync(booksDir)) continue
+        const outDir = join(COMMENT_OUT, category, key)
+        mkdirSync(outDir, { recursive: true })
+        mkdirSync(join(outDir, 'books'), { recursive: true })
+        for (const f of readdirSync(booksDir)) {
+          if (!f.endsWith('.json')) continue
+          copyFileSync(join(booksDir, f), join(outDir, 'books', f))
+        }
+        const entriesFile = join(dir, 'entries.json')
+        if (existsSync(entriesFile)) {
+          const idx = readJson(entriesFile)
+          meta = idx.source
+          entryCount = idx.count || (idx.entries || []).length
+          copyFileSync(entriesFile, join(outDir, 'entries.json'))
+        }
+        for (const f of readdirSync(booksDir)) {
+          if (!f.endsWith('.json')) continue
+          const bookId = f.replace(/\.json$/, '')
+          const raw = readJson(join(booksDir, f))
+          meta = meta || raw.source
+          chapterCount += (raw.chapters || []).length
+          books.push(bookId)
+        }
+      } else {
+        // 普通栏目源（summary/interpretation/fullCommentary）：<bookId>.json 平铺复制
+        const jsonFiles = readdirSync(dir).filter((f) => f.endsWith('.json') && f !== '_report.json')
+        if (!jsonFiles.length) continue
+        const outDir = join(COMMENT_OUT, category, key)
+        mkdirSync(outDir, { recursive: true })
+        for (const f of jsonFiles) {
+          const bookId = f.replace(/\.json$/, '')
+          const raw = JSON.parse(readFileSync(join(dir, f), 'utf8'))
+          meta = meta || raw.source
+          copyFileSync(join(dir, f), join(outDir, f))
+          books.push(bookId)
+        }
       }
       if (books.length) {
-        sources.push({
+        const src = {
           key,
-          tradition: FULL_SOURCE_TRADITIONS[key] || tradition, // 完整版源按宗派归属；简要版保持 concise
+          category,
           name: meta?.name || key,
           lang: meta?.lang || 'und',
           books,
-        })
+        }
+        if (category === 'notes') {
+          src.tradition = 'notes'
+          src.entryCount = entryCount
+          src.chapterCount = chapterCount
+        } else if (category === 'summary' || category === 'interpretation') {
+          src.tradition = CONCISE_SOURCE_TRADITIONS[key] || FULL_SOURCE_TRADITIONS[key] || 'reformed'
+        } else {
+          src.tradition = FULL_SOURCE_TRADITIONS[key] || 'evangelical' // 完整版源按宗派归属
+        }
+        sources.push(src)
       }
     }
   }
-  // 注释源排序：按宗派顺序（ROADMAP 9 传统，concise 简要版排最后），组内按语言（zh 优先）→ key
-  // 完整版源（full/）的宗派归属见 FULL_SOURCE_TRADITIONS（数据目录保持 full 平铺，宗派为元数据）
+  // 注释源排序：先按栏目（summary → interpretation → notes → fullCommentary），
+  // 组内按宗派顺序（ROADMAP 9 传统，notes 排后），再按语言（zh 优先）→ key
   const TRADITION_ORDER = [
     'church-fathers', 'catholic', 'lutheran', 'reformed',
     'baptist', 'methodist', 'anglican', 'pentecostal', 'evangelical',
-    'concise',
+    'notes',
   ]
+  const catOrder = (c) => {
+    const i = CATEGORY_ORDER.indexOf(c)
+    return i === -1 ? 1e5 : i
+  }
   const tradOrder = (t) => {
     const i = TRADITION_ORDER.indexOf(t)
     return i === -1 ? 1e5 : i
   }
   sources.sort((a, b) => {
-    const d = tradOrder(a.tradition) - tradOrder(b.tradition)
-    if (d) return d
+    const dc = catOrder(a.category) - catOrder(b.category)
+    if (dc) return dc
+    const dt = tradOrder(a.tradition) - tradOrder(b.tradition)
+    if (dt) return dt
     if (a.lang !== b.lang) return a.lang === 'zh' ? -1 : b.lang === 'zh' ? 1 : a.lang.localeCompare(b.lang)
     return a.key.localeCompare(b.key)
   })
   if (sources.length) {
     writeFileSync(join(COMMENT_OUT, 'manifest.json'), JSON.stringify({ sources }))
-    console.log(`[build-data] 注释源：${sources.map((s) => `${s.tradition}/${s.key}(${s.books.length}卷,${s.lang})`).join(', ')}`)
+    console.log(`[build-data] 注释源：${sources.map((s) => `${s.category}/${s.key}(${s.books.length}卷,${s.lang}${s.entryCount ? ',' + s.entryCount + '词条' : ''})`).join(', ')}`)
   }
 }
 
@@ -461,67 +518,10 @@ function buildChurchHistory() {
   console.log(`[build-data] 输出 -> public/data/church-history/`)
 }
 
-/* ============ 背景注释数据（notes） ============
- * 源：data-src/brp/notes/<key>/（import-tipnr.mjs 生成；TIPNR 专有名词注释，CC BY 4.0）
- *     entries.json            全量轻量索引（词条名/strong/type，供将来词条高亮匹配）
- *     books/<bookId>.json     按卷分片：每章 entries（人名/地名/背景词条 + 四级描述 + 出现节）
- * 输出：public/data/brp/notes/（原样复制 + manifest）
- */
-const NOTES_SRC = join(SITE_ROOT, 'data-src', 'brp', 'notes')
-const NOTES_OUT = join(OUT_DIR, 'notes')
-
-function buildNotes() {
-  if (!existsSync(NOTES_SRC)) return
-  rmSync(NOTES_OUT, { recursive: true, force: true })
-  mkdirSync(join(NOTES_OUT, 'books'), { recursive: true })
-  const sources = []
-  for (const key of readdirSync(NOTES_SRC)) {
-    if (key.startsWith('_')) continue
-    const dir = join(NOTES_SRC, key)
-    if (!statIsDir(dir)) continue
-    const booksDir = join(dir, 'books')
-    if (!existsSync(booksDir)) continue
-    mkdirSync(join(NOTES_OUT, 'books'), { recursive: true })
-    // 按卷分片复制
-    for (const f of readdirSync(booksDir)) {
-      if (!f.endsWith('.json')) continue
-      copyFileSync(join(booksDir, f), join(NOTES_OUT, 'books', f))
-    }
-    // manifest 元数据
-    let meta = null
-    let entryCount = 0
-    let chapterCount = 0
-    const books = []
-    const entriesFile = join(dir, 'entries.json')
-    if (existsSync(entriesFile)) {
-      const idx = readJson(entriesFile)
-      meta = idx.source
-      entryCount = idx.count || (idx.entries || []).length
-      copyFileSync(entriesFile, join(NOTES_OUT, 'entries.json'))
-    }
-    for (const f of readdirSync(booksDir)) {
-      if (!f.endsWith('.json')) continue
-      const bookId = f.replace(/\.json$/, '')
-      const raw = readJson(join(booksDir, f))
-      meta = meta || raw.source
-      chapterCount += (raw.chapters || []).length
-      books.push(bookId)
-    }
-    if (meta) {
-      sources.push({ key, name: meta.name, lang: meta.lang || 'en', books, entryCount, chapterCount })
-    }
-  }
-  if (sources.length) {
-    writeFileSync(join(NOTES_OUT, 'manifest.json'), JSON.stringify({ sources }))
-    console.log(`[build-data] 背景注释：${sources.map((s) => `${s.key}(${s.entryCount}词条/${s.books.length}卷/${s.chapterCount}章)`).join(', ')}`)
-    console.log(`[build-data] 输出 -> public/data/brp/notes/`)
-  }
-}
-
 buildCommentary()
 buildApologetics()
 buildLibrary()
 buildChurchHistory()
 buildStrong()
 buildStrongLexicon()
-buildNotes()
+

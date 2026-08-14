@@ -64,17 +64,25 @@ watch(
   { immediate: true },
 )
 
-/** 阅读器滚动回顶（.ch-main 是阅读区滚动容器） */
+/* 阅读器滚动回顶：滚动容器三选一全覆盖——
+ * 桌面 .ch-main（阅读区滚动）｜移动端 .app-main（App.vue 全局滚动容器，chMain 退化为 visible）｜window（备用）。
+ * 漏掉 .app-main 是移动端「跳章后停在莫名位置」的根因：页面实际滚动在 .app-main，window.scrollTo 无效 */
 function scrollTop() {
   chMain.value?.scrollTo(0, 0)
+  const appMain = document.querySelector('.app-main')
+  if (appMain) appMain.scrollTop = 0
+  window.scrollTo(0, 0)
+  document.documentElement.scrollTop = 0
+  document.body.scrollTop = 0
 }
 
 /** 切换章节（章号或 'intro'）；URL 即状态 */
 function go(partIdx, key) {
   const c = key === 'intro' ? 'intro' : String(key)
   if (partIdx === partNo.value && c === String(chapterKey.value)) return
-  router.push(`/history/${partIdx}/${c}`)
+  // 先立即回顶（新内容渲染前滚动位置即清零，避免任何残留）；内容切换后由 watch 兜底
   scrollTop()
+  router.push(`/history/${partIdx}/${c}`)
 }
 
 /* ---------- 阅读内容组装 ---------- */
@@ -86,6 +94,11 @@ const currentDoc = computed(() => {
   const ch = part.value.chapters.find((c) => c.no === chapterKey.value)
   return ch || { kind: 'intro', ...part.value.intro }
 })
+
+/** 内容切换后（含异步部数据加载完成）再从头显示：覆盖点击导航与浏览器前进/后退 */
+watch(currentDoc, () => nextTick(scrollTop))
+// 跨部导航：部数据异步加载完成后内容才真正切换，此时再回顶一次
+watch(part, () => nextTick(scrollTop))
 
 /** 当前章标题（去掉 blocks 中与标题重复的首个 h 块） */
 const docTitle = computed(() => {
@@ -347,6 +360,8 @@ onBeforeUnmount(() => {
   flex-direction: column;
   min-height: 0;
   background: var(--bg);
+  /* 移动端页面滚动时禁用滚动锚定（同 .ch-main 注释：切章后停在「莫名其妙的位置」） */
+  overflow-anchor: none;
 }
 .ch-state,
 .ch-error {
@@ -514,6 +529,8 @@ onBeforeUnmount(() => {
   scrollbar-gutter: stable;
   display: flex;
   justify-content: center;
+  /* 禁用浏览器滚动锚定：切章时锚点节点随新内容复用会把滚动位置拉回原处（跳到「莫名其妙的位置」） */
+  overflow-anchor: none;
 }
 .ch-doc {
   width: 100%;

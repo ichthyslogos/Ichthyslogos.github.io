@@ -1,0 +1,30 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "52",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "This epistle is generally considered to have been the first of those written by St. Paul. The occasion seems to have been the good report of the stedfastness of the church at Thessalonica in the faith of the gospel. It is full of affection and confidence, and more consolatory and practical, and less doctrinal, than some of the other epistles."
+    },
+    {
+      "chapter": 2,
+      "summary": "The apostle reminds the Thessalonians of his preaching and behaviour. (1-12) And of their receiving the gospel as the word of God. (13-16) His joy on their account. (17-20)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The apostle sent Timothy to establish and comfort the Thessalonians (1-5) He rejoiced at the good tidings of their faith and love. (6-10) And for their increase in grace. (11-13)"
+    },
+    {
+      "chapter": 4,
+      "summary": "Exhortations to purity and holiness. (1-8) To brotherly love, peaceable behaviour, and diligence. (9-12) Not to sorrow unduly for the death of godly relations and friends, considering the glorious resurrection of their bodies at Christ's second coming. (13-18)"
+    },
+    {
+      "chapter": 5,
+      "summary": "The apostle exhorts to be always ready for the coming of Christ to judgment, which will be with suddenness and surprise. (1-11) He directs to several particular duties. (12-22) And concludes with prayer, greetings, and a blessing. (23-28)"
+    }
+  ]
+}

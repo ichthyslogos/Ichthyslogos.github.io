@@ -1,0 +1,50 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "17",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "We find in this book, that even those Jews who were scattered in the province of the heathen, were taken care of, and were wonderfully preserved, when threatened with destruction. Though the name of God be not in this book, the finger of God is shown by minute events for the bringing about his people's deliverance. This history comes in between Ezr 6; 7."
+    },
+    {
+      "chapter": 2,
+      "summary": "Esther chosen queen. (1-20) Mordecai discovers a plot against the king. (21-23)"
+    },
+    {
+      "chapter": 3,
+      "summary": "Haman seeks to destroy the Jews. (1-6) He obtains a decree against the Jews. (7-15)"
+    },
+    {
+      "chapter": 4,
+      "summary": "The Jews lament their danger. (1-4) Esther undertakes to plead for the Jews. (5-17)"
+    },
+    {
+      "chapter": 5,
+      "summary": "Esther's application received. (1-8) Haman prepares to hang Mordecai. (9-14)"
+    },
+    {
+      "chapter": 6,
+      "summary": "Providence recommends Mordecai to the king's favour. (1-3) Haman's counsel honours Mordecai. (4-11) Haman's friends tell him of his danger. (12-14)"
+    },
+    {
+      "chapter": 7,
+      "summary": "Esther accuses Haman. (1-6) Haman hanged on his own gallows. (7-10)"
+    },
+    {
+      "chapter": 8,
+      "summary": "Mordecai is advanced. (1,2) Esther makes suit for the Jews. (3-14) Mordecai honoured, The joy of the Jews. (15-17)"
+    },
+    {
+      "chapter": 9,
+      "summary": "The success of the Jews. (1-19) The feast of Purim in remembrance of this. (20-32)"
+    },
+    {
+      "chapter": 10,
+      "summary": "Greatness of Ahasuerus-Mordecai's advancement."
+    }
+  ]
+}

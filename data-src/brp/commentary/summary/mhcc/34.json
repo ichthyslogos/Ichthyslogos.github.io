@@ -1,0 +1,22 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "34",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "This prophet denounces the certain and approaching destruction of the Assyrian empire, particularly of Nineveh, which is described very minutely. Together with this is consolation for his countrymen, encouraging them to trust in God."
+    },
+    {
+      "chapter": 2,
+      "summary": "Nineveh's destruction foretold. (1-10) The true cause, their sinning against God, and his appearing against them. (11-13)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The sins and judgments of Nineveh. (1-7) Its utter destruction. (8-19)"
+    }
+  ]
+}

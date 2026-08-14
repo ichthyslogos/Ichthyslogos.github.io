@@ -1,0 +1,26 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "08",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "We find in this book excellent examples of faith, piety, patience, humility, industry, and loving-kindness, in the common events of life. Also we see the special care which God's providence take of our smallest concerns, encouraging us to full trust therein. We may view this book as a beautiful, because natural representation of human life; as a curious detail of important facts; and as a part of the plan of redemption."
+    },
+    {
+      "chapter": 2,
+      "summary": "Ruth gleans in the field of Boaz. (1-3) The kindness of Boaz to Ruth. (4-16) Ruth returns to her mother-in-law. (17-23)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The directions given to Ruth by Naomi. (1-5) Boaz acknowledges the duty of a kinsman. (6-13) Ruth's return to her mother-in-law. (14-18)"
+    },
+    {
+      "chapter": 4,
+      "summary": "The kinsman refuses to redeem Ruth's inheritance. (1-8) Boaz marries Ruth. (9-12) Birth of Obed. (13-22)"
+    }
+  ]
+}

@@ -1,0 +1,610 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "19",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "David was the penman of most of the psalms, but some evidently were composed by other writers, and the writers of some are doubtful. But all were written by the inspiration of the Holy Ghost; and no part of the Old Testament is more frequently quoted or referred to in the New. Every psalm either points directly to Christ, in his person, his character, and offices; or may lead the believer's thoughts to Him. And the psalms are the language of the believer's heart, whether mourning for sin, thirsting after God, or rejoicing in Him. Whether burdened with affliction, struggling with temptation, or triumphing in the hope or enjoyment of deliverance; whether admiring the Divine perfections, thanking God for his mercies, mediating on his truths, or delighting in his service; they form a Divinely appointed standard of experience, by which we may judge ourselves. Their value, in this view, is very great, and the use of them will increase with the growth of the power of true religion in the heart. By the psalmist's expressions, the Spirit helps us to pray. If we make the psalms familiar to us, whatever we have to ask at the throne of grace, by way of confession, petition, or thanksgiving, we may be assisted from thence. Whatever devout affection is working in us, holy desire or hope, sorrow or joy, we may here find words to clothe it; sound speech which cannot be condemned. In the language of this Divine book, the prayers and praises of the church have been offered up to the throne of grace from age to age."
+    },
+    {
+      "chapter": 2,
+      "summary": "Threatenings against the enemies of Christ's kingdom. (1-6) Promise to Christ as the Head of this kingdom. (7-9) Counsel to all, to espouse its interests. (10-12)"
+    },
+    {
+      "chapter": 3,
+      "summary": "David complains to God of his enemies, and confides in God. (1-3) He triumphs over his fears, and gives God the glory, and takes to himself the comfort. (4-8)"
+    },
+    {
+      "chapter": 4,
+      "summary": "The children of men proved, and the happiness of godly people. (1-5) God's favour is happiness. (6-8)"
+    },
+    {
+      "chapter": 5,
+      "summary": "God will certainly hear prayer: David gives to God the glory, and takes to himself the comfort. (1-6) He prayed for himself, that God would guide him, and for all the Lord's people, that God would give them joy, and keep them safe. (7-12)"
+    },
+    {
+      "chapter": 6,
+      "summary": "The psalmist deprecates God's wrath, and begs for the return of his favour. (1-7) He assures himself of an answer of peace. (8-10)"
+    },
+    {
+      "chapter": 7,
+      "summary": "The psalmist prays to God to plead his cause, and judge for him. (1-9) He expresses confidence in God, and will give him the glory of his deliverance. (10-17)"
+    },
+    {
+      "chapter": 8,
+      "summary": "God is to be glorified, for making known himself to us. (1,2) And for making even the heavenly bodies useful to man, thereby placing him but little lower than the angels. (3-9)"
+    },
+    {
+      "chapter": 9,
+      "summary": "David praises God for protecting his people. (1-10) And for cause to praise him. (11-20)"
+    },
+    {
+      "chapter": 10,
+      "summary": "The psalmist complains of the wickedness of the wicked. (1-11) He prays to God to appear for the relief of his people. (12-18)"
+    },
+    {
+      "chapter": 11,
+      "summary": "David's struggle with, and triumph over a strong temptation to distrust God, and betake himself to indirect means for his own safety, in a time of danger."
+    },
+    {
+      "chapter": 12,
+      "summary": "The psalmist begs help of God, because there were none among men whom he durst trust."
+    },
+    {
+      "chapter": 13,
+      "summary": "The psalmist complains that God had long withdrawn. He earnestly prays for comfort. He assures himself of an answer of peace."
+    },
+    {
+      "chapter": 14,
+      "summary": "A description of the depravity of human nature, and the deplorable corruption of a great part of mankind."
+    },
+    {
+      "chapter": 15,
+      "summary": "The way to heaven, if we would be happy, we must be holy. We are encouraged to walk in that way."
+    },
+    {
+      "chapter": 16,
+      "summary": "This psalm begins with expressions of devotion, which may be applied to Christ; but ends with such confidence of a resurrection, as must be applied to Christ, and to him only."
+    },
+    {
+      "chapter": 17,
+      "summary": "David's integrity. (1-7) The character of his enemies. His hope of happiness. (8-15)"
+    },
+    {
+      "chapter": 18,
+      "summary": "David rejoices in the deliverances God wrought for him. (1-19) He takes the comfort of his integrity, which God had cleared up. (20-28) He gives to God the glory of all his mighty deeds. (29-50)"
+    },
+    {
+      "chapter": 19,
+      "summary": "The glory of God's works. (1-6) His holiness and grace as shown in his word. (7-10) Prayer for the benefit of them. (11-14)"
+    },
+    {
+      "chapter": 20,
+      "summary": "This psalm is a prayer for the kings of Israel, but with relation to Christ."
+    },
+    {
+      "chapter": 21,
+      "summary": "Thanksgiving for victory. (1-6) Confidence of further success. (7-13)"
+    },
+    {
+      "chapter": 22,
+      "summary": "Complaints of discouragement. (1-10) With prayer for deliverance. (11-21) Praises for mercies and redemption. (22-31)"
+    },
+    {
+      "chapter": 23,
+      "summary": "Confidence in God's grace and care."
+    },
+    {
+      "chapter": 24,
+      "summary": "Concerning the kingdom of Christ, and the subjects of that kingdom. (1-6) Concerning the King of that kingdom. (7-10)"
+    },
+    {
+      "chapter": 25,
+      "summary": "Confidence in prayer. (1-7) Prayer for remission of sins. (8-14) For help in affliction. (15-22)"
+    },
+    {
+      "chapter": 26,
+      "summary": "David, in this psalm, appeals to God touching his integrity."
+    },
+    {
+      "chapter": 27,
+      "summary": "The psalmist's faith. (1-6) His desire toward God, and expectation from him. (7-14)"
+    },
+    {
+      "chapter": 28,
+      "summary": "A prayer in distress. (1-5) Thanksgiving for deliverance. (6-9)"
+    },
+    {
+      "chapter": 29,
+      "summary": "Exhortation to give glory to God."
+    },
+    {
+      "chapter": 30,
+      "summary": "Praise to God for deliverance. (1-5) Others encouraged by his example. (6-12)"
+    },
+    {
+      "chapter": 31,
+      "summary": "Confidence in God. (1-8) Prayer in trouble. (9-18) Praise for God's goodness. (19-24)"
+    },
+    {
+      "chapter": 32,
+      "summary": "The happiness of a pardoned sinner. (1,2) The misery that went before, and the comfort that followed the confession of sins. (3-7) Sinners instructed, believers encouraged. (8-11)"
+    },
+    {
+      "chapter": 33,
+      "summary": "God to be praised. (1-11) His people encouraged by his power. (12-22)"
+    },
+    {
+      "chapter": 34,
+      "summary": "David praises God, and encourages to trust him. (1-10) He exhorts to fear. (11-22)"
+    },
+    {
+      "chapter": 35,
+      "summary": "David prays for safety. (1-10) He complains of his enemies. (11-16) And calls upon God to support him. (17-28)"
+    },
+    {
+      "chapter": 36,
+      "summary": "The bad state of the wicked. (1-4) The goodness of God. (5-12)"
+    },
+    {
+      "chapter": 37,
+      "summary": "David persuades to patience and confidence in God, by the state of the godly and of the wicked."
+    },
+    {
+      "chapter": 38,
+      "summary": "God's displeasure at sin. (1-11) The psalmist's sufferings and prayers. (12-22)"
+    },
+    {
+      "chapter": 39,
+      "summary": "David meditates on man's frailty. (1-6) He applies for pardon and deliverance. (7-13)"
+    },
+    {
+      "chapter": 40,
+      "summary": "Confidence for deliverance. (1-5) Christ's work of redemption. (6-10) Prayer for mercy and grace. (11-17)"
+    },
+    {
+      "chapter": 41,
+      "summary": "God's care for his people. (1-4) The treachery of David's enemies. (5-13)"
+    },
+    {
+      "chapter": 42,
+      "summary": "The conflict in the soul of a believer."
+    },
+    {
+      "chapter": 43,
+      "summary": "David endeavours to still his spirit, with hope and confidence in God."
+    },
+    {
+      "chapter": 44,
+      "summary": "A petition for succour and relief."
+    },
+    {
+      "chapter": 45,
+      "summary": "This psalm is a prophecy of Messiah the Prince, and points to him as a Bridegroom espousing the church to himself, and as a King ruling in it, and for it."
+    },
+    {
+      "chapter": 46,
+      "summary": "Confidence in God. (1-5) An exhortation to behold it. (6-11)"
+    },
+    {
+      "chapter": 47,
+      "summary": "The people exhorted to praise God."
+    },
+    {
+      "chapter": 48,
+      "summary": "The glories of the church of Christ."
+    },
+    {
+      "chapter": 49,
+      "summary": "A call for attention. (1-5) Folly of worldlings. (6-14) Against fear of death. (15-20)"
+    },
+    {
+      "chapter": 50,
+      "summary": "The glory of God. (1-6) Sacrifices to be changed for prayers. (7-15) Sincere obedience required. (16-23)"
+    },
+    {
+      "chapter": 51,
+      "summary": "The psalmist prays for mercy, humbly confessing and lamenting his sins. (1-6) He pleads for pardon, that he may promote the glory of God and the conversion of sinners. (7-15) God is pleased with a contrite heart, A prayer for the prosperity of Zion. (16-19)"
+    },
+    {
+      "chapter": 52,
+      "summary": "The enemies of the truth and the church described, Their destruction. (1-5) The righteous rejoice. (6-9)"
+    },
+    {
+      "chapter": 53,
+      "summary": "The corruption of man by nature."
+    },
+    {
+      "chapter": 54,
+      "summary": "David complains of the malice of his enemies. (1-3) Assurance of the Divine favour and protection. (4-7)"
+    },
+    {
+      "chapter": 55,
+      "summary": "Prayer to God to manifest his favour. (1-8) The great wickedness and treachery of his enemies. (9-15) He is sure that God would in due time appear for him. (16-23)"
+    },
+    {
+      "chapter": 56,
+      "summary": "David seeks mercy from God, amidst the malice of his enemies. (1-7) He rests his faith on God's promises, and declares his obligation to praise him for mercies. (8-13)"
+    },
+    {
+      "chapter": 57,
+      "summary": "David begins with prayer and complaint. (1-6) He concludes with joy and praise. (7-11)"
+    },
+    {
+      "chapter": 58,
+      "summary": "Wicked judges described and reproved. (1-5) A prayer that they may be disabled, and their ruin predicted. (6-11)"
+    },
+    {
+      "chapter": 59,
+      "summary": "David prays for deliverance from his enemies. (1-7) He foresees their destruction. (8-17)"
+    },
+    {
+      "chapter": 60,
+      "summary": "David prays for the deliverance of Israel from their enemies. (1-5) He entreats God to carry on and complete their victories. (6-12)"
+    },
+    {
+      "chapter": 61,
+      "summary": "David seeks God upon former experience. (1-4) He vows to serve God. (5-8)"
+    },
+    {
+      "chapter": 62,
+      "summary": "David's confidence in God. (1-7) No trust to be put in worldly things. (8-12)"
+    },
+    {
+      "chapter": 63,
+      "summary": "David's desire toward God. (1,2) His satisfaction in God. (3-6) His dependence upon God, and assurance of safety. (7-11)"
+    },
+    {
+      "chapter": 64,
+      "summary": "Prayer for deliverance. (1-6) The destruction of the wicked, encouragement to the righteous. (7-10)"
+    },
+    {
+      "chapter": 65,
+      "summary": "God is to be praised in the kingdom of grace. (1-5) In the kingdom of providence. (6-13)"
+    },
+    {
+      "chapter": 66,
+      "summary": "Praise for God's sovereign power in the creation. (1-7) For his favour to his church. (8-12) And the psalmist's praise for his experience of God's goodness. (13-20)"
+    },
+    {
+      "chapter": 67,
+      "summary": "A prayer for the enlargement of Christ's kingdom."
+    },
+    {
+      "chapter": 68,
+      "summary": "A prayer-- The greatness and goodness of God. (1-6) The wonderful works God wrought for his people. (7-14) The presence of God in his church. (15-21) The victories of Christ. (22-28) Enlargement of the church. (29-31) The glory and grace of God. (32-35)"
+    },
+    {
+      "chapter": 69,
+      "summary": "David complains of great distress. (1-12) And begs for succour. (13-21) He declares the judgments of God. (22-29) He concludes with joy and praise. (30-36)"
+    },
+    {
+      "chapter": 70,
+      "summary": "The speedy destruction of the wicked, and the preservation of the godly."
+    },
+    {
+      "chapter": 71,
+      "summary": "Prayers that God would deliver and save. (1-13) Believing praises. (14-24)"
+    },
+    {
+      "chapter": 72,
+      "summary": "David begins with a prayer for Solomon. (1) He passes into a prophecy of the glories of his reign, and of Christ's kingdom. (2-17) Praise to God. (18-20)"
+    },
+    {
+      "chapter": 73,
+      "summary": "The psalmist's temptation. (1-14) How he gained a victory over it. (15-20) How he profited by it. (21-28)"
+    },
+    {
+      "chapter": 74,
+      "summary": "The desolations of the sanctuary. (1-11) Pleas for encouraging faith. (12-17) Petitions for deliverances. (18-23)"
+    },
+    {
+      "chapter": 75,
+      "summary": "The psalmist declares his resolution of executing judgment. (1-5) He rebukes the wicked, and concludes with resolutions to praise God. (6-10)"
+    },
+    {
+      "chapter": 76,
+      "summary": "The psalmist speaks of God's power. (1-6) All have to fear and to trust in him. (7-12)"
+    },
+    {
+      "chapter": 77,
+      "summary": "The psalmist's troubles and temptation. (1-10) He encourages himself by the remembrance of God's help of his people. (11-20)"
+    },
+    {
+      "chapter": 78,
+      "summary": "Attention called for. (1-8) The history of Israel. (9-39) Their settlement in Canaan. (40-55) The mercies of God to Israel contrasted with their ingratitude. (56-72)"
+    },
+    {
+      "chapter": 79,
+      "summary": "The deplorable condition of the people of God. (1-5) A petition for relief. (6-13)"
+    },
+    {
+      "chapter": 80,
+      "summary": "The psalmist complains of the miseries of the church. (1-7) Its former prosperity and present desolation. (8-16) A prayer for mercy. (17-19)"
+    },
+    {
+      "chapter": 81,
+      "summary": "God is praised for what he has done for his people. (1-7) Their obligations to him. (8-16)"
+    },
+    {
+      "chapter": 82,
+      "summary": "An exhortation to judges. (1-5) The doom of evil rulers. (6-8)"
+    },
+    {
+      "chapter": 83,
+      "summary": "The designs of the enemies of Israel. (1-8) Earnest prayer for their defeat. (9-18)"
+    },
+    {
+      "chapter": 84,
+      "summary": "The psalmist expresses his affection to the ordinances of God. (1-7) His desire towards the God of the ordinances. (8-12)"
+    },
+    {
+      "chapter": 85,
+      "summary": "Prayers for the continuance of former mercies. (1-7) Trust in God's goodness. (8-13)"
+    },
+    {
+      "chapter": 86,
+      "summary": "The psalmist pleads his earnestness, and the mercy of God, as reasons why his prayer should be heard. (1-7) He renews his requests for help and comfort. (8-17)"
+    },
+    {
+      "chapter": 87,
+      "summary": "The glory of the church. (1-3) It is filled with the Divine blessing. (4-7)"
+    },
+    {
+      "chapter": 88,
+      "summary": "The psalmist pours out his soul to God in lamentation. (1-9) He wrestles by faith, in his prayer to God for comfort. (10-18)"
+    },
+    {
+      "chapter": 89,
+      "summary": "God's mercy and truth, and his covenant. (1-4) The glory and perfection of God. (5-14) The happiness of those in communion with him. (15-18) God's covenant with David, as a type of Christ. (19-37) A calamitous state lamented, Prayer for redress. (38-52)"
+    },
+    {
+      "chapter": 90,
+      "summary": "The eternity of God, the frailty of man. (1-6) Submission to Divine chastisements. (7-11) Prayer for mercy and grace. (12-17)"
+    },
+    {
+      "chapter": 91,
+      "summary": "The safety of those who have God for their refuge. (1-8) Their favour with Him. (9-16)"
+    },
+    {
+      "chapter": 92,
+      "summary": "Praise is the business of the sabbath. (1-6) The wicked shall perish, but God's people shall be exalted. (7-15)"
+    },
+    {
+      "chapter": 93,
+      "summary": "The majesty, power, and holiness of Christ's kingdom."
+    },
+    {
+      "chapter": 94,
+      "summary": "The danger and folly of persecutors. (1-11) Comfort and peace to the persecuted. (12-23)"
+    },
+    {
+      "chapter": 95,
+      "summary": "part. An exhortation to praise God. (1-7) A warning not to tempt Him. (7-11)"
+    },
+    {
+      "chapter": 96,
+      "summary": "A call to all people to praise God. (1-9) God's government and judgment. (10-13)"
+    },
+    {
+      "chapter": 97,
+      "summary": "The Lord Jesus reigns in power that cannot be resisted. (1-7) His care of his people, and his provision for them. (8-12)"
+    },
+    {
+      "chapter": 98,
+      "summary": "The glory of the Redeemer. (1-3) The joy of the Redeemer. (4-9)"
+    },
+    {
+      "chapter": 99,
+      "summary": "The happy government God's people are under. (1-5) Its happy administration. (6-9)"
+    },
+    {
+      "chapter": 100,
+      "summary": "An exhortation to praise God, and rejoice in him."
+    },
+    {
+      "chapter": 101,
+      "summary": "David's vow and profession of godliness."
+    },
+    {
+      "chapter": 102,
+      "summary": "A sorrowful complaint of great afflictions. (1-11) Encouragement by expecting the performances of God's promises to his church. (12-22) The unchangeableness of God. (23-28)"
+    },
+    {
+      "chapter": 103,
+      "summary": "An exhortation to bless God for his mercy. (1-5) And to the church and to all men. (6-14) For the constancy of his mercy. (15-18) For the government of the world. (19-22)"
+    },
+    {
+      "chapter": 104,
+      "summary": "God's majesty in the heavens, The creation of the sea, and the dry land. (1-9) His provision for all creatures. (10-18) The regular course of day and night, and God's sovereign power over all the creatures. (19-30) A resolution to continue praising God. (31-35)"
+    },
+    {
+      "chapter": 105,
+      "summary": "A solemn call to praise and serve the Lord. (1-7) His gracious dealings with Israel. (8-23) Their deliverance from Egypt, and their settlement in Canaan. (24-45)"
+    },
+    {
+      "chapter": 106,
+      "summary": "The happiness of God's people. (1-5) Israel's sins. (6-12) Their provocations. (13-33) Their rebellions in Canaan. (34-46) Prayer for more complete deliverance. (47,48)"
+    },
+    {
+      "chapter": 107,
+      "summary": "God's providential care of the children of men in distresses, in banishment, and dispersion. (1-9) In captivity. (10-16) In sickness. (17-22) Danger at sea.(23-32) God's hand is to be seen by his own people. (33-43)"
+    },
+    {
+      "chapter": 108,
+      "summary": ""
+    },
+    {
+      "chapter": 109,
+      "summary": "David complains of his enemies. (1-5) He prophesies their destruction. (6-20) Prayers and praises. (21-31)"
+    },
+    {
+      "chapter": 110,
+      "summary": "Christ's kingdom."
+    },
+    {
+      "chapter": 111,
+      "summary": "The Lord is to be praised for his works."
+    },
+    {
+      "chapter": 112,
+      "summary": "The blessedness of the righteous."
+    },
+    {
+      "chapter": 113,
+      "summary": "An exhortation to praise God."
+    },
+    {
+      "chapter": 114,
+      "summary": "An exhortation to fear God."
+    },
+    {
+      "chapter": 115,
+      "summary": "Glory to be ascribed to God. (1-8) by trusting in him and praising him. (9-18)"
+    },
+    {
+      "chapter": 116,
+      "summary": "The psalmist declares his love to the Lord. (1-9) His desire to be thankful. (10-19)"
+    },
+    {
+      "chapter": 117,
+      "summary": "All people called upon to praise God."
+    },
+    {
+      "chapter": 118,
+      "summary": "It is good to trust in the Lord. (1-18) The coming of Christ in his kingdom. (19-29)"
+    },
+    {
+      "chapter": 119,
+      "summary": "The general scope and design of this psalm is to magnify the Divine law, and make it honourable. There are ten words by which Divine revelation is called in this psalm, and each expresses what God expects from us, and what we may expect from him. 1. God's law; this is enacted by him as our Sovereign. 2. His way; this is the rule of his providence. 3. His testimonies; they are solemnly declared to the world. 4. His commandments; given with authority. 5. His precepts; not left as indifferent matters to us. 6. His word, or saying; it is the declaration of his mind. 7. His judgments; framed in infinite wisdom. 8. His righteousness; it is the rule and standard of what is right. 9. His statutes; they are always binding. 10. His truth or faithfulness; it is eternal truth, it shall endure for ever."
+    },
+    {
+      "chapter": 120,
+      "summary": "The psalmist prays to God to deliver him from false and malicious tongues. (1-4) He complains of wicked neighbours. (5-7)"
+    },
+    {
+      "chapter": 121,
+      "summary": "The safety of the godly."
+    },
+    {
+      "chapter": 122,
+      "summary": "Esteem for Jerusalem. (1-5) Concern for its welfare. (6-9)"
+    },
+    {
+      "chapter": 123,
+      "summary": "Confidence in God under contempt."
+    },
+    {
+      "chapter": 124,
+      "summary": "The deliverance of the church. (1-5) Thankfulness for the deliverance. (6-8)"
+    },
+    {
+      "chapter": 125,
+      "summary": "The security of the righteous. (1-3) Prayer for them, The ruin of the wicked. (4,5)"
+    },
+    {
+      "chapter": 126,
+      "summary": "Those returned out of captivity are to be thankful. (1-3) Those yet in captivity are encouraged. (4-6)"
+    },
+    {
+      "chapter": 127,
+      "summary": "The value of the Divine blessing."
+    },
+    {
+      "chapter": 128,
+      "summary": "The blessings of those who fear God."
+    },
+    {
+      "chapter": 129,
+      "summary": "Thankfulness for former deliverances. (1-4) A believing prospect of the destruction of the enemies of Zion. (5-8)"
+    },
+    {
+      "chapter": 130,
+      "summary": "The psalmist's hope in prayer. (1-4) His patience in hope. (5-8)"
+    },
+    {
+      "chapter": 131,
+      "summary": "The psalmist's humility. Believers encouraged to trust in God."
+    },
+    {
+      "chapter": 132,
+      "summary": "David's care for the ark. (1-10) The promises of God. (11-18)"
+    },
+    {
+      "chapter": 133,
+      "summary": "The excellency of brotherly love."
+    },
+    {
+      "chapter": 134,
+      "summary": "An exhortation to bless the Lord."
+    },
+    {
+      "chapter": 135,
+      "summary": "God to be praised for his mercy. (1-4) For his power and judgments. (5-14) The vanity of idols. (15-21)"
+    },
+    {
+      "chapter": 136,
+      "summary": "God to be praised as the Creator of the world. (1-9) As Israel's God and Saviour. (10-22) For his blessings to all. (23-26)"
+    },
+    {
+      "chapter": 137,
+      "summary": "The Jews bewail their captivity. (1-4) Their affection for Jerusalem. (5-9)"
+    },
+    {
+      "chapter": 138,
+      "summary": "The psalmist praises God for answering prayer. (1-5) The Lord's dealing with the humble and the proud. (6-8)"
+    },
+    {
+      "chapter": 139,
+      "summary": "God knows all things. (1-6) He is every where present. (7-16) The psalmist's hatred to sin, and desire to be led aright. (17-24)"
+    },
+    {
+      "chapter": 140,
+      "summary": "David encourages himself in God. (1-7) He prays for, and prophesies the destruction of, his persecutors. (8-13)"
+    },
+    {
+      "chapter": 141,
+      "summary": "David prays for God's acceptance and assistance. (1-4) That God would appear for his rescue. (5-10)"
+    },
+    {
+      "chapter": 142,
+      "summary": "David's comfort in prayer."
+    },
+    {
+      "chapter": 143,
+      "summary": "David complains of his enemies and distresses. (1-6) He prays for comfort, guidance, and deliverance. (7-12)"
+    },
+    {
+      "chapter": 144,
+      "summary": "David acknowledges the great goodness of God, and prays for help. (1-8) He prays for the prosperity of his kingdom. (9-15)"
+    },
+    {
+      "chapter": 145,
+      "summary": "David extols the power, goodness, and mercy of the Lord. (1-9) The glory of God's kingdom, and his care of those that love him. (10-21)"
+    },
+    {
+      "chapter": 146,
+      "summary": "Why we should not trust in men. (1-4) Why we should trust in God. (5-10)"
+    },
+    {
+      "chapter": 147,
+      "summary": "The people of God are exhorted to praise him for his mercies and care. (1-11) For the salvation and prosperity of the church. (12-20)"
+    },
+    {
+      "chapter": 148,
+      "summary": "The creatures placed in the upper world called on to praise the Lord. (1-6) Also the creatures of this lower world, especially his own people. (7-14)"
+    },
+    {
+      "chapter": 149,
+      "summary": "Joy to all the people of God. (1-5) Terror to their enemies. (6-9)"
+    },
+    {
+      "chapter": 150,
+      "summary": "A psalm of praise."
+    }
+  ]
+}

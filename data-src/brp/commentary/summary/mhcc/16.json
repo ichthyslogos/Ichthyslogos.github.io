@@ -1,0 +1,62 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "16",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "The Old Testament history closes with the book of Nehemiah, wherein is recorded the workings of his heart, in the management of public affairs; with many devout reflections."
+    },
+    {
+      "chapter": 2,
+      "summary": "Nehemiah's request to the king. (1-8) Nehemiah comes to Jerusalem. (9-18) The opposition of the adversaries. (19,20)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The rebuilding the walls of Jerusalem."
+    },
+    {
+      "chapter": 4,
+      "summary": "Opposition of Sanballat and others. (1-6) The designs of the adversaries. (7-15) Nehemiah's precautions. (16-23)"
+    },
+    {
+      "chapter": 5,
+      "summary": "The Jews complain of grievances. (1-5) Nehemiah redresses the grievances. (6-13) Nehemiah's forbearance. (14-19)"
+    },
+    {
+      "chapter": 6,
+      "summary": "Sanballat's plot to hinder Nehemiah. (1-9) False prophets try to frighten Nehemiah. (10-14) The wall finished, Treachery of some among the Jews. (15-19)"
+    },
+    {
+      "chapter": 7,
+      "summary": "The city committed to Hananiah. (1-4) Register of those that first returned. (5-73)"
+    },
+    {
+      "chapter": 8,
+      "summary": "The reading and expounding the law. (1-8) The people called upon to be joyful. (9-12) The feast of tabernacles, The joy of the people. (13-18)"
+    },
+    {
+      "chapter": 9,
+      "summary": "A solemn fast. (1-3) Prayer and confession of sin. (4-38)"
+    },
+    {
+      "chapter": 10,
+      "summary": "The covenant, Those who signed it. (1-31) Their engagement to sacred rites. (32-39)"
+    },
+    {
+      "chapter": 11,
+      "summary": "The distribution of the people."
+    },
+    {
+      "chapter": 12,
+      "summary": "The priests and Levites that returned. (1-26) The dedication of the wall. (27-43) The officers of the temple settled. (44-47)"
+    },
+    {
+      "chapter": 13,
+      "summary": "Nehemiah turns out the mixed multitude. (1-9) Nehemiah's reform in the house of God. (10-14) Sabbath-breaking restrained. (15-22) The dismissal of strange wives. (23-31)"
+    }
+  ]
+}

@@ -44,9 +44,9 @@ function fetchJson(url, options) {
   return p
 }
 
-/** 加载译本清单 manifest.json */
+/** 加载译本清单 manifest.json（no-store：开发期数据重建频繁，避免 304 命中陈旧响应） */
 export async function fetchManifest() {
-  return fetchJson(BASE + 'manifest.json')
+  return fetchJson(BASE + 'manifest.json', { cache: 'no-store' })
 }
 
 /** 加载某译本某卷的切片数据（含全部章节经文），自动缓存 */
@@ -94,10 +94,12 @@ export function isCommentaryEnabled(bookId) {
   return ENABLED_COMMENTARY_BOOKS.has(bookId)
 }
 
-/** 加载某注释源某卷的注释数据（含全部章节），自动缓存；卷注释被暂时关闭时返回 null */
-export async function fetchCommentary(sourceKey, bookId) {
+/** 加载某注释源某卷的注释数据（含全部章节），自动缓存；卷注释被暂时关闭时返回 null
+ * category：解经抽屉栏目（summary 总结 / interpretation 经文解释 / fullCommentary 完整解经），
+ * 与数据目录 data-src/brp/commentary/<category>/<key>/ 对应；背景注释走 fetchNotes */
+export async function fetchCommentary(sourceKey, bookId, category = 'fullCommentary') {
   if (!isCommentaryEnabled(bookId)) return null
-  return fetchJson(`${COMMENT_BASE}${sourceKey}/${bookId}.json`, { cache: 'no-store' })
+  return fetchJson(`${COMMENT_BASE}${category}/${sourceKey}/${bookId}.json`, { cache: 'no-store' })
 }
 
 /** 默认注释源偏好（URL/存储未指定时优先：马太亨利主源；新源不影响此偏好） */
@@ -164,22 +166,28 @@ export function resolveBook(translation, bookId) {
   return translation.books.find((b) => b.id === bookId) || translation.books[0]
 }
 
-/* ============ 背景注释数据（notes） ============
+/* ============ 背景注释数据（notes，并入 commentary 数据体系） ============
  * 作者/地点/背景的简要介绍（术语「注释」，与「解经」区分），来自 STEP Bible TIPNR（CC BY 4.0）：
- *   public/data/brp/notes/entries.json   全量词条索引（供将来词条高亮匹配）
- *   public/data/brp/notes/books/<bookId>.json  按卷分片：每章 entries（词条 + 四级描述 + 出现节）
+ *   public/data/brp/commentary/notes/tipnr/entries.json   全量词条索引（供将来词条高亮匹配）
+ *   public/data/brp/commentary/notes/tipnr/books/<bookId>.json  按卷分片：每章 entries（词条 + 四级描述 + 出现节）
  */
-const NOTES_BASE = 'data/brp/notes/'
+const NOTES_SOURCE_KEY = 'tipnr'
 
-/** 加载某卷背景注释（含全部章节），自动缓存；no-store 绕过 HTTP 缓存（数据重建频繁） */
+/** 加载某卷背景注释（含全部章节），自动缓存；no-store 绕过 HTTP 缓存（数据重建频繁）。
+ * 背景注释不走完整解经的书卷开关（数据面与解经并列，独立管控） */
 export async function fetchNotes(bookId) {
-  return fetchJson(`${NOTES_BASE}books/${bookId}.json`, { cache: 'no-store' })
+  return fetchJson(`${COMMENT_BASE}notes/${NOTES_SOURCE_KEY}/books/${bookId}.json`, { cache: 'no-store' })
 }
 
 /** 取某章的背景注释（无则返回 null） */
 export function findNotesChapter(book, chapter) {
   if (!book) return null
   return book.chapters.find((c) => c.chapter === chapter) || null
+}
+
+/** 按栏目（解经抽屉层）过滤注释源清单：summary / interpretation / notes / fullCommentary */
+export function sourcesOfCategory(manifest, category) {
+  return (manifest?.sources || []).filter((s) => s.category === category)
 }
 
 /* ============ 护教问答数据（子数据库） ============

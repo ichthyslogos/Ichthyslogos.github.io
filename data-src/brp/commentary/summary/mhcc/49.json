@@ -1,0 +1,34 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "49",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "This epistle was written when St. Paul was a prisoner at Rome. The design appears to be to strengthen the Ephesians in the faith of Christ, and to give exalted views of the love of God, and of the dignity and excellence of Christ, fortifying their minds against the scandal of the cross. He shows that they were saved by grace, and that however wretched they once were, they now had equal privileges with the Jews. He encourages them to persevere in their Christian calling, and urges them to walk in a manner becoming their profession, faithfully discharging the general and common duties of religion, and the special duties of particular relations."
+    },
+    {
+      "chapter": 2,
+      "summary": "The riches of God's grace towards men, shown from their deplorable state by nature, and the happy change Divine grace makes in them. (1-10) The Ephesians called to reflect on their state of heathenism. (11-13) And the privileges and blessings of the gospel. (14-22)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The apostle sets forth his office, and his qualifications for it, and his call to it. (1-7) Also the noble purposes answered by it. (8-12) He prays for the Ephesians. (13-19) And adds a thanksgiving. (20,21)"
+    },
+    {
+      "chapter": 4,
+      "summary": "Exhortations to mutual forbearance and union. (1-6) To a due use of spiritual gifts and graces. (7-16) To purity and holiness. (17-24) And to take heed of the sins practised among the heathen. (25-32)"
+    },
+    {
+      "chapter": 5,
+      "summary": "Exhortation to brotherly love. (1,2) Cautions against several sins. (3-14) Directions to a contrary behaviour, and to relative duties. (15-21) The duties of wives and husbands are enforced by the spiritual relation between Christ and the church. (22-33)"
+    },
+    {
+      "chapter": 6,
+      "summary": "The duties of children and parents. (1-4) Of servants and masters. (5-9) All Christians are to put on spiritual armour against the enemies of their souls. (10-18) The apostle desires their prayers, and ends with his apostolic blessing. (19-24)"
+    }
+  ]
+}

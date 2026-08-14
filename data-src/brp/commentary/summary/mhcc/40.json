@@ -1,0 +1,122 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "40",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "Matthew, surnamed Levi, before his conversion was a publican, or tax-gatherer under the Romans at Capernaum. He is generally allowed to have written his Gospel before any other of the evangelists. The contents of this Gospel, and the evidence of ancient writers, show that it was written primarily for the use of the Jewish nation. The fulfilment of prophecy was regarded by the Jews as strong evidence, therefore this is especially dwelt upon by St. Matthew. Here are particularly selected such parts of our Saviour's history and discourses as were best suited to awaken the Jewish nation to a sense of their sins; to remove their erroneous expectations of an earthly kingdom; to abate their pride and self-conceit; to teach them the spiritual nature and extent of the gospel; and to prepare them for the admission of the Gentiles into the church."
+    },
+    {
+      "chapter": 2,
+      "summary": "The wise men's search after Christ. (1-8) The wise men worship Jesus. (9-12) Jesus carried into Egypt. (13-15) Herod causes the infants of Bethlehem to be massacred. (16-18) Death of Herod, Jesus brought to Nazareth. (19-23)"
+    },
+    {
+      "chapter": 3,
+      "summary": "John the Baptist, His preaching, manner of life, and baptism. (1-6) John reproves the Pharisees and Sadducees. (7-12) The baptism of Jesus. (13-17)"
+    },
+    {
+      "chapter": 4,
+      "summary": "The temptation of Christ. (1-11) The opening of Christ's ministry in Galilee. (12-17) Call of Simon and others. (18-22) Jesus teaches and works miracles. (23-25)"
+    },
+    {
+      "chapter": 5,
+      "summary": "Christ's sermon on the mount. (1,2) Who are blessed. (3-12) Exhortations and warnings. (13-16) Christ came to confirm the law. (17-20) The sixth commandment. (21-26) The seventh commandment. (27-32) The third commandment. (33-37) The law of retaliation. (38-42) The law of love explained. (43-48)"
+    },
+    {
+      "chapter": 6,
+      "summary": "Against hypocrisy in almsgiving. (1-4) Against hypocrisy in prayer. (5-8) How to pray. (9-15) Respecting fasting. (16-18) Evil of being worldly-minded. (19-24) Trust in God commended. (25-34)"
+    },
+    {
+      "chapter": 7,
+      "summary": "Christ reproves rash judgment. (1-6) Encouragements to prayer. (7-11) The broad and narrow way. (12-14) Against false prophets. (15-20) To be doers of the word, not hearers only. (21-29)"
+    },
+    {
+      "chapter": 8,
+      "summary": "Multitudes follow Christ. (1) He heals a leper. (2-4) A centurion's servant healed. (5-13) Cure of Peter's wife's mother. (14-17) The scribe's zealous proposal. (18-22) Christ in a storm. (23-27) He heals two possessed with devils. (28-34)"
+    },
+    {
+      "chapter": 9,
+      "summary": "Jesus returns to Capernaum, and heals a paralytic. (1-8) Matthew called. (9) Matthew, or Levi's feast. (10-13) Objections of John's disciples. (14-17) Christ raises the daughter of Jairus, He heals the issue of blood. (18-26) He heals two blind men. (27-31) Christ casts out a dumb spirit. (32-34) He sends forth the apostles. (35-38)"
+    },
+    {
+      "chapter": 10,
+      "summary": "The apostles called. (1-4) The apostles instructed and sent forth. (5-15) Directions to the apostles. (16-42)"
+    },
+    {
+      "chapter": 11,
+      "summary": "Christ's preaching. (1) Christ's answer to John's disciples. (2-6) Christ's testimony to John the Baptist. (7-15) The perverseness of the Jews. (16-24) The gospel revealed to the simple. The heavy-laden invited. (25-30)"
+    },
+    {
+      "chapter": 12,
+      "summary": "Jesus defends his disciples for plucking corn on the sabbath day. (1-8) Jesus heals a man with a withered hand on the sabbath. (9-13) The malice of the Pharisees. (14-21) Jesus heals a demoniac. (22-30) Blasphemy of the Pharisees. (31,32) Evil words proceed from an evil heart. (33-37) The scribes and Pharisees reproved for seeking a sign. (38-45) The disciples of Christ are his nearest relations. (46-50)"
+    },
+    {
+      "chapter": 13,
+      "summary": "The parable of the sower. (1-23) The parable of the tares. (24-30; 36-43) The parables of the mustard-seed and the leaven. (31-35) The parables of the hidden treasure, the pearl of great price, the net cast into the sea, and the householder. (44-52) Jesus is again rejected at Nazareth. (53-58)"
+    },
+    {
+      "chapter": 14,
+      "summary": "Death of John the Baptist. (1-12) Five thousand people miraculously fed. (13-21) Jesus walks upon the sea. (22-33) Jesus healing the sick. (34-36)"
+    },
+    {
+      "chapter": 15,
+      "summary": "Jesus discourses about human traditions. (1-9) He warns against things which really defile. (10-20) He heals the daughter of a Syrophenician woman. (21-28) Jesus heals the sick, and miraculously feeds four thousand. (29-39)"
+    },
+    {
+      "chapter": 16,
+      "summary": "The Pharisees and Sadducees ask a sign. (1-4) Jesus cautions against the doctrine of the Pharisees. (5-12) Peter's testimony that Jesus was the Christ. (13-20) Christ foretells his sufferings, and rebukes Peter. (21-23) The necessity of self-denial. (24-28)"
+    },
+    {
+      "chapter": 17,
+      "summary": "The transfiguration of Christ. (1-13) Jesus casts out a dumb and deaf spirit. (14-21) He again foretells his sufferings. (22,23) He works a miracle to pay the tribute money. (24-27)"
+    },
+    {
+      "chapter": 18,
+      "summary": "The importance of humility. (1-6) Caution against offences. (7-14) The removal of offences. (15-20) Conduct towards brethren, The parable of the unmerciful servant. (21-35)"
+    },
+    {
+      "chapter": 19,
+      "summary": "Jesus enters Judea. (1,2) The Pharisees' question about divorces. (3-12) Young children brought to Jesus. (13-15) The rich young man's inquiry. (16-22) The recompence of Christ's followers. (23-30)"
+    },
+    {
+      "chapter": 20,
+      "summary": "The parable of the labourers in the vineyard. (1-16) Jesus again foretells his sufferings. (17-19) The ambition of James and John. (20-28) Jesus gives sight to two blind men near Jericho. (29-34)"
+    },
+    {
+      "chapter": 21,
+      "summary": "Christ enters Jerusalem. (1-11) He drives out those who profaned the temple. (12-17) The barren fig-tree cursed. (18-22) Jesus' discourse in the temple. (23-27) The parable of the two sons. (28-32) The parable of the wicked husbandmen. (33-46)"
+    },
+    {
+      "chapter": 22,
+      "summary": "The parable of the marriage feast. (1-14) The Pharisees question Jesus as to the tribute. (15-22) The question of the Sadducees as to the resurrection. (23-33) The substance of the commandments. (34-40) Jesus questions the Pharisees. (41-46)"
+    },
+    {
+      "chapter": 23,
+      "summary": "Jesus reproves the scribes and Pharisees. (1-12) Crimes of the Pharisees. (13-33) The guilt of Jerusalem. (34-39)"
+    },
+    {
+      "chapter": 24,
+      "summary": "Christ foretells the destruction of the temple. (1-3) The troubles before the destruction of Jerusalem. (4-28) Christ foretells other signs and miseries, to the end of the world. (29-41) Exhortations to watchfulness. (42-51)"
+    },
+    {
+      "chapter": 25,
+      "summary": "The parable of the ten virgins. (1-13) The parable of the talents. (14-30) The judgment. (31-46)"
+    },
+    {
+      "chapter": 26,
+      "summary": "The rulers conspire against Christ. (1-5) Christ anointed at Bethany. (6-13) Judas bargains to betray Christ. (14-16) The Passover. (17-25) Christ institutes his holy supper. (26-30) He warns his disciples. (31-35) His agony in the garden. (36-46) He is betrayed. (47-56) Christ before Caiaphas. (57-68) Peter denies him. (69-75)"
+    },
+    {
+      "chapter": 27,
+      "summary": "Christ delivered to Pilate, The despair of Judas. (1-10) Christ before Pilate. (11-25) Barabbas loosed, Christ mocked. (26-30) Christ led to be crucified. (31-34) He is crucified. (35-44) The death of Christ. (45-50) Events at the crucifixion. (51-56) The burial of Christ. (57-61) The sepulchre secured. (62-66)"
+    },
+    {
+      "chapter": 28,
+      "summary": "Christ's resurrection. (1-8) He appears to the women. (9,10) Confession of the soldiers. (11-15) Christ's commission to his disciples. (16-20)"
+    }
+  ]
+}

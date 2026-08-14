@@ -23,8 +23,10 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
   /** Strong 逐词标注（和合本简体 chiuns；其他译本为 null → 纯文本） */
   strong: { type: Object, default: null },
+  /** 移动端沉浸阅读：隐藏头部（标题/按钮）扩大阅读区；退出靠 BrpPage 悬浮按钮 */
+  immersive: { type: Boolean, default: false },
 })
-const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar', 'toggle-menu', 'goto-verse'])
+const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar', 'toggle-menu', 'goto-verse', 'toggle-immersive'])
 
 // 串珠数据：按卷加载 + 缓存（data.js 内部缓存）；加载失败的卷记入集合，避免反复请求
 const crossrefBook = ref(null)
@@ -135,7 +137,7 @@ function verseRefs(verse) {
 
 <template>
   <div class="scripture-panel">
-    <header class="panel-head">
+    <header class="panel-head" v-show="!immersive">
       <div class="head-left">
         <button class="menu-btn" @click="emit('toggle-sidebar')" aria-label="书卷列表">☰</button>
         <h1 class="panel-title">
@@ -143,6 +145,15 @@ function verseRefs(verse) {
         </h1>
       </div>
       <div class="panel-actions">
+        <button
+          class="immersive-btn"
+          :aria-pressed="immersive"
+          :title="immersive ? '恢复头部' : '隐藏头部，扩大阅读区'"
+          @click="emit('toggle-immersive')"
+        >
+          <span class="im-icon" aria-hidden="true">⤢</span>
+          <span class="im-label">展开</span>
+        </button>
         <button
           v-if="strong"
           class="strong-toggle"
@@ -253,6 +264,29 @@ function verseRefs(verse) {
   align-items: center;
   gap: 0.7rem;
 }
+/* 沉浸阅读入口（仅移动端显示）：隐藏头部标题/章节标签，扩大阅读区 */
+.immersive-btn {
+  display: none;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.78rem;
+  padding: 0.24rem 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.immersive-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.im-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
 /* Strong 原文标注开关（胶囊开关） */
 .strong-toggle {
   display: inline-flex;
@@ -342,6 +376,10 @@ function verseRefs(verse) {
 /* 窄屏适配：显示汉堡按钮、头部与正文紧凑化 */
 @media (max-width: 900px) {
   .menu-btn {
+    display: inline-flex;
+  }
+  /* 移动端显示沉浸阅读入口 */
+  .immersive-btn {
     display: inline-flex;
   }
   .panel-head {

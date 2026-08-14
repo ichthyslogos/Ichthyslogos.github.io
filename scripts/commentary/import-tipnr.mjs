@@ -1,6 +1,6 @@
 /**
  * 导入 STEP Bible TIPNR（Translators Individualised Proper Names with all References）
- * 专有名词词典 → data-src/brp/notes/tipnr/
+ * 专有名词词典 → data-src/brp/commentary/notes/tipnr/
  *
  * 素材：素材/stepbible-tipnr/TIPNR.txt（CC BY 4.0，来源 STEPBible/STEPBible-Data）
  * 记录结构（$ 开头行分隔）：
@@ -18,7 +18,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const SRC = fileURLToPath(new URL('../../../素材/stepbible-tipnr/TIPNR.txt', import.meta.url))
-const OUT = fileURLToPath(new URL('../../data-src/brp/notes/tipnr/', import.meta.url))
+const OUT = fileURLToPath(new URL('../../data-src/brp/commentary/notes/tipnr/', import.meta.url))
 
 /** TIPNR 书缩写 → 本站 bookId（TIPNR 用 ESV 缩写体系；先建常见映射，未知缩写统计报告） */
 const TIPNR_ABBR = {
@@ -38,6 +38,16 @@ const TIPNR_ABBR = {
 const TYPE_ZH = {
   Male: '人名', Female: '人名', Group: '群体', Place: '地名', Language: '语言',
   Time: '时间', Supernatural: '灵界', Musical: '音乐', Star: '星象', Title: '称号', Other: '其他',
+}
+
+/** 清理描述文本：<br>/<BR> → 段落分隔；剥掉 <ref="…">/<strong=…> 等标记标签（保留内部文本） */
+function cleanDesc(s) {
+  return (s || '')
+    .replace(/<br\s*\/?>/gi, '\n\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/\s+$/g, '')
+    .trim()
 }
 
 /**
@@ -111,7 +121,7 @@ for (const rawLine of lines) {
   if (t.startsWith('@Briefest=') || t.startsWith('@Brief=') || t.startsWith('@Short=') || t.startsWith('@Article=')) {
     if (!cur) continue
     const key = t.slice(1, t.indexOf('=')).trim()
-    const val = t.slice(t.indexOf('=') + 1).trim().replace(/<BR>/g, '\n\n')
+    const val = cleanDesc(t.slice(t.indexOf('=') + 1))
     cur[`@${key}`] = val
     continue
   }
@@ -133,8 +143,8 @@ for (const rawLine of lines) {
   const unified = (cols[0] || '').trim()
   const name = unified.slice(0, unified.indexOf('@'))
   const strong = unified.includes('=') ? unified.slice(unified.indexOf('=') + 1) : ''
-  const desc = (cols[1] || '').trim()
-  const summary = (cols[7] || '').trim().replace(/^#/, '')
+  const desc = cleanDesc(cols[1] || '')
+  const summary = cleanDesc((cols[7] || '').replace(/^#/, ''))
   const type = (cols[8] || '').trim()
   cur = {
     name,

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "50",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "The Philippians felt a very deep interest for the apostle. The scope of the epistle is to confirm them in the faith, to encourage them to walk as becomes the gospel of Christ, to caution them against judaizing teachers, and to express gratitude for their Christian bounty. This epistle is the only one, among those written by St. Paul, in which no censures are implied or expressed. Full commendation and confidence are in every part, and the Philippians are addressed with a peculiar affection, which every serious reader will perceive."
+    },
+    {
+      "chapter": 2,
+      "summary": "Exhortations to a kind, humble spirit and behaviour. (1-4) The example of Christ. (5-11) Diligence in the affairs of salvation, and to be examples to the world. (12-18) The apostle's purpose of visiting Philippi. (19-30)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The apostle cautions the Philippians against judaizing false teachers, and renounces his own former privileges. (1-11) Expresses earnest desire to be found in Christ; also his pressing on toward perfection; and recommends his own example to other believers. (12-21)"
+    },
+    {
+      "chapter": 4,
+      "summary": "The apostle exhorts the Philippians to stand fast in the Lord. (1) Gives directions to some, and to all in general. (2-9) Expresses contentment in every condition of life. (10-19) He concludes with prayer to God the Father, and his usual blessing. (20-23)"
+    }
+  ]
+}

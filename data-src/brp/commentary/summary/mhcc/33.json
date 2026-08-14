@@ -1,0 +1,38 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "33",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "Micah was raised up to support Isaiah, and to confirm his predictions, while he invited to repentance, both by threatened judgments and promised mercies. A very remarkable passage, Mic 5 contains a summary of prophecies concerning the Messiah."
+    },
+    {
+      "chapter": 2,
+      "summary": "The sins and desolations of Israel. (1-5) Their evil practices. (6-11) A promise of restoration. (12,13)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The cruelty of the princes, and the falsehood of the prophets. (1-8) Their false security. (9-12)"
+    },
+    {
+      "chapter": 4,
+      "summary": "The peace of the kingdom of Christ. (1-8) The judgments to come upon Jerusalem, but the final triumph of Israel. (9-13)"
+    },
+    {
+      "chapter": 5,
+      "summary": "The birth of Christ and conversion of the Gentiles. (1-6) The triumphs of Israel. (7-15)"
+    },
+    {
+      "chapter": 6,
+      "summary": "God's controversy with Israel. (1-5) The duties God requires. (6-8) The wickedness of Israel. (9-16)"
+    },
+    {
+      "chapter": 7,
+      "summary": "The general prevalence of wickedness. (1-7) Reliance on God, and triumph over enemies. (8-13) Promises and encouragements for Israel. (14-20)"
+    }
+  ]
+}

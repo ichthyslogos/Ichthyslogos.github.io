@@ -1,0 +1,22 @@
+{
+  "source": {
+    "key": "mhcc",
+    "name": "马太亨利简明注释 (MHCC)",
+    "lang": "en"
+  },
+  "bookId": "35",
+  "chapters": [
+    {
+      "chapter": 1,
+      "summary": "The subject of this prophecy is the destruction of Judea and Jerusalem for the sins of the people, and the consolation of the faithful under national calamities."
+    },
+    {
+      "chapter": 2,
+      "summary": "Habakkuk must wait in faith. (1-4) Judgments upon the Chaldeans. (5-14) Also upon drunkenness and idolatry. (15-20)"
+    },
+    {
+      "chapter": 3,
+      "summary": "The prophet beseeches God for his people. (1,2) He calls to mind former deliverances. (3-15) His firm trust in the Divine mercy. (16-19)"
+    }
+  ]
+}
