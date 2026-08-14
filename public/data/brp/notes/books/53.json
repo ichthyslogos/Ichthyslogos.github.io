@@ -1,0 +1,97 @@
+{
+  "source": {
+    "key": "tipnr",
+    "name": "STEP 专有名词注释 (TIPNR)",
+    "lang": "en"
+  },
+  "bookId": "53",
+  "chapters": [
+    {
+      "chapter": 1,
+      "entries": [
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            1
+          ]
+        },
+        {
+          "name": "Paul",
+          "strong": "G3972G",
+          "type": "Male",
+          "briefest": "An apostle",
+          "brief": "Apostle to the Gentiles, author of many NT epistles",
+          "short": "Paul, also known as Saul, the apostle to the Gentiles and author of many New Testament epistles.",
+          "article": "Paul, also known as Saul, was one of the most influential figures in early Christianity. He was born in Tarsus as a Roman citizen and trained as a Pharisee under Gamaliel. Initially a persecutor of the church, Paul had a dramatic conversion experience on the road to Damascus, where the risen Jesus appeared to him. After this, he became a zealous preacher of the gospel, undertaking several missionary journeys throughout the Mediterranean world. Paul played a key role in spreading Christianity among the Gentiles and in articulating its theological foundations. He wrote many of the epistles in the New Testament, providing guidance and instruction to the early churches. Paul faced numerous challenges, including opposition from Jewish leaders, internal disputes among believers, and physical hardships. He was eventually arrested and taken to Rome, where tradition holds that he was martyred during the reign of Nero. Paul's life and teachings had a profound impact on the development of Christian thought and practice.",
+          "refs": [
+            1
+          ]
+        },
+        {
+          "name": "Timothy",
+          "strong": "G5095G",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Paul's young disciple and co-worker",
+          "short": "Timothy was a young disciple and co-worker of Paul, who accompanied him on his missionary journeys and later served as a pastor.",
+          "article": "Timothy was a young disciple and close companion of the Apostle Paul. He is mentioned frequently in the New Testament, both in the book of Acts and in Paul's epistles. Timothy was from Lystra, the son of a Greek father and a Jewish mother named Eunice (<ref=\"Act.16.1\">Act.16.1</ref>). He was well-respected by the believers in his hometown and in Iconium (<ref=\"Act.16.2\">Act.16.2</ref>). Paul invited Timothy to join him on his missionary journeys, and he became a valuable assistant and co-worker (<ref=\"Act.16.3; 17.14-15; 18.5; 19.22; 20.4\">Act.16.3; 17.14-15; 18.5; 19.22; 20.4</ref>). Paul referred to Timothy as his \"true son in the faith\" (<ref=\"1Ti.1.2\">1Ti.1.2</ref>) and sent him on important missions to churches in Macedonia, Achaia, and Ephesus (<ref=\"Act.19.22\">Act.19.22</ref>; <ref=\"1Co.4.17; 16.10\">1Co.4.17; 16.10</ref>; <ref=\"Php.2.19\">Php.2.19</ref>). Timothy was with Paul during his first Roman imprisonment and is named as a co-sender of several of Paul's letters (<ref=\"Php.1.1\">Php.1.1</ref>; <ref=\"Col.1.1\">Col.1.1</ref>; <ref=\"Phm.1.1\">Phm.1.1</ref>). Paul also wrote two personal letters to Timothy, providing guidance and encouragement for his pastoral ministry (<ref=\"1Ti.1.2\">1Ti.1.2</ref>; <ref=\"2Ti.1.2\">2Ti.1.2</ref>). These letters, along with the letter to Titus, are known as the Pastoral Epistles. According to <ref=\"Heb.13.23\">Heb.13.23</ref>, Timothy was imprisoned at some point but later released. Tradition holds that Timothy served as the bishop of Ephesus in his later years. Timothy's life and ministry exemplify the importance of mentoring, discipleship, and faithful service in the early church.",
+          "refs": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 2,
+      "entries": [
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 3,
+      "entries": [
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            3
+          ]
+        },
+        {
+          "name": "Paul",
+          "strong": "G3972G",
+          "type": "Male",
+          "briefest": "An apostle",
+          "brief": "Apostle to the Gentiles, author of many NT epistles",
+          "short": "Paul, also known as Saul, the apostle to the Gentiles and author of many New Testament epistles.",
+          "article": "Paul, also known as Saul, was one of the most influential figures in early Christianity. He was born in Tarsus as a Roman citizen and trained as a Pharisee under Gamaliel. Initially a persecutor of the church, Paul had a dramatic conversion experience on the road to Damascus, where the risen Jesus appeared to him. After this, he became a zealous preacher of the gospel, undertaking several missionary journeys throughout the Mediterranean world. Paul played a key role in spreading Christianity among the Gentiles and in articulating its theological foundations. He wrote many of the epistles in the New Testament, providing guidance and instruction to the early churches. Paul faced numerous challenges, including opposition from Jewish leaders, internal disputes among believers, and physical hardships. He was eventually arrested and taken to Rome, where tradition holds that he was martyred during the reign of Nero. Paul's life and teachings had a profound impact on the development of Christian thought and practice.",
+          "refs": [
+            3
+          ]
+        }
+      ]
+    }
+  ]
+}

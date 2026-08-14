@@ -1,0 +1,145 @@
+{
+  "source": {
+    "key": "tipnr",
+    "name": "STEP 专有名词注释 (TIPNR)",
+    "lang": "en"
+  },
+  "bookId": "56",
+  "chapters": [
+    {
+      "chapter": 1,
+      "entries": [
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            1
+          ]
+        },
+        {
+          "name": "Paul",
+          "strong": "G3972G",
+          "type": "Male",
+          "briefest": "An apostle",
+          "brief": "Apostle to the Gentiles, author of many NT epistles",
+          "short": "Paul, also known as Saul, the apostle to the Gentiles and author of many New Testament epistles.",
+          "article": "Paul, also known as Saul, was one of the most influential figures in early Christianity. He was born in Tarsus as a Roman citizen and trained as a Pharisee under Gamaliel. Initially a persecutor of the church, Paul had a dramatic conversion experience on the road to Damascus, where the risen Jesus appeared to him. After this, he became a zealous preacher of the gospel, undertaking several missionary journeys throughout the Mediterranean world. Paul played a key role in spreading Christianity among the Gentiles and in articulating its theological foundations. He wrote many of the epistles in the New Testament, providing guidance and instruction to the early churches. Paul faced numerous challenges, including opposition from Jewish leaders, internal disputes among believers, and physical hardships. He was eventually arrested and taken to Rome, where tradition holds that he was martyred during the reign of Nero. Paul's life and teachings had a profound impact on the development of Christian thought and practice.",
+          "refs": [
+            1
+          ]
+        },
+        {
+          "name": "Titus",
+          "strong": "G5103",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Gentile convert and companion of Paul",
+          "short": "Titus was a Gentile convert and a trusted companion of Paul, who accompanied him on missionary journeys and served as his delegate to the church in Corinth.",
+          "article": "Titus was a Gentile convert and a close companion of the Apostle Paul. He is mentioned several times in Paul's epistles, particularly in 2 Corinthians and the letter addressed to him, the Epistle to Titus. Titus was one of Paul's trusted delegates and was involved in his ministry to the churches. Paul refers to Titus as his \"true son in the faith\" (<ref=\"Tit.1.4\">Tit.1.4</ref>), indicating a close spiritual relationship. Titus accompanied Paul to Jerusalem for the council that discussed the inclusion of Gentiles in the church (<ref=\"Gal.2.1-3\">Gal.2.1-3</ref>). He was not compelled to be circumcised, which supported Paul's stance that Gentile converts did not need to adhere to Jewish law. Titus played a significant role in Paul's relationship with the church in Corinth. He was sent by Paul to Corinth to address issues within the church and to encourage the believers (<ref=\"2Co.7.6-7, 13-14; 8.6, 16, 23\">2Co.7.6-7, 13-14; 8.6, 16, 23</ref>). Titus' visit brought comfort and reassurance to Paul regarding the Corinthians' response to his earlier letter. Paul also entrusted Titus with the task of collecting an offering for the believers in Jerusalem (<ref=\"2Co.8.6, 16-24\">2Co.8.6, 16-24</ref>). The Epistle to Titus, written by Paul, provides insight into Titus' role as a church leader. Paul had left Titus in Crete to oversee the churches there, appointing elders and dealing with false teachers (<ref=\"Tit.1.5\">Tit.1.5</ref>). The letter offers guidance on sound doctrine, qualifications for church leaders, and the importance of good works. According to <ref=\"2Ti.4.10\">2Ti.4.10</ref>, Titus later traveled to Dalmatia (modern-day Croatia). Church tradition holds that Titus served as the first bishop of Crete. Titus' life exemplifies the important role that Gentile converts played in the early church and the trust Paul placed in them as fellow ministers of the gospel.",
+          "refs": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 2,
+      "entries": [
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 3,
+      "entries": [
+        {
+          "name": "Apollos",
+          "strong": "G0625",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Eloquent Jewish Christian from Alexandria, co-worker with Paul",
+          "short": "Apollos, an eloquent and learned Jewish Christian from Alexandria, was an important figure in the early church who worked alongside Paul in spreading the gospel.",
+          "article": "Apollos was a prominent Jewish Christian from Alexandria, known for his eloquence, knowledge of the Scriptures, and effectiveness in preaching the gospel. He is first mentioned in the book of Acts as a learned man who spoke with great fervor and taught about Jesus accurately, though he knew only the baptism of John. After receiving further instruction from Priscilla and Aquila in Ephesus, Apollos went to Achaia and greatly helped the believers there, vigorously refuting the Jews in public debate and proving from the Scriptures that Jesus was the Messiah. \n\nIn Paul's first letter to the Corinthians, Apollos is mentioned as one of the leaders that some of the Corinthian believers were aligning themselves with, alongside Paul and Cephas (Peter). Paul clarifies that both he and Apollos are merely servants through whom the Corinthians came to believe, each serving the role God had assigned to them. Paul planted, Apollos watered, but God made it grow. Paul also mentions Apollos as a positive example when discussing the need for humility and unity among believers. \n\nLater, in Paul's letter to Titus, Apollos is mentioned again as someone Paul encourages Titus to help on his journey, together with Zenas the lawyer. This suggests that Apollos continued to be actively involved in ministry and was a valued co-worker in spreading the gospel message.",
+          "refs": [
+            3
+          ]
+        },
+        {
+          "name": "Artemas",
+          "strong": "G0734",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Companion of Paul, potential replacement for Titus",
+          "short": "Artemas was a companion of Paul who could potentially replace Titus in Crete (<ref=\"Titus 3:12\">Titus 3:12</ref>).",
+          "article": "Artemas was a Christian mentioned by Paul in his letter to Titus. Paul stated that he might send Artemas or Tychicus to Titus, presumably to assist or replace him in his work on the island of Crete. This suggests that Artemas was a trusted colleague of Paul and capable of handling important responsibilities in the early church.",
+          "refs": [
+            3
+          ]
+        },
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            3
+          ]
+        },
+        {
+          "name": "Tychicus",
+          "strong": "G5190",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Faithful companion and messenger of Paul",
+          "short": "Tychicus was a faithful companion of Paul who served as his messenger to the churches in Asia Minor.",
+          "article": "Tychicus was a faithful companion and fellow worker of the Apostle Paul, mentioned several times in the New Testament (<ref=\"Act.20.4\">Act.20.4</ref>; <ref=\"Eph.6.21\">Eph.6.21</ref>; <ref=\"Col.4.7\">Col.4.7</ref>; <ref=\"2Ti.4.12\">2Ti.4.12</ref>; <ref=\"Tit.3.12\">Tit.3.12</ref>). He was from the province of Asia (modern-day western Turkey) and accompanied Paul on his third missionary journey. Paul entrusted Tychicus with important missions, sending him as a messenger to the churches in Ephesus (<ref=\"Eph.6.21\">Eph.6.21</ref>) and Colossae (<ref=\"Col.4.7\">Col.4.7</ref>) to deliver letters and bring news of Paul's circumstances. In these letters, Paul describes Tychicus as a beloved brother, faithful minister, and fellow servant in the Lord. Later, Paul sent Tychicus to Ephesus to relieve Timothy (<ref=\"2Ti.4.12\">2Ti.4.12</ref>) and planned to send him to Crete to assist Titus (<ref=\"Tit.3.12\">Tit.3.12</ref>). Tychicus' frequent appearances in Paul's letters and his role as a trusted messenger demonstrate his significance in the early church and his close relationship with the apostle.",
+          "refs": [
+            3
+          ]
+        },
+        {
+          "name": "Zenas",
+          "strong": "G2211",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Christian lawyer whom Paul commended",
+          "short": "Zenas, a lawyer, was commended by Paul and was to be sent on his journey with Apollos.",
+          "article": "Zenas was a Christian lawyer mentioned by Paul in his letter to Titus. Paul instructs Titus to help Zenas and Apollos on their journey, ensuring that they have everything they need. The fact that Paul refers to Zenas as a lawyer suggests he may have had training in Jewish or Roman law. His association with Apollos, a learned and eloquent teacher, may indicate that Zenas was also involved in teaching or preaching. Paul's commendation of Zenas demonstrates his importance in the early Christian community, although no other details about his life or ministry are provided in the Bible.",
+          "refs": [
+            3
+          ]
+        },
+        {
+          "name": "Nicopolis",
+          "strong": "G3533",
+          "type": "Place",
+          "briefest": "",
+          "brief": "A city in Epirus where Paul planned to winter",
+          "short": "Nicopolis was a city in Epirus where Paul intended to spend the winter, as mentioned in his letter to Titus.",
+          "article": "Nicopolis was a city in the Roman province of Epirus, located on the western coast of Greece. It is mentioned in the New Testament in Paul's letter to Titus (Titus 3:12). In this letter, Paul instructs Titus to meet him in Nicopolis, as he had decided to spend the winter there. The city was founded by Octavian (later Emperor Augustus) to commemorate his victory over Antony and Cleopatra at the Battle of Actium in 31 BC. Nicopolis became an important center of trade and culture in the region. Paul's mention of Nicopolis suggests that he may have planned to use the city as a base for missionary work in the surrounding area.",
+          "refs": [
+            3
+          ]
+        }
+      ]
+    }
+  ]
+}

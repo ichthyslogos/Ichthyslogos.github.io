@@ -1,0 +1,56 @@
+{
+  "source": {
+    "key": "tipnr",
+    "name": "STEP 专有名词注释 (TIPNR)",
+    "lang": "en"
+  },
+  "bookId": "59",
+  "chapters": [
+    {
+      "chapter": 1,
+      "entries": [
+        {
+          "name": "James",
+          "strong": "G2385I",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "Jesus' brother, leader in the Jerusalem church",
+          "short": "James, the brother of Jesus, was a leader in the Jerusalem church and authored the epistle of James.",
+          "article": "James was one of the brothers of Jesus, along with Joses, Judas, and Simon (<ref=\"Mat.13.55\">Mat.13.55</ref>; <ref=\"Mrk.6.3\">Mrk.6.3</ref>). During Jesus' ministry, James and his brothers did not believe in Him (<ref=\"Jhn.7.5\">Jhn.7.5</ref>). However, after Jesus' resurrection, James became a believer and a prominent leader in the early church in Jerusalem. He was one of the individuals to whom Jesus appeared after His resurrection (<ref=\"1Co.15.7\">1Co.15.7</ref>). In the early church, James played a significant role in the Jerusalem Council, which addressed the issue of Gentile believers and the Mosaic Law (<ref=\"Act.15.13-21\">Act.15.13-21</ref>). He also received Paul and his companions during their visits to Jerusalem (<ref=\"Act.21.18\">Act.21.18</ref>; <ref=\"Gal.1.19; 2.9\">Gal.1.19; 2.9</ref>). James authored the New Testament epistle that bears his name, in which he emphasizes practical faith and good works (Jam <ref=\"1.1\">1.1</ref>). He is often referred to as \"James the Just\" due to his reputation for righteousness and his strict observance of the Jewish law. According to early church tradition, James was martyred in Jerusalem around 62 AD.",
+          "refs": [
+            1
+          ]
+        },
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 2,
+      "entries": [
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            2
+          ]
+        }
+      ]
+    }
+  ]
+}

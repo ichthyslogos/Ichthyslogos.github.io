@@ -23,10 +23,10 @@ export const GROUPS = {
  * 统一取数：并发去重（同 URL 共享同一 Promise）+ 成功缓存。
  * 失败不缓存（下次重试）；catch 由调用方处理。
  */
-function fetchJson(url) {
+function fetchJson(url, options) {
   let p = cache.get(url)
   if (!p) {
-    p = fetch(url)
+    p = fetch(url, options)
       .then((res) => {
         if (!res.ok) throw new Error(`数据加载失败：${url} (${res.status})`)
         return res.json()
@@ -78,9 +78,9 @@ export function resolveTranslation(manifest, key) {
  */
 const COMMENT_BASE = 'data/brp/commentary/'
 
-/** 加载注释源清单 */
+/** 加载注释源清单（no-store：开发期数据重建频繁，避免 304 命中陈旧响应） */
 export async function fetchCommentaryManifest() {
-  return fetchJson(COMMENT_BASE + 'manifest.json')
+  return fetchJson(COMMENT_BASE + 'manifest.json', { cache: 'no-store' })
 }
 
 /* ============ 注释书卷开关 ============
@@ -97,7 +97,7 @@ export function isCommentaryEnabled(bookId) {
 /** 加载某注释源某卷的注释数据（含全部章节），自动缓存；卷注释被暂时关闭时返回 null */
 export async function fetchCommentary(sourceKey, bookId) {
   if (!isCommentaryEnabled(bookId)) return null
-  return fetchJson(`${COMMENT_BASE}${sourceKey}/${bookId}.json`)
+  return fetchJson(`${COMMENT_BASE}${sourceKey}/${bookId}.json`, { cache: 'no-store' })
 }
 
 /** 默认注释源偏好（URL/存储未指定时优先：马太亨利主源；新源不影响此偏好） */
@@ -162,6 +162,24 @@ export function findCommentaryChapter(book, chapter) {
 /** 当前选中书卷信息（找不到则回退到该译本第一卷） */
 export function resolveBook(translation, bookId) {
   return translation.books.find((b) => b.id === bookId) || translation.books[0]
+}
+
+/* ============ 背景注释数据（notes） ============
+ * 作者/地点/背景的简要介绍（术语「注释」，与「解经」区分），来自 STEP Bible TIPNR（CC BY 4.0）：
+ *   public/data/brp/notes/entries.json   全量词条索引（供将来词条高亮匹配）
+ *   public/data/brp/notes/books/<bookId>.json  按卷分片：每章 entries（词条 + 四级描述 + 出现节）
+ */
+const NOTES_BASE = 'data/brp/notes/'
+
+/** 加载某卷背景注释（含全部章节），自动缓存；no-store 绕过 HTTP 缓存（数据重建频繁） */
+export async function fetchNotes(bookId) {
+  return fetchJson(`${NOTES_BASE}books/${bookId}.json`, { cache: 'no-store' })
+}
+
+/** 取某章的背景注释（无则返回 null） */
+export function findNotesChapter(book, chapter) {
+  if (!book) return null
+  return book.chapters.find((c) => c.chapter === chapter) || null
 }
 
 /* ============ 护教问答数据（子数据库） ============

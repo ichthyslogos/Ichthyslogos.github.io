@@ -68,6 +68,7 @@ Bible → Verse → Word → Lemma → Morphology → Strong → Lexicon
 - **适用模块**：/brp、/original-language、/strong、/lexicon、/search、/discovery
 - **优先级**：S 级
 - **注意**：使用数据前必须再次确认 License、Attribution、Redistribution、Commercial Use、Modification
+- **已采用（2026-08-14）**：**TIPNR 专有名词词典**（`Proper Nouns/TIPNR - …CC BY.txt`，CC BY 4.0）→ 背景注释层（解经抽屉「背景注释」，4259 词条/66 卷）。获取与转换见 `素材/stepbible-tipnr/README.md` + `site/scripts/commentary/import-tipnr.mjs`，使用文档 `site/docs/NOTES.md`。未采用：TBESG/TBESH 原文词典（与现有 Strong 重复）、Eng_MHM（解经类，与马太亨利重复）。
 
 # 4. STEP Bible
 

@@ -11,7 +11,7 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { groupOfSource } from '../../lib/data.js'
 
-/** 传统 key → 中文名（9 个固定传统，与 docs/COMMENTARY-ROADMAP.md 一致） */
+/** 传统 key → 中文名（9 个宗派 + concise 简要版；完整版源按宗派分组展示） */
 const TRADITION_NAMES = {
   'church-fathers': '教父著作',
   catholic: '天主教传统',
@@ -22,6 +22,7 @@ const TRADITION_NAMES = {
   anglican: '圣公会',
   pentecostal: '五旬节派',
   evangelical: '福音派',
+  concise: '简要',
 }
 
 const props = defineProps({
