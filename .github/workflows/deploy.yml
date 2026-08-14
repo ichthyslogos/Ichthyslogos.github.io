@@ -5,6 +5,9 @@
 name: Deploy to GitHub Pages
 
 on:
+  # 部署完成后恢复 manual-only（移除下面 push 触发并 commit push）
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
