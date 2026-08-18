@@ -54,6 +54,7 @@ watch(
       const p = await fetchChurchHistoryPart(n)
       if (seq !== partSeq) return
       part.value = p
+      error.value = '' // 成功清除旧错误：否则一次失败后所有部都显示错误占位
     } catch (e) {
       if (seq !== partSeq) return
       error.value = e.message
@@ -124,12 +125,17 @@ const docTitleNum = computed(() => {
   return `第${d.no}章`
 })
 
-/** 渲染块：跳过与标题重复的 h（如「第一章 新约教会的诞生」） */
+/** 渲染块：跳过与标题重复的 h（如「第一章 新约教会的诞生」）
+ *  数据块文本含 U+2060（WORD JOINER，如「教会在风暴中（⁠33⁠－⁠313⁠）」），
+ *  比对前剔除 U+2060/空白，否则精确匹配恒失败 → 章标题渲染两遍 */
+function cleanTitle(s) {
+  return (s || '').replace(/[\u2060\s]/g, '')
+}
 const docBlocks = computed(() => {
   const d = currentDoc.value
   if (!d) return []
   const skip = d.kind === 'intro' ? '导 论' : `第${cnNum(d.no)}章 ${d.title}`
-  return d.blocks.filter((b, i) => !(i === 0 && b.t === 'h' && b.text === skip))
+  return d.blocks.filter((b, i) => !(i === 0 && b.t === 'h' && cleanTitle(b.text) === cleanTitle(skip)))
 })
 
 /* ---------- 全书线性导航（上一章 / 下一章） ---------- */
@@ -192,20 +198,25 @@ watch(
 watch(chapterKey, () => centerActive(chMobileNav, '.ch-mobile-chip.active'), { immediate: true })
 
 /* ---------- 阅读进度（书眉条金线） ---------- */
-const chMain = ref(null) // 阅读区滚动容器
+const chMain = ref(null) // 阅读区滚动容器（桌面）
 const progress = ref(0)
 function onScroll() {
-  const el = chMain.value
+  // 移动端（≤860px）滚动发生在全局 .app-main，而非 .ch-main（overflow: visible）
+  const el = (chMain.value && getComputedStyle(chMain.value).overflowY !== 'visible' && chMain.value.scrollHeight > chMain.value.clientHeight)
+    ? chMain.value
+    : document.querySelector('.app-main')
   if (!el) return
   const max = el.scrollHeight - el.clientHeight
   progress.value = max > 0 ? Math.min(1, el.scrollTop / max) : 0
 }
 onMounted(() => {
   chMain.value?.addEventListener('scroll', onScroll)
+  document.querySelector('.app-main')?.addEventListener('scroll', onScroll)
   onScroll()
 })
 onBeforeUnmount(() => {
   chMain.value?.removeEventListener('scroll', onScroll)
+  document.querySelector('.app-main')?.removeEventListener('scroll', onScroll)
 })
 </script>
 

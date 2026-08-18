@@ -15,7 +15,11 @@ export function flowCommentary(text) {
   if (!text) return text
   return text
     .split(/\n\s*\n/)
-    .map((block) => block.replace(/\s*\n\s*/g, '').trim())
+    .map((block) => {
+      // 含拉丁字母的块（英文注释）以空格连接，否则句间断行会把 "embryo.\nI." 粘成 "embryo.I."
+      const joiner = /[A-Za-z]/.test(block) ? ' ' : ''
+      return block.replace(/\s*\n\s*/g, joiner).trim()
+    })
     .filter(Boolean)
     .join('\n\n')
 }

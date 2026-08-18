@@ -10,7 +10,7 @@
  * 渲染：当前书卷+章节 → 概要（summary）+ 小节注释列表（ref + heading + text）
  * 无注释（卷/章缺失）→ 空状态提示。
  */
-import { ref, watch, computed, onMounted, onUnmounted } from 'vue'
+import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import {
   fetchCommentary,
   fetchCommentaryManifest,
@@ -31,8 +31,10 @@ const props = defineProps({
   open: { type: Boolean, default: true },
   book: { type: Object, default: null }, // manifest 中的书卷信息（含 bookId）
   chapter: { type: Number, default: 0 },
+  focusNoteName: { type: String, default: '' }, // 经文高亮跳转：要展开的背景注释词条名
+  focusNoteSeq: { type: Number, default: 0 }, // 跳转序号（同名重复跳转也重新定位）
 })
-const emit = defineEmits(['toggle'])
+const emit = defineEmits(['toggle', 'focus-place']) // focus-place：地点词条跳转地图抽屉（BrpPage 联动）
 
 const sources = ref([]) // 全量源（含语言组成员）
 const sourceKey = ref('')
@@ -133,9 +135,14 @@ function computeActive() {
   return current
 }
 
-/** 滚动监听：实时跟随视口顶部正在显示的词条（按钮对应变化） */
+/** 滚动监听：实时跟随视口顶部正在显示的词条（按钮对应变化）；rAF 节流，避免高频滚动时反复全量量测 */
+let scrollRaf = 0
 function onPanelScroll() {
-  itemCloseVisible.value = !!computeActive()
+  if (scrollRaf) return
+  scrollRaf = requestAnimationFrame(() => {
+    scrollRaf = 0
+    itemCloseVisible.value = !!computeActive()
+  })
 }
 
 /** 收起/关闭后：重算视口内正在显示的词条 */
@@ -231,51 +238,67 @@ function pickInterpretationSource(key) {
   interpretationMenuOpen.value = false
 }
 
-/** 上次加载的书卷（换卷判定用；immediate 时 oldValue 为 undefined，解构会抛错，故用模块级变量） */
-let concisePrevBookId = null
+/** 加载序号守卫：快速切换书卷/源时丢弃过期响应 */
 let conciseSeq = 0
-watch(
-  () => [props.book?.id, props.chapter, props.open],
-  async ([bookId]) => {
-    // 换卷立即清空旧卷数据，避免新章号在旧卷数据中误匹配（串章）
-    if (bookId !== concisePrevBookId) {
-      concisePrevBookId = bookId
+let concisePrevBookId = null
+/** 加载总结/经文解释两栏数据（首次取默认源；源切换或换卷时重新加载；源不覆盖当前卷时自动回退） */
+async function loadConcise() {
+  const bookId = props.book?.id
+  // 换卷立即清空旧卷数据，避免异步完成前旧卷同号章节误匹配（串章；与 notes 层同款防护）
+  if (bookId !== concisePrevBookId) {
+    concisePrevBookId = bookId
+    summaryData.value = null
+    interpretationData.value = null
+  }
+  if (!bookId || !props.open) return
+  const seq = ++conciseSeq
+  try {
+    const m = conciseManifest.value || (await fetchCommentaryManifest())
+    const summaryCandidates = sourcesOfCategory(m, 'summary')
+    const interpCandidates = sourcesOfCategory(m, 'interpretation')
+    if (!summaryCandidates.length || !interpCandidates.length) {
       summaryData.value = null
       interpretationData.value = null
+      return
     }
-    if (!bookId || !props.open) return
-    const seq = ++conciseSeq
-    try {
-      const m = conciseManifest.value || (await fetchCommentaryManifest())
-      const summary = sourcesOfCategory(m, 'summary')[0]
-      const interp = sourcesOfCategory(m, 'interpretation')[0]
-      if (!summary || !interp) {
-        summaryData.value = null
-        interpretationData.value = null
-        return
-      }
-      summaryKey.value = summary.key
-      interpretationKey.value = interp.key
-      // 两栏同源不同切片：并发加载
-      const [sd, id] = await Promise.all([
-        fetchCommentary(summaryKey.value, bookId, 'summary'),
-        fetchCommentary(interpretationKey.value, bookId, 'interpretation'),
-      ])
-      if (seq !== conciseSeq) return
-      summaryData.value = sd
-      interpretationData.value = id
-      summaryError.value = ''
-      interpretationError.value = ''
-    } catch (e) {
-      if (seq !== conciseSeq) return
-      summaryData.value = null
-      interpretationData.value = null
-      summaryError.value = String(e?.message || e)
-      interpretationError.value = String(e?.message || e)
+    // 默认源：首次加载取第一个；用户选择后保留；源不覆盖当前卷则回退
+    const coverBook = (s) => (s.books || []).includes(bookId) // 容错：books 字段缺失视为不覆盖
+    let sKey = summaryKey.value
+    if (!summaryCandidates.some((s) => s.key === sKey && coverBook(s))) {
+      sKey = summaryCandidates.find(coverBook)?.key || summaryCandidates[0].key
+      summaryKey.value = sKey
     }
-  },
-  { immediate: true },
-)
+    let iKey = interpretationKey.value
+    if (!interpCandidates.some((s) => s.key === iKey && coverBook(s))) {
+      iKey = interpCandidates.find(coverBook)?.key || interpCandidates[0].key
+      interpretationKey.value = iKey
+    }
+    // 两栏同源不同切片：并发加载
+    const [sd, id] = await Promise.all([
+      fetchCommentary(sKey, bookId, 'summary'),
+      fetchCommentary(iKey, bookId, 'interpretation'),
+    ])
+    if (seq !== conciseSeq) return
+    summaryData.value = sd
+    interpretationData.value = id
+    summaryError.value = ''
+    interpretationError.value = ''
+  } catch (e) {
+    if (seq !== conciseSeq) return
+    summaryData.value = null
+    interpretationData.value = null
+    summaryError.value = String(e?.message || e)
+    interpretationError.value = String(e?.message || e)
+  }
+}
+watch(() => [props.book?.id, props.chapter, props.open], loadConcise, { immediate: true })
+// 源切换 → 重新加载对应源数据
+watch(interpretationKey, () => {
+  if (interpretationKey.value) loadConcise()
+})
+watch(summaryKey, () => {
+  if (summaryKey.value) loadConcise()
+})
 
 // —— 背景注释层数据（STEP TIPNR 专有名词：人名/地名/背景词条，按当前章）——
 const notesData = ref(null) // 当前卷注释数据
@@ -406,6 +429,7 @@ watch(
   () => props.open,
   (v) => {
     if (!v) return
+    expanded.value = new Set()
     openVerses.value = new Set()
     openNotes.value = new Set()
     openLayers.value = new Set()
@@ -414,6 +438,51 @@ watch(
     itemCloseVisible.value = false
   },
 )
+
+// —— 经文高亮跳转联动：自动展开背景注释层并定位到对应词条 ——
+// 声明在 open 收起 watch 之后：同一次冲刷中先收起、后展开，避免揭示被清空
+const pendingNote = ref('')
+watch(
+  () => props.focusNoteSeq,
+  () => {
+    if (!props.focusNoteName || !props.open) return
+    pendingNote.value = props.focusNoteName
+    tryRevealNote()
+  },
+)
+// 词条数据就绪后补执行（跳转先于 fetchNotes 完成时）
+watch(notesChapter, () => {
+  if (pendingNote.value) tryRevealNote()
+})
+
+/** 展开背景注释层对应词条并滚动到可视区域（数据未就绪时静默等待 notesChapter） */
+function tryRevealNote() {
+  const name = pendingNote.value
+  if (!name) return
+  const ch = notesChapter.value
+  if (!ch?.entries) return
+  const i = ch.entries.findIndex((e) => e.name === name)
+  if (i < 0) {
+    pendingNote.value = '' // 本卷无此词条
+    return
+  }
+  const layers = new Set(openLayers.value)
+  layers.add('notes')
+  openLayers.value = layers
+  const opened = new Set(openNotes.value)
+  opened.add(i)
+  openNotes.value = opened
+  activeLayer.value = 'notes'
+  // 记为正在阅读项（与手动 toggleNote 同款状态，头部关闭按钮随滚动切换）
+  activeItem.value = { kind: 'note', idx: i, label: name }
+  itemCloseVisible.value = true
+  pendingNote.value = ''
+  nextTick(() => {
+    const toggle = panelBodyEl.value?.querySelector(`[data-layer="notes"] [data-item-idx="${i}"]`)
+    const el = toggle?.closest('.note-entry') || toggle
+    el?.scrollIntoView({ block: 'nearest' })
+  })
+}
 
 // 首次挂载加载注释源清单；关闭面板时收起源菜单
 watch(
@@ -521,6 +590,9 @@ const dragging = ref(false)
 let resizeStartX = 0
 let resizeStartW = 0
 
+/** 响应式移动端判定（matchMedia 直读无响应性：跨 900px 断点后 panelStyle 不会重算） */
+const isMobileView = ref(window.matchMedia('(max-width: 900px)').matches)
+
 /** 宽度限制：移动端 55vw~100vw，桌面 18rem~62vw（给经文留出空间） */
 function clampWidth(w) {
   const mobile = window.matchMedia('(max-width: 900px)').matches
@@ -533,7 +605,7 @@ const panelStyle = computed(() => {
   const s = {}
   if (panelWidth.value) s.width = panelWidth.value + 'px'
   // 抽屉高度只对移动端底部抽屉生效（桌面 flex 高度自适应，不受影响）
-  if (sheetH.value && window.matchMedia('(max-width: 900px)').matches) s.height = sheetH.value + 'px'
+  if (sheetH.value && isMobileView.value) s.height = sheetH.value + 'px'
   return s
 })
 
@@ -542,7 +614,7 @@ function startResize(e) {
   dragging.value = true
   resizeStartX = e.clientX
   resizeStartW = panelWidth.value ?? rootEl.value?.getBoundingClientRect().width ?? 0
-  document.body.classList.add('resizing-panel')
+  document.body.classList.add('panel-resizing')
   e.currentTarget.setPointerCapture?.(e.pointerId)
 }
 
@@ -555,7 +627,7 @@ function onResizeMove(e) {
 function endResize() {
   if (!dragging.value) return
   dragging.value = false
-  document.body.classList.remove('resizing-panel')
+  document.body.classList.remove('panel-resizing')
   if (panelWidth.value) localStorage.setItem(RESIZE_STORAGE, String(panelWidth.value))
 }
 
@@ -567,8 +639,12 @@ onMounted(() => {
   if (savedH) sheetH.value = clampSheetHeight(savedH)
   window.addEventListener('resize', onWindowResize)
 })
-onUnmounted(() => window.removeEventListener('resize', onWindowResize))
+onUnmounted(() => {
+  window.removeEventListener('resize', onWindowResize)
+  if (scrollRaf) cancelAnimationFrame(scrollRaf) // 取消挂起的滚动重算
+})
 function onWindowResize() {
+  isMobileView.value = window.matchMedia('(max-width: 900px)').matches
   if (panelWidth.value) panelWidth.value = clampWidth(panelWidth.value)
   if (sheetH.value) sheetH.value = clampSheetHeight(sheetH.value)
 }
@@ -592,7 +668,7 @@ function startSheetResize(e) {
   sheetDragging.value = true
   sheetStartY = e.clientY
   sheetStartH = sheetH.value ?? rootEl.value?.getBoundingClientRect().height ?? Math.round(window.innerHeight * 0.7)
-  document.body.classList.add('resizing-panel')
+  document.body.classList.add('panel-resizing')
   e.currentTarget.setPointerCapture?.(e.pointerId)
 }
 
@@ -605,7 +681,7 @@ function onSheetResizeMove(e) {
 function endSheetResize() {
   if (!sheetDragging.value) return
   sheetDragging.value = false
-  document.body.classList.remove('resizing-panel')
+  document.body.classList.remove('panel-resizing')
   if (sheetH.value) localStorage.setItem(SHEET_STORAGE, String(sheetH.value))
 }
 </script>
@@ -736,17 +812,31 @@ function endSheetResize() {
               <!-- 来源标注（同完整解经层显示来源；当前仅 TIPNR 一个源） -->
               <p v-if="notesSource" class="notes-source"><span class="notes-source-tag">{{ notesSource.name }}</span></p>
               <template v-if="notesChapter && notesChapter.entries && notesChapter.entries.length">
-                <div v-for="(n, i) in notesChapter.entries" :key="i" class="note-entry">
-                  <button
-                    class="note-toggle"
-                    :data-item-idx="i"
-                    :aria-expanded="openNotes.has(i)"
-                    @click="toggleNote(i)"
-                  >
-                    <span class="chevron" :class="{ open: openNotes.has(i) }" aria-hidden="true">▸</span>
-                    <span class="note-name">{{ n.name }}</span>
-                    <span v-if="n.type" class="note-type">{{ n.type }}</span>
-                  </button>
+                <div
+                  v-for="(n, i) in notesChapter.entries"
+                  :key="i"
+                  class="note-entry"
+                  :class="{ 'note-entry-place': n.type === 'Place' }"
+                >
+                  <div class="note-row">
+                    <button
+                      class="note-toggle"
+                      :data-item-idx="i"
+                      :aria-expanded="openNotes.has(i)"
+                      @click="toggleNote(i)"
+                    >
+                      <span class="chevron" :class="{ open: openNotes.has(i) }" aria-hidden="true">▸</span>
+                      <span class="note-name" :class="{ 'note-name-place': n.type === 'Place' }">{{ n.name }}</span>
+                      <span v-if="n.type" class="note-type">{{ n.type }}</span>
+                    </button>
+                    <!-- 地点词条：跳转到地图抽屉定位高亮（BrpPage 打开地图面板） -->
+                    <button
+                      v-if="n.type === 'Place'"
+                      class="note-map-btn"
+                      :title="'在地图中查看 ' + n.name"
+                      @click="emit('focus-place', n.name)"
+                    >地图</button>
+                  </div>
                   <div v-if="openNotes.has(i)" class="note-content">
                     <p v-if="n.short" class="note-short">{{ n.short }}</p>
                     <p v-if="n.article" class="note-article">{{ n.article }}</p>
@@ -852,37 +942,25 @@ function endSheetResize() {
   border-left: 1px solid var(--line-soft);
   background: var(--panel);
 }
-/* 拖拽手柄：面板左边缘细条，按住左右拖动调整宽度 */
+/* 拖拽手柄：面板左边缘细条，按住左右拖动调整宽度（与地图抽屉同款样式） */
 .resize-handle {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 8px;
+  width: 5px;
   cursor: col-resize;
-  z-index: 2;
+  z-index: 20;
   touch-action: none;
   background: transparent;
+  transition: background var(--dur) var(--ease), opacity var(--dur) var(--ease);
 }
-.resize-handle::after {
-  content: '';
-  position: absolute;
-  left: 3px;
-  top: 50%;
-  width: 2px;
-  height: 2.1rem;
-  transform: translateY(-50%);
-  border-radius: 1px;
-  background: var(--line);
-  opacity: 0;
-  transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease);
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: var(--accent);
+  opacity: 0.35;
 }
-.resize-handle:hover::after,
-.resize-handle.dragging::after {
-  opacity: 1;
-  background: var(--gold);
-}
-:global(.resizing-panel) {
+:global(.panel-resizing) {
   user-select: none;
   cursor: col-resize;
 }
@@ -1091,6 +1169,16 @@ function endSheetResize() {
 .note-entry {
   margin: 0.2rem 0;
 }
+/* 地点词条行：词条按钮 + 地图跳转按钮并排 */
+.note-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.note-row .note-toggle {
+  flex: 1;
+  min-width: 0;
+}
 .note-toggle {
   display: flex;
   align-items: center;
@@ -1110,6 +1198,30 @@ function endSheetResize() {
 .note-name {
   font-weight: 600;
   color: var(--ink);
+}
+/* 地点词条高亮：地名蓝底（与经文内 Place 高亮同色系），与其他类型明显区分 */
+.note-name-place {
+  background: #dbeaf6;
+  color: #205a86;
+  border-radius: 4px;
+  padding: 0.05em 0.3em;
+}
+/* 地图跳转按钮：点击打开地图抽屉并定位高亮该地点 */
+.note-map-btn {
+  flex-shrink: 0;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.1rem 0.5rem;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.note-map-btn:hover {
+  background: var(--accent);
+  color: #fff;
 }
 .note-type {
   font-size: 0.7rem;

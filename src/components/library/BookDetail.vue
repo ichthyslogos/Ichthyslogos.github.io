@@ -5,7 +5,7 @@
  * 右栏：预览常驻（自动预览第一个可预览文件；无预览时显示占位提示）
  * 页面本身不滚动（整屏布局）；移动端退回上下布局（信息 + 下方预览）。
  */
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import ReaderPanel from './ReaderPanel.vue'
 
 const props = defineProps({
@@ -21,7 +21,15 @@ const PREVIEWABLE = new Set(['pdf', 'epub', 'audio', 'image'])
 const firstPreviewable = computed(
   () => (props.book.files || []).find((f) => PREVIEWABLE.has(f.format)) || null,
 )
-activeFile.value = firstPreviewable.value
+/** 书目变化时重算首个预览文件（缓存命中快速切书时组件实例被复用，否则预览停留在上一本书）；
+ *  immediate：挂载时也要自动选中首个可预览文件（详情页每次进出都会重挂） */
+watch(
+  firstPreviewable,
+  (f) => {
+    activeFile.value = f
+  },
+  { immediate: true },
+)
 
 const LANG_NAMES = { zh: '中文', en: '英文', la: '拉丁文', grc: '希腊文', he: '希伯来文', fr: '法文' }
 
@@ -69,7 +77,7 @@ function fmtSize(n) {
             >
               {{ activeFile === f ? '收起预览' : '预览' }}
             </button>
-            <a class="btn" :href="f.url" download :download="`${book.title}.${f.format}`">下载</a>
+            <a class="btn" :href="f.url" :download="`${book.title}.${f.format}`">下载</a>
           </div>
         </div>
       </div>

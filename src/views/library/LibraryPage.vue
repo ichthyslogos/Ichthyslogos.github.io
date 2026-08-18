@@ -29,6 +29,7 @@ const bookId = computed(() => route.params.bookId || '')
 onMounted(async () => {
   try {
     index.value = await fetchLibraryIndex()
+    error.value = '' // 成功时清除（此前一次失败会永久顶掉书架视图）
   } catch (e) {
     error.value = e.message
   }
@@ -45,10 +46,12 @@ watch(
     }
     const seq = ++detailSeq
     loading.value = true
+    error.value = '' // 进入新详情即清除旧错误（否则 404 后所有书目都被错误横幅顶掉）
     try {
       const d = await fetchLibraryBook(id)
       if (seq !== detailSeq) return
       detail.value = d
+      error.value = ''
     } catch (e) {
       if (seq !== detailSeq) return
       error.value = e.message
@@ -75,6 +78,7 @@ function openBook(id) {
 }
 
 function backToShelf() {
+  error.value = '' // 清除详情加载错误，否则错误横幅顶掉书架网格
   router.push({ path: '/library', query: route.query.cat ? { cat: route.query.cat } : {} })
   scrollTop()
 }

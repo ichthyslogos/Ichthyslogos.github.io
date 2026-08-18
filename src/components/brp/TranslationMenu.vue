@@ -38,7 +38,8 @@ const traditionGroups = computed(() => {
     { key: 'other', title: '其他译本', list: [] },
   ]
   for (const t of versions.value) {
-    const g = groups.find((x) => x.key === (t.tradition || 'other'))
+    // 未知 tradition 值回退「其他」组：manifest 数据驱动，缺兜底会整页白屏
+    const g = groups.find((x) => x.key === (t.tradition || 'other')) || groups[2]
     g.list.push(t)
   }
   for (const g of groups) g.list = sortByLang(g.list)

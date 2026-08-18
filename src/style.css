@@ -70,6 +70,9 @@ html, body {
   font-family: var(--sans);
   font-size: 15px;
   line-height: 1.7;
+  /* 滚动只发生在 .app-main（及各页内部滚动容器）：锁定 window，
+     避免首页滚到底后继续滑（body 级二次滚动 / 滚动链接传播） */
+  overflow: hidden;
 }
 
 a { color: var(--accent); text-decoration: none; }

@@ -3,8 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
     <title>FISH · 基督教研究平台</title>
+    <meta
+      name="description"
+      content="FISH 是一个面向中文读者的基督教研究平台，连接圣经经文、原文、注释、历史与地理，帮助读者深入研究圣经。"
+    />
+    <meta
+      name="keywords"
+      content="圣经研究,圣经原文,Strong,圣经地图,圣经注释,串珠,基督教研究,圣经历史"
+    />
     <script>
       // Umami 访问统计：仅生产域名加载（本地开发不计入统计，避免污染数据）
       if (location.hostname !== 'localhost') {
@@ -15,7 +23,7 @@
         document.head.appendChild(s)
       }
       // 不蒜子（busuanzi）访问计数：免费、无注册；按域名隔离统计（localhost 不影响线上）。
-      // 脚本加载后填充 <span id="busuanzi_value_site_pv">，首页统计带读取该值展示。
+      // 脚本加载后暴露全局 bszCaller，首页通过 bszCaller.fetch(JSONP) 主动读取 site_pv。
       ;(function () {
         var s = document.createElement('script')
         s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js'

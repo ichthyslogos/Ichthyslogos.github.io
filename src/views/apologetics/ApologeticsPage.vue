@@ -39,6 +39,7 @@ onMounted(async () => {
   loading.value = true
   try {
     index.value = await fetchApologetics()
+    error.value = ''
   } catch (e) {
     error.value = e.message
   } finally {
@@ -71,24 +72,29 @@ const currentSQ = computed(() => currentTopic.value?.sub_questions.find((q) => q
 /** 分类展开状态（默认全展开；Set 存展开的分类 id） */
 const expandedCats = ref(new Set())
 
-/** 确保主题切片已加载（缓存命中直接返回；否则按需 fetch）；返回主题数据 */
+/** 确保主题切片已加载（缓存命中直接返回；否则按需 fetch）；返回主题数据
+ *  带竞态守卫：快速切换主题时丢弃过期响应，防止旧主题覆盖新主题的子问题选择 */
+let topicSeq = 0
 async function ensureTopic(id) {
   if (topicsData.value.has(id)) return topicsData.value.get(id)
+  const seq = ++topicSeq
   topicLoading.value = true
   try {
     const t = await fetchApologeticsTopic(id)
+    if (seq !== topicSeq) return null // 过期响应丢弃
     markCopyright(t)
     topicsData.value.set(id, t)
     // 数据到达后确保子问题有效
     if (!t.sub_questions.some((q) => q.id === activeSQId.value)) {
       activeSQId.value = t.sub_questions?.[0]?.id || ''
     }
+    error.value = '' // 加载成功清除旧错误（否则一次失败后主题视图被错误占位顶掉）
     return t
   } catch (e) {
-    error.value = e.message
+    if (seq === topicSeq) error.value = e.message
     return null
   } finally {
-    topicLoading.value = false
+    if (seq === topicSeq) topicLoading.value = false
   }
 }
 
@@ -130,7 +136,7 @@ const searchMatches = computed(() => {
   const out = []
   for (const t of topics.value) {
     for (const sq of t.questions || []) {
-      if (sq.searchText.includes(q)) out.push({ topic: t, sq })
+      if ((sq.searchText || '').toLowerCase().includes(q)) out.push({ topic: t, sq })
     }
   }
   return out
@@ -141,14 +147,23 @@ function scrollMainTop() {
   document.querySelector('.app-main')?.scrollTo(0, 0)
 }
 
+/** 子问题兜底：当前选中无效（含缓存命中路径）时回第一个，保证右侧详情栏有内容 */
+function ensureSQ(t) {
+  if (t && !(t.sub_questions || []).some((q) => q.id === activeSQId.value)) {
+    activeSQId.value = t.sub_questions?.[0]?.id || ''
+  }
+}
+
 /** 进入主题：加载切片（首次按需 fetch），默认第一个子命题，分类全部展开 */
 async function openTopic(id) {
   activeTopicId.value = id
   activeSQId.value = ''
   mobileView.value = 'list'
   view.value = 'topic'
+  error.value = '' // 进入主题即清除旧错误
   scrollMainTop()
   const t = await ensureTopic(id)
+  ensureSQ(t) // 缓存命中路径 ensureTopic 提前返回，不会内部回填
   expandedCats.value = new Set((t?.categories || []).map((c) => c.id))
 }
 
@@ -158,8 +173,10 @@ async function openQuestion(topicId, sqId) {
   activeSQId.value = sqId
   mobileView.value = 'detail'
   view.value = 'topic'
+  error.value = ''
   scrollMainTop()
   const t = await ensureTopic(topicId)
+  ensureSQ(t)
   expandedCats.value = new Set((t?.categories || []).map((c) => c.id))
 }
 
@@ -173,6 +190,7 @@ function selectQuestion(id) {
 /** 返回探索视图 */
 function backToExplore() {
   view.value = 'explore'
+  error.value = '' // 清除主题加载错误，否则错误占位顶掉整个探索视图
   scrollMainTop()
 }
 
@@ -251,7 +269,14 @@ const otherQuestions = computed(() => {
 
     <!-- ===== 主题视图：面包屑 + 主题头 + 两栏（数据按需加载） ===== -->
     <div v-else-if="view === 'topic'" class="topic-view">
-      <div v-if="!currentTopic" class="page-state">{{ topicLoading ? '主题加载中…' : '内容加载中…' }}</div>
+      <div v-if="!currentTopic" class="page-state">
+        <template v-if="topicLoading">主题加载中…</template>
+        <template v-else-if="error">
+          <p class="state-msg">主题加载失败：{{ error }}</p>
+          <button class="back-all" @click="backToExplore">← 返回全部主题</button>
+        </template>
+        <template v-else>内容加载中…</template>
+      </div>
       <template v-else>
       <header class="topic-head">
         <button class="back-all" @click="backToExplore">← 全部主题</button>
@@ -277,7 +302,7 @@ const otherQuestions = computed(() => {
             </button>
             <div v-show="expandedCats.has(cat.id)" class="cg-items">
               <QuestionCard
-                v-for="(q, i) in cat.sub_questions.map((id) => currentTopic.sub_questions.find((x) => x.id === id))"
+                v-for="(q, i) in cat.sub_questions.map((id) => currentTopic.sub_questions.find((x) => x.id === id)).filter(Boolean)"
                 :key="q.id"
                 :q="q"
                 :index="i"

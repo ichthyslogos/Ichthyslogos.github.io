@@ -9,7 +9,6 @@ import { useRoute, useRouter } from 'vue-router'
 import {
   fetchManifest,
   fetchBook,
-  fetchStrong,
   resolveTranslation,
   resolveBook,
   clampChapter,
@@ -18,32 +17,72 @@ import BookSidebar from '../../components/brp/BookSidebar.vue'
 import ChapterTabs from '../../components/brp/ChapterTabs.vue'
 import ScripturePanel from '../../components/brp/ScripturePanel.vue'
 import CommentaryPanel from '../../components/brp/CommentaryPanel.vue'
+import MapPanel from '../../components/brp/MapPanel.vue'
 
 const route = useRoute()
 const router = useRouter()
 
 const manifest = ref(null)
 const bookData = ref(null)
-/** Strong 逐词标注（仅和合本简体 chiuns 有数据，其余译本为 null） */
-const strongData = ref(null)
 // 解经面板：桌面默认展开、窄屏默认收起（避免覆盖经文）
 const panelOpen = ref(window.innerWidth > 900)
 // 移动端侧栏抽屉开关（窄屏下书卷列表为抽屉形式）
 const sidebarOpen = ref(false)
 // 移动端沉浸阅读：隐藏头部（标题/章节标签）扩大阅读区；桌面端无意义但状态无害
 const immersive = ref(false)
+// 地图抽屉（与解经面板共用右侧栏/底部抽屉位置，互斥切换）
+const mapOpen = ref(false)
+// 解经面板地点跳转联动：focusName + focusSeq（序号递增保证同名重复跳转也重新定位）
+const mapFocus = ref('')
+const mapFocusSeq = ref(0)
+// 经文高亮跳转联动：noteFocus + noteFocusSeq（背景注释词条定位）
+const noteFocus = ref('')
+const noteFocusSeq = ref(0)
 // 译本下拉展开（受控组件，由本页统一管理以支持移动端互斥）
 const menuOpen = ref(false)
 
-/** 移动端判定（三面板互斥仅窄屏生效，桌面三栏共存） */
-const isMobile = () => window.innerWidth <= 900
+/** 移动端判定（响应式 ref：窗口缩放即时更新，模板可直接绑定；三面板互斥仅窄屏生效） */
+const isMobile = ref(window.innerWidth <= 900)
 
 /** 移动端互斥：打开任一面板时先关闭其他两个 */
 function closeOthers(except) {
-  if (!isMobile()) return
+  if (!isMobile.value) return
   if (except !== 'sidebar') sidebarOpen.value = false
   if (except !== 'menu') menuOpen.value = false
   if (except !== 'commentary') panelOpen.value = false
+  if (except !== 'map') mapOpen.value = false
+}
+
+/** 功能词条：调出解经/地图抽屉（桌面与移动端均互斥：同位置切换） */
+function openTool(tool) {
+  if (tool === 'map') {
+    closeOthers('map')
+    panelOpen.value = false
+    mapOpen.value = true
+    mapFocus.value = '' // 工具栏手动打开：不携带地点跳转焦点
+  } else {
+    closeOthers('commentary')
+    mapOpen.value = false
+    panelOpen.value = true
+  }
+}
+
+/** 背景注释地点词条跳转：关闭解经面板 → 打开地图抽屉 → 定位高亮该地点 */
+function onFocusPlace(name) {
+  closeOthers('map')
+  panelOpen.value = false
+  mapOpen.value = true
+  mapFocus.value = name
+  mapFocusSeq.value++
+}
+
+/** 经文高亮文字点击：打开解经抽屉 → 背景注释层定位对应词条 */
+function onOpenNote(note) {
+  closeOthers('commentary')
+  mapOpen.value = false
+  panelOpen.value = true
+  noteFocus.value = note?.name || ''
+  noteFocusSeq.value++
 }
 const loading = ref(false)
 const error = ref('')
@@ -82,7 +121,7 @@ const verses = computed(() => {
   return ch ? ch.verses : []
 })
 
-/** 从 URL 同步状态：URL 变化 → 重新拉取切片数据（Strong 标注仅和合本简体有）。
+/** 从 URL 同步状态：URL 变化 → 重新拉取切片数据。
  * 带序号守卫：快速切换时旧响应直接丢弃。 */
 async function load() {
   if (!translation.value || !book.value) return
@@ -90,13 +129,9 @@ async function load() {
   loading.value = true
   error.value = '' // 成功路径清除历史错误
   try {
-    const [bd, sd] = await Promise.all([
-      fetchBook(translation.value.key, book.value.id),
-      translation.value.key === 'chiuns' ? fetchStrong(book.value.id) : Promise.resolve(null),
-    ])
+    const bd = await fetchBook(translation.value.key, book.value.id)
     if (seq !== loadSeq) return // 已有更新的加载请求，丢弃本次结果
     bookData.value = bd
-    strongData.value = sd
   } catch (e) {
     if (seq !== loadSeq) return
     error.value = e.message
@@ -123,9 +158,26 @@ function syncFromRoute() {
     navigate(book.value.id, 1)
     return
   }
+  // 非法 ?trans（resolveTranslation 已回退默认译本）：URL 同步纠正，避免分享链接与实际译本不一致
+  if (route.query.trans && route.query.trans !== translation.value.key) {
+    router.replace({
+      path: route.path,
+      query: { ...route.query, trans: translation.value.key },
+    })
+  }
+  // 章节越界/非数字：chapter 计算属性已钳制，需用原始路由参数比较，越界才修正 URL
+  const rawCh = Number(route.params.chapter)
   const c = clampChapter(book.value, route.params.chapter || 1)
-  if (c !== chapter.value) navigate(book.value.id, c)
+  if (rawCh !== c) navigate(book.value.id, c)
 }
+
+// 路由变化（SPA 内跳转/深链）时同样规范化 URL（挂载时由 onMounted 触发一次，此后由本 watch 兜底）
+watch(
+  () => route.fullPath,
+  () => {
+    if (manifest.value) syncFromRoute()
+  },
+)
 
 /** 统一跳转：书卷/章节变化都走路由，保持 URL 可分享 */
 function navigate(bookId, ch, trans) {
@@ -167,10 +219,24 @@ function tryScroll() {
   const p = pendingScroll.value
   if (!p) return
   const onTarget = book.value?.id === p.bookId && chapter.value === p.ch
-  if (!onTarget) return // 目标章节尚未加载（跨章跳转等待路由）
+  if (!onTarget) {
+    // 目标章不可达（章号越界被钳制）→ 放弃定位并清理，避免残留状态卡住后续滚动复位
+    if (book.value?.id === p.bookId && clampChapter(book.value, p.ch) !== p.ch) {
+      pendingScroll.value = null
+    }
+    return // 目标章节尚未加载（跨章跳转等待路由）
+  }
   const sc = document.querySelector('.scripture-scroll')
-  const el = sc?.querySelector(`[data-verse="${p.vsNum}"]`)
-  if (!sc || !el) return // 目标节不存在（vs 越界等）
+  if (!sc) return
+  const el = sc.querySelector(`[data-verse="${p.vsNum}"]`)
+  if (!el) {
+    // 经文已渲染完成仍找不到目标节（vs 越界等）→ 放弃定位并清理，同样防止残留状态卡住滚动复位
+    if (verses.value.length && !loading.value) {
+      pendingScroll.value = null
+      sc.scrollTop = 0
+    }
+    return
+  }
   const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 8
   sc.scrollTop = Math.max(0, top)
   pendingScroll.value = null
@@ -196,8 +262,19 @@ function onGotoVerse(target) {
   nextTick().then(tryScroll)
 }
 
-/** 路由/数据变化后尝试定位待滚动经文（跨章跳转与返回均走此兜底） */
-watch([book, chapter, verses], () => nextTick().then(tryScroll))
+/** 路由/数据变化后的经文滚动：
+ *  - 串珠跳转/返回（pendingScroll 存在）→ 定位到目标节
+ *  - 普通导航（选书/选章）→ 滚回经文顶部，不保留跳转前阅读进度 */
+watch([book, chapter, verses], () => {
+  nextTick().then(() => {
+    if (pendingScroll.value) {
+      tryScroll()
+      return
+    }
+    const sc = document.querySelector('.scripture-scroll')
+    if (sc) sc.scrollTop = 0
+  })
+})
 
 /** 手动导航（选书/选章/切译本）清除串珠返回状态 */
 function clearGoto() {
@@ -225,9 +302,11 @@ const fromLabel = computed(() => {
   return b ? `${b.zh} ${f.chapter} 章` : ''
 })
 
-/** 窗口跨移动端边界（≤900px）时：窄屏强制收起解经覆盖层，避免遮挡经文 */
+/** 窗口跨移动端边界（≤900px）时：更新响应式判定，窄屏强制收起解经/地图覆盖层，避免遮挡经文 */
 function onResize() {
-  if (isMobile() && panelOpen.value) panelOpen.value = false
+  isMobile.value = window.innerWidth <= 900
+  if (isMobile.value && panelOpen.value) panelOpen.value = false
+  if (isMobile.value && mapOpen.value) mapOpen.value = false
 }
 
 window.addEventListener('resize', onResize)
@@ -239,6 +318,12 @@ onBeforeUnmount(() => {
 function onToggleCommentary() {
   closeOthers('commentary')
   panelOpen.value = !panelOpen.value
+}
+
+/** 地图抽屉 ✕ 关闭 */
+function onToggleMap() {
+  closeOthers('map')
+  mapOpen.value = !mapOpen.value
 }
 
 function onToggleSidebar() {
@@ -257,7 +342,7 @@ function onToggleMenu() {
     <div v-if="sidebarOpen" class="sidebar-backdrop" @click="sidebarOpen = false"></div>
     <!-- 沉浸阅读退出按钮（移动端）：悬浮右上角，点击恢复头部标题/章节标签 -->
     <button
-      v-if="immersive && isMobile()"
+      v-if="immersive && isMobile"
       class="immersive-exit"
       aria-label="退出沉浸阅读，显示头部"
       @click="immersive = false"
@@ -272,7 +357,7 @@ function onToggleMenu() {
       <div v-if="error" class="brp-error">{{ error }}</div>
       <template v-else-if="book">
         <!-- 移动端沉浸阅读：隐藏头部（标题/章节标签）后章节条一同收起，退出按钮为悬浮键 -->
-        <ChapterTabs v-show="!immersive || !isMobile()" :chapter-count="book.chapterCount" :current="chapter" @select-chapter="onSelectChapter" />
+        <ChapterTabs v-show="!immersive || !isMobile" :chapter-count="book.chapterCount" :current="chapter" @select-chapter="onSelectChapter" />
         <ScripturePanel
           :book="book"
           :chapter="chapter"
@@ -281,14 +366,14 @@ function onToggleMenu() {
           :active-key="translation.key"
           :menu-open="menuOpen"
           :loading="loading"
-          :strong="strongData"
           :immersive="immersive"
           @change-translation="onChangeTranslation"
-          @toggle-commentary="onToggleCommentary"
           @toggle-sidebar="onToggleSidebar"
           @toggle-menu="onToggleMenu"
           @goto-verse="onGotoVerse"
           @toggle-immersive="immersive = !immersive"
+          @open-tool="openTool"
+          @open-note="onOpenNote"
         />
       </template>
     </section>
@@ -296,7 +381,18 @@ function onToggleMenu() {
       :open="panelOpen"
       :book="book"
       :chapter="chapter"
+      :focus-note-name="noteFocus"
+      :focus-note-seq="noteFocusSeq"
       @toggle="onToggleCommentary"
+      @focus-place="onFocusPlace"
+    />
+    <MapPanel
+      :open="mapOpen"
+      :book="book"
+      :chapter="chapter"
+      :focus-name="mapFocus"
+      :focus-seq="mapFocusSeq"
+      @toggle="onToggleMap"
     />
     <!-- 串珠跳转后的悬浮返回按钮：屏幕正下方居中，常驻直到用户操作（点击返回/手动导航） -->
     <Transition name="fab">
@@ -372,21 +468,23 @@ function onToggleMenu() {
   display: none;
 }
 
-/* 沉浸阅读退出按钮：悬浮右上角，移动端沉浸时显示（头部隐藏后唯一的恢复入口） */
+/* 沉浸阅读退出按钮：悬浮右上角，移动端沉浸时显示（头部隐藏后唯一的恢复入口）。
+   定位在全局导航栏（AppHeader，z-index:100）下方：此前 top:0.6rem 落在导航栏
+   区域内且层级更低，按钮被完全遮挡，导致"隐藏后无还原按钮" */
 .immersive-exit {
   position: fixed;
-  top: 0.6rem;
+  top: calc(60px + 0.6rem);
   right: 0.6rem;
-  z-index: 41;
-  width: 2.4rem;
-  height: 2.4rem;
+  z-index: 60;
+  width: 2.6rem;
+  height: 2.6rem;
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.94);
   color: var(--text);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   line-height: 1;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);
   cursor: pointer;
@@ -419,6 +517,12 @@ function onToggleMenu() {
     inset: 0;
     background: rgba(20, 28, 38, 0.35);
     z-index: 39;
+  }
+  /* 更窄屏（≤600px）全局导航栏高 54px：退出按钮贴其下方 */
+  @media (max-width: 600px) {
+    .immersive-exit {
+      top: calc(54px + 0.5rem);
+    }
   }
 }
 </style>

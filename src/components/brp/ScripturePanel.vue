@@ -10,8 +10,7 @@
 import { computed, ref, watch } from 'vue'
 import TranslationMenu from './TranslationMenu.vue'
 import VerseItem from './VerseItem.vue'
-import LexiconPopup from './LexiconPopup.vue'
-import { fetchCrossrefs, findCrossrefChapter, fetchStrongLexicon } from '../../lib/data.js'
+import { fetchCrossrefs, findCrossrefChapter, fetchNotes, findNotesChapter, fetchZhNames, fetchNameVariants } from '../../lib/data.js'
 
 const props = defineProps({
   book: { type: Object, required: true },
@@ -21,12 +20,17 @@ const props = defineProps({
   activeKey: { type: String, required: true },
   menuOpen: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
-  /** Strong 逐词标注（和合本简体 chiuns；其他译本为 null → 纯文本） */
-  strong: { type: Object, default: null },
   /** 移动端沉浸阅读：隐藏头部（标题/按钮）扩大阅读区；退出靠 BrpPage 悬浮按钮 */
   immersive: { type: Boolean, default: false },
 })
-const emit = defineEmits(['change-translation', 'toggle-commentary', 'toggle-sidebar', 'toggle-menu', 'goto-verse', 'toggle-immersive'])
+const emit = defineEmits(['change-translation', 'toggle-sidebar', 'toggle-menu', 'goto-verse', 'toggle-immersive', 'open-tool', 'open-note'])
+
+/** 功能词条菜单（解经/地图）本地展开状态：瞬时浮层，选择后即关 */
+const toolMenuOpen = ref(false)
+function pickTool(tool) {
+  toolMenuOpen.value = false
+  emit('open-tool', tool)
+}
 
 // 串珠数据：按卷加载 + 缓存（data.js 内部缓存）；加载失败的卷记入集合，避免反复请求
 const crossrefBook = ref(null)
@@ -46,10 +50,11 @@ watch(
       const data = await fetchCrossrefs(id)
       if (seq !== crossrefSeq) return
       crossrefBook.value = data
-    } catch {
+    } catch (e) {
       if (seq !== crossrefSeq) return
-      failedCrossrefs.add(id)
-      crossrefBook.value = null // 该卷无串珠
+      // 仅 404（该卷确无串珠）记入黑名单；瞬时网络错误保留重试机会
+      if (e?.status === 404) failedCrossrefs.add(id)
+      crossrefBook.value = null
     }
   },
   { immediate: true },
@@ -60,6 +65,87 @@ const refsByVerse = computed(() =>
   findCrossrefChapter(crossrefBook.value, props.chapter),
 )
 
+// 背景注释（notes 栏目）：按卷加载（data.js 缓存，与解经抽屉共用同一份数据），
+// 用于给有注释的经节加背景高亮提示（带序号守卫：快速切卷丢弃过期响应；
+// 失败卷记入集合，避免每次切回都重复 404 请求）
+const notesBook = ref(null)
+const failedNotes = new Set()
+let notesSeq = 0
+watch(
+  () => props.book?.id,
+  async (id) => {
+    if (!id) return
+    const seq = ++notesSeq
+    if (failedNotes.has(id)) {
+      notesBook.value = null
+      return
+    }
+    try {
+      const data = await fetchNotes(id)
+      if (seq !== notesSeq) return
+      notesBook.value = data
+    } catch (e) {
+      if (seq !== notesSeq) return
+      // 仅 404（该卷确无注释）记入黑名单；瞬时网络错误保留重试机会
+      if (e?.status === 404) failedNotes.add(id)
+      notesBook.value = null
+    }
+  },
+  { immediate: true },
+)
+
+/** 当前章词条按节索引（refs → 节号）：节 → [{ type, name, nameZh, variants }]
+ *  供 VerseItem 文本级高亮（经文含中文名/变体即高亮，节级锚定防多划） */
+const noteNamesByVerse = computed(() => {
+  const ch = findNotesChapter(notesBook.value, props.chapter)
+  if (!ch?.entries) return null
+  const map = new Map()
+  for (const e of ch.entries) {
+    if (!e.strong) continue
+    const norm = normCode(e.strong)
+    const item = {
+      type: e.type || 'Other',
+      name: e.name,
+      nameZh: noteZhNames.value?.[norm] || '',
+      variants: noteVariants.value?.[e.name] || [],
+    }
+    if (!item.nameZh && !item.variants.length) continue
+    for (const ref of e.refs || []) {
+      const vs = Number(ref)
+      if (!map.has(vs)) map.set(vs, [])
+      const arr = map.get(vs)
+      if (!arr.some((x) => x.name === item.name)) arr.push(item)
+    }
+  }
+  return map.size ? map : null
+})
+
+/** 某节词条（文本级高亮用） */
+const noteNamesOf = (verse) => noteNamesByVerse.value?.get(verse) || null
+
+/** 归一化 Strong 码：H0085 → H85；H6160G → H6160；G2424 → G2424（保留 H/G 区分新旧约，与 zh-names 表一致） */
+const normCode = (code) => {
+  const m = String(code).match(/^([HG])0*(\d+)/)
+  return m ? m[1] + m[2] : ''
+}
+
+// 词条简体中文名表/变体表：全站共享静态数据（data.js 自动缓存），组件内只加载一次，
+// 不随书卷切换重复请求（此前 watch book?.id 每换卷重取）
+const noteZhNames = ref(null)
+const noteVariants = ref(null)
+;(async () => {
+  try {
+    noteZhNames.value = await fetchZhNames()
+  } catch {
+    noteZhNames.value = null
+  }
+  try {
+    noteVariants.value = await fetchNameVariants()
+  } catch {
+    noteVariants.value = null
+  }
+})()
+
 /** 当前译本的书卷中文名表（用于串珠目标显示） */
 const zhNames = computed(() => {
   const t = props.translations.find((x) => x.key === props.activeKey)
@@ -68,70 +154,27 @@ const zhNames = computed(() => {
   return map
 })
 
-/** 当前章 verse → Strong 逐词映射（无标注的译本或开关关闭时返回 null） */
-const wordsByVerse = (verse) => {
-  if (!strongOn.value) return null
-  const ch = props.strong?.book?.chapters?.find((c) => c.chapter === props.chapter)
-  return ch?.verses?.find((v) => v.verse === verse)?.words || null
-}
-
-/** Strong 标注开关（仅和合本简体有数据时显示）；偏好持久化 localStorage */
-const strongOn = ref(localStorage.getItem('brp-strong') !== 'off')
-
-function toggleStrong() {
-  strongOn.value = !strongOn.value
-  localStorage.setItem('brp-strong', strongOn.value ? 'on' : 'off')
-}
-
-/* ============ Strong 词义弹层（点击 Strong 码 → 词典词条） ============ */
-const lexCode = ref('')
-const lexEntry = ref(null)
-const lexLoading = ref(false)
-const lexPos = ref(null) // { left, top }：点击词中心 x 与底部 y
-
-async function loadLexicon(code) {
-  lexCode.value = code
-  lexLoading.value = true
-  lexEntry.value = null
-  try {
-    const entry = await fetchStrongLexicon(code)
-    if (lexCode.value !== code) return // 期间已关闭/切换
-    lexEntry.value = entry
-  } catch {
-    if (lexCode.value === code) lexEntry.value = null // 词条加载失败：保持弹层显示"未找到"
-  } finally {
-    if (lexCode.value === code) lexLoading.value = false
+/** 当前章每节引用（目标补显示名 "箴言 8:22-24"）：整章一次计算，模板按节直取，
+ *  避免渲染时逐节重复 map 出新数组 */
+const refsByVerseLabeled = computed(() => {
+  const byVerse = refsByVerse.value
+  const out = {}
+  for (const [verse, refs] of Object.entries(byVerse)) {
+    if (!refs?.length) continue
+    out[verse] = refs.map((r) => ({
+      anchor: r.anchor,
+      targets: r.targets.map((t) => ({
+        ...t,
+        label: `${zhNames.value[t.id] || t.id} ${t.ch}:${t.vs}`,
+      })),
+    }))
   }
-}
+  return out
+})
 
-/** 点击经文中 Strong 码：记录点击位置并加载词条 */
-function showLexicon(code, el) {
-  const rect = el.getBoundingClientRect()
-  lexPos.value = { left: rect.left + rect.width / 2, top: rect.bottom }
-  loadLexicon(code)
-}
-
-function closeLexicon() {
-  lexCode.value = ''
-  lexEntry.value = null
-  lexLoading.value = false
-  lexPos.value = null
-}
-
-// 正文滚动或书卷/章节/译本变化时关闭弹层（位置坐标已失效；跨卷但章号相同时也必须关闭）
-watch(() => [props.book?.id, props.chapter, props.activeKey], closeLexicon)
-
-/** 每节引用：目标补上显示名（"箴言 8:22-24"） */
+/** 每节引用（含显示名），无则 null */
 function verseRefs(verse) {
-  const refs = refsByVerse.value[verse]
-  if (!refs || !refs.length) return null
-  return refs.map((r) => ({
-    anchor: r.anchor,
-    targets: r.targets.map((t) => ({
-      ...t,
-      label: `${zhNames.value[t.id] || t.id} ${t.ch}:${t.vs}`,
-    })),
-  }))
+  return refsByVerseLabeled.value[verse] || null
 }
 </script>
 
@@ -154,17 +197,6 @@ function verseRefs(verse) {
           <span class="im-icon" aria-hidden="true">⤢</span>
           <span class="im-label">展开</span>
         </button>
-        <button
-          v-if="strong"
-          class="strong-toggle"
-          :class="{ on: strongOn }"
-          :aria-pressed="strongOn"
-          :title="strongOn ? '关闭原文 Strong 标注' : '显示原文 Strong 标注'"
-          @click="toggleStrong"
-        >
-          <span class="st-label">原文标注</span>
-          <span class="st-switch"><span class="st-knob"></span></span>
-        </button>
         <TranslationMenu
           :translations="translations"
           :active-key="activeKey"
@@ -172,37 +204,53 @@ function verseRefs(verse) {
           @toggle="emit('toggle-menu')"
           @select="emit('change-translation', $event)"
         />
-        <button class="btn-commentary" @click="emit('toggle-commentary')">解经</button>
+        <!-- 功能词条：调出解经或地图抽屉（受控菜单，选择后由父页互斥切换面板） -->
+        <div class="tool-menu">
+          <button
+            class="btn-commentary"
+            :class="{ open: toolMenuOpen }"
+            aria-haspopup="menu"
+            :aria-expanded="toolMenuOpen"
+            @click="toolMenuOpen = !toolMenuOpen"
+          >
+            <span class="tool-label">功能</span>
+            <span class="tool-caret" aria-hidden="true">▾</span>
+          </button>
+          <Transition name="menu">
+            <div v-if="toolMenuOpen" class="tool-pop" role="menu">
+              <button class="tool-item" role="menuitem" @click="pickTool('commentary')">
+                <span class="tool-ico" aria-hidden="true">📖</span>
+                <span>解经</span>
+              </button>
+              <button class="tool-item" role="menuitem" @click="pickTool('map')">
+                <span class="tool-ico" aria-hidden="true">🗺️</span>
+                <span>地图</span>
+              </button>
+            </div>
+          </Transition>
+          <div v-if="toolMenuOpen" class="tool-backdrop" @click="toolMenuOpen = false"></div>
+        </div>
       </div>
     </header>
 
-    <div class="scripture-scroll" @scroll="closeLexicon">
+    <div class="scripture-scroll">
       <div class="scripture-body">
         <div v-if="loading" class="scripture-loading">经文加载中…</div>
         <template v-else>
           <p v-if="!verses.length" class="scripture-empty">本章无经文数据</p>
           <VerseItem
             v-for="v in verses"
-            :key="v.verse"
+            :key="chapter + '-' + v.verse"
             :verse="v.verse"
             :text="v.text"
-            :lang="activeKey"
             :refs="verseRefs(v.verse)"
-            :words="wordsByVerse(v.verse)"
+            :note-names="noteNamesOf(v.verse)"
             @goto="emit('goto-verse', $event)"
-            @lexicon="showLexicon($event.code, $event.el)"
+            @open-note="emit('open-note', $event)"
           />
         </template>
       </div>
     </div>
-    <LexiconPopup
-      :code="lexCode"
-      :entry="lexEntry"
-      :loading="lexLoading"
-      :pos="lexPos"
-      @close="closeLexicon"
-      @goto="loadLexicon"
-    />
   </div>
 </template>
 
@@ -287,54 +335,6 @@ function verseRefs(verse) {
   font-size: 0.85rem;
   line-height: 1;
 }
-/* Strong 原文标注开关（胶囊开关） */
-.strong-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: var(--panel);
-  padding: 0.24rem 0.55rem 0.24rem 0.7rem;
-  cursor: pointer;
-  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-.strong-toggle:hover {
-  border-color: var(--gold);
-}
-.st-label {
-  font-size: 0.78rem;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.strong-toggle.on .st-label {
-  color: var(--text);
-  font-weight: 600;
-}
-.st-switch {
-  position: relative;
-  width: 1.7rem;
-  height: 0.95rem;
-  border-radius: var(--radius-pill);
-  background: #cfd5dc;
-  transition: background 0.18s ease;
-}
-.strong-toggle.on .st-switch {
-  background: var(--gold);
-}
-.st-knob {
-  position: absolute;
-  top: 0.12rem;
-  left: 0.14rem;
-  width: 0.71rem;
-  height: 0.71rem;
-  border-radius: 50%;
-  background: #fff;
-  transition: transform 0.18s ease;
-}
-.strong-toggle.on .st-knob {
-  transform: translateX(0.72rem);
-}
 /* 解经按钮：墨黑胶囊主按钮 */
 .btn-commentary {
   padding: 0.34rem 1.05rem;
@@ -352,6 +352,66 @@ function verseRefs(verse) {
   background: #000;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
+}
+/* 功能词条菜单（解经/地图）：按钮 + 下拉浮层 */
+.tool-menu {
+  position: relative;
+}
+.tool-caret {
+  font-size: 0.7rem;
+  opacity: 0.85;
+  transition: transform 0.15s ease;
+}
+.btn-commentary.open .tool-caret {
+  transform: rotate(180deg);
+}
+.tool-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 8.5rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(20, 28, 38, 0.14);
+  padding: 0.35rem;
+  z-index: 51;
+}
+.tool-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.tool-item:hover {
+  background: var(--accent-soft);
+}
+.tool-ico {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.tool-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+.menu-enter-active,
+.menu-leave-active {
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+.menu-enter-from,
+.menu-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 /* 滚动容器贴面板右缘（紧邻解经面板），滚动条显示在容器边缘 */
 .scripture-scroll {
@@ -392,27 +452,7 @@ function verseRefs(verse) {
   .panel-actions {
     gap: 0.4rem;
   }
-  /* 头部按钮紧凑化：原文标注开关缩小、解经按钮收窄 */
-  .strong-toggle {
-    padding: 0.18rem 0.4rem 0.18rem 0.5rem;
-    gap: 0.32rem;
-  }
-  .st-label {
-    font-size: 0.72rem;
-  }
-  .st-switch {
-    width: 1.5rem;
-    height: 0.85rem;
-  }
-  .st-knob {
-    top: 0.11rem;
-    left: 0.12rem;
-    width: 0.63rem;
-    height: 0.63rem;
-  }
-  .strong-toggle.on .st-knob {
-    transform: translateX(0.63rem);
-  }
+  /* 头部按钮紧凑化：解经按钮收窄 */
   .btn-commentary {
     padding: 0.26rem 0.75rem;
     font-size: 0.85rem;

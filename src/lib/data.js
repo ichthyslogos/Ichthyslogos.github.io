@@ -28,7 +28,11 @@ function fetchJson(url, options) {
   if (!p) {
     p = fetch(url, options)
       .then((res) => {
-        if (!res.ok) throw new Error(`数据加载失败：${url} (${res.status})`)
+        if (!res.ok) {
+          const err = new Error(`数据加载失败：${url} (${res.status})`)
+          err.status = res.status // 调用方区分 404（真不存在）与瞬时网络错误
+          throw err
+        }
         return res.json()
       })
       .then((data) => {
@@ -54,8 +58,8 @@ export async function fetchBook(key, bookId) {
   return fetchJson(`${BASE}translations/${key}/books/${bookId}.json`)
 }
 
-/** 默认译本偏好顺序（URL 未指定译本时的回退链；新放入的译本不影响此偏好） */
-const PREFERRED_TRANS = ['chiuns', 'chiun', 'chisb']
+/** 默认译本偏好顺序（URL 未指定译本时的回退链；NIV 为默认，新放入的译本不影响此偏好） */
+const PREFERRED_TRANS = ['niv', 'chiun', 'chisb']
 
 /** 当前选中译本在 manifest 中的条目（按偏好顺序回退） */
 export function resolveTranslation(manifest, key) {
@@ -170,6 +174,7 @@ export function resolveBook(translation, bookId) {
  * 作者/地点/背景的简要介绍（术语「注释」，与「解经」区分），来自 STEP Bible TIPNR（CC BY 4.0）：
  *   public/data/brp/commentary/notes/tipnr/entries.json   全量词条索引（供将来词条高亮匹配）
  *   public/data/brp/commentary/notes/tipnr/books/<bookId>.json  按卷分片：每章 entries（词条 + 四级描述 + 出现节）
+ *   public/data/brp/commentary/notes/tipnr/place-coords.json  地点经纬度表（地图系统用）
  */
 const NOTES_SOURCE_KEY = 'tipnr'
 
@@ -183,6 +188,143 @@ export async function fetchNotes(bookId) {
 export function findNotesChapter(book, chapter) {
   if (!book) return null
   return book.chapters.find((c) => c.chapter === chapter) || null
+}
+
+/** 加载地点经纬度表（地图系统用；{ count, coords: { 词条名: {lat, lng} } }），自动缓存 */
+export async function fetchPlaceCoords() {
+  return fetchJson(`${COMMENT_BASE}notes/${NOTES_SOURCE_KEY}/place-coords.json`, { cache: 'no-store' })
+}
+
+/** 加载词条简体中文名表（归一化 Strong 码 → 中文名；注释高亮显示用），自动缓存 */
+export async function fetchZhNames() {
+  return fetchJson(`${COMMENT_BASE}notes/${NOTES_SOURCE_KEY}/zh-names.json`, { cache: 'no-store' })
+}
+
+/** 加载词条译名变体表（条目名 → 和合本译名变体，如 Adam → 「那人」），自动缓存 */
+export async function fetchNameVariants() {
+  return fetchJson(`${COMMENT_BASE}notes/${NOTES_SOURCE_KEY}/name-variants.json`, { cache: 'no-store' })
+}
+
+/* ============ 圣经地理数据（地图页 /map） ============
+ * 运行时数据位于 public/data/geography/：
+ *   journeys.json   旅程索引（UBS MARBLE：stops/segments，几何与业务分离）
+ *   geometries.json 几何库（geometry_id → LineString [lng, lat]）
+ *   periods.json    圣经时期索引（时间轴）
+ *   tiles/          Vector Tile（疆域/城市/城区，按时期预切——由 MapLibre 直接加载）
+ *   base/           底图（Gray Earth 栅格 + NE 自然层 GeoJSON）
+ */
+const GEO_BASE = 'data/geography/'
+
+/** 加载旅程索引（含全部 journey 元数据与 stops/segments 引用），自动缓存 */
+export async function fetchJourneys() {
+  return fetchJson(GEO_BASE + 'journeys.json', { cache: 'no-store' })
+}
+
+/** 加载几何库（geometry_id → LineString 坐标），自动缓存 */
+export async function fetchGeometries() {
+  return fetchJson(GEO_BASE + 'geometries.json', { cache: 'no-store' })
+}
+
+/** 加载圣经时期索引（HISTORICAL-MAP.md §10；periods[].journey_ids 供时间轴过滤），自动缓存 */
+export async function fetchPeriods() {
+  return fetchJson(GEO_BASE + 'periods.json', { cache: 'no-store' })
+}
+
+/**
+ * 书卷 → 圣经时期映射（brp 地图时代对应；period id 见 periods.json）
+ * 按各卷主体叙事年代编排（学术共识近似值）：地图抽屉据此切换疆域/城市瓦片集。
+ * 未收录的卷（未知 id）返回 null → 地图显示「全部」时期。
+ */
+export const BOOK_PERIODS = {
+  // 律法书与历史书
+  '01': 'abraham', // 创世记：族长时代
+  '02': 'exodus', // 出埃及记
+  '03': 'exodus', // 利未记
+  '04': 'exodus', // 民数记
+  '05': 'exodus', // 申命记
+  '06': 'exodus', // 约书亚记
+  '07': 'exodus', // 士师记（主体在前王国时期）
+  '08': 'exodus', // 路得记（士师时代）
+  '09': 'david', // 撒母耳记上（扫罗/大卫）
+  '10': 'david', // 撒母耳记下
+  '11': 'david', // 列王纪上（所罗门至王国分裂初期）
+  '12': 'assyria', // 列王纪下（分裂王国至犹大亡国）
+  '13': 'david', // 历代志上
+  '14': 'assyria', // 历代志下（主体为分裂王国时期）
+  '15': 'persia', // 以斯拉记
+  '16': 'persia', // 尼希米记
+  '17': 'persia', // 以斯帖记
+  // 智慧书
+  '18': 'abraham', // 约伯记（族长时代背景）
+  '19': 'david', // 诗篇
+  '20': 'david', // 箴言
+  '21': 'david', // 传道书
+  '22': 'david', // 雅歌
+  // 大先知
+  '23': 'assyria', // 以赛亚
+  '24': 'babylon', // 耶利米
+  '25': 'babylon', // 耶利米哀歌
+  '26': 'babylon', // 以西结
+  '27': 'babylon', // 但以理
+  // 小先知
+  '28': 'assyria', // 何西阿
+  '29': 'assyria', // 约珥
+  '30': 'assyria', // 阿摩司
+  '31': 'babylon', // 俄巴底亚
+  '32': 'assyria', // 约拿
+  '33': 'assyria', // 弥迦
+  '34': 'assyria', // 那鸿
+  '35': 'babylon', // 哈巴谷
+  '36': 'assyria', // 西番雅
+  '37': 'persia', // 哈该
+  '38': 'persia', // 撒迦利亚
+  '39': 'persia', // 玛拉基
+  // 新约
+  '40': 'jesus', // 马太福音
+  '41': 'jesus', // 马可福音
+  '42': 'jesus', // 路加福音
+  '43': 'jesus', // 约翰福音
+  '44': 'paul', // 使徒行传
+  '45': 'paul', // 罗马书
+  '46': 'paul', // 哥林多前书
+  '47': 'paul', // 哥林多后书
+  '48': 'paul', // 加拉太书
+  '49': 'paul', // 以弗所书
+  '50': 'paul', // 腓立比书
+  '51': 'paul', // 歌罗西书
+  '52': 'paul', // 帖撒罗尼迦前书
+  '53': 'paul', // 帖撒罗尼迦后书
+  '54': 'paul', // 提摩太前书
+  '55': 'paul', // 提摩太后书
+  '56': 'paul', // 提多书
+  '57': 'paul', // 腓利门书
+  '58': 'paul', // 希伯来书
+  '59': 'paul', // 雅各书
+  '60': 'temple_fall', // 彼得前书（约 64 AD）
+  '61': 'temple_fall', // 彼得后书
+  '62': 'temple_fall', // 约翰一书（圣殿毁灭前后）
+  '63': 'temple_fall', // 约翰二书
+  '64': 'temple_fall', // 约翰三书
+  '65': 'temple_fall', // 犹大书
+  '66': 'temple_fall', // 启示录
+  // 次经（思高本/DRC）
+  'ext-1': 'assyria', // 多俾亚传（亚述流放背景）
+  'ext-2': 'babylon', // 友弟德传
+  'ext-3': 'rome_entry', // 智慧篇（希腊化时代）
+  'ext-4': 'rome_entry', // 德训篇
+  'ext-5': 'babylon', // 巴路克书
+  'ext-6': 'rome_entry', // 玛加伯上（哈斯摩尼时代）
+  'ext-7': 'rome_entry', // 玛加伯下
+}
+
+/** 书卷对应的圣经时期（未知卷返回 null = 全部时期） */
+export function periodOfBook(bookId) {
+  return BOOK_PERIODS[bookId] || null
+}
+
+/** 加载历史底图要素（land/ocean/rivers/lakes），自动缓存 */
+export async function fetchBaseLayer(name) {
+  return fetchJson(`${GEO_BASE}base/ne_${name}.geojson`)
 }
 
 /** 按栏目（解经抽屉层）过滤注释源清单：summary / interpretation / notes / fullCommentary */
@@ -248,49 +390,6 @@ export async function fetchChurchHistoryPart(n) {
 /** 教会史插图 URL：数据内 src 为相对路径（images/xxx.jpg），拼上运行时前缀 */
 export function churchHistoryImg(src) {
   return HISTORY_BASE + src
-}
-
-/* ============ Strong 逐词数据（和合本简体标注层） ============
- * 运行时数据位于 public/data/brp/strong/books/<bookId>.json（按卷切片 + 缓存）
- * 结构：{ key:'chiuns', book:{ id, chapters:[{chapter, verses:[{verse, words:[{t,s,m}]}]}] } }
- * 由 scripts/import-strong.mjs（素材 OSIS）+ build-data.mjs 生成
- */
-const STRONG_BASE = 'data/brp/strong/books/'
-
-/** 加载某卷的 Strong 逐词标注（仅和合本简体 chiuns 有），按需加载 + 缓存 */
-export async function fetchStrong(bookId) {
-  return fetchJson(`${STRONG_BASE}${bookId}.json`)
-}
-
-/* ============ Strong 词典（逐词码 → 词义） ============
- * 运行时数据位于 public/data/brp/strong/lexicon/<g|h><seg>.json
- *   g*：希腊文词典（G 码，StrongsGreek 素材）；h*：希伯来词典（H 码，OSHB HebrewLexicon 素材）
- * 均按 1000 编号段切片 + 缓存；结构：{ source, entries: { "G1"/"H430": {…} } }
- * 由 scripts/import-strong-lexicon*.mjs（素材）+ build-data.mjs 生成
- */
-const LEXICON_BASE = 'data/brp/strong/lexicon/'
-const lexiconCache = new Map()
-
-/** 归一化 Strong 码：去前导零（chiuns 逐词码 H0430 → 词典 key H430；G 码本无前导零） */
-export function normalizeStrongCode(code) {
-  const m = code && code.match(/^([GH])0*(\d+)/)
-  return m ? m[1] + m[2] : null
-}
-
-/** 查 Strong 码词条（"G5207"/"H07225" → { orth, translit, pron, def, … }）；无数据返回 null */
-export async function fetchStrongLexicon(code) {
-  const norm = normalizeStrongCode(code)
-  if (!norm) return null
-  const prefix = norm[0]
-  const n = Number(norm.slice(1))
-  const seg = Math.floor(n / 1000) * 1000
-  const file = `${prefix === 'G' ? 'g' : 'h'}${seg}.json`
-  let data = lexiconCache.get(file)
-  if (!data) {
-    data = await fetchJson(`${LEXICON_BASE}${file}`)
-    lexiconCache.set(file, data)
-  }
-  return data.entries[norm] || null
 }
 
 /* ============ 串珠（交叉引用）数据 ============

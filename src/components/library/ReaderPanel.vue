@@ -18,25 +18,52 @@ const emit = defineEmits(['close'])
 const epubHolder = ref(null)
 const epubErr = ref('')
 let book = null // epub.js 实例（卸载时销毁）
+let rendition = null // renderTo 返回的渲染实例（持有 iframe 与事件监听，需一并销毁）
+let epubSeq = 0 // 切换守卫：文件/格式切换后丢弃过期的异步渲染
+
+/** 销毁当前 epub.js 实例（切换文件/格式或卸载时调用） */
+function destroyBook() {
+  if (rendition) {
+    try {
+      rendition.destroy()
+    } catch {
+      /* ignore */
+    }
+    rendition = null
+  }
+  if (book) {
+    try {
+      book.destroy()
+    } catch {
+      /* ignore */
+    }
+    book = null
+  }
+}
 
 /** EPUB：动态加载 epubjs 并渲染（懒加载，不进主包） */
 watch(
   () => props.file,
   async (f) => {
+    // 守卫序号先于一切 return 递增：离开 epub 格式也要让在途旧渲染全部失效
+    const seq = ++epubSeq
     epubErr.value = ''
+    destroyBook() // 切换前销毁旧实例：避免残留渲染覆盖新内容或造成资源泄漏
     if (!f || f.format !== 'epub') return
     try {
       const { default: ePub } = await import('epubjs')
       await nextTickSafe()
-      if (!epubHolder.value) return
+      if (seq !== epubSeq || !epubHolder.value) return
       book = ePub(f.url)
-      book.renderTo(epubHolder.value, { width: '100%', height: '100%' })
+      rendition = book.renderTo(epubHolder.value, { width: '100%', height: '100%' })
       await book.ready
+      if (seq !== epubSeq) return // 期间已切换到其他文件/格式，丢弃本次渲染
       const nav = book.navigation
       if (nav && nav.toc && nav.toc.length) {
-        await book.display(nav.toc[0].href)
+        await rendition.display(nav.toc[0].href)
       }
     } catch (e) {
+      if (seq !== epubSeq) return
       epubErr.value = `EPUB 预览失败：${e.message || '无法加载'}`
     }
   },
@@ -48,14 +75,7 @@ function nextTickSafe() {
 }
 
 onBeforeUnmount(() => {
-  if (book) {
-    try {
-      book.destroy()
-    } catch {
-      /* ignore */
-    }
-    book = null
-  }
+  destroyBook()
 })
 </script>
 
