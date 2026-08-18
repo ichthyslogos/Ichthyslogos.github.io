@@ -38,6 +38,7 @@ const META_BY_KEY = {
   ASV: { lang: 'en', original: false, name: '美国标准译本 (ASV)', tradition: 'protestant' },
   DRC: { lang: 'en', original: false, name: '杜埃-兰斯译本 (DRC)', tradition: 'catholic' },
   FreBDM1744: { lang: 'fr', original: false, name: '法语 Martin 1744', tradition: 'protestant' },
+  NIV: { lang: 'en', original: false, name: '新国际版 (NIV)', tradition: 'protestant' },
   WLC: { lang: 'hbo', original: true }, // 希伯来文马所拉文本
   Byz: { lang: 'grc', original: true }, // 希腊文拜占庭文本
   TR: { lang: 'grc', original: true }, // 希腊文公认文本
@@ -132,9 +133,9 @@ for (const file of files) {
   console.log(`[build-data] ${key}: ${books.length} 卷 / ${manifest.translations.at(-1).books.reduce((s, b) => s + b.chapterCount, 0)} 章`)
 }
 
-// 译本顺序：显式顺序表（和合本简中 → 繁中 → 思高本 → 英文 → 法文），未登记 key 按字母序排后；
+// 译本顺序：显式顺序表（和合本简中 → 繁中 → 思高本 → NIV → 英文 → 法文），未登记 key 按字母序排后；
 // 原文（original）始终排在译本之后，保证 manifest 顺序稳定可预期
-const TRANSLATION_ORDER = ['chiuns', 'chiun', 'chisb', 'kjv', 'frebdm1744']
+const TRANSLATION_ORDER = ['chiun', 'chisb', 'niv', 'kjv', 'frebdm1744']
 const orderOf = (t) => {
   const i = TRANSLATION_ORDER.indexOf(t.key)
   return t.original ? 1e6 + i : (i === -1 ? 1e5 : i)
@@ -200,7 +201,7 @@ function buildCommentary() {
       let chapterCount = 0
       const books = []
       if (category === 'notes') {
-        // 背景注释源：entries.json（全量词条索引）+ books/<bookId>.json（按卷分片）原样复制
+        // 背景注释源：entries.json（全量词条索引）+ books/<bookId>.json（按卷分片）+ place-coords.json（地点经纬度）原样复制
         const booksDir = join(dir, 'books')
         if (!existsSync(booksDir)) continue
         const outDir = join(COMMENT_OUT, category, key)
@@ -217,6 +218,15 @@ function buildCommentary() {
           entryCount = idx.count || (idx.entries || []).length
           copyFileSync(entriesFile, join(outDir, 'entries.json'))
         }
+        // 地点坐标表（地图系统用；缺失则跳过）
+        const coordsFile = join(dir, 'place-coords.json')
+        if (existsSync(coordsFile)) copyFileSync(coordsFile, join(outDir, 'place-coords.json'))
+        // 词条简体中文名表（注释高亮显示用；缺失则跳过）
+        const zhNamesFile = join(dir, 'zh-names.json')
+        if (existsSync(zhNamesFile)) copyFileSync(zhNamesFile, join(outDir, 'zh-names.json'))
+        // 词条名变体表（注释高亮文本兜底用：专名别名，如 亚当→那人；缺失则跳过）
+        const nameVariantsFile = join(dir, 'name-variants.json')
+        if (existsSync(nameVariantsFile)) copyFileSync(nameVariantsFile, join(outDir, 'name-variants.json'))
         for (const f of readdirSync(booksDir)) {
           if (!f.endsWith('.json')) continue
           const bookId = f.replace(/\.json$/, '')
@@ -375,66 +385,6 @@ function buildApologetics() {
   console.log(`[build-data] 输出 -> public/data/apologetics/`)
 }
 
-/* ============ Strong 逐词数据（和合本简体 chiuns 标注层） ============
- * 源：data-src/brp/strong/<bookId>.json（scripts/import-strong.mjs 从 chiuns SWORD 素材生成）
- * 输出：public/data/brp/strong/books/<bookId>.json（按卷切片，按需加载）
- * 结构：{ key:'chiuns', book:{ id, chapters:[{chapter, verses:[{verse, words:[{t,s,m}]}]}] } }
- */
-const STRONG_SRC = join(SITE_ROOT, 'data-src', 'brp', 'strong')
-const STRONG_OUT = join(SITE_ROOT, 'public', 'data', 'brp', 'strong', 'books')
-
-function buildStrong() {
-  if (!existsSync(STRONG_SRC)) return
-  mkdirSync(STRONG_OUT, { recursive: true })
-  let n = 0
-  for (const f of readdirSync(STRONG_SRC)) {
-    if (!f.endsWith('.json') || f.startsWith('lexicon')) continue // lexicon 词典走 buildStrongLexicon
-    const raw = JSON.parse(readFileSync(join(STRONG_SRC, f), 'utf8'))
-    writeFileSync(join(STRONG_OUT, f), JSON.stringify(raw))
-    n++
-  }
-  if (n) console.log(`[build-data] Strong：${n} 卷 -> public/data/brp/strong/books/`)
-}
-
-/* ============ Strong 词典（逐词码 → 词义） ============
- * 源：data-src/brp/strong/lexicon-<greek|hebrew>.json
- *   （scripts/import-strong-lexicon.mjs / import-strong-lexicon-hebrew.mjs 从素材生成）
- * 输出：public/data/brp/strong/lexicon/<g|h><seg>.json（按 1000 编号段切片，按需加载）
- * 结构：{ source, entries: { "G1"/"H430": { orth, translit, pron, def, … } } }
- */
-const LEX_OUT = join(SITE_ROOT, 'public', 'data', 'brp', 'strong', 'lexicon')
-
-function buildStrongLexicon() {
-  const kinds = [
-    ['greek', 'lexicon-greek.json', 'g'],
-    ['hebrew', 'lexicon-hebrew.json', 'h'],
-  ]
-  if (!kinds.some(([, f]) => existsSync(join(STRONG_SRC, f)))) return
-  mkdirSync(LEX_OUT, { recursive: true })
-  // 每次清空再写：段文件随词典变化增减，避免旧段残留（同译本目录清理教训）
-  for (const f of readdirSync(LEX_OUT)) rmSync(join(LEX_OUT, f), { recursive: true, force: true })
-  let totalSegs = 0
-  for (const [kind, file, prefix] of kinds) {
-    const src = join(STRONG_SRC, file)
-    if (!existsSync(src)) continue
-    const raw = JSON.parse(readFileSync(src, 'utf8'))
-    const segs = new Map()
-    for (const [code, entry] of Object.entries(raw.entries)) {
-      const m = code.match(/^[GH](\d+)/)
-      if (!m) continue
-      const seg = Math.floor(Number(m[1]) / 1000) * 1000
-      if (!segs.has(seg)) segs.set(seg, {})
-      segs.get(seg)[code] = entry
-    }
-    for (const [seg, entries] of segs) {
-      writeFileSync(join(LEX_OUT, `${prefix}${seg}.json`), JSON.stringify({ source: raw.source, entries }))
-    }
-    totalSegs += segs.size
-    console.log(`[build-data] Strong 词典 ${kind}：${segs.size} 段 -> public/data/brp/strong/lexicon/`)
-  }
-  console.log(`[build-data] Strong 词典合计 ${totalSegs} 段`)
-}
-
 /* ============ 图书馆书目（子数据库：分类 → 书目 → 文件直链） ============
  * 源：data-src/library/
  *     ├── content.meta.json   分类顺序（与护教约定一致）
@@ -522,6 +472,4 @@ buildCommentary()
 buildApologetics()
 buildLibrary()
 buildChurchHistory()
-buildStrong()
-buildStrongLexicon()
 

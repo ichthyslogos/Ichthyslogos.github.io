@@ -10,6 +10,18 @@
       "chapter": 2,
       "entries": [
         {
+          "name": "Abraham",
+          "strong": "H0085",
+          "type": "Male",
+          "briefest": "Son of Terah",
+          "brief": "Patriarch, chosen by God to father His people",
+          "short": "Abraham, originally named Abram, was the patriarch whom God called to leave his homeland and blessed to become the father of many nations, establishing His covenant with him and his descendants.",
+          "article": "Abraham, initially named Abram, was a central figure in the early history of the Israelites. He was born in Ur of the Chaldeans and was the son of Terah (Gen.11.26-31). God called Abram to leave his country and family and go to a land that He would show him, promising to make him a great nation and to bless all peoples through him (Gen.12.1-3). \n\nAbram obeyed God and journeyed to Canaan with his wife Sarai and his nephew Lot (Gen.12.4-5). God reaffirmed His covenant with Abram, promising him numerous descendants and the land of Canaan (Gen.13.14-17; 15.1-21). God changed Abram's name to Abraham, meaning \"father of many,\" and Sarai's name to Sarah (Gen.17.1-16). \n\nDespite their advanced age, Abraham and Sarah miraculously bore a son, Isaac, through whom God's covenant would be established (Gen.18.1-15; 21.1-7). Abraham demonstrated his faith and obedience when God tested him by asking him to sacrifice Isaac (Gen.22.1-19). God provided a ram as a substitute, reaffirming His promise to Abraham (Gen.22.15-18). \n\nAbraham's faith was credited to him as righteousness (Gen.15.6; Rom.4.3; Gal.3.6; Jam 2.23). He became known as the father of the faithful and the friend of God (Isa.41.8; 2Ch.20.7; Jam 2.23). God's covenant with Abraham, which included the promise of land, descendants, and blessing, was passed down to his son Isaac and grandson Israel (or 'Jacob') (Gen.26.1-5; 28.10-15). \n\nThe life and faith of Abraham are significant in both the Old and New Testaments. He is recognized as the ancestor of the Israelites (Exo.2.24; 3.6, 15-16; 4.5) and is mentioned in connection with God's faithfulness and His promises (Exo.6.8; 32.13; 33.1; Lev.26.42). In the New Testament, Abraham is upheld as an example of faith (Rom.4.1-3, 9, 12, 16; Gal.3.6-9, 14, 29; Heb.11.8-19) and is identified as the spiritual father of all believers (Rom.4.11-12, 16-17; Gal.3.7, 29). \n\nJesus Christ is identified as the ultimate fulfillment of God's promises to Abraham (Mat.1.1; Gal.3.16). Through faith in Christ, believers from all nations become part of Abraham's spiritual lineage and heirs to the promises made to him (Gal.3.7-9, 14, 26-29).",
+          "refs": [
+            "16"
+          ]
+        },
+        {
           "name": "Jesus",
           "strong": "G2424G",
           "type": "Male",
@@ -18,7 +30,19 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            2
+            "9"
+          ]
+        },
+        {
+          "name": "Satan",
+          "strong": "H7854",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "The adversary, the devil, the tempter of humanity",
+          "short": "Satan, meaning \"adversary\" or \"accuser,\" is the devil, the chief enemy of God and tempter of humanity, who seeks to hinder God's purposes and lead people into sin (Job.1.6-12; Matthew 4:1-11; Revelation 12:9).",
+          "article": "Satan, also known as the devil, is the chief adversary of God and the tempter of humanity. The name \"Satan\" comes from the Hebrew word meaning \"adversary\" or \"accuser.\" He is portrayed as a spiritual being who opposes God's purposes and seeks to lead people into sin and destruction. \n\nIn the Old Testament, Satan appears as an accuser in the heavenly court (Job.1.6-12; 2:1-7; Zechariah 3:1-2). He challenges the integrity of Job and receives permission from God to test him. The Old Testament also uses the term \"satan\" or \"adversary\" to describe human opponents or obstacles (1Sa.29.4; 2Sa.19.22; 1Ki.5.4). \n\nIn the New Testament, Satan is identified as the tempter of Jesus (Matthew 4:1-11; Mrk.1.13; Luke 4:1-13), the oppressor of God's people (Luke 13:16; Act.10.38), and the deceiver of the world (Revelation 12:9; 20:3, 8). He is also called the \"ruler of this world\" (Jhn.12.31; 14:30; 16:11) and the \"god of this age\" (2Co.4.4). \n\nJesus defeated Satan through His death and resurrection (Hebrews 2:14; 1Jn.3.8), and believers are called to resist him (Jam.4.7; 1Pe.5.8-9). The New Testament portrays Satan as a real and active spiritual adversary, but one whose power is limited and whose ultimate defeat is assured (Romans 16:20; Revelation 20:10). \n\nOther names for Satan include Beelzebub (Matthew 10:25; 12:24-27), Belial (2Co.6.15), and the serpent (Revelation 12:9; 20:2). These names highlight his role as the leader of demons, the personification of evil, and the deceiver of humanity.",
+          "refs": [
+            "14"
           ]
         }
       ]
@@ -35,7 +59,36 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            3
+            "1",
+            "6",
+            "14"
+          ]
+        },
+        {
+          "name": "Moses",
+          "strong": "H4872",
+          "type": "Male",
+          "briefest": "Son of Amram",
+          "brief": "Prophet who led Israel out of Egypt",
+          "short": "Moses was a prophet whom God used to lead Israel out of slavery in Egypt and give them the law.",
+          "article": "Moses was born to Amram and Jochebed, Levites in Egypt, at a time when Pharaoh had commanded that all Hebrew male infants be killed (Exo.2.1-2). His mother hid him for three months, then placed him in a basket on the Nile where Pharaoh's daughter found and adopted him (Exo.2.3-10). As an adult, Moses killed an Egyptian who was beating a Hebrew and fled to Midian (Exo.2.11-15). There he married Zipporah and worked as a shepherd for his father-in-law Jethro (Exo.2.16-22). \n\nGod appeared to Moses in a burning bush and called him to lead Israel out of Egypt (Exodus 3-4). Moses, along with his brother Aaron, went to Pharaoh demanding that he let Israel go (Exo.5.1). Through a series of ten plagues, God compelled Pharaoh to release the Israelites (Exodus 7-12). Moses led them out of Egypt, through the Red Sea, and to Mount Sinai (Exodus 13-19). There God gave Moses the law and instructions for the tabernacle (Exodus 20-31). \n\nWhile Moses was on the mountain, Israel made and worshiped a golden calf (Exodus 32). Moses interceded for the people and God relented from destroying them (Exodus 32-34). Moses oversaw the construction of the tabernacle (Exodus 35-40). He led Israel for forty years in the wilderness, mediating between them and God (Numbers, Deuteronomy). God prohibited Moses from entering Canaan because of his disobedience at Meribah (Num.20.1-13). Before his death, Moses viewed the promised land from Mount Nebo (Deu.34.1-4). He died at 120 years old and was buried by God (Deu.34.5-8). \n\nThe New Testament refers to Moses as the giver of the law (Jhn.1.17), a type of Christ (Jhn.3.14), and the greatest prophet of the old covenant (Act.3.22-23). \n\nHe is named \"Manasseh\" in several manuscripts of Judges 18.30 to save shaming his name when his grandson set up an idol.",
+          "refs": [
+            "2",
+            "3",
+            "5",
+            "16"
+          ]
+        },
+        {
+          "name": "Egypt",
+          "strong": "H4714G",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Ancient nation; Israelites enslaved there; plagues and Exodus",
+          "short": "Egypt, a powerful nation where the Israelites were enslaved until God delivered them in the Exodus.",
+          "article": "Egypt was a prominent ancient civilization in northeastern Africa, concentrated along the lower reaches of the Nile River. In the Bible, Egypt is first mentioned as the place Abraham journeyed during a famine in Canaan (Genesis 12:10). Later, Joseph was sold into slavery in Egypt but rose to power as a trusted official of Pharaoh. During a famine, Israel (or 'Jacob') and his family settled in Egypt with Joseph. \n\nAfter generations passed, the Israelites were enslaved by the Egyptians (Exodus 1:8-14). God called Moses to deliver His people from bondage. After Pharaoh refused to free the Israelites, God sent ten plagues upon Egypt (Exodus 7-12). Finally, Pharaoh relented and the Israelites left in the Exodus. At the Red Sea, God miraculously allowed the Israelites to cross on dry ground but destroyed the pursuing Egyptian army (Exodus 14). \n\nEgypt is often used in the Bible as a symbol of bondage and oppression. The prophets warned against trusting in Egypt's power instead of God (Isaiah 30:1-3, 31:1). Yet Egypt was also a place of refuge, as when Mary, Joseph and Jesus fled there to escape Herod (Matthew 2:13-15).",
+          "refs": [
+            "16"
           ]
         }
       ]
@@ -44,6 +97,18 @@
       "chapter": 4,
       "entries": [
         {
+          "name": "David",
+          "strong": "H1732",
+          "type": "Male",
+          "briefest": "King of Judah",
+          "brief": "Anointed king of Israel, ancestor of Jesus Christ",
+          "short": "David, son of Jesse, was the anointed king of Israel, a man after God's own heart, and an ancestor of Jesus Christ.",
+          "article": "David, the son of Jesse from Bethlehem, was a prominent figure in the Old Testament and is mentioned extensively throughout the Bible. He was anointed by Samuel to be king over Israel, succeeding Saul (1Sa.16.13). David first gained fame as a young man by defeating the Philistine giant Goliath with a sling and a stone (1Samuel 17). \n\nDavid's reign as king was marked by military successes, as he defeated the enemies of Israel and expanded the kingdom (2Samuel 8). He is known for his devotion to God and is called \"a man after God's own heart\" (1Sa.13.14; Act.13.22). Many of the psalms in the Bible are attributed to David, reflecting his deep faith and trust in God (e.g., Psalms 3, 23, 51). \n\nHowever, David's life was not without flaws. He committed adultery with Bathsheba and orchestrated the death of her husband, Uriah (2Samuel 11). As a result, David faced consequences, including the death of his child and turmoil within his family (2Samuel 12-18). \n\nDespite his failings, David remained a central figure in Israel's history and a model of repentance and faith. He was promised an enduring dynasty, and the Messiah would come from his lineage (2Sa.7.12-16). This prophecy was fulfilled in Jesus Christ, who is called the \"Son of David\" (Mat.1.1; Rom.1.3). \n\nDavid's life and reign are recorded in 1 and 2 Samuel, 1 Chronicles, and portions of 1 Kings. His significance extends into the New Testament, where he is mentioned in connection with Jesus' lineage and messianic identity (Mat.1.1; Luk.1.32; Act.13.22-23; Rev.22.16).",
+          "refs": [
+            "7"
+          ]
+        },
+        {
           "name": "Jesus",
           "strong": "G2424G",
           "type": "Male",
@@ -52,7 +117,73 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            4
+            "14"
+          ]
+        },
+        {
+          "name": "Joshua",
+          "strong": "H3091G",
+          "type": "Male",
+          "briefest": "A judge",
+          "brief": "Moses' assistant who led Israel into Canaan",
+          "short": "Joshua, the son of Nun, was Moses' assistant and successor who led the Israelites into the Promised Land.",
+          "article": "Joshua, the son of Nun, was a prominent figure in the Old Testament who served as Moses' assistant and later succeeded him as the leader of the Israelites. He was from the tribe of Ephraim (Num.13.8) and was originally named Hoshea, but Moses changed his name to Joshua (Num.13.16). Joshua was one of the twelve spies sent to explore the land of Canaan (Num.13.8), and he and Caleb were the only ones who brought back a positive report and encouraged the people to trust God (Num.14.6-9). As a result, Joshua and Caleb were the only adults from their generation permitted to enter the Promised Land (Num.14.30, 38). \n\nBefore Moses' death, God appointed Joshua to succeed him as the leader of Israel (Num.27.18-23; Deu.31.7-8, 14, 23). After Moses' death, Joshua led the Israelites across the Jordan River and into the land of Canaan (Joshua 1-4). He oversaw the conquest of Jericho (Joshua 6), Ai (Joshua 8), and numerous other cities and territories (Joshua 10-12). Joshua also led the Israelites in renewing their covenant with God (Jos.8.30-35; 24.1-28). \n\nUnder Joshua's leadership, the land of Canaan was divided among the tribes of Israel as their inheritance (Joshua 13-21). In his old age, Joshua gave a farewell address to the Israelites, encouraging them to remain faithful to God (Joshua 23-24). He died at the age of 110 and was buried in his inheritance at Timnath-serah (Jos.24.29-30; Jdg.2.8-9). \n\nJoshua is remembered as a courageous leader, a faithful servant of God, and a key figure in Israel's history who led the people into the Promised Land and helped establish them as a nation.",
+          "refs": [
+            "8"
+          ]
+        },
+        {
+          "name": "Sabbath",
+          "strong": "H7676",
+          "type": "Time",
+          "briefest": "",
+          "brief": "The seventh day of the week, set apart for rest and worship",
+          "short": "The Sabbath, meaning \"rest,\" was the seventh day of the week, set apart by God as a holy day for rest and worship (Exodus 20:8-11; Leviticus 23:3).",
+          "article": "The Sabbath is the seventh day of the week, set apart by God as a holy day for rest and worship. The word \"Sabbath\" comes from the Hebrew word \"shabbat,\" meaning \"to cease\" or \"to rest.\" The observance of the Sabbath was instituted by God at creation (Genesis 2:2-3) and later codified in the Ten Commandments (Exodus 20:8-11). \n\nOn the Sabbath, the Israelites were to refrain from all work and dedicate the day to God (Exodus 31:14-15; Leviticus 23:3). The Sabbath was a sign of the covenant between God and Israel, reminding them of their deliverance from slavery in Egypt (Deu.5.15). Specific regulations governed Sabbath observance, such as the prohibition of kindling a fire (Exodus 35:3) and the requirement to prepare food in advance (Exodus 16:23). \n\nIn the New Testament, Jesus affirmed the Sabbath as a day for doing good and ministering to others (Matthew 12:1-13; Luke 13:10-17). He declared Himself the Lord of the Sabbath (Matthew 12:8) and taught that the Sabbath was made for man's benefit (Mrk.2.27). After Jesus' resurrection, the early church began to gather on the first day of the week, Sunday, to commemorate His resurrection (Act.20.7; 1Co.16.2). \n\nThe Sabbath remains an important concept in Christian theology, with some denominations continuing to observe the seventh-day Sabbath, while others view Sunday as a day of rest and worship. The principle of setting apart time for rest and devotion to God continues to be an essential aspect of Christian faith and practice.",
+          "refs": [
+            "9"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 5,
+      "entries": [
+        {
+          "name": "Aaron",
+          "strong": "H0175",
+          "type": "Male",
+          "briefest": "High Priest",
+          "brief": "Moses' brother, first high priest of Israel",
+          "short": "Aaron was Moses' older brother and served as the first high priest of Israel.",
+          "article": "Aaron was the older brother of Moses and Miriam, from the tribe of Levi. God appointed Aaron to be Moses' spokesman when Moses was called to lead the Israelites out of Egypt. Aaron performed signs before Pharaoh, including turning his staff into a snake. He assisted Moses during the Exodus, including holding up Moses' arms during the battle against the Amalekites. \n\nGod chose Aaron and his descendants to serve as priests for the Israelites. Aaron was consecrated as the first high priest and wore special priestly garments. He was responsible for offering sacrifices, burning incense, and performing other priestly duties in the tabernacle. Aaron also played a role in several significant events, such as the golden calf incident and the rebellion of Korah. \n\nAaron married Elisheba, and they had four sons: Nadab, Abihu, Eleazar, and Ithamar. Nadab and Abihu died when they offered unauthorized fire before the Lord. Aaron died at the age of 123 on Mount Hor, and his son Eleazar succeeded him as high priest. Despite his flaws, Aaron was a key figure in Israel's history and played a crucial role in establishing the priesthood.",
+          "refs": [
+            "4"
+          ]
+        },
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            "5"
+          ]
+        },
+        {
+          "name": "Melchizedek",
+          "strong": "H4442",
+          "type": "Male",
+          "briefest": "A priest/king",
+          "brief": "King of Salem and priest of God Most High.",
+          "short": "Melchizedek, king of Salem and priest of God Most High, who blessed Abraham.",
+          "article": "Melchizedek was the king of Salem and a priest of God Most High (Gen.14.18). He blessed Abraham and received a tithe from him after Abraham's victory over Chedorlaomer and his allies. Melchizedek brought out bread and wine, demonstrating his priestly role. The Psalms refer to the Messiah as a priest forever in the order of Melchizedek (Psa.110.4), indicating that Melchizedek's priesthood was seen as a type or foreshadowing of Christ's eternal priesthood. The book of Hebrews expands on this concept, presenting Jesus as a high priest according to the order of Melchizedek (Heb.5.6,10; 6.20; 7.1,10,11,15,17,21). Melchizedek's unique priesthood, which combined royalty and priestly service to God Most High, is seen as a precedent for Jesus' eternal priesthood and kingship.",
+          "refs": [
+            "6",
+            "10"
           ]
         }
       ]
@@ -61,22 +192,17 @@
       "chapter": 6,
       "entries": [
         {
-          "name": "Jesus",
-          "strong": "G2424G",
+          "name": "Abraham",
+          "strong": "H0085",
           "type": "Male",
-          "briefest": "Son of Joseph",
-          "brief": "The Son of God and Savior of the world.",
-          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
-          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "briefest": "Son of Terah",
+          "brief": "Patriarch, chosen by God to father His people",
+          "short": "Abraham, originally named Abram, was the patriarch whom God called to leave his homeland and blessed to become the father of many nations, establishing His covenant with him and his descendants.",
+          "article": "Abraham, initially named Abram, was a central figure in the early history of the Israelites. He was born in Ur of the Chaldeans and was the son of Terah (Gen.11.26-31). God called Abram to leave his country and family and go to a land that He would show him, promising to make him a great nation and to bless all peoples through him (Gen.12.1-3). \n\nAbram obeyed God and journeyed to Canaan with his wife Sarai and his nephew Lot (Gen.12.4-5). God reaffirmed His covenant with Abram, promising him numerous descendants and the land of Canaan (Gen.13.14-17; 15.1-21). God changed Abram's name to Abraham, meaning \"father of many,\" and Sarai's name to Sarah (Gen.17.1-16). \n\nDespite their advanced age, Abraham and Sarah miraculously bore a son, Isaac, through whom God's covenant would be established (Gen.18.1-15; 21.1-7). Abraham demonstrated his faith and obedience when God tested him by asking him to sacrifice Isaac (Gen.22.1-19). God provided a ram as a substitute, reaffirming His promise to Abraham (Gen.22.15-18). \n\nAbraham's faith was credited to him as righteousness (Gen.15.6; Rom.4.3; Gal.3.6; Jam 2.23). He became known as the father of the faithful and the friend of God (Isa.41.8; 2Ch.20.7; Jam 2.23). God's covenant with Abraham, which included the promise of land, descendants, and blessing, was passed down to his son Isaac and grandson Israel (or 'Jacob') (Gen.26.1-5; 28.10-15). \n\nThe life and faith of Abraham are significant in both the Old and New Testaments. He is recognized as the ancestor of the Israelites (Exo.2.24; 3.6, 15-16; 4.5) and is mentioned in connection with God's faithfulness and His promises (Exo.6.8; 32.13; 33.1; Lev.26.42). In the New Testament, Abraham is upheld as an example of faith (Rom.4.1-3, 9, 12, 16; Gal.3.6-9, 14, 29; Heb.11.8-19) and is identified as the spiritual father of all believers (Rom.4.11-12, 16-17; Gal.3.7, 29). \n\nJesus Christ is identified as the ultimate fulfillment of God's promises to Abraham (Mat.1.1; Gal.3.16). Through faith in Christ, believers from all nations become part of Abraham's spiritual lineage and heirs to the promises made to him (Gal.3.7-9, 14, 26-29).",
           "refs": [
-            6
+            "13"
           ]
-        }
-      ]
-    },
-    {
-      "chapter": 7,
-      "entries": [
+        },
         {
           "name": "Jesus",
           "strong": "G2424G",
@@ -86,7 +212,297 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            7
+            "20",
+            "1"
+          ]
+        },
+        {
+          "name": "Melchizedek",
+          "strong": "H4442",
+          "type": "Male",
+          "briefest": "A priest/king",
+          "brief": "King of Salem and priest of God Most High.",
+          "short": "Melchizedek, king of Salem and priest of God Most High, who blessed Abraham.",
+          "article": "Melchizedek was the king of Salem and a priest of God Most High (Gen.14.18). He blessed Abraham and received a tithe from him after Abraham's victory over Chedorlaomer and his allies. Melchizedek brought out bread and wine, demonstrating his priestly role. The Psalms refer to the Messiah as a priest forever in the order of Melchizedek (Psa.110.4), indicating that Melchizedek's priesthood was seen as a type or foreshadowing of Christ's eternal priesthood. The book of Hebrews expands on this concept, presenting Jesus as a high priest according to the order of Melchizedek (Heb.5.6,10; 6.20; 7.1,10,11,15,17,21). Melchizedek's unique priesthood, which combined royalty and priestly service to God Most High, is seen as a precedent for Jesus' eternal priesthood and kingship.",
+          "refs": [
+            "20"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 7,
+      "entries": [
+        {
+          "name": "Aaron",
+          "strong": "H0175",
+          "type": "Male",
+          "briefest": "High Priest",
+          "brief": "Moses' brother, first high priest of Israel",
+          "short": "Aaron was Moses' older brother and served as the first high priest of Israel.",
+          "article": "Aaron was the older brother of Moses and Miriam, from the tribe of Levi. God appointed Aaron to be Moses' spokesman when Moses was called to lead the Israelites out of Egypt. Aaron performed signs before Pharaoh, including turning his staff into a snake. He assisted Moses during the Exodus, including holding up Moses' arms during the battle against the Amalekites. \n\nGod chose Aaron and his descendants to serve as priests for the Israelites. Aaron was consecrated as the first high priest and wore special priestly garments. He was responsible for offering sacrifices, burning incense, and performing other priestly duties in the tabernacle. Aaron also played a role in several significant events, such as the golden calf incident and the rebellion of Korah. \n\nAaron married Elisheba, and they had four sons: Nadab, Abihu, Eleazar, and Ithamar. Nadab and Abihu died when they offered unauthorized fire before the Lord. Aaron died at the age of 123 on Mount Hor, and his son Eleazar succeeded him as high priest. Despite his flaws, Aaron was a key figure in Israel's history and played a crucial role in establishing the priesthood.",
+          "refs": [
+            "11"
+          ]
+        },
+        {
+          "name": "Abraham",
+          "strong": "H0085",
+          "type": "Male",
+          "briefest": "Son of Terah",
+          "brief": "Patriarch, chosen by God to father His people",
+          "short": "Abraham, originally named Abram, was the patriarch whom God called to leave his homeland and blessed to become the father of many nations, establishing His covenant with him and his descendants.",
+          "article": "Abraham, initially named Abram, was a central figure in the early history of the Israelites. He was born in Ur of the Chaldeans and was the son of Terah (Gen.11.26-31). God called Abram to leave his country and family and go to a land that He would show him, promising to make him a great nation and to bless all peoples through him (Gen.12.1-3). \n\nAbram obeyed God and journeyed to Canaan with his wife Sarai and his nephew Lot (Gen.12.4-5). God reaffirmed His covenant with Abram, promising him numerous descendants and the land of Canaan (Gen.13.14-17; 15.1-21). God changed Abram's name to Abraham, meaning \"father of many,\" and Sarai's name to Sarah (Gen.17.1-16). \n\nDespite their advanced age, Abraham and Sarah miraculously bore a son, Isaac, through whom God's covenant would be established (Gen.18.1-15; 21.1-7). Abraham demonstrated his faith and obedience when God tested him by asking him to sacrifice Isaac (Gen.22.1-19). God provided a ram as a substitute, reaffirming His promise to Abraham (Gen.22.15-18). \n\nAbraham's faith was credited to him as righteousness (Gen.15.6; Rom.4.3; Gal.3.6; Jam 2.23). He became known as the father of the faithful and the friend of God (Isa.41.8; 2Ch.20.7; Jam 2.23). God's covenant with Abraham, which included the promise of land, descendants, and blessing, was passed down to his son Isaac and grandson Israel (or 'Jacob') (Gen.26.1-5; 28.10-15). \n\nThe life and faith of Abraham are significant in both the Old and New Testaments. He is recognized as the ancestor of the Israelites (Exo.2.24; 3.6, 15-16; 4.5) and is mentioned in connection with God's faithfulness and His promises (Exo.6.8; 32.13; 33.1; Lev.26.42). In the New Testament, Abraham is upheld as an example of faith (Rom.4.1-3, 9, 12, 16; Gal.3.6-9, 14, 29; Heb.11.8-19) and is identified as the spiritual father of all believers (Rom.4.11-12, 16-17; Gal.3.7, 29). \n\nJesus Christ is identified as the ultimate fulfillment of God's promises to Abraham (Mat.1.1; Gal.3.16). Through faith in Christ, believers from all nations become part of Abraham's spiritual lineage and heirs to the promises made to him (Gal.3.7-9, 14, 26-29).",
+          "refs": [
+            "1",
+            "2",
+            "4",
+            "5",
+            "6",
+            "9"
+          ]
+        },
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            "22"
+          ]
+        },
+        {
+          "name": "Judah",
+          "strong": "H3063G",
+          "type": "Male",
+          "briefest": "Son of Israel",
+          "brief": "Israelite tribe, kingdom, and province",
+          "short": "Judah, also known as the Jews or Judea, refers to the Israelite tribe, the southern kingdom, and the Roman province in various biblical contexts.",
+          "article": "Judah, Jews, and Judea are terms used throughout the Bible to refer to the Israelite tribe, the southern kingdom, and the Roman province, depending on the historical context. \n\nJudah was the fourth son of Israel (or 'Jacob') and Leah (Gen.29.35) and became the founder of one of the twelve tribes of Israel. The tribe of Judah played a prominent role in Israel's history, with notable figures such as Caleb, Othniel, and King David coming from this tribe. \n\nAfter the reign of Solomon, the kingdom of Israel split into two: the northern kingdom of Israel and the southern kingdom of Judah (1Kings 12). The southern kingdom, which included the tribes of Judah and Benjamin, remained loyal to the Davidic dynasty and the worship of God in Jerusalem. The kingdom of Judah lasted from about 930 BC until the Babylonian conquest in 586 BC. \n\nFollowing the Babylonian exile, many Jews returned to the land of Judah, now a province of the Persian Empire (Ezra 1-6). During the Second Temple period, Judea became a province of the Roman Empire. In the New Testament, the terms \"Jews\" and \"Judea\" are often used to refer to the Jewish people and the region they inhabited. \n\nThe history of Judah, the Jews, and Judea is a central focus of the biblical narrative, with many of the key events, prophecies, and teachings revolving around this people and their relationship with God. The prophets, such as Isaiah, Jeremiah, and Ezekiel, often addressed their messages to Judah and warned of judgment for disobedience while also offering hope for restoration. \n\nIn the New Testament, Jesus Christ, the Messiah, is born in Judea and is recognized as the King of the Jews (Mat.2.2). The early Christian church began in Jerusalem, and many of the first converts were Jews (Acts 2). \n\nThroughout the Bible, God's covenant relationship with the people of Judah, the Jews, and the inhabitants of Judea remains a central theme, highlighting His faithfulness, judgment, and redemptive purposes for all nations through the Jewish Messiah, Jesus Christ.",
+          "refs": [
+            "14"
+          ]
+        },
+        {
+          "name": "Levi",
+          "strong": "H3878",
+          "type": "Male",
+          "briefest": "Son of Israel",
+          "brief": "Son of Jacob; progenitor of the Levites",
+          "short": "Levi, son of Jacob and Leah, was the progenitor of the Levites, the priestly tribe of Israel.",
+          "article": "Levi was the third son of Israel (or 'Jacob') and Leah (Gen.29.34). Along with his brother Simeon, he took revenge on the Shechemites for the rape of their sister Dinah (Gen.34.25-31). Jacob rebuked them for this act on his deathbed (Gen.49.5-7). Levi had three sons: Gershon, Kohath, and Merari (Gen.46.11; Exo.6.16). His descendants, the Levites, were set apart as the priestly tribe (Exo.32.26-29; Num.3.5-13). They were responsible for the tabernacle and its services (Num.1.47-54; 3.14-39; 4.1-49; 8.5-26). The Levites were given cities throughout Israel, but no territorial inheritance (Num.35.1-8; Jos.21.1-42). Notable Levites include Moses, Aaron, and Samuel. The Levites are frequently mentioned in the historical and prophetic books of the Old Testament, as well as in the genealogies of 1 Chronicles. In the New Testament, Levites are mentioned in connection with the temple and its services (Luk.10.32; Jhn.1.19; Act.4.36). The Levitical priesthood is contrasted with the superior priesthood of Christ (Heb.7.1-28).",
+          "refs": [
+            "5",
+            "9",
+            "11"
+          ]
+        },
+        {
+          "name": "Melchizedek",
+          "strong": "H4442",
+          "type": "Male",
+          "briefest": "A priest/king",
+          "brief": "King of Salem and priest of God Most High.",
+          "short": "Melchizedek, king of Salem and priest of God Most High, who blessed Abraham.",
+          "article": "Melchizedek was the king of Salem and a priest of God Most High (Gen.14.18). He blessed Abraham and received a tithe from him after Abraham's victory over Chedorlaomer and his allies. Melchizedek brought out bread and wine, demonstrating his priestly role. The Psalms refer to the Messiah as a priest forever in the order of Melchizedek (Psa.110.4), indicating that Melchizedek's priesthood was seen as a type or foreshadowing of Christ's eternal priesthood. The book of Hebrews expands on this concept, presenting Jesus as a high priest according to the order of Melchizedek (Heb.5.6,10; 6.20; 7.1,10,11,15,17,21). Melchizedek's unique priesthood, which combined royalty and priestly service to God Most High, is seen as a precedent for Jesus' eternal priesthood and kingship.",
+          "refs": [
+            "1",
+            "10",
+            "11",
+            "15",
+            "17",
+            "21"
+          ]
+        },
+        {
+          "name": "Moses",
+          "strong": "H4872",
+          "type": "Male",
+          "briefest": "Son of Amram",
+          "brief": "Prophet who led Israel out of Egypt",
+          "short": "Moses was a prophet whom God used to lead Israel out of slavery in Egypt and give them the law.",
+          "article": "Moses was born to Amram and Jochebed, Levites in Egypt, at a time when Pharaoh had commanded that all Hebrew male infants be killed (Exo.2.1-2). His mother hid him for three months, then placed him in a basket on the Nile where Pharaoh's daughter found and adopted him (Exo.2.3-10). As an adult, Moses killed an Egyptian who was beating a Hebrew and fled to Midian (Exo.2.11-15). There he married Zipporah and worked as a shepherd for his father-in-law Jethro (Exo.2.16-22). \n\nGod appeared to Moses in a burning bush and called him to lead Israel out of Egypt (Exodus 3-4). Moses, along with his brother Aaron, went to Pharaoh demanding that he let Israel go (Exo.5.1). Through a series of ten plagues, God compelled Pharaoh to release the Israelites (Exodus 7-12). Moses led them out of Egypt, through the Red Sea, and to Mount Sinai (Exodus 13-19). There God gave Moses the law and instructions for the tabernacle (Exodus 20-31). \n\nWhile Moses was on the mountain, Israel made and worshiped a golden calf (Exodus 32). Moses interceded for the people and God relented from destroying them (Exodus 32-34). Moses oversaw the construction of the tabernacle (Exodus 35-40). He led Israel for forty years in the wilderness, mediating between them and God (Numbers, Deuteronomy). God prohibited Moses from entering Canaan because of his disobedience at Meribah (Num.20.1-13). Before his death, Moses viewed the promised land from Mount Nebo (Deu.34.1-4). He died at 120 years old and was buried by God (Deu.34.5-8). \n\nThe New Testament refers to Moses as the giver of the law (Jhn.1.17), a type of Christ (Jhn.3.14), and the greatest prophet of the old covenant (Act.3.22-23). \n\nHe is named \"Manasseh\" in several manuscripts of Judges 18.30 to save shaming his name when his grandson set up an idol.",
+          "refs": [
+            "14"
+          ]
+        },
+        {
+          "name": "Jerusalem",
+          "strong": "H3389",
+          "type": "Place",
+          "briefest": "",
+          "brief": "The capital of Israel, a holy city for three religions",
+          "short": "Jerusalem, the capital of Israel and a holy city for Judaism, Christianity, and Islam.",
+          "article": "Jerusalem is one of the most important cities in the Bible, serving as the capital of Israel and a holy city for Judaism, Christianity, and Islam. It is mentioned hundreds of times throughout the Old and New Testaments. The city was originally known as Salem (Genesis 14:18; Psalm 76:2) and was later called Jebus, after the Jebusites who inhabited it (Judges 19:10; 1Ch.11.4). David conquered the city and made it his capital (2Sa.5.6-9; 1Ch.11.4-9). Solomon built the first temple in Jerusalem (1Kings 6-8; 2Chronicles 3-7), which became the center of Jewish worship. The city was destroyed by the Babylonians in 586 BC (2Ki.25.1-10; 2Ch.36.17-19) but was later rebuilt after the exile (Ezra 1:1-4; Nehemiah 2:11-20). In the New Testament, Jerusalem is the site of many events in the life of Jesus, including his triumphal entry (Matthew 21:1-11), cleansing of the temple (Matthew 21:12-17), and crucifixion (Matthew 27:32-56). The early church also began in Jerusalem (Acts 1-7). Throughout the Bible, Jerusalem is referred to by various names, each highlighting a different aspect of its significance: Ariel (Isaiah 29:1), My Delight Is in Her (Isaiah 62:4), Forsaken and Desolate (Isaiah 62:4), Married (Isaiah 62:4), the City of the Lord (Isaiah 60:14), Zion (Psalm 87:2), and Mount Zion (Psalm 48:1). The name \"Jerusalem\" itself may mean \"foundation of peace\" or \"possession of peace.\"",
+          "refs": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "1"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 8,
+      "entries": [
+        {
+          "name": "Israel",
+          "strong": "H3478",
+          "type": "Male",
+          "briefest": "Son of Isaac",
+          "brief": "Patriarch, son of Isaac, father of twelve tribes",
+          "short": "Israel, also named Jacob, was the son of Isaac, the father of the twelve tribes of Israel, and a key patriarch of the Jewish people.",
+          "article": "Israel, also known as Jacob, was the son of Isaac and Rebekah, and the grandson of Abraham. He was born after his twin brother Esau (Gen. 25:24-26). \n\nJacob bought Esau's birthright for a bowl of stew when Esau was famished (Gen. 25:29-34). He then deceived his father Isaac into giving him the firstborn blessing (Gen. 27). To escape Esau's anger, Jacob fled to his uncle Laban in Paddan-aram (Gen. 28:1-5). \n\nOn the way, Jacob had a dream of a stairway to heaven at Bethel, where God confirmed the covenant promises to him (Gen. 28:10-22). Jacob worked for Laban for 14 years, marrying his daughters Leah and Rachel (Gen. 29). \n\nWanting to return home, Jacob left Paddan-aram with his family and flocks. On the way, he wrestled with God at Peniel and was renamed Israel, meaning \"he struggles with God\" (Gen. 32:22-32). Israel (or 'Jacob') reconciled with Esau and settled in Canaan (Gen. 33). \n\nJacob had twelve sons who became the ancestors of the twelve tribes of Israel: Reuben, Simeon, Levi, Judah, Issachar, Zebulun, Joseph, Benjamin, Dan, Naphtali, Gad and Asher (Gen. 35:23-26). \n\nJacob showed favoritism to Joseph, provoking his brothers to sell Joseph into slavery in Egypt (Gen. 37). Later, during a famine, Jacob's sons went to Egypt for food and were reconciled with Joseph, who had risen to power there (Gen. 42-46). \n\nJacob moved his whole family to Egypt, where he lived for 17 years (Gen. 47:28). Before his death, Jacob blessed Joseph's sons Ephraim and Manasseh (Gen. 48) and gave prophetic blessings to his own twelve sons (Gen. 49). He died at age 147 and was buried in Canaan (Gen. 49:33; 50:1-14). \n\nGod often identified Himself as the \"God of Abraham, Isaac and Jacob\" and reaffirmed His covenant promises to Jacob's descendants (e.g. Exo. 3:6,15). The nation of Israel took its name from Jacob and the Jewish people are his descendants. The name Jeshurun is used as a poetic name for Israel (Deut. 32:15; 33:5,26; Isa. 44:2).",
+          "refs": [
+            "8",
+            "10"
+          ]
+        },
+        {
+          "name": "Judah",
+          "strong": "H3063G",
+          "type": "Male",
+          "briefest": "Son of Israel",
+          "brief": "Israelite tribe, kingdom, and province",
+          "short": "Judah, also known as the Jews or Judea, refers to the Israelite tribe, the southern kingdom, and the Roman province in various biblical contexts.",
+          "article": "Judah, Jews, and Judea are terms used throughout the Bible to refer to the Israelite tribe, the southern kingdom, and the Roman province, depending on the historical context. \n\nJudah was the fourth son of Israel (or 'Jacob') and Leah (Gen.29.35) and became the founder of one of the twelve tribes of Israel. The tribe of Judah played a prominent role in Israel's history, with notable figures such as Caleb, Othniel, and King David coming from this tribe. \n\nAfter the reign of Solomon, the kingdom of Israel split into two: the northern kingdom of Israel and the southern kingdom of Judah (1Kings 12). The southern kingdom, which included the tribes of Judah and Benjamin, remained loyal to the Davidic dynasty and the worship of God in Jerusalem. The kingdom of Judah lasted from about 930 BC until the Babylonian conquest in 586 BC. \n\nFollowing the Babylonian exile, many Jews returned to the land of Judah, now a province of the Persian Empire (Ezra 1-6). During the Second Temple period, Judea became a province of the Roman Empire. In the New Testament, the terms \"Jews\" and \"Judea\" are often used to refer to the Jewish people and the region they inhabited. \n\nThe history of Judah, the Jews, and Judea is a central focus of the biblical narrative, with many of the key events, prophecies, and teachings revolving around this people and their relationship with God. The prophets, such as Isaiah, Jeremiah, and Ezekiel, often addressed their messages to Judah and warned of judgment for disobedience while also offering hope for restoration. \n\nIn the New Testament, Jesus Christ, the Messiah, is born in Judea and is recognized as the King of the Jews (Mat.2.2). The early Christian church began in Jerusalem, and many of the first converts were Jews (Acts 2). \n\nThroughout the Bible, God's covenant relationship with the people of Judah, the Jews, and the inhabitants of Judea remains a central theme, highlighting His faithfulness, judgment, and redemptive purposes for all nations through the Jewish Messiah, Jesus Christ.",
+          "refs": [
+            "8"
+          ]
+        },
+        {
+          "name": "Moses",
+          "strong": "H4872",
+          "type": "Male",
+          "briefest": "Son of Amram",
+          "brief": "Prophet who led Israel out of Egypt",
+          "short": "Moses was a prophet whom God used to lead Israel out of slavery in Egypt and give them the law.",
+          "article": "Moses was born to Amram and Jochebed, Levites in Egypt, at a time when Pharaoh had commanded that all Hebrew male infants be killed (Exo.2.1-2). His mother hid him for three months, then placed him in a basket on the Nile where Pharaoh's daughter found and adopted him (Exo.2.3-10). As an adult, Moses killed an Egyptian who was beating a Hebrew and fled to Midian (Exo.2.11-15). There he married Zipporah and worked as a shepherd for his father-in-law Jethro (Exo.2.16-22). \n\nGod appeared to Moses in a burning bush and called him to lead Israel out of Egypt (Exodus 3-4). Moses, along with his brother Aaron, went to Pharaoh demanding that he let Israel go (Exo.5.1). Through a series of ten plagues, God compelled Pharaoh to release the Israelites (Exodus 7-12). Moses led them out of Egypt, through the Red Sea, and to Mount Sinai (Exodus 13-19). There God gave Moses the law and instructions for the tabernacle (Exodus 20-31). \n\nWhile Moses was on the mountain, Israel made and worshiped a golden calf (Exodus 32). Moses interceded for the people and God relented from destroying them (Exodus 32-34). Moses oversaw the construction of the tabernacle (Exodus 35-40). He led Israel for forty years in the wilderness, mediating between them and God (Numbers, Deuteronomy). God prohibited Moses from entering Canaan because of his disobedience at Meribah (Num.20.1-13). Before his death, Moses viewed the promised land from Mount Nebo (Deu.34.1-4). He died at 120 years old and was buried by God (Deu.34.5-8). \n\nThe New Testament refers to Moses as the giver of the law (Jhn.1.17), a type of Christ (Jhn.3.14), and the greatest prophet of the old covenant (Act.3.22-23). \n\nHe is named \"Manasseh\" in several manuscripts of Judges 18.30 to save shaming his name when his grandson set up an idol.",
+          "refs": [
+            "5"
+          ]
+        },
+        {
+          "name": "Egypt",
+          "strong": "H4714G",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Ancient nation; Israelites enslaved there; plagues and Exodus",
+          "short": "Egypt, a powerful nation where the Israelites were enslaved until God delivered them in the Exodus.",
+          "article": "Egypt was a prominent ancient civilization in northeastern Africa, concentrated along the lower reaches of the Nile River. In the Bible, Egypt is first mentioned as the place Abraham journeyed during a famine in Canaan (Genesis 12:10). Later, Joseph was sold into slavery in Egypt but rose to power as a trusted official of Pharaoh. During a famine, Israel (or 'Jacob') and his family settled in Egypt with Joseph. \n\nAfter generations passed, the Israelites were enslaved by the Egyptians (Exodus 1:8-14). God called Moses to deliver His people from bondage. After Pharaoh refused to free the Israelites, God sent ten plagues upon Egypt (Exodus 7-12). Finally, Pharaoh relented and the Israelites left in the Exodus. At the Red Sea, God miraculously allowed the Israelites to cross on dry ground but destroyed the pursuing Egyptian army (Exodus 14). \n\nEgypt is often used in the Bible as a symbol of bondage and oppression. The prophets warned against trusting in Egypt's power instead of God (Isaiah 30:1-3, 31:1). Yet Egypt was also a place of refuge, as when Mary, Joseph and Jesus fled there to escape Herod (Matthew 2:13-15).",
+          "refs": [
+            "9"
+          ]
+        },
+        {
+          "name": "Holy_Place",
+          "strong": "H6944J",
+          "type": "Place",
+          "briefest": "",
+          "brief": "The inner sanctuary of the Tabernacle and Temple",
+          "short": "The Holy Place was the inner sanctuary of the Tabernacle and Temple.",
+          "article": "The Holy Place refers to the inner sanctuary of the Tabernacle and later the Temple, where the priests performed their duties. It was separated from the outer court by a veil (Exodus 26:33). The Holy Place contained the lampstand, the table of showbread, and the altar of incense (Exodus 31:8; 35:19; 39:1). Only consecrated priests could enter the Holy Place (Exodus 28:29,43; 29:30). Rituals performed there included burning incense and presenting offerings (Leviticus 6:30; Numbers 28:7). The Holy Place represented God's presence among His people, though access was restricted. In the New Testament, Christ's sacrifice opened the way for believers to enter God's presence (Hebrews 9:12; 10:19).",
+          "refs": [
+            "2"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 9,
+      "entries": [
+        {
+          "name": "Aaron",
+          "strong": "H0175",
+          "type": "Male",
+          "briefest": "High Priest",
+          "brief": "Moses' brother, first high priest of Israel",
+          "short": "Aaron was Moses' older brother and served as the first high priest of Israel.",
+          "article": "Aaron was the older brother of Moses and Miriam, from the tribe of Levi. God appointed Aaron to be Moses' spokesman when Moses was called to lead the Israelites out of Egypt. Aaron performed signs before Pharaoh, including turning his staff into a snake. He assisted Moses during the Exodus, including holding up Moses' arms during the battle against the Amalekites. \n\nGod chose Aaron and his descendants to serve as priests for the Israelites. Aaron was consecrated as the first high priest and wore special priestly garments. He was responsible for offering sacrifices, burning incense, and performing other priestly duties in the tabernacle. Aaron also played a role in several significant events, such as the golden calf incident and the rebellion of Korah. \n\nAaron married Elisheba, and they had four sons: Nadab, Abihu, Eleazar, and Ithamar. Nadab and Abihu died when they offered unauthorized fire before the Lord. Aaron died at the age of 123 on Mount Hor, and his son Eleazar succeeded him as high priest. Despite his flaws, Aaron was a key figure in Israel's history and played a crucial role in establishing the priesthood.",
+          "refs": [
+            "4"
+          ]
+        },
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            "11",
+            "14",
+            "24",
+            "28"
+          ]
+        },
+        {
+          "name": "Moses",
+          "strong": "H4872",
+          "type": "Male",
+          "briefest": "Son of Amram",
+          "brief": "Prophet who led Israel out of Egypt",
+          "short": "Moses was a prophet whom God used to lead Israel out of slavery in Egypt and give them the law.",
+          "article": "Moses was born to Amram and Jochebed, Levites in Egypt, at a time when Pharaoh had commanded that all Hebrew male infants be killed (Exo.2.1-2). His mother hid him for three months, then placed him in a basket on the Nile where Pharaoh's daughter found and adopted him (Exo.2.3-10). As an adult, Moses killed an Egyptian who was beating a Hebrew and fled to Midian (Exo.2.11-15). There he married Zipporah and worked as a shepherd for his father-in-law Jethro (Exo.2.16-22). \n\nGod appeared to Moses in a burning bush and called him to lead Israel out of Egypt (Exodus 3-4). Moses, along with his brother Aaron, went to Pharaoh demanding that he let Israel go (Exo.5.1). Through a series of ten plagues, God compelled Pharaoh to release the Israelites (Exodus 7-12). Moses led them out of Egypt, through the Red Sea, and to Mount Sinai (Exodus 13-19). There God gave Moses the law and instructions for the tabernacle (Exodus 20-31). \n\nWhile Moses was on the mountain, Israel made and worshiped a golden calf (Exodus 32). Moses interceded for the people and God relented from destroying them (Exodus 32-34). Moses oversaw the construction of the tabernacle (Exodus 35-40). He led Israel for forty years in the wilderness, mediating between them and God (Numbers, Deuteronomy). God prohibited Moses from entering Canaan because of his disobedience at Meribah (Num.20.1-13). Before his death, Moses viewed the promised land from Mount Nebo (Deu.34.1-4). He died at 120 years old and was buried by God (Deu.34.5-8). \n\nThe New Testament refers to Moses as the giver of the law (Jhn.1.17), a type of Christ (Jhn.3.14), and the greatest prophet of the old covenant (Act.3.22-23). \n\nHe is named \"Manasseh\" in several manuscripts of Judges 18.30 to save shaming his name when his grandson set up an idol.",
+          "refs": [
+            "19"
+          ]
+        },
+        {
+          "name": "Cherub",
+          "strong": "H3743",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Babylonian location; home of some returning exiles",
+          "short": "Cherub was a place in Babylonia from which some Jewish exiles returned to Jerusalem after the Babylonian captivity.",
+          "article": "Cherub is mentioned twice in the Bible, both in the context of the return of Jewish exiles from Babylonia to Jerusalem after the Babylonian captivity (Ezra 2:59; Nehemiah 7:61). In these passages, Cherub is listed along with other places, such as Tel-melah and Tel-harsha, as the hometowns of some of the returning exiles. \n\nThese exiles were unable to prove their lineage as Israelites or to trace their ancestry to specific families. This suggests that during the Babylonian captivity, some Jews may have settled in Cherub and other nearby towns, and over time, their family records were lost or destroyed. \n\nThe exact location of Cherub is unknown, but it was likely a small town or village in Babylonia, where a community of Jewish exiles had lived during the captivity. The name \"Cherub\" may be derived from the Akkadian word \"kāribu,\" which means \"intercessor\" or \"one who blesses,\" possibly indicating a religious significance of the town in Babylonian culture. \n\nThe mention of Cherub in the lists of returning exiles highlights the challenges faced by some Jews in proving their heritage and the diversity of locations from which they returned to rebuild Jerusalem and the temple.",
+          "refs": [
+            "5"
+          ]
+        },
+        {
+          "name": "Holy_Place",
+          "strong": "H6944J",
+          "type": "Place",
+          "briefest": "",
+          "brief": "The inner sanctuary of the Tabernacle and Temple",
+          "short": "The Holy Place was the inner sanctuary of the Tabernacle and Temple.",
+          "article": "The Holy Place refers to the inner sanctuary of the Tabernacle and later the Temple, where the priests performed their duties. It was separated from the outer court by a veil (Exodus 26:33). The Holy Place contained the lampstand, the table of showbread, and the altar of incense (Exodus 31:8; 35:19; 39:1). Only consecrated priests could enter the Holy Place (Exodus 28:29,43; 29:30). Rituals performed there included burning incense and presenting offerings (Leviticus 6:30; Numbers 28:7). The Holy Place represented God's presence among His people, though access was restricted. In the New Testament, Christ's sacrifice opened the way for believers to enter God's presence (Hebrews 9:12; 10:19).",
+          "refs": [
+            "1",
+            "2",
+            "8",
+            "12",
+            "24",
+            "25"
+          ]
+        },
+        {
+          "name": "Most_Holy_Place",
+          "strong": "H6944H",
+          "type": "Place",
+          "briefest": "",
+          "brief": "The innermost room of the tabernacle and temple",
+          "short": "The Most Holy Place was the innermost room of the tabernacle and temple, where the Ark of the Covenant was kept.",
+          "article": "The Most Holy Place, also known as the Holy of Holies, was the innermost room of the tabernacle and later the temple in Jerusalem. It was separated from the Holy Place by a veil (Exod. 26:31-33). The Ark of the Covenant, which contained the tablets of the Ten Commandments, was kept in the Most Holy Place (Exod. 25:10-22; 1Kgs. 8:6). The high priest entered the Most Holy Place only once a year, on the Day of Atonement, to make atonement for the sins of the people (Lev. 16). The Most Holy Place was a perfect cube, measuring 20 cubits in length, width, and height (1Kgs. 6:20; 2Chr. 3:8). It was overlaid with pure gold and contained gold cherubim (1Kgs. 6:28; 2Chr. 3:10-13). The Most Holy Place represented the dwelling place of God among His people.",
+          "refs": [
+            "3"
           ]
         }
       ]
@@ -103,7 +519,336 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            10
+            "10",
+            "19"
+          ]
+        },
+        {
+          "name": "Moses",
+          "strong": "H4872",
+          "type": "Male",
+          "briefest": "Son of Amram",
+          "brief": "Prophet who led Israel out of Egypt",
+          "short": "Moses was a prophet whom God used to lead Israel out of slavery in Egypt and give them the law.",
+          "article": "Moses was born to Amram and Jochebed, Levites in Egypt, at a time when Pharaoh had commanded that all Hebrew male infants be killed (Exo.2.1-2). His mother hid him for three months, then placed him in a basket on the Nile where Pharaoh's daughter found and adopted him (Exo.2.3-10). As an adult, Moses killed an Egyptian who was beating a Hebrew and fled to Midian (Exo.2.11-15). There he married Zipporah and worked as a shepherd for his father-in-law Jethro (Exo.2.16-22). \n\nGod appeared to Moses in a burning bush and called him to lead Israel out of Egypt (Exodus 3-4). Moses, along with his brother Aaron, went to Pharaoh demanding that he let Israel go (Exo.5.1). Through a series of ten plagues, God compelled Pharaoh to release the Israelites (Exodus 7-12). Moses led them out of Egypt, through the Red Sea, and to Mount Sinai (Exodus 13-19). There God gave Moses the law and instructions for the tabernacle (Exodus 20-31). \n\nWhile Moses was on the mountain, Israel made and worshiped a golden calf (Exodus 32). Moses interceded for the people and God relented from destroying them (Exodus 32-34). Moses oversaw the construction of the tabernacle (Exodus 35-40). He led Israel for forty years in the wilderness, mediating between them and God (Numbers, Deuteronomy). God prohibited Moses from entering Canaan because of his disobedience at Meribah (Num.20.1-13). Before his death, Moses viewed the promised land from Mount Nebo (Deu.34.1-4). He died at 120 years old and was buried by God (Deu.34.5-8). \n\nThe New Testament refers to Moses as the giver of the law (Jhn.1.17), a type of Christ (Jhn.3.14), and the greatest prophet of the old covenant (Act.3.22-23). \n\nHe is named \"Manasseh\" in several manuscripts of Judges 18.30 to save shaming his name when his grandson set up an idol.",
+          "refs": [
+            "28"
+          ]
+        },
+        {
+          "name": "Holy_Place",
+          "strong": "H6944J",
+          "type": "Place",
+          "briefest": "",
+          "brief": "The inner sanctuary of the Tabernacle and Temple",
+          "short": "The Holy Place was the inner sanctuary of the Tabernacle and Temple.",
+          "article": "The Holy Place refers to the inner sanctuary of the Tabernacle and later the Temple, where the priests performed their duties. It was separated from the outer court by a veil (Exodus 26:33). The Holy Place contained the lampstand, the table of showbread, and the altar of incense (Exodus 31:8; 35:19; 39:1). Only consecrated priests could enter the Holy Place (Exodus 28:29,43; 29:30). Rituals performed there included burning incense and presenting offerings (Leviticus 6:30; Numbers 28:7). The Holy Place represented God's presence among His people, though access was restricted. In the New Testament, Christ's sacrifice opened the way for believers to enter God's presence (Hebrews 9:12; 10:19).",
+          "refs": [
+            "19"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 11,
+      "entries": [
+        {
+          "name": "Abel",
+          "strong": "H1893",
+          "type": "Male",
+          "briefest": "Son of Adam",
+          "brief": "Adam and Eve's second son, killed by Cain",
+          "short": "Abel, the second son of Adam and Eve, was a shepherd who was killed by his brother Cain.",
+          "article": "Abel was the second son of Adam and Eve, born after his brother Cain. He was a shepherd, while Cain was a farmer. Both brothers brought offerings to God, but God accepted Abel's offering and rejected Cain's. This led to Cain's jealousy and anger, and he killed Abel in a field. \n\nGod confronted Cain about Abel's murder, and as a result, Cain was cursed to be a wanderer on the earth. The New Testament references Abel as an example of faith (Heb.11.4) and as a righteous man whose blood cried out for justice (Mat.23.35; Luk.11.51). Abel's blood is also contrasted with the blood of Jesus, which speaks of better things (Heb.12.24). After Abel's death, Adam and Eve had another son named Seth.",
+          "refs": [
+            "4"
+          ]
+        },
+        {
+          "name": "Abraham",
+          "strong": "H0085",
+          "type": "Male",
+          "briefest": "Son of Terah",
+          "brief": "Patriarch, chosen by God to father His people",
+          "short": "Abraham, originally named Abram, was the patriarch whom God called to leave his homeland and blessed to become the father of many nations, establishing His covenant with him and his descendants.",
+          "article": "Abraham, initially named Abram, was a central figure in the early history of the Israelites. He was born in Ur of the Chaldeans and was the son of Terah (Gen.11.26-31). God called Abram to leave his country and family and go to a land that He would show him, promising to make him a great nation and to bless all peoples through him (Gen.12.1-3). \n\nAbram obeyed God and journeyed to Canaan with his wife Sarai and his nephew Lot (Gen.12.4-5). God reaffirmed His covenant with Abram, promising him numerous descendants and the land of Canaan (Gen.13.14-17; 15.1-21). God changed Abram's name to Abraham, meaning \"father of many,\" and Sarai's name to Sarah (Gen.17.1-16). \n\nDespite their advanced age, Abraham and Sarah miraculously bore a son, Isaac, through whom God's covenant would be established (Gen.18.1-15; 21.1-7). Abraham demonstrated his faith and obedience when God tested him by asking him to sacrifice Isaac (Gen.22.1-19). God provided a ram as a substitute, reaffirming His promise to Abraham (Gen.22.15-18). \n\nAbraham's faith was credited to him as righteousness (Gen.15.6; Rom.4.3; Gal.3.6; Jam 2.23). He became known as the father of the faithful and the friend of God (Isa.41.8; 2Ch.20.7; Jam 2.23). God's covenant with Abraham, which included the promise of land, descendants, and blessing, was passed down to his son Isaac and grandson Israel (or 'Jacob') (Gen.26.1-5; 28.10-15). \n\nThe life and faith of Abraham are significant in both the Old and New Testaments. He is recognized as the ancestor of the Israelites (Exo.2.24; 3.6, 15-16; 4.5) and is mentioned in connection with God's faithfulness and His promises (Exo.6.8; 32.13; 33.1; Lev.26.42). In the New Testament, Abraham is upheld as an example of faith (Rom.4.1-3, 9, 12, 16; Gal.3.6-9, 14, 29; Heb.11.8-19) and is identified as the spiritual father of all believers (Rom.4.11-12, 16-17; Gal.3.7, 29). \n\nJesus Christ is identified as the ultimate fulfillment of God's promises to Abraham (Mat.1.1; Gal.3.16). Through faith in Christ, believers from all nations become part of Abraham's spiritual lineage and heirs to the promises made to him (Gal.3.7-9, 14, 26-29).",
+          "refs": [
+            "8",
+            "17"
+          ]
+        },
+        {
+          "name": "Barak",
+          "strong": "H1301",
+          "type": "Male",
+          "briefest": "A Judge",
+          "brief": "An Israelite commander who defeated Canaanite forces with Deborah.",
+          "short": "Barak, son of Abinoam, led the Israelites to victory against Canaanite forces under Deborah's leadership.",
+          "article": "Barak was an Israelite commander from the tribe of Naphtali who played a significant role in the victory over the Canaanite forces led by Sisera (Judges 4). Deborah, a prophetess and judge of Israel, summoned Barak and instructed him to gather troops from the tribes of Naphtali and Zebulun to fight against Sisera's army. Barak agreed to go only if Deborah accompanied him, to which she consented but prophesied that the honor of the victory would go to a woman. Barak led the Israelite forces to Mount Tabor, where they decisively defeated Sisera's army. The victory was celebrated in the Song of Deborah and Barak (Judges 5), which praises their leadership and God's deliverance. Barak is later mentioned in 1Sa.12.11 as one of the deliverers sent by God to save Israel from their enemies. The New Testament also commends Barak's faith in Heb.11.32, listing him among the examples of those who through faith conquered kingdoms and administered justice.",
+          "refs": [
+            "32"
+          ]
+        },
+        {
+          "name": "Cain",
+          "strong": "H7014B",
+          "type": "Male",
+          "briefest": "Son of Adam",
+          "brief": "Adam and Eve's firstborn son, killed his brother Abel",
+          "short": "Cain, the firstborn son of Adam and Eve, murdered his brother Abel and was cursed by God to be a wanderer.",
+          "article": "Cain was the firstborn son of Adam and Eve, and he is known for killing his brother Abel (Gen. 4; Heb. 11:4; 1Jn.3.12; Jud.1.11). Cain was a farmer, while Abel was a shepherd. When both brothers brought offerings to God, the Lord accepted Abel's offering but rejected Cain's, which led to Cain's anger and jealousy. Despite God's warning to master his sinful desires, Cain lured Abel into the field and murdered him. As a result, God cursed Cain to be a restless wanderer on the earth and banished him from His presence. Cain's descendants, known as the Cainites, are mentioned in the genealogy of Genesis 4, which highlights the spread of sin and the development of civilization apart from God. The New Testament references to Cain portray him as an example of unbelief, wickedness, and rebellion against God (Heb. Jud.11.4; 1Jn.3.12; Jud.1.11). Cain's story serves as a warning about the consequences of sin, jealousy, and disobedience to God.",
+          "refs": [
+            "4"
+          ]
+        },
+        {
+          "name": "David",
+          "strong": "H1732",
+          "type": "Male",
+          "briefest": "King of Judah",
+          "brief": "Anointed king of Israel, ancestor of Jesus Christ",
+          "short": "David, son of Jesse, was the anointed king of Israel, a man after God's own heart, and an ancestor of Jesus Christ.",
+          "article": "David, the son of Jesse from Bethlehem, was a prominent figure in the Old Testament and is mentioned extensively throughout the Bible. He was anointed by Samuel to be king over Israel, succeeding Saul (1Sa.16.13). David first gained fame as a young man by defeating the Philistine giant Goliath with a sling and a stone (1Samuel 17). \n\nDavid's reign as king was marked by military successes, as he defeated the enemies of Israel and expanded the kingdom (2Samuel 8). He is known for his devotion to God and is called \"a man after God's own heart\" (1Sa.13.14; Act.13.22). Many of the psalms in the Bible are attributed to David, reflecting his deep faith and trust in God (e.g., Psalms 3, 23, 51). \n\nHowever, David's life was not without flaws. He committed adultery with Bathsheba and orchestrated the death of her husband, Uriah (2Samuel 11). As a result, David faced consequences, including the death of his child and turmoil within his family (2Samuel 12-18). \n\nDespite his failings, David remained a central figure in Israel's history and a model of repentance and faith. He was promised an enduring dynasty, and the Messiah would come from his lineage (2Sa.7.12-16). This prophecy was fulfilled in Jesus Christ, who is called the \"Son of David\" (Mat.1.1; Rom.1.3). \n\nDavid's life and reign are recorded in 1 and 2 Samuel, 1 Chronicles, and portions of 1 Kings. His significance extends into the New Testament, where he is mentioned in connection with Jesus' lineage and messianic identity (Mat.1.1; Luk.1.32; Act.13.22-23; Rev.22.16).",
+          "refs": [
+            "32"
+          ]
+        },
+        {
+          "name": "Enoch",
+          "strong": "H2585H",
+          "type": "Male",
+          "briefest": "Son of Jared",
+          "brief": "A righteous man who walked with God.",
+          "short": "Enoch, the son of Jared, walked with God and was taken by Him without experiencing death.",
+          "article": "Enoch, the son of Jared, is a significant figure in the genealogy of the righteous line of Seth (Gen.5.18,19). He is described as a man who walked with God, indicating his close relationship and faithfulness to the Creator (Gen.5.22,24). Enoch's life is characterized by his exceptional piety and devotion, which sets him apart from the other individuals in the genealogy. The text states that Enoch lived a total of 365 years (Gen.5.23), which is notably shorter than the lifespans of the other patriarchs mentioned in the genealogy. The most remarkable aspect of Enoch's life is that he did not experience death; instead, God took him directly into His presence (Gen.5.24). This event is later referenced in the New Testament as an example of faith and divine favor (Heb.11.5). Enoch is also mentioned in the genealogy of Jesus Christ, linking him to the Messianic lineage (Luk.3.37). In the book of Jude, Enoch is described as a prophet who spoke about the judgment of the ungodly (Jud.1.14), indicating that he had a role in proclaiming God's message to his generation. Enoch's life serves as an example of a faithful servant of God who maintained a close relationship with Him in the midst of a world that was increasingly distant from the Creator.",
+          "refs": [
+            "5"
+          ]
+        },
+        {
+          "name": "Esau",
+          "strong": "H6215G",
+          "type": "Male",
+          "briefest": "Son of Isaac",
+          "brief": "Isaac's firstborn son; sold birthright to Jacob; became Edom.",
+          "short": "Esau, also called Edom, was Isaac's firstborn son who sold his birthright to his twin brother Jacob and became the father of the Edomites.",
+          "article": "Esau, also known as Edom, was the firstborn son of Isaac and Rebekah and the twin brother of Israel (or 'Jacob') (Gen.25.25-26). He was a skillful hunter and his father's favorite son (Gen.25.27-28). Esau sold his birthright to Jacob for a bowl of stew when he was famished (Gen.25.29-34). He married two Hittite women, causing grief to his parents (Gen.26.34-35). Esau lost his father's blessing to Jacob through deception (Genesis 27). He held a grudge against Jacob but later reconciled with him (Genesis 32-33). Esau settled in the hill country of Seir, which became known as Edom (Gen.36.8-9). He had five sons and became the father of the Edomites (Gen.36.1-43). The Edomites were later considered enemies of Israel (Num.20.14-21; 1Sa.14.47; 2Sa.8.13-14). God's love for Jacob and His rejection of Esau is used as an example of His sovereignty (Mal.1.2-3; Rom.9.13).",
+          "refs": [
+            "20"
+          ]
+        },
+        {
+          "name": "Gideon",
+          "strong": "H1439",
+          "type": "Male",
+          "briefest": "A Judge",
+          "brief": "Judge of Israel; defeated Midianites; tested and reassured by God.",
+          "short": "Gideon, also called Jerubbaal or Jerubbesheth, was a judge of Israel who, with God's help, defeated the Midianites and delivered Israel from oppression.",
+          "article": "Gideon, also known as Jerubbaal or Jerubbesheth, was a judge of Israel during the period of the judges, as recorded in the book of Judges, chapters 6-8. He is also mentioned in Heb.11.32 as an example of faith. Gideon was the son of Joash, from the clan of Abiezer in the tribe of Manasseh (Jdg.6.11, 15). During a time when Israel was oppressed by the Midianites, God called Gideon to deliver His people (Jdg.6.14). Gideon initially doubted his ability to save Israel, but God reassured him through various signs, including a fleece wet with dew (Jdg.6.36-40). Gideon destroyed the altar of Baal and the Asherah pole, earning him the name Jerubbaal, which means \"let Baal contend against him\" (Jdg.6.25-32). \n\nWith a reduced army of 300 men, chosen by God, Gideon defeated the Midianites through a surprise attack, using trumpets, empty jars, and torches (Jdg.7.1-25). He pursued the Midianite kings, Zebah and Zalmunna, and captured them (Jdg.8.4-21). After the victory, the Israelites asked Gideon to rule over them, but he refused, stating that only God should rule over Israel (Jdg.8.22-23). However, Gideon made an ephod from the gold taken from the Midianites, which became a snare to him and his family (Jdg.8.24-27). \n\nGideon had seventy sons and many wives, including a concubine from Shechem who bore him a son named Abimelech (Jdg.8.29-31). After Gideon's death, Abimelech killed his seventy brothers and became king of Shechem, but his rule was short-lived and ended in his death (Judges 9). Gideon is remembered as a deliverer of Israel, and his story is referenced in 1Sa.12.11 and 2Sa.11.21. The name Jerubbesheth (2Sa.11.21) is a variation of Jerubbaal, with \"besheth\" (meaning \"shame\") replacing \"baal\" to avoid using the name of the pagan god.",
+          "refs": [
+            "32"
+          ]
+        },
+        {
+          "name": "Isaac",
+          "strong": "H3327",
+          "type": "Male",
+          "briefest": "Son of Abraham",
+          "brief": "Son of Abraham; father of Jacob and Esau.",
+          "short": "Isaac was the son of Abraham and Sarah, and the father of Jacob and Esau. God made a covenant with him, renewing the promises given to Abraham.",
+          "article": "Isaac was the long-promised son born to Abraham and Sarah in their old age, as recorded in Genesis. He was the child of the covenant, through whom God had promised to fulfill his purposes for Abraham's descendants (Gen.17.19,21). Isaac was circumcised on the eighth day (Gen.21.4) and grew up as Abraham's heir. \n\nWhen he was a youth, God tested Abraham by commanding him to offer Isaac as a sacrifice (Gen.22). Abraham obeyed, but at the last moment God provided a ram as a substitute. This event foreshadowed God's provision of his own Son as the ultimate sacrifice. \n\nIsaac married Rebekah, and they had twin sons, Esau and Israel (or 'Jacob') (Gen.25.21-26). Isaac favored Esau, while Rebekah favored Jacob, leading to family conflict. Jacob deceived Isaac into giving him the firstborn blessing (Gen.27). \n\nIsaac settled in Gerar, where God confirmed to him the covenant promises (Gen.26.1-5). Like his father, he passed off his wife as his sister out of fear (Gen.26.7-11). He reopened Abraham's wells and dug new ones, showing his claim to the land. \n\nIsaac died at the age of 180 and was buried by his sons (Gen.35.29). God is identified as the God of Abraham, Isaac and Jacob, linking Isaac to the patriarchal promises (Exo.3.6). The New Testament upholds Isaac as an example of faith (Heb.11.20) and miraculous birth (Gal.4.28-29).",
+          "refs": [
+            "9",
+            "17",
+            "18",
+            "20"
+          ]
+        },
+        {
+          "name": "Israel",
+          "strong": "H3478",
+          "type": "Male",
+          "briefest": "Son of Isaac",
+          "brief": "Patriarch, son of Isaac, father of twelve tribes",
+          "short": "Israel, also named Jacob, was the son of Isaac, the father of the twelve tribes of Israel, and a key patriarch of the Jewish people.",
+          "article": "Israel, also known as Jacob, was the son of Isaac and Rebekah, and the grandson of Abraham. He was born after his twin brother Esau (Gen. 25:24-26). \n\nJacob bought Esau's birthright for a bowl of stew when Esau was famished (Gen. 25:29-34). He then deceived his father Isaac into giving him the firstborn blessing (Gen. 27). To escape Esau's anger, Jacob fled to his uncle Laban in Paddan-aram (Gen. 28:1-5). \n\nOn the way, Jacob had a dream of a stairway to heaven at Bethel, where God confirmed the covenant promises to him (Gen. 28:10-22). Jacob worked for Laban for 14 years, marrying his daughters Leah and Rachel (Gen. 29). \n\nWanting to return home, Jacob left Paddan-aram with his family and flocks. On the way, he wrestled with God at Peniel and was renamed Israel, meaning \"he struggles with God\" (Gen. 32:22-32). Israel (or 'Jacob') reconciled with Esau and settled in Canaan (Gen. 33). \n\nJacob had twelve sons who became the ancestors of the twelve tribes of Israel: Reuben, Simeon, Levi, Judah, Issachar, Zebulun, Joseph, Benjamin, Dan, Naphtali, Gad and Asher (Gen. 35:23-26). \n\nJacob showed favoritism to Joseph, provoking his brothers to sell Joseph into slavery in Egypt (Gen. 37). Later, during a famine, Jacob's sons went to Egypt for food and were reconciled with Joseph, who had risen to power there (Gen. 42-46). \n\nJacob moved his whole family to Egypt, where he lived for 17 years (Gen. 47:28). Before his death, Jacob blessed Joseph's sons Ephraim and Manasseh (Gen. 48) and gave prophetic blessings to his own twelve sons (Gen. 49). He died at age 147 and was buried in Canaan (Gen. 49:33; 50:1-14). \n\nGod often identified Himself as the \"God of Abraham, Isaac and Jacob\" and reaffirmed His covenant promises to Jacob's descendants (e.g. Exo. 3:6,15). The nation of Israel took its name from Jacob and the Jewish people are his descendants. The name Jeshurun is used as a poetic name for Israel (Deut. 32:15; 33:5,26; Isa. 44:2).",
+          "refs": [
+            "22",
+            "9",
+            "20",
+            "21"
+          ]
+        },
+        {
+          "name": "Jephthah",
+          "strong": "H3316H",
+          "type": "Male",
+          "briefest": "A Judge",
+          "brief": "A judge of Israel, known for his tragic vow.",
+          "short": "Jephthah was a judge of Israel who delivered the Israelites from the Ammonites but made a tragic vow that resulted in the sacrifice of his daughter.",
+          "article": "Jephthah was a judge of Israel during the period between the conquest of Canaan and the establishment of the monarchy. He was the son of Gilead and a prostitute, and his half-brothers drove him away from the family inheritance. Jephthah fled to the land of Tob, where he gathered a group of warriors around him. When the Ammonites attacked Israel, the elders of Gilead asked Jephthah to lead them in battle, promising him leadership if he succeeded. Jephthah made a vow to God, pledging to sacrifice the first thing that came out of his house to meet him if he were victorious. Jephthah defeated the Ammonites, but tragically, his daughter was the first to greet him upon his return. Jephthah fulfilled his vow, and his daughter willingly submitted to her fate. Jephthah judged Israel for six years before his death. His story highlights the importance of making wise vows and the consequences of rash decisions. Despite his tragic vow, Jephthah is commended in the New Testament for his faith and is listed among the heroes of faith in Hebrews 11.",
+          "refs": [
+            "32"
+          ]
+        },
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            "26"
+          ]
+        },
+        {
+          "name": "Joseph",
+          "strong": "H3130G",
+          "type": "Male",
+          "briefest": "Jacob's son",
+          "brief": "Son of Jacob, ruler in Egypt",
+          "short": "Joseph, Jacob's son, rose to power in Egypt and saved his family during a famine.",
+          "article": "Joseph was the eleventh son of Israel (or 'Jacob') and the firstborn of Rachel (Gen.30.22-24). He was favored by his father, causing jealousy among his brothers (Gen.37.3-4). Joseph had dreams of his family bowing down to him, further straining the relationships (Gen.37.5-11). His brothers sold him into slavery, and he was taken to Egypt (Gen.37.12-36). In Egypt, Joseph served in Potiphar's house, where he was falsely accused and imprisoned (Genesis 39). While in prison, Joseph interpreted the dreams of Pharaoh's cupbearer and baker (Genesis 40). Later, he interpreted Pharaoh's dreams and was appointed as second-in-command over Egypt (Gen.41.1-45). During this time, he was given the name Zaphenath-paneah by Pharaoh (Gen.41.45). Joseph managed Egypt's resources wisely during the years of plenty and famine (Gen.41.46-57). His brothers came to Egypt for food, and after testing them, Joseph revealed his identity and reconciled with them (Genesis 42-45). Joseph brought his father, Jacob, and his entire family to Egypt, where they settled in the land of Goshen (Genesis 46-47). Before his death, Jacob blessed Joseph's sons, Ephraim and Manasseh, and prophesied about Joseph's descendants (Genesis 48-49). Joseph died at the age of 110 and was embalmed and placed in a coffin in Egypt (Gen.50.22-26). His bones were later carried out of Egypt by the Israelites during the Exodus and buried at Shechem (Exo.13.19; Jos.24.32). Joseph's life exemplified faith, forgiveness, and God's providence in the midst of hardship.",
+          "refs": [
+            "21",
+            "22"
+          ]
+        },
+        {
+          "name": "Moses",
+          "strong": "H4872",
+          "type": "Male",
+          "briefest": "Son of Amram",
+          "brief": "Prophet who led Israel out of Egypt",
+          "short": "Moses was a prophet whom God used to lead Israel out of slavery in Egypt and give them the law.",
+          "article": "Moses was born to Amram and Jochebed, Levites in Egypt, at a time when Pharaoh had commanded that all Hebrew male infants be killed (Exo.2.1-2). His mother hid him for three months, then placed him in a basket on the Nile where Pharaoh's daughter found and adopted him (Exo.2.3-10). As an adult, Moses killed an Egyptian who was beating a Hebrew and fled to Midian (Exo.2.11-15). There he married Zipporah and worked as a shepherd for his father-in-law Jethro (Exo.2.16-22). \n\nGod appeared to Moses in a burning bush and called him to lead Israel out of Egypt (Exodus 3-4). Moses, along with his brother Aaron, went to Pharaoh demanding that he let Israel go (Exo.5.1). Through a series of ten plagues, God compelled Pharaoh to release the Israelites (Exodus 7-12). Moses led them out of Egypt, through the Red Sea, and to Mount Sinai (Exodus 13-19). There God gave Moses the law and instructions for the tabernacle (Exodus 20-31). \n\nWhile Moses was on the mountain, Israel made and worshiped a golden calf (Exodus 32). Moses interceded for the people and God relented from destroying them (Exodus 32-34). Moses oversaw the construction of the tabernacle (Exodus 35-40). He led Israel for forty years in the wilderness, mediating between them and God (Numbers, Deuteronomy). God prohibited Moses from entering Canaan because of his disobedience at Meribah (Num.20.1-13). Before his death, Moses viewed the promised land from Mount Nebo (Deu.34.1-4). He died at 120 years old and was buried by God (Deu.34.5-8). \n\nThe New Testament refers to Moses as the giver of the law (Jhn.1.17), a type of Christ (Jhn.3.14), and the greatest prophet of the old covenant (Act.3.22-23). \n\nHe is named \"Manasseh\" in several manuscripts of Judges 18.30 to save shaming his name when his grandson set up an idol.",
+          "refs": [
+            "23",
+            "24"
+          ]
+        },
+        {
+          "name": "Noah",
+          "strong": "H5146",
+          "type": "Male",
+          "briefest": "Flood survivor",
+          "brief": "Righteous man, built ark, survived flood",
+          "short": "Noah was a righteous man who built the ark and survived the great flood with his family.",
+          "article": "Noah was the son of Lamech, a descendant of Seth (Gen.5.29-30). He was a righteous man, blameless among the people of his time, and he walked faithfully with God (Gen.6.9). When God saw the wickedness of humanity, He chose Noah to build an ark to save his family and representatives of all animals from the coming flood (Gen.6.13-22). Noah obeyed God and built the ark, and he and his family entered it along with the animals (Genesis 7). After the flood, Noah built an altar and made sacrifices to God (Gen.8.20). God blessed Noah and his sons, establishing a covenant with them and setting the rainbow as a sign of His promise never to destroy the earth by flood again (Genesis 9). Noah lived for 950 years (Gen.9.29). He is remembered as an example of faith (Heb.11.7) and righteousness (Ezk.14.14, 20; 2Pe.2.5).",
+          "refs": [
+            "7"
+          ]
+        },
+        {
+          "name": "Pharaoh",
+          "strong": "H6547I",
+          "type": "Male",
+          "briefest": "A Pharaoh",
+          "brief": "Egyptian Pharaoh during Moses' birth and early life",
+          "short": "Pharaoh, the Egyptian ruler who oppressed the Israelites and decreed the killing of Hebrew male infants during the time of Moses' birth.",
+          "article": "This Pharaoh was the Egyptian ruler during the time of Moses' birth and early life (Exodus 1-2). Fearing the growing Hebrew population, Pharaoh enslaved the Israelites and subjected them to hard labor. He ordered the Hebrew midwives to kill any male infants born to the Israelites, but they disobeyed, claiming that Hebrew women gave birth too quickly. Pharaoh then commanded that all Hebrew male infants be thrown into the Nile River. \n\nDuring this time, Moses was born and hidden by his mother for three months. When she could no longer hide him, she placed him in a basket among the reeds of the Nile. Pharaoh's daughter discovered the baby and decided to adopt him, unknowingly hiring Moses' mother as his nurse. Moses grew up in Pharaoh's court, but he later fled Egypt after killing an Egyptian who was mistreating a Hebrew (Exo.2.11-15; Act.7.21-29; Heb.11.24-27). \n\nThe Bible does not provide the specific name or historical identity of this Pharaoh, as the term \"Pharaoh\" was used as a title for Egyptian kings. Some scholars suggest that this Pharaoh may have been from the 18th or 19th Dynasty of the New Kingdom period, possibly Thutmose I, Thutmose II, or Amenhotep I, based on the historical and archaeological evidence of the Israelites' presence in Egypt.",
+          "refs": [
+            "24"
+          ]
+        },
+        {
+          "name": "Rahab",
+          "strong": "H7343",
+          "type": "Female",
+          "briefest": "",
+          "brief": "A Canaanite woman who helped the Israelite spies in Jericho",
+          "short": "Rahab, a Canaanite woman from Jericho, hid the Israelite spies and was spared during the city's destruction.",
+          "article": "Rahab was a Canaanite woman who lived in Jericho at the time of the Israelites' conquest of the Promised Land (Jos.2.1). She is described as a prostitute who provided lodging for the two Israelite spies sent by Joshua to survey the city. When the king of Jericho ordered Rahab to hand over the spies, she hid them on her roof and misdirected the king's men (Jos.2.3-7). Rahab acknowledged the God of Israel and asked for protection for herself and her family when the city would be taken (Jos.2.8-13). The spies agreed to spare her if she would tie a scarlet cord in her window (Jos.2.14-21). During the conquest of Jericho, Rahab and her family were saved as promised (Jos.6.17, 23, 25). Rahab's faith and actions are commended in the New Testament (Heb.11.31; Jam 2.25). She is also mentioned in the genealogy of Jesus, indicating that she married Salmon and became an ancestor of King David and Jesus Christ (Mat.1.5).",
+          "refs": [
+            "31"
+          ]
+        },
+        {
+          "name": "Samson",
+          "strong": "H8123",
+          "type": "Male",
+          "briefest": "A Judge",
+          "brief": "Israelite judge with great strength from God",
+          "short": "Samson was an Israelite judge known for his God-given strength, which he used to fight against the Philistines.",
+          "article": "Samson was an Israelite judge during the period when the Philistines oppressed Israel. His birth was announced by an angel to his parents, Manoah and his wife, who had been barren (Jdg.13.2-5). The angel instructed them to raise Samson as a Nazirite, dedicated to God from birth (Jdg.13.5, 7). As Samson grew, the Lord blessed him, and the Spirit of the Lord began to stir him (Jdg.13.24-25). Samson's life was characterized by his immense strength, which he used to fight against the Philistines. He killed a lion with his bare hands (Jdg.14.5-6), struck down thirty men of Ashkelon (Jdg.14.19), and killed a thousand Philistines with a donkey's jawbone (Jdg.15.14-16). However, Samson's weakness was his attraction to foreign women. He fell in love with a Philistine woman named Delilah, who eventually betrayed him by discovering the secret of his strength (Jdg.16.4-20). The Philistines captured Samson, blinded him, and forced him to grind grain in prison (Jdg.16.21). During a Philistine festival, Samson was brought out to entertain them. He prayed to God for strength one last time and pushed against the pillars of the temple, causing it to collapse and kill himself along with many Philistines (Jdg.16.22-30). Despite his flaws, Samson is remembered as a man of faith who delivered Israel from Philistine oppression (Heb.11.32).",
+          "refs": [
+            "32"
+          ]
+        },
+        {
+          "name": "Samuel",
+          "strong": "H8050G",
+          "type": "Male",
+          "briefest": "Prophet and Judge",
+          "brief": "Prophet and last judge of Israel before the kings",
+          "short": "Samuel was a prophet and the last judge of Israel before the establishment of the monarchy, who anointed both Saul and David as kings.",
+          "article": "Samuel was a prophet and the last judge of Israel before the establishment of the monarchy. He was born to Hannah, who had been barren, and dedicated to the Lord's service from birth (1Sa.1.11, 20). Samuel grew up in the tabernacle under the guidance of Eli the priest (1Sa.2.18, 21, 26). God called Samuel while he was still a boy, and he became a prophet (1Samuel 3). Samuel played a crucial role in Israel's transition from the period of the judges to the monarchy. He led Israel in a decisive victory over the Philistines at Mizpah (1Sa.7.5-14) and served as a judge over Israel (1Sa.7.15-17). When the people demanded a king, Samuel anointed Saul as the first king of Israel (1Samuel 8-10). However, when Saul disobeyed God, Samuel announced that God had rejected him as king (1Samuel 15). Samuel then anointed David as the next king (1Sa.16.1-13). Samuel continued to guide and counsel David, even when Saul pursued him (1Sa.19.18). After Samuel's death, he was buried in Ramah (1Sa.25.1; 28.3). He is remembered as a faithful prophet and judge who played a pivotal role in Israel's history (Psalm 1Sa.99.6; Jer.15.1; Act.3.24; 13.20; Heb.11.32). \n\nIn 1Ch.6.33 he is listed in the genealogy of the Levites, specifically in the line of Kohath, which was one of the three main divisions of the Levites (1Ch.6.1, 33). This Samuel is an ancestor of Heman, who was one of the chief musicians appointed by David to lead worship in the tabernacle (1Ch.6.31-33). It is important to note that this Samuel is not the same person as the prophet and judge Samuel, who was also the son of an Elkanah (1Sa.1.20). The Samuel mentioned in 1Ch.6.33 lived much earlier than the prophet Samuel and was part of the Levitical line that served in the tabernacle and temple worship.",
+          "refs": [
+            "32"
+          ]
+        },
+        {
+          "name": "Sarah",
+          "strong": "H8283",
+          "type": "Female",
+          "briefest": "Sister of Abraham",
+          "brief": "Wife of Abraham; mother of Isaac",
+          "short": "Sarah (or Sarai) was the wife of Abraham and the mother of Isaac, through whom God fulfilled His promise to make Abraham a great nation.",
+          "article": "Sarah, initially named Sarai, was the wife of Abraham and the mother of Isaac. She was born in Ur of the Chaldeans and married Abraham (then known as Abram) while they lived in Haran (Gen.11.29-31). Sarah accompanied Abraham when God called him to leave Haran and go to the land of Canaan (Gen.12.5). Despite God's promise that Abraham would have numerous descendants, Sarah was barren (Gen.11.30). In her impatience, she gave her Egyptian maidservant, Hagar, to Abraham as a wife to bear a child on her behalf (Gen.16.1-4). This resulted in the birth of Ishmael (Gen.16.15-16). When Abraham was 99 years old, God reaffirmed His covenant with him, changed his name from Abram to Abraham, and changed Sarai's name to Sarah (Gen.17.5, 15). God promised that Sarah would bear a son, Isaac, through whom the covenant would be established (Gen.17.19, 21; 18.10-14). Sarah initially laughed at this idea due to her advanced age (Gen.18.12-15). However, as God had promised, Sarah conceived and gave birth to Isaac when she was 90 years old (Gen.21.1-7). Sarah's faith is commended in Heb.11.11, which states that she received the ability to conceive because she considered God faithful to His promise. Sarah died at the age of 127 in Kirjath-arba (Hebron), and Abraham purchased the cave of Machpelah as a burial site for her (Gen.23.1-20). Her life story demonstrates the importance of faith, patience, and trust in God's promises, even in the face of seemingly impossible circumstances.",
+          "refs": [
+            "11"
+          ]
+        },
+        {
+          "name": "Egypt",
+          "strong": "H4714G",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Ancient nation; Israelites enslaved there; plagues and Exodus",
+          "short": "Egypt, a powerful nation where the Israelites were enslaved until God delivered them in the Exodus.",
+          "article": "Egypt was a prominent ancient civilization in northeastern Africa, concentrated along the lower reaches of the Nile River. In the Bible, Egypt is first mentioned as the place Abraham journeyed during a famine in Canaan (Genesis 12:10). Later, Joseph was sold into slavery in Egypt but rose to power as a trusted official of Pharaoh. During a famine, Israel (or 'Jacob') and his family settled in Egypt with Joseph. \n\nAfter generations passed, the Israelites were enslaved by the Egyptians (Exodus 1:8-14). God called Moses to deliver His people from bondage. After Pharaoh refused to free the Israelites, God sent ten plagues upon Egypt (Exodus 7-12). Finally, Pharaoh relented and the Israelites left in the Exodus. At the Red Sea, God miraculously allowed the Israelites to cross on dry ground but destroyed the pursuing Egyptian army (Exodus 14). \n\nEgypt is often used in the Bible as a symbol of bondage and oppression. The prophets warned against trusting in Egypt's power instead of God (Isaiah 30:1-3, 31:1). Yet Egypt was also a place of refuge, as when Mary, Joseph and Jesus fled there to escape Herod (Matthew 2:13-15).",
+          "refs": [
+            "26",
+            "27",
+            "29"
+          ]
+        },
+        {
+          "name": "Jericho",
+          "strong": "H3405G",
+          "type": "Place",
+          "briefest": "",
+          "brief": "An ancient city in Canaan, famously conquered by Israel",
+          "short": "Jericho, an ancient Canaanite city famously conquered by the Israelites under Joshua's leadership.",
+          "article": "Jericho, also known as the \"City of Palms,\" was a prominent city in the Jordan Valley near the Jordan River. It is one of the oldest continuously inhabited cities in the world, with archaeological evidence dating back to 9000 BC. In the Bible, Jericho is most famous as the first city conquered by the Israelites after they crossed the Jordan River into the Promised Land (Joshua 2-6). The city's walls miraculously fell after the Israelites marched around it for seven days, allowing them to destroy the city. Jericho was allotted to the tribe of Benjamin (Joshua 18:21) and was later rebuilt during the time of Ahab (1Ki.16.34). The city also played a role in several other biblical events, such as being the location where the Israelites camped before entering Canaan (Numbers 22:1; 26:3, 63), where Eglon, king of Moab, oppressed Israel (Judges 3:12-14), and where Zedekiah was captured by the Babylonians (Jeremiah 39:5; 52:8). In the New Testament, Jericho is mentioned as the place where Jesus healed blind Bartimaeus (Mrk.10.46) and where he encountered Zacchaeus (Luke 19:1-10).",
+          "refs": [
+            "30"
+          ]
+        },
+        {
+          "name": "Red_Sea",
+          "strong": "H5488G",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Sea crossed by Israelites in the Exodus",
+          "short": "The Red Sea was the body of water miraculously crossed by the Israelites in their escape from Egypt (Exo. 13:18; 15:4).",
+          "article": "The Red Sea is significant in the Bible as the sea the Israelites miraculously crossed during the Exodus from Egypt. God parted the waters, allowing Israel to cross on dry ground, but drowned the pursuing Egyptian army when the waters closed back over them (Exo. 14-15). This event is remembered as a great act of divine deliverance (Jos. 2:10; Neh. 9:9; Psa. 106:7-9; 136:13-15). The Red Sea also marked the southern border of the Promised Land (Exo. 23:31). King Solomon later built a fleet of ships on the Red Sea at Ezion-geber (1Ki. 9:26). The Hebrew name Yam Suph means \"Sea of Reeds\", so the body of water was likely one of the shallow lakes along Egypt's eastern border rather than the main body of the Red Sea. Its exact location is debated.",
+          "refs": [
+            "29"
+          ]
+        },
+        {
+          "name": "Passover",
+          "strong": "H6453",
+          "type": "Time",
+          "briefest": "",
+          "brief": "An annual Jewish feast commemorating the Exodus",
+          "short": "The Passover is an annual Jewish feast that commemorates the deliverance of the Israelites from slavery in Egypt, as described in Exodus 12, and is celebrated with specific rituals and offerings as prescribed in the Old Testament and observed in the New Testament.",
+          "article": "Passover is one of the major Jewish festivals, instituted by God to commemorate the Israelites' deliverance from slavery in Egypt. It is observed annually on the 14th day of the first month, Nisan (Exodus 12:11; Leviticus 23:5; Numbers 28:16). \n\n The festival's name derives from the event in which the Lord \"passed over\" the houses of the Israelites during the tenth plague, sparing their firstborn while striking down those of the Egyptians (Exodus 12:27). This night marked the beginning of the Exodus, the foundational event of Israelite identity (Exodus 12:43,48). \n\n The Passover celebration includes the sacrifice of a lamb without blemish, whose blood was originally applied to the doorposts and lintels of Israelite homes (Exodus 12:21). The meal involves eating the lamb with unleavened bread and bitter herbs, symbolizing haste and suffering (Exodus 12:8). \n\n Detailed instructions for observing Passover are found in Deuteronomy (Deu.16.1-6), and it was to be celebrated in the place God chose, later understood to be Jerusalem (Deu.16.2,6). The festival was central to Israelite worship and identity, with significant observances noted during the reigns of kings Hezekiah and Josiah (2Ch.30.1-2, 35:1,18). \n\n Notable Passover celebrations include those led by Joshua after entering the Promised Land (Joshua 5:10-11), during King Josiah's reforms (2Ki.23.21-23), and as described in Ezra during the return from exile (Ezra 6:19-20). \n\n In the New Testament, Passover plays a significant role in the narratives surrounding Jesus' crucifixion, which occurred during the festival. Jesus shared a Passover meal with His disciples, known as the Last Supper, which Christians commemorate as the institution of the Lord's Supper (Matthew 26:17-19; Mrk.14.12-16; Luke 22:7-15). The apostle Paul refers to Christ as \"our Passover lamb\" who has been sacrificed (1Co.5.7). \n\n The festival's significance extends into Christian theology, symbolizing redemption and deliverance from sin, as noted in the epistle to the Hebrews, which highlights its faith aspect (Hebrews 11:28).",
+          "refs": [
+            "28"
           ]
         }
       ]
@@ -112,22 +857,29 @@
       "chapter": 12,
       "entries": [
         {
-          "name": "Jesus",
-          "strong": "G2424G",
+          "name": "Abel",
+          "strong": "H1893",
           "type": "Male",
-          "briefest": "Son of Joseph",
-          "brief": "The Son of God and Savior of the world.",
-          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
-          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "briefest": "Son of Adam",
+          "brief": "Adam and Eve's second son, killed by Cain",
+          "short": "Abel, the second son of Adam and Eve, was a shepherd who was killed by his brother Cain.",
+          "article": "Abel was the second son of Adam and Eve, born after his brother Cain. He was a shepherd, while Cain was a farmer. Both brothers brought offerings to God, but God accepted Abel's offering and rejected Cain's. This led to Cain's jealousy and anger, and he killed Abel in a field. \n\nGod confronted Cain about Abel's murder, and as a result, Cain was cursed to be a wanderer on the earth. The New Testament references Abel as an example of faith (Heb.11.4) and as a righteous man whose blood cried out for justice (Mat.23.35; Luk.11.51). Abel's blood is also contrasted with the blood of Jesus, which speaks of better things (Heb.12.24). After Abel's death, Adam and Eve had another son named Seth.",
           "refs": [
-            12
+            "24"
           ]
-        }
-      ]
-    },
-    {
-      "chapter": 13,
-      "entries": [
+        },
+        {
+          "name": "Esau",
+          "strong": "H6215G",
+          "type": "Male",
+          "briefest": "Son of Isaac",
+          "brief": "Isaac's firstborn son; sold birthright to Jacob; became Edom.",
+          "short": "Esau, also called Edom, was Isaac's firstborn son who sold his birthright to his twin brother Jacob and became the father of the Edomites.",
+          "article": "Esau, also known as Edom, was the firstborn son of Isaac and Rebekah and the twin brother of Israel (or 'Jacob') (Gen.25.25-26). He was a skillful hunter and his father's favorite son (Gen.25.27-28). Esau sold his birthright to Jacob for a bowl of stew when he was famished (Gen.25.29-34). He married two Hittite women, causing grief to his parents (Gen.26.34-35). Esau lost his father's blessing to Jacob through deception (Genesis 27). He held a grudge against Jacob but later reconciled with him (Genesis 32-33). Esau settled in the hill country of Seir, which became known as Edom (Gen.36.8-9). He had five sons and became the father of the Edomites (Gen.36.1-43). The Edomites were later considered enemies of Israel (Num.20.14-21; 1Sa.14.47; 2Sa.8.13-14). God's love for Jacob and His rejection of Esau is used as an example of His sovereignty (Mal.1.2-3; Rom.9.13).",
+          "refs": [
+            "16"
+          ]
+        },
         {
           "name": "Jesus",
           "strong": "G2424G",
@@ -137,7 +889,89 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            13
+            "2",
+            "24"
+          ]
+        },
+        {
+          "name": "Moses",
+          "strong": "H4872",
+          "type": "Male",
+          "briefest": "Son of Amram",
+          "brief": "Prophet who led Israel out of Egypt",
+          "short": "Moses was a prophet whom God used to lead Israel out of slavery in Egypt and give them the law.",
+          "article": "Moses was born to Amram and Jochebed, Levites in Egypt, at a time when Pharaoh had commanded that all Hebrew male infants be killed (Exo.2.1-2). His mother hid him for three months, then placed him in a basket on the Nile where Pharaoh's daughter found and adopted him (Exo.2.3-10). As an adult, Moses killed an Egyptian who was beating a Hebrew and fled to Midian (Exo.2.11-15). There he married Zipporah and worked as a shepherd for his father-in-law Jethro (Exo.2.16-22). \n\nGod appeared to Moses in a burning bush and called him to lead Israel out of Egypt (Exodus 3-4). Moses, along with his brother Aaron, went to Pharaoh demanding that he let Israel go (Exo.5.1). Through a series of ten plagues, God compelled Pharaoh to release the Israelites (Exodus 7-12). Moses led them out of Egypt, through the Red Sea, and to Mount Sinai (Exodus 13-19). There God gave Moses the law and instructions for the tabernacle (Exodus 20-31). \n\nWhile Moses was on the mountain, Israel made and worshiped a golden calf (Exodus 32). Moses interceded for the people and God relented from destroying them (Exodus 32-34). Moses oversaw the construction of the tabernacle (Exodus 35-40). He led Israel for forty years in the wilderness, mediating between them and God (Numbers, Deuteronomy). God prohibited Moses from entering Canaan because of his disobedience at Meribah (Num.20.1-13). Before his death, Moses viewed the promised land from Mount Nebo (Deu.34.1-4). He died at 120 years old and was buried by God (Deu.34.5-8). \n\nThe New Testament refers to Moses as the giver of the law (Jhn.1.17), a type of Christ (Jhn.3.14), and the greatest prophet of the old covenant (Act.3.22-23). \n\nHe is named \"Manasseh\" in several manuscripts of Judges 18.30 to save shaming his name when his grandson set up an idol.",
+          "refs": [
+            "21"
+          ]
+        },
+        {
+          "name": "Jerusalem",
+          "strong": "H3389",
+          "type": "Place",
+          "briefest": "",
+          "brief": "The capital of Israel, a holy city for three religions",
+          "short": "Jerusalem, the capital of Israel and a holy city for Judaism, Christianity, and Islam.",
+          "article": "Jerusalem is one of the most important cities in the Bible, serving as the capital of Israel and a holy city for Judaism, Christianity, and Islam. It is mentioned hundreds of times throughout the Old and New Testaments. The city was originally known as Salem (Genesis 14:18; Psalm 76:2) and was later called Jebus, after the Jebusites who inhabited it (Judges 19:10; 1Ch.11.4). David conquered the city and made it his capital (2Sa.5.6-9; 1Ch.11.4-9). Solomon built the first temple in Jerusalem (1Kings 6-8; 2Chronicles 3-7), which became the center of Jewish worship. The city was destroyed by the Babylonians in 586 BC (2Ki.25.1-10; 2Ch.36.17-19) but was later rebuilt after the exile (Ezra 1:1-4; Nehemiah 2:11-20). In the New Testament, Jerusalem is the site of many events in the life of Jesus, including his triumphal entry (Matthew 21:1-11), cleansing of the temple (Matthew 21:12-17), and crucifixion (Matthew 27:32-56). The early church also began in Jerusalem (Acts 1-7). Throughout the Bible, Jerusalem is referred to by various names, each highlighting a different aspect of its significance: Ariel (Isaiah 29:1), My Delight Is in Her (Isaiah 62:4), Forsaken and Desolate (Isaiah 62:4), Married (Isaiah 62:4), the City of the Lord (Isaiah 60:14), Zion (Psalm 87:2), and Mount Zion (Psalm 48:1). The name \"Jerusalem\" itself may mean \"foundation of peace\" or \"possession of peace.\"",
+          "refs": [
+            "22"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 13,
+      "entries": [
+        {
+          "name": "Hebrews",
+          "strong": "H5680",
+          "type": "Group",
+          "briefest": "",
+          "brief": "An ethnic group descended from Abraham.",
+          "short": "The Hebrews were an ethnic group descended from Abraham, also known as Israelites or Jews.",
+          "article": "The Hebrews were an ethnic group descended from Abraham, also known as Israelites or Jews. The term \"Hebrew\" first appears in the Bible in reference to Abraham (Gen.14.13) and is later used to refer to his descendants, the Israelites, throughout the Old Testament. The Hebrews were distinct from the Egyptians (Gen.43.32; Exo.1.15,16,19) and other nations, and they were often oppressed or enslaved (Exo.1.11-14; 5.3). God identified Himself as the God of the Hebrews (Exo.3.18; 5.3; 7.16; 9.1,13; 10.3) and gave them laws and commandments to follow (Exo.21.2; Deu.15.12). The Hebrews were also known for their language, Hebrew (Luk.23.38; Act.6.1), and their religious practices. In the New Testament, the term \"Hebrew\" is used to refer to Jewish Christians who spoke Hebrew or Aramaic (Act.6.1) and to emphasize the Jewish heritage of some early Christians (2Co.11.22; Php.3.5).",
+          "refs": [
+            "25"
+          ]
+        },
+        {
+          "name": "Jesus",
+          "strong": "G2424G",
+          "type": "Male",
+          "briefest": "Son of Joseph",
+          "brief": "The Son of God and Savior of the world.",
+          "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
+          "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
+          "refs": [
+            "8",
+            "12",
+            "20",
+            "21"
+          ]
+        },
+        {
+          "name": "Timothy",
+          "strong": "G5095G",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Paul's young disciple and co-worker",
+          "short": "Timothy was a young disciple and co-worker of Paul, who accompanied him on his missionary journeys and later served as a pastor.",
+          "article": "Timothy was a young disciple and close companion of the Apostle Paul. He is mentioned frequently in the New Testament, both in the book of Acts and in Paul's epistles. Timothy was from Lystra, the son of a Greek father and a Jewish mother named Eunice (Act.16.1). He was well-respected by the believers in his hometown and in Iconium (Act.16.2). Paul invited Timothy to join him on his missionary journeys, and he became a valuable assistant and co-worker (Act.16.3; 17.14-15; 18.5; 19.22; 20.4). Paul referred to Timothy as his \"true son in the faith\" (1Ti.1.2) and sent him on important missions to churches in Macedonia, Achaia, and Ephesus (Act.19.22; 1Co.4.17; 16.10; Php.2.19). Timothy was with Paul during his first Roman imprisonment and is named as a co-sender of several of Paul's letters (Php.1.1; Col.1.1; Phm.1.1). Paul also wrote two personal letters to Timothy, providing guidance and encouragement for his pastoral ministry (1Ti.1.2; 2Ti.1.2). These letters, along with the letter to Titus, are known as the Pastoral Epistles. According to Heb.13.23, Timothy was imprisoned at some point but later released. Tradition holds that Timothy served as the bishop of Ephesus in his later years. Timothy's life and ministry exemplify the importance of mentoring, discipleship, and faithful service in the early church.",
+          "refs": [
+            "23",
+            "25"
+          ]
+        },
+        {
+          "name": "Holy_Place",
+          "strong": "H6944J",
+          "type": "Place",
+          "briefest": "",
+          "brief": "The inner sanctuary of the Tabernacle and Temple",
+          "short": "The Holy Place was the inner sanctuary of the Tabernacle and Temple.",
+          "article": "The Holy Place refers to the inner sanctuary of the Tabernacle and later the Temple, where the priests performed their duties. It was separated from the outer court by a veil (Exodus 26:33). The Holy Place contained the lampstand, the table of showbread, and the altar of incense (Exodus 31:8; 35:19; 39:1). Only consecrated priests could enter the Holy Place (Exodus 28:29,43; 29:30). Rituals performed there included burning incense and presenting offerings (Leviticus 6:30; Numbers 28:7). The Holy Place represented God's presence among His people, though access was restricted. In the New Testament, Christ's sacrifice opened the way for believers to enter God's presence (Hebrews 9:12; 10:19).",
+          "refs": [
+            "11"
           ]
         },
         {
@@ -149,7 +983,8 @@
           "short": "Italy, a region in southern Europe, home to the Roman Empire.",
           "article": "Italy is mentioned several times in the New Testament as a region in southern Europe, home to the Roman Empire. In Act.18.2, we learn that Aquila, a Jew from Pontus, had recently come from Italy with his wife Priscilla due to the emperor Claudius' decree expelling all Jews from Rome. In Act.27.1, 6, Paul embarks on his journey to Rome, sailing on ships from Alexandria and Adramyttium that were bound for Italy. The author of Hebrews also mentions Italy, sending greetings from those who had come from there (Hebrews 13:24). Additionally, Act.10.1 mentions the Italian Regiment, a Roman military unit stationed in Caesarea. These references highlight the significant role Italy played in the early spread of Christianity and its connection to the Roman Empire.",
           "refs": [
-            13
+            "24",
+            "25"
           ]
         }
       ]

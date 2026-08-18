@@ -1,0 +1,6 @@
+{
+  "_note": "政权存在窗口 curated 修正表（HISTORICAL-GIS §3.4）——对 Cliopatria 源数据时间窗的人工修正（源素材只读，修正入此表）。格式：{ 政权名: { from: N, to: N } }，构建期对每个状态窗口做 clamp（from 取 max、to 取 min），空窗丢弃；缺省字段不修正。2026-08-17 审计（罗马时期「国内属国」现象）确认的三处源窗口错误：",
+  "Thracian Kingdom": { "to": 46 },
+  "Trưng sisters": { "to": 43 },
+  "Greek City-States": { "to": -146 }
+}

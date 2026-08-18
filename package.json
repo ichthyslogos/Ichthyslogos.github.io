@@ -8,19 +8,23 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "data:import": "node scripts/import.mjs",
-    "data:build": "node scripts/build-data.mjs",
+    "data:import": "node scripts/import.mjs && node scripts/commentary/extract-place-coords.mjs && node scripts/geography/fetch-dare.mjs && node scripts/geography/fetch-pleiades.mjs && node scripts/geography/import-ubs-journeys.mjs && node scripts/geography/convert-gray-earth.mjs",
+    "data:build": "node scripts/build-data.mjs && node scripts/geography/build-brp-historical.mjs && node scripts/geography/build-geography.mjs && node scripts/geography/build-periods.mjs && node scripts/geography/build-regions.mjs && node scripts/geography/build-geo-layers.mjs && node scripts/geography/build-tiles.mjs",
     "data:crossrefs": "node scripts/build-crossrefs.mjs",
-    "data:strong-lexicon": "node scripts/import-strong-lexicon.mjs",
     "data:commentary": "python scripts/commentary/extract.py",
+    "data:validate-places": "node scripts/commentary/validate-place-coords.mjs",
+    "data:validate-highlight": "node scripts/verify-highlight.mjs",
+    "data:validate-map": "node map_tests/layer_checker.js && node map_tests/source_checker.js && node map_tests/zoom_test.js && node map_tests/coordinate_checker.js && node map_tests/polygon_defect_checker.js && node map_tests/temporal_consistency.js && node map_tests/geojson_validator.js && node map_tests/regions_test.js && node map_tests/tile_checker.js && node map_tests/timeline_test.js && node map_tests/historical_validator.js",
     "data": "npm run data:import && npm run data:build && npm run data:crossrefs"
   },
   "dependencies": {
     "epubjs": "^0.3.93",
+    "maplibre-gl": "^5.24.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@turf/turf": "^7.4.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "vite": "^6.0.7"
   }

@@ -72,7 +72,7 @@ function parseRef(raw, prevAbbr) {
 function parseRefs(str, log) {
   const out = []
   let prevAbbr = null
-  for (const part of str.split(';')) {
+  for (const part of str.split(';').map((s) => s.trim())) {
     const r = parseRef(part, prevAbbr)
     if (!r) continue
     if (r.unknown) {
@@ -130,10 +130,21 @@ for (const rawLine of lines) {
     // 子行：– Significance\tUniqueName\tdStrong\tTranslated\tlink\tAll Refs
     const cols = line.replace(/^[–\-]\s*/, '').split('\t')
     const sig = (cols[0] || '').trim()
-    const refsStr = cols[cols.length - 1] || ''
-    // refs：Named/Greek/Spelled 等行完整带书缩写；Total 行有省略式承接——优先 Total 行
-    const refs = parseRefs(refsStr, unknownAbbr)
-    if (refs.length && (sig === 'Total' || !cur.refs.length)) cur.refs = refs
+    if (sig === 'Total') {
+      // Total 行：refs 在第 4 列（第 5 列为出现次数，如 Nero "…; 2Ti.4.22\t3"）；
+      // 含省略承接/范围标记（如 "4.27ff"）不适合精确节高亮——仅在无任何子行 refs 时兜底，
+      // 且过滤掉非精确节（vs 含字母/范围后缀）
+      const refsT = parseRefs(cols[3] || '', unknownAbbr).filter((r) => /^\d+(,\d+)*$/.test(r.vs || ''))
+      if (refsT.length && !cur.refs.length) cur.refs = refsT
+      continue
+    }
+    // 其余子行（Named/Greek/Spelled/Total 外的语义行）：refs 在最后一列，精确到节——
+    // 全部合并（2026-08-15 修复：复合词条多个 Named 行共享 refs，如 Nero 的
+    // Caesar|Nero 行含 Php.4.22 而 Nero 行只有 2Ti.4.22，仅取首行会丢节）
+    const refs = parseRefs(cols[cols.length - 1] || '', unknownAbbr)
+    for (const r of refs) {
+      if (!cur.refs.some((x) => x.id === r.id && x.ch === r.ch && x.vs === r.vs)) cur.refs.push(r)
+    }
     continue
   }
   if (!MAIN_RE.test(line)) continue // 字段说明等其他行
@@ -171,28 +182,35 @@ for (const e of entries) {
   }
   for (const r of e.refs) {
     if (!r.id) continue
-    const key = `${r.id}:${r.ch}`
+    // 去重键含节号：同一词条同章不同节（如 Exo.13.1/13.3/13.19）各自保留
+    const key = `${r.id}:${r.ch}:${r.vs}`
     if (seen.has(key)) continue
     seen.add(key)
     if (!byBook.has(r.id)) byBook.set(r.id, new Map())
     const chMap = byBook.get(r.id)
     if (!chMap.has(r.ch)) chMap.set(r.ch, [])
-    chMap.get(r.ch).push({ ...item, refs: [] })
+    // refs 存节号（vs 可能含逗号列表如 "1,3"，拆开；空 = 整章引用）
+    chMap.get(r.ch).push({ ...item, refs: r.vs ? r.vs.split(',') : [] })
   }
 }
 
 // 组装每卷 JSON
-rmSync(OUT, { recursive: true, force: true })
+rmSync(join(OUT, 'books'), { recursive: true, force: true })
+rmSync(join(OUT, 'entries.json'), { force: true })
 mkdirSync(join(OUT, 'books'), { recursive: true })
 const books = []
 for (const [bookId, chMap] of byBook) {
   const chapters = []
   for (const [ch, list] of [...chMap.entries()].sort((a, b) => a[0] - b[0])) {
-    // 词条级：合并同词条在同一章的多个 refs
+    // 词条级：合并同词条在同一章的多个 refs（保留各出现节号，去重保序）
     const byName = new Map()
     for (const item of list) {
-      if (!byName.has(item.name)) byName.set(item.name, { ...item, refs: [] })
-      byName.get(item.name).refs.push(ch)
+      const merged = byName.get(item.name)
+      if (!merged) {
+        byName.set(item.name, { ...item, refs: [...item.refs] })
+      } else {
+        for (const v of item.refs) if (!merged.refs.includes(v)) merged.refs.push(v)
+      }
     }
     chapters.push({ chapter: ch, entries: [...byName.values()] })
   }

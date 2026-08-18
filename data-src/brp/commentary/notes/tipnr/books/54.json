@@ -18,7 +18,7 @@
           "short": "Alexander, along with Hymenaeus, was an opponent of Paul's teaching and was handed over to Satan by Paul.",
           "article": "Alexander is mentioned by Paul in his letters to Timothy as an individual who opposed his teaching and caused him harm. In the first letter to Timothy, Paul writes that he had handed Alexander and Hymenaeus over to Satan, so that they might learn not to blaspheme. (1Ti.1.20) \n\nHymenaeus and Alexander had apparently departed from the truth and were promoting false teachings that were contrary to Paul's message. By handing them over to Satan, Paul was likely indicating that he had removed them from the protection and fellowship of the church, allowing them to experience the consequences of their actions and hopefully leading them to repentance. \n\nIn the second letter to Timothy, written near the end of Paul's life, he mentions Alexander the coppersmith, who had done him great harm and strongly opposed his message. (2Ti.4.14) It is not clear whether this is the same Alexander mentioned in the first letter, but both individuals are portrayed as antagonists to Paul and his ministry. \n\nPaul warns Timothy to be on guard against Alexander, suggesting that he posed a significant threat to the church and its teachings. Paul also expresses his trust in God's justice, stating that the Lord will repay Alexander for his actions. (2Ti.4.14) \n\nThese passages highlight the challenges and opposition that Paul and the early church faced from individuals who sought to undermine the gospel message and promote false teachings. They also demonstrate Paul's commitment to maintaining the purity of the church's doctrine and his willingness to take disciplinary action when necessary.",
           "refs": [
-            1
+            "20"
           ]
         },
         {
@@ -30,7 +30,7 @@
           "short": "Hymenaeus was a man who had rejected the faith and was handed over to Satan by Paul so that he might learn not to blaspheme.",
           "article": "Hymenaeus is mentioned in two of Paul's epistles to Timothy (1Ti.1.20 and 2Ti.2.17) as a man who had strayed from the truth and was causing harm to the faith of others. \n\nIn 1Ti.1.20, Paul states that he had handed Hymenaeus and Alexander over to Satan so that they might learn not to blaspheme. This suggests that Hymenaeus had engaged in blasphemous speech or teachings that were contrary to the gospel. By handing him over to Satan, Paul likely meant that he had removed Hymenaeus from the protection and fellowship of the church, allowing him to experience the consequences of his sin with the hope that he would repent and return to the truth. \n\nIn 2Ti.2.17, Hymenaeus is mentioned along with Philetus as individuals who had departed from the truth and were promoting the false teaching that the resurrection had already taken place. This heretical view was undermining the faith of some believers. Paul compares their false teaching to gangrene, emphasizing its destructive nature and the need to confront it. \n\nThese passages highlight the importance of maintaining sound doctrine and the need to address false teachings that can lead people astray. They also demonstrate the role of church discipline in correcting those who persist in promoting views that are contrary to the gospel.",
           "refs": [
-            1
+            "20"
           ]
         },
         {
@@ -42,7 +42,13 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            1
+            "1a",
+            "1b",
+            "2",
+            "12",
+            "14",
+            "15",
+            "16"
           ]
         },
         {
@@ -54,7 +60,20 @@
           "short": "Paul, also known as Saul, the apostle to the Gentiles and author of many New Testament epistles.",
           "article": "Paul, also known as Saul, was one of the most influential figures in early Christianity. He was born in Tarsus as a Roman citizen and trained as a Pharisee under Gamaliel. Initially a persecutor of the church, Paul had a dramatic conversion experience on the road to Damascus, where the risen Jesus appeared to him. After this, he became a zealous preacher of the gospel, undertaking several missionary journeys throughout the Mediterranean world. Paul played a key role in spreading Christianity among the Gentiles and in articulating its theological foundations. He wrote many of the epistles in the New Testament, providing guidance and instruction to the early churches. Paul faced numerous challenges, including opposition from Jewish leaders, internal disputes among believers, and physical hardships. He was eventually arrested and taken to Rome, where tradition holds that he was martyred during the reign of Nero. Paul's life and teachings had a profound impact on the development of Christian thought and practice.",
           "refs": [
-            1
+            "1"
+          ]
+        },
+        {
+          "name": "Timothy",
+          "strong": "G5095G",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Paul's young disciple and co-worker",
+          "short": "Timothy was a young disciple and co-worker of Paul, who accompanied him on his missionary journeys and later served as a pastor.",
+          "article": "Timothy was a young disciple and close companion of the Apostle Paul. He is mentioned frequently in the New Testament, both in the book of Acts and in Paul's epistles. Timothy was from Lystra, the son of a Greek father and a Jewish mother named Eunice (Act.16.1). He was well-respected by the believers in his hometown and in Iconium (Act.16.2). Paul invited Timothy to join him on his missionary journeys, and he became a valuable assistant and co-worker (Act.16.3; 17.14-15; 18.5; 19.22; 20.4). Paul referred to Timothy as his \"true son in the faith\" (1Ti.1.2) and sent him on important missions to churches in Macedonia, Achaia, and Ephesus (Act.19.22; 1Co.4.17; 16.10; Php.2.19). Timothy was with Paul during his first Roman imprisonment and is named as a co-sender of several of Paul's letters (Php.1.1; Col.1.1; Phm.1.1). Paul also wrote two personal letters to Timothy, providing guidance and encouragement for his pastoral ministry (1Ti.1.2; 2Ti.1.2). These letters, along with the letter to Titus, are known as the Pastoral Epistles. According to Heb.13.23, Timothy was imprisoned at some point but later released. Tradition holds that Timothy served as the bishop of Ephesus in his later years. Timothy's life and ministry exemplify the importance of mentoring, discipleship, and faithful service in the early church.",
+          "refs": [
+            "2",
+            "18"
           ]
         },
         {
@@ -66,7 +85,7 @@
           "short": "Ephesus, a major city in Asia Minor, was an important center for early Christianity and the recipient of one of Paul's epistles.",
           "article": "Ephesus was an ancient Greek city located on the western coast of Asia Minor (modern-day Turkey). It was one of the largest and most important cities in the Roman province of Asia and played a significant role in the early spread of Christianity. \n\nThe apostle Paul visited Ephesus during his second and third missionary journeys (Act.18.19-21; 19:1-41). During his third journey, Paul stayed in Ephesus for over two years, preaching the gospel and establishing a strong Christian community (Act.19.8-10). Many Ephesians turned from their pagan practices and embraced the faith, which led to a decline in the sale of silver shrines of the goddess Artemis (Diana), causing a riot instigated by the silversmiths (Act.19.23-41). \n\nPaul later wrote the Epistle to the Ephesians, one of his prison epistles, to strengthen and encourage the believers in Ephesus (Ephesians 1:1). In this letter, Paul expounds on the nature of the church, the unity of believers in Christ, and the importance of living a life worthy of the calling they had received. \n\nEphesus was also one of the seven churches addressed in the Book of Revelation (Revelation 1:11; 2:1-7). In the message to the church in Ephesus, the risen Christ commends their hard work and perseverance but admonishes them for having forsaken their first love and calls them to repent and return to their former devotion. \n\nThe city was famous for its Temple of Artemis (Diana), one of the Seven Wonders of the Ancient World (Act.19.35). It was also an important center of learning, with a renowned library. Today, the ruins of Ephesus, including the remains of the theater where the riot took place (Act.19.29), are a popular tourist attraction and a testament to the city's rich history and its role in the early Christian church.",
           "refs": [
-            1
+            "3"
           ]
         },
         {
@@ -78,7 +97,19 @@
           "short": "Macedonia, a region in northern Greece where Paul preached the gospel and established churches (Act.16.9-12; 20:1-3).",
           "article": "Macedonia was a region located in northern Greece, which played a significant role in the early spread of Christianity. The apostle Paul received a vision of a man from Macedonia calling him to come and help them (Act.16.9), leading Paul and his companions to travel to Macedonia and preach the gospel there (Act.16.10-12). Paul visited several cities in Macedonia, including Philippi, Thessalonica, and Berea (Acts 16-17). He later revisited Macedonia during his third missionary journey (Act.20.1-3). The churches in Macedonia, particularly the Philippians and Thessalonians, were known for their faith, generosity, and support of Paul's ministry (2Co.8.1-5; Php.4.15-16; 1Th.1.7-8). Paul wrote epistles to the Philippians and Thessalonians, which are included in the New Testament. Macedonia is also mentioned in connection with Paul's travel plans (Romans 15:26; 1Co.16.5; 2Co.1.16) and his co-workers, such as Sopater, Aristarchus, and Secundus (Act.19.29; 20:4; 27:2).",
           "refs": [
-            1
+            "3"
+          ]
+        },
+        {
+          "name": "Satan",
+          "strong": "H7854",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "The adversary, the devil, the tempter of humanity",
+          "short": "Satan, meaning \"adversary\" or \"accuser,\" is the devil, the chief enemy of God and tempter of humanity, who seeks to hinder God's purposes and lead people into sin (Job.1.6-12; Matthew 4:1-11; Revelation 12:9).",
+          "article": "Satan, also known as the devil, is the chief adversary of God and the tempter of humanity. The name \"Satan\" comes from the Hebrew word meaning \"adversary\" or \"accuser.\" He is portrayed as a spiritual being who opposes God's purposes and seeks to lead people into sin and destruction. \n\nIn the Old Testament, Satan appears as an accuser in the heavenly court (Job.1.6-12; 2:1-7; Zechariah 3:1-2). He challenges the integrity of Job and receives permission from God to test him. The Old Testament also uses the term \"satan\" or \"adversary\" to describe human opponents or obstacles (1Sa.29.4; 2Sa.19.22; 1Ki.5.4). \n\nIn the New Testament, Satan is identified as the tempter of Jesus (Matthew 4:1-11; Mrk.1.13; Luke 4:1-13), the oppressor of God's people (Luke 13:16; Act.10.38), and the deceiver of the world (Revelation 12:9; 20:3, 8). He is also called the \"ruler of this world\" (Jhn.12.31; 14:30; 16:11) and the \"god of this age\" (2Co.4.4). \n\nJesus defeated Satan through His death and resurrection (Hebrews 2:14; 1Jn.3.8), and believers are called to resist him (Jam.4.7; 1Pe.5.8-9). The New Testament portrays Satan as a real and active spiritual adversary, but one whose power is limited and whose ultimate defeat is assured (Romans 16:20; Revelation 20:10). \n\nOther names for Satan include Beelzebub (Matthew 10:25; 12:24-27), Belial (2Co.6.15), and the serpent (Revelation 12:9; 20:2). These names highlight his role as the leader of demons, the personification of evil, and the deceiver of humanity.",
+          "refs": [
+            "20"
           ]
         }
       ]
@@ -86,6 +117,31 @@
     {
       "chapter": 2,
       "entries": [
+        {
+          "name": "Adam",
+          "strong": "H0121G",
+          "type": "Male",
+          "briefest": "Father of Cain",
+          "brief": "The first man, created by God",
+          "short": "Adam, the first man created by God, sinned and brought death into the world, but through Christ, the last Adam, came life and resurrection.",
+          "article": "Adam was the first man, created by God on the sixth day of creation (Gen.1.26-27). He was formed from the dust of the ground, and God breathed life into him, making him a living being (Gen.2.7). God placed Adam in the Garden of Eden to tend and keep it, and He created Eve, the first woman, from Adam's rib as a companion for him (Gen.2.15-25). \n\nGod allowed Adam to eat from any tree in the garden except the tree of the knowledge of good and evil, warning that eating from this tree would lead to death (Gen.2.16-17). However, Adam and Eve were tempted by the serpent and disobeyed God, eating the forbidden fruit (Gen.3.1-6). As a consequence, they were expelled from the Garden of Eden and subjected to death, pain, and hardship (Gen.3.16-24). \n\nAfter the fall, Adam and Eve had several children, including Cain, Abel, and Seth (Gen.4.1-2, 25). Adam lived for 930 years and died (Gen.5.5), but his legacy as the first man and the progenitor of the human race continued throughout the Bible. \n\nIn the New Testament, Adam is contrasted with Christ, who is referred to as the \"last Adam\" (1Co.15.45). While Adam's disobedience brought sin and death into the world, Christ's obedience and sacrifice brought righteousness and life (Rom.5.12-21). The apostle Paul teaches that all people die because of their connection to Adam, but those who are in Christ will be made alive at the resurrection (1Co.15.22). \n\nAdam's creation, fall, and redemption through Christ are central themes in the biblical narrative, highlighting God's plan to restore humanity's relationship with Him and the ultimate victory over sin and death through Jesus Christ.",
+          "refs": [
+            "13",
+            "14"
+          ]
+        },
+        {
+          "name": "Eve",
+          "strong": "H2332",
+          "type": "Female",
+          "briefest": "",
+          "brief": "First woman; wife of Adam; tempted by the serpent.",
+          "short": "Eve was the first woman, created as Adam's wife, who was tempted by the serpent and ate the forbidden fruit.",
+          "article": "Eve was the first woman, created by God as a companion for Adam (Gen.2.22). She was formed from one of Adam's ribs and was named \"Eve\" because she would become the mother of all living (Gen.3.20). Eve was tempted by the serpent to eat the fruit from the tree of the knowledge of good and evil, which God had forbidden (Gen.3.1-6). She ate the fruit and gave some to Adam, resulting in their disobedience and the introduction of sin into the world (Gen.3.6-7). As a consequence, Eve experienced pain in childbirth and a desire for her husband, while Adam had to labor to provide for them (Gen.3.16-19). Despite this, Eve is recognized as the mother of the human race (Gen.4.1). Paul references Eve's deception as a warning against false teachers (2Co.11.3) and notes that Adam was created first, then Eve (1Ti.2.13).",
+          "refs": [
+            "13"
+          ]
+        },
         {
           "name": "Jesus",
           "strong": "G2424G",
@@ -95,7 +151,19 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            2
+            "5"
+          ]
+        },
+        {
+          "name": "Gentiles",
+          "strong": "H1471G",
+          "type": "Group",
+          "briefest": "",
+          "brief": "A non-Jewish person; someone from the nations",
+          "short": "In the Bible, the term \"Gentile\" refers to non-Jewish people or those from the nations, and their relationship with God and the Jewish people is a significant theme throughout Scripture.",
+          "article": "The term \"Gentile\" in the Bible refers to non-Jewish people or those who are not part of the chosen people of Israel. The word is derived from the Hebrew term \"goyim\" and the Greek word \"ethnos,\" both meaning \"nations.\" \n\nIn the Old Testament, God's covenant and promises were primarily focused on the nation of Israel. However, there are numerous prophecies and passages that anticipate the inclusion of Gentiles in God's plan of salvation (Isaiah 11:10; 42:1, 6; 49:6, 22; 54:3; 60:3, 5, 11, 16; 61:6, 9; 62:2; 66:12, 19; Jeremiah 16:19; Malachi 1:11). The Book of Jonah also demonstrates God's concern for the Gentile city of Nineveh. \n\nIn the New Testament, the inclusion of Gentiles in the church becomes a central theme. Jesus' ministry extends to Gentile regions (Matthew 4:15; 12:18, 21), and He commissions His disciples to make disciples of all nations (Matthew 28:19). The apostle Paul, in particular, is called to be an apostle to the Gentiles (Act.9.15; 22:21; 26:17, 20, 23; Romans 11:13; 15:16; Galatians 2:8; Ephesians 3:1, 8; 1Ti.2.7). \n\nThe inclusion of Gentiles in the church was not without controversy, as seen in the debate over circumcision and adherence to the Mosaic Law (Acts 15). However, the Jerusalem Council affirmed that Gentiles could be saved by grace through faith in Christ, without being required to follow Jewish customs (Act.15.19-20). \n\nThroughout the New Testament, the unity of Jewish and Gentile believers in Christ is emphasized (Ephesians 2:11-22; Galatians 3:28; Col.3.11). The mystery of the gospel is revealed, that Gentiles are fellow heirs and members of the same body, partaking of the promise in Christ Jesus (Ephesians 3:6). \n\nThe inclusion of Gentiles in God's plan of salvation demonstrates the universal scope of His love and grace. It also highlights the importance of unity and equality among believers, regardless of their ethnic or cultural background.",
+          "refs": [
+            "7"
           ]
         }
       ]
@@ -112,7 +180,20 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            3
+            "13"
+          ]
+        },
+        {
+          "name": "Satan",
+          "strong": "H7854",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "The adversary, the devil, the tempter of humanity",
+          "short": "Satan, meaning \"adversary\" or \"accuser,\" is the devil, the chief enemy of God and tempter of humanity, who seeks to hinder God's purposes and lead people into sin (Job.1.6-12; Matthew 4:1-11; Revelation 12:9).",
+          "article": "Satan, also known as the devil, is the chief adversary of God and the tempter of humanity. The name \"Satan\" comes from the Hebrew word meaning \"adversary\" or \"accuser.\" He is portrayed as a spiritual being who opposes God's purposes and seeks to lead people into sin and destruction. \n\nIn the Old Testament, Satan appears as an accuser in the heavenly court (Job.1.6-12; 2:1-7; Zechariah 3:1-2). He challenges the integrity of Job and receives permission from God to test him. The Old Testament also uses the term \"satan\" or \"adversary\" to describe human opponents or obstacles (1Sa.29.4; 2Sa.19.22; 1Ki.5.4). \n\nIn the New Testament, Satan is identified as the tempter of Jesus (Matthew 4:1-11; Mrk.1.13; Luke 4:1-13), the oppressor of God's people (Luke 13:16; Act.10.38), and the deceiver of the world (Revelation 12:9; 20:3, 8). He is also called the \"ruler of this world\" (Jhn.12.31; 14:30; 16:11) and the \"god of this age\" (2Co.4.4). \n\nJesus defeated Satan through His death and resurrection (Hebrews 2:14; 1Jn.3.8), and believers are called to resist him (Jam.4.7; 1Pe.5.8-9). The New Testament portrays Satan as a real and active spiritual adversary, but one whose power is limited and whose ultimate defeat is assured (Romans 16:20; Revelation 20:10). \n\nOther names for Satan include Beelzebub (Matthew 10:25; 12:24-27), Belial (2Co.6.15), and the serpent (Revelation 12:9; 20:2). These names highlight his role as the leader of demons, the personification of evil, and the deceiver of humanity.",
+          "refs": [
+            "6",
+            "7"
           ]
         }
       ]
@@ -129,7 +210,7 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            4
+            "6"
           ]
         }
       ]
@@ -146,7 +227,20 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            5
+            "21",
+            "11"
+          ]
+        },
+        {
+          "name": "Satan",
+          "strong": "H7854",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "The adversary, the devil, the tempter of humanity",
+          "short": "Satan, meaning \"adversary\" or \"accuser,\" is the devil, the chief enemy of God and tempter of humanity, who seeks to hinder God's purposes and lead people into sin (Job.1.6-12; Matthew 4:1-11; Revelation 12:9).",
+          "article": "Satan, also known as the devil, is the chief adversary of God and the tempter of humanity. The name \"Satan\" comes from the Hebrew word meaning \"adversary\" or \"accuser.\" He is portrayed as a spiritual being who opposes God's purposes and seeks to lead people into sin and destruction. \n\nIn the Old Testament, Satan appears as an accuser in the heavenly court (Job.1.6-12; 2:1-7; Zechariah 3:1-2). He challenges the integrity of Job and receives permission from God to test him. The Old Testament also uses the term \"satan\" or \"adversary\" to describe human opponents or obstacles (1Sa.29.4; 2Sa.19.22; 1Ki.5.4). \n\nIn the New Testament, Satan is identified as the tempter of Jesus (Matthew 4:1-11; Mrk.1.13; Luke 4:1-13), the oppressor of God's people (Luke 13:16; Act.10.38), and the deceiver of the world (Revelation 12:9; 20:3, 8). He is also called the \"ruler of this world\" (Jhn.12.31; 14:30; 16:11) and the \"god of this age\" (2Co.4.4). \n\nJesus defeated Satan through His death and resurrection (Hebrews 2:14; 1Jn.3.8), and believers are called to resist him (Jam.4.7; 1Pe.5.8-9). The New Testament portrays Satan as a real and active spiritual adversary, but one whose power is limited and whose ultimate defeat is assured (Romans 16:20; Revelation 20:10). \n\nOther names for Satan include Beelzebub (Matthew 10:25; 12:24-27), Belial (2Co.6.15), and the serpent (Revelation 12:9; 20:2). These names highlight his role as the leader of demons, the personification of evil, and the deceiver of humanity.",
+          "refs": [
+            "15"
           ]
         }
       ]
@@ -163,7 +257,9 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            6
+            "3",
+            "13",
+            "14"
           ]
         },
         {
@@ -175,7 +271,32 @@
           "short": "Pontius Pilate, the Roman governor of Judea who presided over the trial of Jesus and ultimately ordered his crucifixion.",
           "article": "Pontius Pilate was the Roman governor (prefect) of Judea during the time of Jesus' ministry and crucifixion (Luk.3.1). He is most known for his role in the trial and execution of Jesus, as recorded in all four Gospels (Matthew 27; Mark 15; Luke 23; John 18-19). \n\nWhen Jesus was brought before Pilate by the Jewish leaders, who accused him of claiming to be the king of the Jews, Pilate questioned Jesus and found no fault in him (Jhn.18.29-38). However, faced with the insistence of the Jewish leaders and the growing crowd, Pilate ultimately gave in to their demands and ordered Jesus to be crucified (Mat.27.24; Mrk.15.15; Luk.23.24; Jhn.19.16). \n\nPilate is portrayed as a reluctant participant in Jesus' death, attempting to release him but ultimately succumbing to political pressure (Jhn.19.12). He is also depicted as a somewhat cynical and world-weary figure, as seen in his famous question to Jesus, \"What is truth?\" (Jhn.18.38). \n\nPilate's involvement in Jesus' crucifixion is also mentioned in the Book of Acts, where the early Christian leaders affirm that Jesus was crucified under Pontius Pilate (Act.3.13; 4.27; 13.28). In 1Ti.6.13, Paul refers to Jesus' good confession before Pontius Pilate.",
           "refs": [
-            6
+            "13"
+          ]
+        },
+        {
+          "name": "Timothy",
+          "strong": "G5095G",
+          "type": "Male",
+          "briefest": "",
+          "brief": "Paul's young disciple and co-worker",
+          "short": "Timothy was a young disciple and co-worker of Paul, who accompanied him on his missionary journeys and later served as a pastor.",
+          "article": "Timothy was a young disciple and close companion of the Apostle Paul. He is mentioned frequently in the New Testament, both in the book of Acts and in Paul's epistles. Timothy was from Lystra, the son of a Greek father and a Jewish mother named Eunice (Act.16.1). He was well-respected by the believers in his hometown and in Iconium (Act.16.2). Paul invited Timothy to join him on his missionary journeys, and he became a valuable assistant and co-worker (Act.16.3; 17.14-15; 18.5; 19.22; 20.4). Paul referred to Timothy as his \"true son in the faith\" (1Ti.1.2) and sent him on important missions to churches in Macedonia, Achaia, and Ephesus (Act.19.22; 1Co.4.17; 16.10; Php.2.19). Timothy was with Paul during his first Roman imprisonment and is named as a co-sender of several of Paul's letters (Php.1.1; Col.1.1; Phm.1.1). Paul also wrote two personal letters to Timothy, providing guidance and encouragement for his pastoral ministry (1Ti.1.2; 2Ti.1.2). These letters, along with the letter to Titus, are known as the Pastoral Epistles. According to Heb.13.23, Timothy was imprisoned at some point but later released. Tradition holds that Timothy served as the bishop of Ephesus in his later years. Timothy's life and ministry exemplify the importance of mentoring, discipleship, and faithful service in the early church.",
+          "refs": [
+            "20",
+            "21"
+          ]
+        },
+        {
+          "name": "Laodicea",
+          "strong": "G2993",
+          "type": "Place",
+          "briefest": "",
+          "brief": "A city in Asia Minor",
+          "short": "Laodicea, a city in Asia Minor, known for its lukewarm faith (Revelation 3:14-16).",
+          "article": "Laodicea was a city located in the Lycus Valley in the Roman province of Asia Minor (modern-day Turkey). The city is mentioned several times in the New Testament, particularly in Paul's letter to the Colossians and in the book of Revelation. Paul mentions his concern for the believers in Laodicea, even though he had not personally visited the city (Col.2.1). He also sends greetings to the Laodicean church and instructs the Colossians to share his letter with them (Col.4.13, 15-16). In the book of Revelation, Laodicea is one of the seven churches addressed by Jesus Christ. The Laodicean church is rebuked for being lukewarm in their faith, neither hot nor cold, and for their self-sufficiency and spiritual complacency (Revelation 3:14-16). Despite their material wealth, Jesus declares them to be spiritually poor, blind, and naked, urging them to repent and seek true spiritual riches from Him (Revelation 3:17-18).",
+          "refs": [
+            "21"
           ]
         },
         {
@@ -187,7 +308,19 @@
           "short": "Pacatiana is a place mentioned in some manuscripts of 1Ti.6.21, but its exact location and significance are unknown.",
           "article": "Pacatiana is a place mentioned in some manuscripts of 1Ti.6.21, where Paul extends greetings to those in this location. However, the majority of manuscripts do not include this reference, and it is considered by most scholars to be a later addition to the text. As a result, very little is known about Pacatiana, and its exact location and significance remain uncertain. It is not mentioned elsewhere in the Bible or in other contemporary historical sources.",
           "refs": [
-            6
+            "21"
+          ]
+        },
+        {
+          "name": "Phrygia",
+          "strong": "G5435",
+          "type": "Place",
+          "briefest": "",
+          "brief": "A region in Asia Minor with early Christians",
+          "short": "Phrygia was a region in Asia Minor where Paul traveled and preached the gospel, and some of its inhabitants were present in Jerusalem on the day of Pentecost.",
+          "article": "Phrygia was an ancient region located in the central part of Asia Minor (modern-day Turkey). In the New Testament, Phrygia is mentioned in connection with the spread of the gospel and the missionary journeys of Paul. On the day of Pentecost, people from Phrygia were among those present in Jerusalem who heard the apostles speaking in their own languages (Act.2.10). During Paul's second missionary journey, he and his companions traveled through the region of Phrygia and Galatia, where they were forbidden by the Holy Spirit to preach in the province of Asia (Act.16.6). On his third missionary journey, Paul passed through the region of Phrygia and Galatia again, strengthening the disciples (Act.18.23). In the closing of Paul's first letter to Timothy, he mentions that some have wandered from the faith, including Phygelus and Hermogenes, who were likely from Phrygia (2Tim. 1:15). The mention of Phrygia in these passages highlights the spread of Christianity beyond Judea and the importance of the region in the early church's growth.",
+          "refs": [
+            "21"
           ]
         }
       ]

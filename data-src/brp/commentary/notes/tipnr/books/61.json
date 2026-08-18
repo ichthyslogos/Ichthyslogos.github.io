@@ -18,7 +18,13 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            1
+            "1a",
+            "1b",
+            "2",
+            "8",
+            "11",
+            "14",
+            "16"
           ]
         },
         {
@@ -30,7 +36,7 @@
           "short": "Peter, also known as Simon, Cephas, or Simon Bar-Jonah, was one of the twelve apostles of Jesus and a prominent leader in the early Christian church.",
           "article": "Peter, originally named Simon, was one of the twelve apostles of Jesus Christ and played a crucial role in the early Christian church. He was the son of Jonah (or John) and the brother of Andrew, who introduced him to Jesus (Jhn.1.40-42). Jesus gave him the name Cephas (Aramaic) or Peter (Greek), which means \"rock\" (Jhn.1.42, Mat.16.18). \n\nPeter was a fisherman from Bethsaida in Galilee (Jhn.1.44) and was married (Mat.8.14; 1Co.9.5). He became one of Jesus' closest disciples, known for his bold faith and leadership. He was part of Jesus' inner circle, witnessing key events such as the Transfiguration (Mat.17.1-9) and Jesus' prayer in Gethsemane (Mrk.14.32-42). \n\nDespite his devotion, Peter denied knowing Jesus three times during Jesus' trial (Luk.22.54-62). After Jesus' resurrection, Peter was restored and commissioned to lead the church (Jhn.21.15-19). On the day of Pentecost, Peter preached powerfully, and about 3,000 people were baptized (Act.2.14-41). \n\nPeter was instrumental in spreading the gospel to both Jews and Gentiles. He performed miracles (Act.3.1-10; 9.32-43) and defended the inclusion of Gentiles in the church (Acts 10-11; Act.15.7-11). He wrote two epistles, 1 and 2 Peter, to encourage and instruct believers facing persecution. \n\nTradition holds that Peter was martyred in Rome during Nero's reign, crucified upside down at his request, as he felt unworthy to die in the same manner as Jesus.",
           "refs": [
-            1
+            "1"
           ]
         }
       ]
@@ -38,6 +44,30 @@
     {
       "chapter": 2,
       "entries": [
+        {
+          "name": "Balaam",
+          "strong": "H1109A",
+          "type": "Male",
+          "briefest": "Pagan prophet",
+          "brief": "A prophet hired to curse Israel but blessed them instead.",
+          "short": "Balaam was a pagan prophet hired by Balak to curse Israel, but he blessed them instead.",
+          "article": "Balaam was a pagan prophet from Pethor near the Euphrates River (Num.22.5). Balak, king of Moab, hired him to curse the Israelites as they approached Moabite territory (Num.22.6). Despite initial resistance, Balaam agreed to go with Balak's messengers after God permitted him, but only to speak what God told him (Num.22.7-21). On the way, Balaam's donkey saw the Angel of the Lord and saved Balaam from being killed (Num.22.22-35). In three oracles, Balaam blessed Israel instead of cursing them (Numbers 23-24). Later, Balaam was killed in Israel's battle against Midian (Num.31.8). He had advised the Midianites to entice Israel into idolatry and immorality (Num.31.16; Rev.2.14). Balaam's story is remembered as an example of God's sovereignty (Deu.23.4-5; Jos.24.9-10; Neh.13.2; Mic.6.5) and as a warning against greed and false teaching (2Pe.2.15; Jud.1.11).",
+          "refs": [
+            "15"
+          ]
+        },
+        {
+          "name": "Beor",
+          "strong": "H1160H",
+          "type": "Male",
+          "briefest": "Father of Balaam",
+          "brief": "Father of Balaam",
+          "short": "Beor was the father of Balaam, a pagan prophet from Pethor.",
+          "article": "Beor was the father of Balaam, a well-known prophet from Pethor in Mesopotamia (Num. 22:5). Balaam was hired by Balak, the king of Moab, to curse the Israelites as they approached the Promised Land (Num. 22-24). Despite Balak's intentions, God used Balaam to bless Israel instead of cursing them (Num. 23-24). \n\nHowever, Balaam later played a role in leading the Israelites into sin by promoting idolatry and sexual immorality (Num. 31:8, 16). As a result, Balaam was killed by the Israelites when they defeated the Midianites (Num. 31:8; Josh. 13:22). \n\nBalaam's story is referenced several times in the Bible as a warning against greed and the abuse of spiritual gifts (Deut. 23:4-5; Josh. 24:9-10; Mic. 6:5; 2Pet. 2:15-16). Despite his initial obedience to God, Balaam's later actions demonstrate the dangers of compromising one's faith for personal gain.",
+          "refs": [
+            "15"
+          ]
+        },
         {
           "name": "Jesus",
           "strong": "G2424G",
@@ -47,7 +77,67 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            2
+            "20"
+          ]
+        },
+        {
+          "name": "Lot",
+          "strong": "H3876G",
+          "type": "Male",
+          "briefest": "Son of Haran",
+          "brief": "Abraham's nephew; rescued from Sodom's destruction",
+          "short": "Lot, the nephew of Abraham, was rescued from Sodom before its destruction.",
+          "article": "Lot was the son of Haran and the nephew of Abraham (Gen.11.27,31). He traveled with Abraham from Ur to Canaan (Gen.12.4-5). Due to strife between their herdsmen, Lot chose to settle in the plain of Jordan near Sodom (Gen.13.1-13). Lot was captured when Sodom was invaded, but Abraham rescued him (Gen.14.12,16). Despite the wickedness of Sodom, Lot continued living there (Gen.19.1). When God revealed His plan to destroy the city, Abraham pleaded for Lot's safety (Gen.18.16-33). Two angels warned Lot to flee Sodom with his family (Gen.19.1-22). Lot's wife disobeyed and was turned into a pillar of salt (Gen.19.26; Luk.17.32). Lot and his daughters escaped to Zoar and later settled in a cave (Gen.19.30). Lot's daughters, believing they were the last survivors, got him drunk and slept with him, resulting in the births of Moab and Ammon (Gen.19.31-38; Psa.83.8). The New Testament describes Lot as a righteous man distressed by the debauchery of Sodom (2Pe.2.7). Jesus used Lot's story as a warning about the suddenness of His return (Luk.17.28-29).",
+          "refs": [
+            "7"
+          ]
+        },
+        {
+          "name": "Noah",
+          "strong": "H5146",
+          "type": "Male",
+          "briefest": "Flood survivor",
+          "brief": "Righteous man, built ark, survived flood",
+          "short": "Noah was a righteous man who built the ark and survived the great flood with his family.",
+          "article": "Noah was the son of Lamech, a descendant of Seth (Gen.5.29-30). He was a righteous man, blameless among the people of his time, and he walked faithfully with God (Gen.6.9). When God saw the wickedness of humanity, He chose Noah to build an ark to save his family and representatives of all animals from the coming flood (Gen.6.13-22). Noah obeyed God and built the ark, and he and his family entered it along with the animals (Genesis 7). After the flood, Noah built an altar and made sacrifices to God (Gen.8.20). God blessed Noah and his sons, establishing a covenant with them and setting the rainbow as a sign of His promise never to destroy the earth by flood again (Genesis 9). Noah lived for 950 years (Gen.9.29). He is remembered as an example of faith (Heb.11.7) and righteousness (Ezk.14.14, 20; 2Pe.2.5).",
+          "refs": [
+            "5"
+          ]
+        },
+        {
+          "name": "Gomorrah",
+          "strong": "H6017",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Wicked city destroyed by God along with Sodom.",
+          "short": "Gomorrah was a wicked city in the plain of Jordan that God destroyed with sulfur and fire, along with Sodom, due to their grave sins.",
+          "article": "Gomorrah was one of the five cities in the plain of Jordan, along with Sodom, Admah, Zeboiim, and Zoar (Genesis 10:19, 14:2). It was located in a fertile area, well-watered like the garden of the Lord (Genesis 13:10). \n\nHowever, the wickedness of Gomorrah and the neighboring cities was exceedingly grave (Genesis 18:20). When God revealed His plan to destroy the cities to Abraham, the patriarch pleaded for their survival if even ten righteous people could be found (Genesis 18:23-32). Ultimately, only Lot and his two daughters were spared, while Gomorrah and the other cities were destroyed by sulfur and fire from heaven (Genesis 19:24-25). \n\nThe destruction of Gomorrah and Sodom became a symbol of God's judgment against sin and a warning to future generations (Deu.29.23, 32:32; Isaiah 1:9-10, 13:19; Jeremiah 23:14, 49:18, 50:40; Amo.4.11; Zephaniah 2:9). In the New Testament, Jesus used Sodom and Gomorrah as an example of the fate awaiting those who reject the gospel message (Matthew 10:15; Mrk.6.11; Luke 10:12). \n\nThe apostle Peter cited the destruction of these cities as proof of God's judgment against the ungodly and His deliverance of the righteous (2Pe.2.6-9). Jude also referred to Sodom and Gomorrah as an example of the punishment awaiting those who indulge in sexual immorality and perversion (Jude 1:7). \n\nThe exact location of Gomorrah remains unknown, as the cities were completely destroyed. However, it is believed to have been situated in the area south of the Dead Sea, possibly submerged beneath its waters.",
+          "refs": [
+            "6"
+          ]
+        },
+        {
+          "name": "Sodom",
+          "strong": "H5467",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Wicked city destroyed by God for its sins",
+          "short": "Sodom, a notoriously wicked city destroyed by God along with Gomorrah for their grave sins (Gen. 19:24-25).",
+          "article": "Sodom was an ancient city located in the plain of Jordan, known for its great wickedness (Gen. 13:13). It was one of the five \"cities of the plain\" (Gen. 14:2) and was closely associated with Gomorrah. God determined to destroy Sodom and Gomorrah due to their grave sins (Gen. 18:20), but Abraham pleaded with God to spare the city if even ten righteous people could be found (Gen. 18:22-33). However, not even ten were found, and God rained down burning sulfur on Sodom and Gomorrah, completely destroying them (Gen. 19:24-25). Lot and his daughters were the only survivors, as they were warned by angels to flee (Gen. 19:15-16). Sodom became a byword for wickedness and divine judgment (Deut. 29:23; Isa. 1:9-10; Jer. 23:14; Ezek. 16:46-56; Matt. 10:15; 11:23-24; Luke 17:29; Rom. 9:29; 2Pet. 2:6; Jude 1:7; Rev. 11:8).",
+          "refs": [
+            "6"
+          ]
+        },
+        {
+          "name": "Sheol",
+          "strong": "H7585",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "The underworld; the abode of the dead in the Bible",
+          "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
+          "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
+          "refs": [
+            "4"
           ]
         }
       ]
@@ -64,7 +154,7 @@
           "short": "Jesus Christ, the central figure of Christianity, is the Son of God who became incarnate, died for the sins of humanity, and rose from the dead, providing salvation for all who believe in Him.",
           "article": "Jesus Christ is the central figure of the New Testament and the foundation of the Christian faith. He is the eternal Son of God who became incarnate, being born of the Virgin Mary in Bethlehem. Jesus lived a sinless life and performed many miracles, demonstrating His divine power and authority. He taught with wisdom and authority, proclaiming the Kingdom of God and calling people to repentance and faith. Jesus faced opposition from religious leaders and was ultimately crucified under Pontius Pilate. However, on the third day, He rose from the dead, appearing to His disciples and commissioning them to spread the gospel message. Jesus ascended into heaven and is now seated at the right hand of God the Father, interceding for believers. He is the Savior of the world, offering forgiveness of sins and eternal life to all who put their faith in Him. The New Testament also teaches that Jesus will return in glory to judge the living and the dead and to establish His eternal Kingdom. He is the fulfillment of Old Testament prophecies concerning the Messiah and is the perfect revelation of God's love and grace to humanity.",
           "refs": [
-            3
+            "18"
           ]
         },
         {
@@ -76,7 +166,7 @@
           "short": "Paul, also known as Saul, the apostle to the Gentiles and author of many New Testament epistles.",
           "article": "Paul, also known as Saul, was one of the most influential figures in early Christianity. He was born in Tarsus as a Roman citizen and trained as a Pharisee under Gamaliel. Initially a persecutor of the church, Paul had a dramatic conversion experience on the road to Damascus, where the risen Jesus appeared to him. After this, he became a zealous preacher of the gospel, undertaking several missionary journeys throughout the Mediterranean world. Paul played a key role in spreading Christianity among the Gentiles and in articulating its theological foundations. He wrote many of the epistles in the New Testament, providing guidance and instruction to the early churches. Paul faced numerous challenges, including opposition from Jewish leaders, internal disputes among believers, and physical hardships. He was eventually arrested and taken to Rome, where tradition holds that he was martyred during the reign of Nero. Paul's life and teachings had a profound impact on the development of Christian thought and practice.",
           "refs": [
-            3
+            "15"
           ]
         }
       ]

@@ -10,6 +10,18 @@
       "chapter": 1,
       "entries": [
         {
+          "name": "Israel",
+          "strong": "H3478",
+          "type": "Male",
+          "briefest": "Son of Isaac",
+          "brief": "Patriarch, son of Isaac, father of twelve tribes",
+          "short": "Israel, also named Jacob, was the son of Isaac, the father of the twelve tribes of Israel, and a key patriarch of the Jewish people.",
+          "article": "Israel, also known as Jacob, was the son of Isaac and Rebekah, and the grandson of Abraham. He was born after his twin brother Esau (Gen. 25:24-26). \n\nJacob bought Esau's birthright for a bowl of stew when Esau was famished (Gen. 25:29-34). He then deceived his father Isaac into giving him the firstborn blessing (Gen. 27). To escape Esau's anger, Jacob fled to his uncle Laban in Paddan-aram (Gen. 28:1-5). \n\nOn the way, Jacob had a dream of a stairway to heaven at Bethel, where God confirmed the covenant promises to him (Gen. 28:10-22). Jacob worked for Laban for 14 years, marrying his daughters Leah and Rachel (Gen. 29). \n\nWanting to return home, Jacob left Paddan-aram with his family and flocks. On the way, he wrestled with God at Peniel and was renamed Israel, meaning \"he struggles with God\" (Gen. 32:22-32). Israel (or 'Jacob') reconciled with Esau and settled in Canaan (Gen. 33). \n\nJacob had twelve sons who became the ancestors of the twelve tribes of Israel: Reuben, Simeon, Levi, Judah, Issachar, Zebulun, Joseph, Benjamin, Dan, Naphtali, Gad and Asher (Gen. 35:23-26). \n\nJacob showed favoritism to Joseph, provoking his brothers to sell Joseph into slavery in Egypt (Gen. 37). Later, during a famine, Jacob's sons went to Egypt for food and were reconciled with Joseph, who had risen to power there (Gen. 42-46). \n\nJacob moved his whole family to Egypt, where he lived for 17 years (Gen. 47:28). Before his death, Jacob blessed Joseph's sons Ephraim and Manasseh (Gen. 48) and gave prophetic blessings to his own twelve sons (Gen. 49). He died at age 147 and was buried in Canaan (Gen. 49:33; 50:1-14). \n\nGod often identified Himself as the \"God of Abraham, Isaac and Jacob\" and reaffirmed His covenant promises to Jacob's descendants (e.g. Exo. 3:6,15). The nation of Israel took its name from Jacob and the Jewish people are his descendants. The name Jeshurun is used as a poetic name for Israel (Deut. 32:15; 33:5,26; Isa. 44:2).",
+          "refs": [
+            "17"
+          ]
+        },
+        {
           "name": "Judah",
           "strong": "H3063G",
           "type": "Male",
@@ -18,7 +30,8 @@
           "short": "Judah, also known as the Jews or Judea, refers to the Israelite tribe, the southern kingdom, and the Roman province in various biblical contexts.",
           "article": "Judah, Jews, and Judea are terms used throughout the Bible to refer to the Israelite tribe, the southern kingdom, and the Roman province, depending on the historical context. \n\nJudah was the fourth son of Israel (or 'Jacob') and Leah (Gen.29.35) and became the founder of one of the twelve tribes of Israel. The tribe of Judah played a prominent role in Israel's history, with notable figures such as Caleb, Othniel, and King David coming from this tribe. \n\nAfter the reign of Solomon, the kingdom of Israel split into two: the northern kingdom of Israel and the southern kingdom of Judah (1Kings 12). The southern kingdom, which included the tribes of Judah and Benjamin, remained loyal to the Davidic dynasty and the worship of God in Jerusalem. The kingdom of Judah lasted from about 930 BC until the Babylonian conquest in 586 BC. \n\nFollowing the Babylonian exile, many Jews returned to the land of Judah, now a province of the Persian Empire (Ezra 1-6). During the Second Temple period, Judea became a province of the Roman Empire. In the New Testament, the terms \"Jews\" and \"Judea\" are often used to refer to the Jewish people and the region they inhabited. \n\nThe history of Judah, the Jews, and Judea is a central focus of the biblical narrative, with many of the key events, prophecies, and teachings revolving around this people and their relationship with God. The prophets, such as Isaiah, Jeremiah, and Ezekiel, often addressed their messages to Judah and warned of judgment for disobedience while also offering hope for restoration. \n\nIn the New Testament, Jesus Christ, the Messiah, is born in Judea and is recognized as the King of the Jews (Mat.2.2). The early Christian church began in Jerusalem, and many of the first converts were Jews (Acts 2). \n\nThroughout the Bible, God's covenant relationship with the people of Judah, the Jews, and the inhabitants of Judea remains a central theme, highlighting His faithfulness, judgment, and redemptive purposes for all nations through the Jewish Messiah, Jesus Christ.",
           "refs": [
-            1
+            "3",
+            "15"
           ]
         },
         {
@@ -30,7 +43,24 @@
           "short": "Jerusalem, the capital of Israel and a holy city for Judaism, Christianity, and Islam.",
           "article": "Jerusalem is one of the most important cities in the Bible, serving as the capital of Israel and a holy city for Judaism, Christianity, and Islam. It is mentioned hundreds of times throughout the Old and New Testaments. The city was originally known as Salem (Genesis 14:18; Psalm 76:2) and was later called Jebus, after the Jebusites who inhabited it (Judges 19:10; 1Ch.11.4). David conquered the city and made it his capital (2Sa.5.6-9; 1Ch.11.4-9). Solomon built the first temple in Jerusalem (1Kings 6-8; 2Chronicles 3-7), which became the center of Jewish worship. The city was destroyed by the Babylonians in 586 BC (2Ki.25.1-10; 2Ch.36.17-19) but was later rebuilt after the exile (Ezra 1:1-4; Nehemiah 2:11-20). In the New Testament, Jerusalem is the site of many events in the life of Jesus, including his triumphal entry (Matthew 21:1-11), cleansing of the temple (Matthew 21:12-17), and crucifixion (Matthew 27:32-56). The early church also began in Jerusalem (Acts 1-7). Throughout the Bible, Jerusalem is referred to by various names, each highlighting a different aspect of its significance: Ariel (Isaiah 29:1), My Delight Is in Her (Isaiah 62:4), Forsaken and Desolate (Isaiah 62:4), Married (Isaiah 62:4), the City of the Lord (Isaiah 60:14), Zion (Psalm 87:2), and Mount Zion (Psalm 48:1). The name \"Jerusalem\" itself may mean \"foundation of peace\" or \"possession of peace.\"",
           "refs": [
-            1
+            "7",
+            "8",
+            "17",
+            "4",
+            "6"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "14",
+            "15"
           ]
         }
       ]
@@ -47,7 +77,10 @@
           "short": "Israel, also named Jacob, was the son of Isaac, the father of the twelve tribes of Israel, and a key patriarch of the Jewish people.",
           "article": "Israel, also known as Jacob, was the son of Isaac and Rebekah, and the grandson of Abraham. He was born after his twin brother Esau (Gen. 25:24-26). \n\nJacob bought Esau's birthright for a bowl of stew when Esau was famished (Gen. 25:29-34). He then deceived his father Isaac into giving him the firstborn blessing (Gen. 27). To escape Esau's anger, Jacob fled to his uncle Laban in Paddan-aram (Gen. 28:1-5). \n\nOn the way, Jacob had a dream of a stairway to heaven at Bethel, where God confirmed the covenant promises to him (Gen. 28:10-22). Jacob worked for Laban for 14 years, marrying his daughters Leah and Rachel (Gen. 29). \n\nWanting to return home, Jacob left Paddan-aram with his family and flocks. On the way, he wrestled with God at Peniel and was renamed Israel, meaning \"he struggles with God\" (Gen. 32:22-32). Israel (or 'Jacob') reconciled with Esau and settled in Canaan (Gen. 33). \n\nJacob had twelve sons who became the ancestors of the twelve tribes of Israel: Reuben, Simeon, Levi, Judah, Issachar, Zebulun, Joseph, Benjamin, Dan, Naphtali, Gad and Asher (Gen. 35:23-26). \n\nJacob showed favoritism to Joseph, provoking his brothers to sell Joseph into slavery in Egypt (Gen. 37). Later, during a famine, Jacob's sons went to Egypt for food and were reconciled with Joseph, who had risen to power there (Gen. 42-46). \n\nJacob moved his whole family to Egypt, where he lived for 17 years (Gen. 47:28). Before his death, Jacob blessed Joseph's sons Ephraim and Manasseh (Gen. 48) and gave prophetic blessings to his own twelve sons (Gen. 49). He died at age 147 and was buried in Canaan (Gen. 49:33; 50:1-14). \n\nGod often identified Himself as the \"God of Abraham, Isaac and Jacob\" and reaffirmed His covenant promises to Jacob's descendants (e.g. Exo. 3:6,15). The nation of Israel took its name from Jacob and the Jewish people are his descendants. The name Jeshurun is used as a poetic name for Israel (Deut. 32:15; 33:5,26; Isa. 44:2).",
           "refs": [
-            2
+            "1",
+            "3",
+            "5",
+            "2"
           ]
         },
         {
@@ -59,7 +92,8 @@
           "short": "Judah, also known as the Jews or Judea, refers to the Israelite tribe, the southern kingdom, and the Roman province in various biblical contexts.",
           "article": "Judah, Jews, and Judea are terms used throughout the Bible to refer to the Israelite tribe, the southern kingdom, and the Roman province, depending on the historical context. \n\nJudah was the fourth son of Israel (or 'Jacob') and Leah (Gen.29.35) and became the founder of one of the twelve tribes of Israel. The tribe of Judah played a prominent role in Israel's history, with notable figures such as Caleb, Othniel, and King David coming from this tribe. \n\nAfter the reign of Solomon, the kingdom of Israel split into two: the northern kingdom of Israel and the southern kingdom of Judah (1Kings 12). The southern kingdom, which included the tribes of Judah and Benjamin, remained loyal to the Davidic dynasty and the worship of God in Jerusalem. The kingdom of Judah lasted from about 930 BC until the Babylonian conquest in 586 BC. \n\nFollowing the Babylonian exile, many Jews returned to the land of Judah, now a province of the Persian Empire (Ezra 1-6). During the Second Temple period, Judea became a province of the Roman Empire. In the New Testament, the terms \"Jews\" and \"Judea\" are often used to refer to the Jewish people and the region they inhabited. \n\nThe history of Judah, the Jews, and Judea is a central focus of the biblical narrative, with many of the key events, prophecies, and teachings revolving around this people and their relationship with God. The prophets, such as Isaiah, Jeremiah, and Ezekiel, often addressed their messages to Judah and warned of judgment for disobedience while also offering hope for restoration. \n\nIn the New Testament, Jesus Christ, the Messiah, is born in Judea and is recognized as the King of the Jews (Mat.2.2). The early Christian church began in Jerusalem, and many of the first converts were Jews (Acts 2). \n\nThroughout the Bible, God's covenant relationship with the people of Judah, the Jews, and the inhabitants of Judea remains a central theme, highlighting His faithfulness, judgment, and redemptive purposes for all nations through the Jewish Messiah, Jesus Christ.",
           "refs": [
-            2
+            "2",
+            "5"
           ]
         },
         {
@@ -71,7 +105,32 @@
           "short": "Jerusalem, the capital of Israel and a holy city for Judaism, Christianity, and Islam.",
           "article": "Jerusalem is one of the most important cities in the Bible, serving as the capital of Israel and a holy city for Judaism, Christianity, and Islam. It is mentioned hundreds of times throughout the Old and New Testaments. The city was originally known as Salem (Genesis 14:18; Psalm 76:2) and was later called Jebus, after the Jebusites who inhabited it (Judges 19:10; 1Ch.11.4). David conquered the city and made it his capital (2Sa.5.6-9; 1Ch.11.4-9). Solomon built the first temple in Jerusalem (1Kings 6-8; 2Chronicles 3-7), which became the center of Jewish worship. The city was destroyed by the Babylonians in 586 BC (2Ki.25.1-10; 2Ch.36.17-19) but was later rebuilt after the exile (Ezra 1:1-4; Nehemiah 2:11-20). In the New Testament, Jerusalem is the site of many events in the life of Jesus, including his triumphal entry (Matthew 21:1-11), cleansing of the temple (Matthew 21:12-17), and crucifixion (Matthew 27:32-56). The early church also began in Jerusalem (Acts 1-7). Throughout the Bible, Jerusalem is referred to by various names, each highlighting a different aspect of its significance: Ariel (Isaiah 29:1), My Delight Is in Her (Isaiah 62:4), Forsaken and Desolate (Isaiah 62:4), Married (Isaiah 62:4), the City of the Lord (Isaiah 60:14), Zion (Psalm 87:2), and Mount Zion (Psalm 48:1). The name \"Jerusalem\" itself may mean \"foundation of peace\" or \"possession of peace.\"",
           "refs": [
-            2
+            "10",
+            "13",
+            "15",
+            "1",
+            "4",
+            "6",
+            "8",
+            "18"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "1",
+            "2",
+            "5",
+            "7",
+            "18",
+            "19",
+            "20"
           ]
         },
         {
@@ -83,7 +142,7 @@
           "short": "The Sabbath, meaning \"rest,\" was the seventh day of the week, set apart by God as a holy day for rest and worship (Exodus 20:8-11; Leviticus 23:3).",
           "article": "The Sabbath is the seventh day of the week, set apart by God as a holy day for rest and worship. The word \"Sabbath\" comes from the Hebrew word \"shabbat,\" meaning \"to cease\" or \"to rest.\" The observance of the Sabbath was instituted by God at creation (Genesis 2:2-3) and later codified in the Ten Commandments (Exodus 20:8-11). \n\nOn the Sabbath, the Israelites were to refrain from all work and dedicate the day to God (Exodus 31:14-15; Leviticus 23:3). The Sabbath was a sign of the covenant between God and Israel, reminding them of their deliverance from slavery in Egypt (Deu.5.15). Specific regulations governed Sabbath observance, such as the prohibition of kindling a fire (Exodus 35:3) and the requirement to prepare food in advance (Exodus 16:23). \n\nIn the New Testament, Jesus affirmed the Sabbath as a day for doing good and ministering to others (Matthew 12:1-13; Luke 13:10-17). He declared Himself the Lord of the Sabbath (Matthew 12:8) and taught that the Sabbath was made for man's benefit (Mrk.2.27). After Jesus' resurrection, the early church began to gather on the first day of the week, Sunday, to commemorate His resurrection (Act.20.7; 1Co.16.2). \n\nThe Sabbath remains an important concept in Christian theology, with some denominations continuing to observe the seventh-day Sabbath, while others view Sunday as a day of rest and worship. The principle of setting apart time for rest and devotion to God continues to be an essential aspect of Christian faith and practice.",
           "refs": [
-            2
+            "6"
           ]
         },
         {
@@ -95,7 +154,30 @@
           "short": "In the Bible, the term \"Gentile\" refers to non-Jewish people or those from the nations, and their relationship with God and the Jewish people is a significant theme throughout Scripture.",
           "article": "The term \"Gentile\" in the Bible refers to non-Jewish people or those who are not part of the chosen people of Israel. The word is derived from the Hebrew term \"goyim\" and the Greek word \"ethnos,\" both meaning \"nations.\" \n\nIn the Old Testament, God's covenant and promises were primarily focused on the nation of Israel. However, there are numerous prophecies and passages that anticipate the inclusion of Gentiles in God's plan of salvation (Isaiah 11:10; 42:1, 6; 49:6, 22; 54:3; 60:3, 5, 11, 16; 61:6, 9; 62:2; 66:12, 19; Jeremiah 16:19; Malachi 1:11). The Book of Jonah also demonstrates God's concern for the Gentile city of Nineveh. \n\nIn the New Testament, the inclusion of Gentiles in the church becomes a central theme. Jesus' ministry extends to Gentile regions (Matthew 4:15; 12:18, 21), and He commissions His disciples to make disciples of all nations (Matthew 28:19). The apostle Paul, in particular, is called to be an apostle to the Gentiles (Act.9.15; 22:21; 26:17, 20, 23; Romans 11:13; 15:16; Galatians 2:8; Ephesians 3:1, 8; 1Ti.2.7). \n\nThe inclusion of Gentiles in the church was not without controversy, as seen in the debate over circumcision and adherence to the Mosaic Law (Acts 15). However, the Jerusalem Council affirmed that Gentiles could be saved by grace through faith in Christ, without being required to follow Jewish customs (Act.15.19-20). \n\nThroughout the New Testament, the unity of Jewish and Gentile believers in Christ is emphasized (Ephesians 2:11-22; Galatians 3:28; Col.3.11). The mystery of the gospel is revealed, that Gentiles are fellow heirs and members of the same body, partaking of the promise in Christ Jesus (Ephesians 3:6). \n\nThe inclusion of Gentiles in God's plan of salvation demonstrates the universal scope of His love and grace. It also highlights the importance of unity and equality among believers, regardless of their ethnic or cultural background.",
           "refs": [
-            2
+            "9"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 3,
+      "entries": [
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "31",
+            "36",
+            "37",
+            "58",
+            "35",
+            "38",
+            "41"
           ]
         }
       ]
@@ -112,7 +194,8 @@
           "short": "Edom, a nation descended from Esau that was often in conflict with Israel.",
           "article": "Edom was a nation located southeast of Israel, in the area that is now southern Jordan. The Edomites were descendants of Esau, the twin brother of Israel (or 'Jacob') (Israel). The name Edom means \"red\", referring to Esau being born red and selling his birthright for red stew. \n\nEdom and Israel had a tumultuous relationship throughout their history. During the Exodus, Edom refused to let the Israelites pass through their territory. Edom was later defeated by King Saul and subjugated under King David. However, they rebelled in later years and were able to establish their independence from Judah. \n\nThe prophets Isaiah, Jeremiah, Ezekiel, Amos and Obadiah all prophesied against Edom for its arrogance and for standing by when Judah was invaded by Babylon. Edom helped the Babylonians loot Jerusalem and expressed joy over its destruction. As a result, the prophets declared that Edom would face God's wrath and be completely destroyed.",
           "refs": [
-            4
+            "21",
+            "22"
           ]
         },
         {
@@ -124,7 +207,10 @@
           "short": "Jerusalem, the capital of Israel and a holy city for Judaism, Christianity, and Islam.",
           "article": "Jerusalem is one of the most important cities in the Bible, serving as the capital of Israel and a holy city for Judaism, Christianity, and Islam. It is mentioned hundreds of times throughout the Old and New Testaments. The city was originally known as Salem (Genesis 14:18; Psalm 76:2) and was later called Jebus, after the Jebusites who inhabited it (Judges 19:10; 1Ch.11.4). David conquered the city and made it his capital (2Sa.5.6-9; 1Ch.11.4-9). Solomon built the first temple in Jerusalem (1Kings 6-8; 2Chronicles 3-7), which became the center of Jewish worship. The city was destroyed by the Babylonians in 586 BC (2Ki.25.1-10; 2Ch.36.17-19) but was later rebuilt after the exile (Ezra 1:1-4; Nehemiah 2:11-20). In the New Testament, Jerusalem is the site of many events in the life of Jesus, including his triumphal entry (Matthew 21:1-11), cleansing of the temple (Matthew 21:12-17), and crucifixion (Matthew 27:32-56). The early church also began in Jerusalem (Acts 1-7). Throughout the Bible, Jerusalem is referred to by various names, each highlighting a different aspect of its significance: Ariel (Isaiah 29:1), My Delight Is in Her (Isaiah 62:4), Forsaken and Desolate (Isaiah 62:4), Married (Isaiah 62:4), the City of the Lord (Isaiah 60:14), Zion (Psalm 87:2), and Mount Zion (Psalm 48:1). The name \"Jerusalem\" itself may mean \"foundation of peace\" or \"possession of peace.\"",
           "refs": [
-            4
+            "12",
+            "2",
+            "11",
+            "22"
           ]
         },
         {
@@ -136,7 +222,7 @@
           "short": "Sodom, a notoriously wicked city destroyed by God along with Gomorrah for their grave sins (Gen. 19:24-25).",
           "article": "Sodom was an ancient city located in the plain of Jordan, known for its great wickedness (Gen. 13:13). It was one of the five \"cities of the plain\" (Gen. 14:2) and was closely associated with Gomorrah. God determined to destroy Sodom and Gomorrah due to their grave sins (Gen. 18:20), but Abraham pleaded with God to spare the city if even ten righteous people could be found (Gen. 18:22-33). However, not even ten were found, and God rained down burning sulfur on Sodom and Gomorrah, completely destroying them (Gen. 19:24-25). Lot and his daughters were the only survivors, as they were warned by angels to flee (Gen. 19:15-16). Sodom became a byword for wickedness and divine judgment (Deut. 29:23; Isa. 1:9-10; Jer. 23:14; Ezek. 16:46-56; Matt. 10:15; 11:23-24; Luke 17:29; Rom. 9:29; 2Pet. 2:6; Jude 1:7; Rev. 11:8).",
           "refs": [
-            4
+            "6"
           ]
         },
         {
@@ -148,7 +234,7 @@
           "short": "Uz, a region mentioned in the Bible as the homeland of Job, possibly located in Edom or Arabia (Job.1.1; Jer. 25:20; Lam. 4:21).",
           "article": "Uz is a region mentioned in the Bible, most prominently as the homeland of Job, the righteous man whose faith was tested through great suffering (Job.1.1). The exact location of Uz is uncertain, but it is believed to be situated east of the land of Israel and Edom, possibly in northern Arabia or southern Jordan. Job's story describes Uz as a place near the desert (Job.1.19) but also fertile for farming and raising livestock (Job.1.3, 14; 42:12). The people of Uz are referred to as \"the people of the East\" (Job.1.3), and the land was vulnerable to Chaldean raiding parties (Job.1.17). Uz is also mentioned in Jeremiah 25:20 among the nations that will drink the cup of God's wrath, and in Lamentations 4:21, where Edom is addressed as dwelling in the land of Uz. Some scholars propose that Uz may be a fictional place serving the story of Job rather than a physical land, with the name \"Uz\" in Hebrew meaning \"counsel\" or \"advice.\"",
           "refs": [
-            4
+            "21"
           ]
         }
       ]
@@ -165,7 +251,7 @@
           "short": "Judah, also known as the Jews or Judea, refers to the Israelite tribe, the southern kingdom, and the Roman province in various biblical contexts.",
           "article": "Judah, Jews, and Judea are terms used throughout the Bible to refer to the Israelite tribe, the southern kingdom, and the Roman province, depending on the historical context. \n\nJudah was the fourth son of Israel (or 'Jacob') and Leah (Gen.29.35) and became the founder of one of the twelve tribes of Israel. The tribe of Judah played a prominent role in Israel's history, with notable figures such as Caleb, Othniel, and King David coming from this tribe. \n\nAfter the reign of Solomon, the kingdom of Israel split into two: the northern kingdom of Israel and the southern kingdom of Judah (1Kings 12). The southern kingdom, which included the tribes of Judah and Benjamin, remained loyal to the Davidic dynasty and the worship of God in Jerusalem. The kingdom of Judah lasted from about 930 BC until the Babylonian conquest in 586 BC. \n\nFollowing the Babylonian exile, many Jews returned to the land of Judah, now a province of the Persian Empire (Ezra 1-6). During the Second Temple period, Judea became a province of the Roman Empire. In the New Testament, the terms \"Jews\" and \"Judea\" are often used to refer to the Jewish people and the region they inhabited. \n\nThe history of Judah, the Jews, and Judea is a central focus of the biblical narrative, with many of the key events, prophecies, and teachings revolving around this people and their relationship with God. The prophets, such as Isaiah, Jeremiah, and Ezekiel, often addressed their messages to Judah and warned of judgment for disobedience while also offering hope for restoration. \n\nIn the New Testament, Jesus Christ, the Messiah, is born in Judea and is recognized as the King of the Jews (Mat.2.2). The early Christian church began in Jerusalem, and many of the first converts were Jews (Acts 2). \n\nThroughout the Bible, God's covenant relationship with the people of Judah, the Jews, and the inhabitants of Judea remains a central theme, highlighting His faithfulness, judgment, and redemptive purposes for all nations through the Jewish Messiah, Jesus Christ.",
           "refs": [
-            5
+            "11"
           ]
         },
         {
@@ -177,7 +263,7 @@
           "short": "Assyria, a major Mesopotamian empire, frequently mentioned in the Old Testament as an adversary of Israel and Judah.",
           "article": "Assyria, also known as Asshur, was a powerful ancient empire centered in Mesopotamia, in what is now modern-day Iraq. The Assyrians are mentioned extensively throughout the Old Testament, often in the context of their military conquests and their interactions with the kingdoms of Israel and Judah. \n\nThe name \"Asshur\" first appears in Genesis 10:11, where it is associated with Nimrod, who is said to have built several cities, including Nineveh, the capital of Assyria. In Genesis 25:18, the descendants of Ishmael are described as living in the region from Havilah to Shur, near the border of Egypt, as one goes toward Assyria. \n\nAssyria began to emerge as a significant power in the 9th century BC, and its kings are mentioned in the books of Kings and Chronicles. The Assyrian king Shalmaneser III is recorded as receiving tribute from Jehu, king of Israel (2Ki.15.19-20). Later, Tiglath-Pileser III, also known as Pul, conquered parts of Israel and deported some of its inhabitants (2Ki.15.29; 1Ch.5.6, 26). \n\nThe Assyrian Empire reached its zenith during the reign of Sennacherib, who is known for his military campaigns against Judah and his siege of Jerusalem during the reign of King Hezekiah (2Kings 18-19; 2Chronicles 32; Isaiah 36-37). The prophet Isaiah played a significant role in encouraging Hezekiah to trust in God and resist the Assyrian threat. \n\nOther Assyrian kings, such as Esarhaddon and Ashurbanipal, are also mentioned in the Bible (Ezra 4:2; 2Ch.33.11). The fall of the Assyrian Empire is alluded to in the prophetic books, particularly in Nahum, which foretells the destruction of Nineveh (Nam.3.18-19).",
           "refs": [
-            5
+            "6"
           ]
         },
         {
@@ -189,7 +275,20 @@
           "short": "Egypt, a powerful nation where the Israelites were enslaved until God delivered them in the Exodus.",
           "article": "Egypt was a prominent ancient civilization in northeastern Africa, concentrated along the lower reaches of the Nile River. In the Bible, Egypt is first mentioned as the place Abraham journeyed during a famine in Canaan (Genesis 12:10). Later, Joseph was sold into slavery in Egypt but rose to power as a trusted official of Pharaoh. During a famine, Israel (or 'Jacob') and his family settled in Egypt with Joseph. \n\nAfter generations passed, the Israelites were enslaved by the Egyptians (Exodus 1:8-14). God called Moses to deliver His people from bondage. After Pharaoh refused to free the Israelites, God sent ten plagues upon Egypt (Exodus 7-12). Finally, Pharaoh relented and the Israelites left in the Exodus. At the Red Sea, God miraculously allowed the Israelites to cross on dry ground but destroyed the pursuing Egyptian army (Exodus 14). \n\nEgypt is often used in the Bible as a symbol of bondage and oppression. The prophets warned against trusting in Egypt's power instead of God (Isaiah 30:1-3, 31:1). Yet Egypt was also a place of refuge, as when Mary, Joseph and Jesus fled there to escape Herod (Matthew 2:13-15).",
           "refs": [
-            5
+            "6"
+          ]
+        },
+        {
+          "name": "Jerusalem",
+          "strong": "H3389",
+          "type": "Place",
+          "briefest": "",
+          "brief": "The capital of Israel, a holy city for three religions",
+          "short": "Jerusalem, the capital of Israel and a holy city for Judaism, Christianity, and Islam.",
+          "article": "Jerusalem is one of the most important cities in the Bible, serving as the capital of Israel and a holy city for Judaism, Christianity, and Islam. It is mentioned hundreds of times throughout the Old and New Testaments. The city was originally known as Salem (Genesis 14:18; Psalm 76:2) and was later called Jebus, after the Jebusites who inhabited it (Judges 19:10; 1Ch.11.4). David conquered the city and made it his capital (2Sa.5.6-9; 1Ch.11.4-9). Solomon built the first temple in Jerusalem (1Kings 6-8; 2Chronicles 3-7), which became the center of Jewish worship. The city was destroyed by the Babylonians in 586 BC (2Ki.25.1-10; 2Ch.36.17-19) but was later rebuilt after the exile (Ezra 1:1-4; Nehemiah 2:11-20). In the New Testament, Jerusalem is the site of many events in the life of Jesus, including his triumphal entry (Matthew 21:1-11), cleansing of the temple (Matthew 21:12-17), and crucifixion (Matthew 27:32-56). The early church also began in Jerusalem (Acts 1-7). Throughout the Bible, Jerusalem is referred to by various names, each highlighting a different aspect of its significance: Ariel (Isaiah 29:1), My Delight Is in Her (Isaiah 62:4), Forsaken and Desolate (Isaiah 62:4), Married (Isaiah 62:4), the City of the Lord (Isaiah 60:14), Zion (Psalm 87:2), and Mount Zion (Psalm 48:1). The name \"Jerusalem\" itself may mean \"foundation of peace\" or \"possession of peace.\"",
+          "refs": [
+            "11",
+            "18"
           ]
         }
       ]

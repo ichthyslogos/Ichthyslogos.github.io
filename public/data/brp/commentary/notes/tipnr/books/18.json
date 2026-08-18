@@ -18,7 +18,37 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            1
+            "1",
+            "5",
+            "8",
+            "9",
+            "14",
+            "20",
+            "22"
+          ]
+        },
+        {
+          "name": "Sheba",
+          "strong": "H7614G",
+          "type": "Male",
+          "briefest": "A Cushite",
+          "brief": "Descendants of Cush, known for wealth and trade",
+          "short": "The Sabeans, descendants of Cush, were known for their wealth, trade in spices and precious stones, and were mentioned in various contexts throughout the Old Testament.",
+          "article": "The Sabeans, also known as Sheba, are mentioned in several passages in the Old Testament (Gen.10.7; 1Ch.1.9; Job.1.15; Jol.3.8; Isa.45.14; Ezk.23.42). They were descendants of Cush, the son of Ham, and were known for their wealth and extensive trade. The Sabeans were associated with the region of Sheba, located in the southern part of the Arabian Peninsula, in modern-day Yemen. They were renowned for their trade in spices, gold, precious stones, and other luxury goods. In the book of Job, the Sabeans are mentioned as raiders who attacked and plundered Job's livestock, highlighting their military prowess. The queen of Sheba, who visited King Solomon, was likely a ruler of this kingdom, emphasizing the Sabeans' prominence and wealth. The prophets Isaiah and Ezekiel also mention the Sabeans in the context of trade and their association with luxury items. The Sabeans played a significant role in the ancient Near Eastern trade network and were known for their prosperity and influence in the region.",
+          "refs": [
+            "15"
+          ]
+        },
+        {
+          "name": "Chaldea",
+          "strong": "H3778",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Ancient Mesopotamian empire; known for astrology and wisdom",
+          "short": "Chaldea was an ancient Mesopotamian empire, known for its astrologers and wise men, that played a significant role in the history of Israel, particularly during the Babylonian exile.",
+          "article": "Chaldea, also known as Babylonia, was an ancient empire located in southern Mesopotamia, in the region of modern-day Iraq. The Chaldeans were known for their expertise in astrology, astronomy, and other forms of wisdom. In the Bible, the term \"Chaldean\" is sometimes used synonymously with \"Babylonian\" or to refer specifically to astrologers and wise men from Babylon. \n\nThe Chaldeans played a significant role in the history of Israel, particularly during the Babylonian exile. In 605 BC, Nebuchadnezzar, king of Babylon, conquered Judah and deported many of its inhabitants to Chaldea (2Ki.24.1-2). The prophet Jeremiah warned the people of Judah about the impending Chaldean invasion and the 70-year exile that would follow (Jeremiah 25:11-12). \n\nDuring the exile, some Jews, such as Daniel and his companions, were chosen to serve in the Chaldean court due to their wisdom and knowledge (Dan.1.3-4). The Chaldeans are also mentioned in connection with the interpretation of dreams and visions (Dan.2.2-10; 4:7; 5:7-11). \n\nThe Chaldeans were also known for their military might and their role in the destruction of Jerusalem in 586 BC (2Ki.25.1-10). However, the prophets Isaiah and Jeremiah foretold the eventual downfall of Chaldea at the hands of the Medes and Persians (Isaiah 13:19; 47:1-5; Jeremiah 50:1-51:64).",
+          "refs": [
+            "17"
           ]
         },
         {
@@ -30,7 +60,7 @@
           "short": "Uz, a region mentioned in the Bible as the homeland of Job, possibly located in Edom or Arabia (Job.1.1; Jer. 25:20; Lam. 4:21).",
           "article": "Uz is a region mentioned in the Bible, most prominently as the homeland of Job, the righteous man whose faith was tested through great suffering (Job.1.1). The exact location of Uz is uncertain, but it is believed to be situated east of the land of Israel and Edom, possibly in northern Arabia or southern Jordan. Job's story describes Uz as a place near the desert (Job.1.19) but also fertile for farming and raising livestock (Job.1.3, 14; 42:12). The people of Uz are referred to as \"the people of the East\" (Job.1.3), and the land was vulnerable to Chaldean raiding parties (Job.1.17). Uz is also mentioned in Jeremiah 25:20 among the nations that will drink the cup of God's wrath, and in Lamentations 4:21, where Edom is addressed as dwelling in the land of Uz. Some scholars propose that Uz may be a fictional place serving the story of Job rather than a physical land, with the name \"Uz\" in Hebrew meaning \"counsel\" or \"advice.\"",
           "refs": [
-            1
+            "1"
           ]
         },
         {
@@ -42,7 +72,13 @@
           "short": "Satan, meaning \"adversary\" or \"accuser,\" is the devil, the chief enemy of God and tempter of humanity, who seeks to hinder God's purposes and lead people into sin (Job.1.6-12; Matthew 4:1-11; Revelation 12:9).",
           "article": "Satan, also known as the devil, is the chief adversary of God and the tempter of humanity. The name \"Satan\" comes from the Hebrew word meaning \"adversary\" or \"accuser.\" He is portrayed as a spiritual being who opposes God's purposes and seeks to lead people into sin and destruction. \n\nIn the Old Testament, Satan appears as an accuser in the heavenly court (Job.1.6-12; 2:1-7; Zechariah 3:1-2). He challenges the integrity of Job and receives permission from God to test him. The Old Testament also uses the term \"satan\" or \"adversary\" to describe human opponents or obstacles (1Sa.29.4; 2Sa.19.22; 1Ki.5.4). \n\nIn the New Testament, Satan is identified as the tempter of Jesus (Matthew 4:1-11; Mrk.1.13; Luke 4:1-13), the oppressor of God's people (Luke 13:16; Act.10.38), and the deceiver of the world (Revelation 12:9; 20:3, 8). He is also called the \"ruler of this world\" (Jhn.12.31; 14:30; 16:11) and the \"god of this age\" (2Co.4.4). \n\nJesus defeated Satan through His death and resurrection (Hebrews 2:14; 1Jn.3.8), and believers are called to resist him (Jam.4.7; 1Pe.5.8-9). The New Testament portrays Satan as a real and active spiritual adversary, but one whose power is limited and whose ultimate defeat is assured (Romans 16:20; Revelation 20:10). \n\nOther names for Satan include Beelzebub (Matthew 10:25; 12:24-27), Belial (2Co.6.15), and the serpent (Revelation 12:9; 20:2). These names highlight his role as the leader of demons, the personification of evil, and the deceiver of humanity.",
           "refs": [
-            1
+            "6",
+            "7a",
+            "7b",
+            "8",
+            "9",
+            "12a",
+            "12b"
           ]
         }
       ]
@@ -59,7 +95,7 @@
           "short": "Bildad the Shuhite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Bildad the Shuhite was one of the three friends who came to comfort Job during his time of intense suffering (Job.2.11). Along with Eliphaz the Temanite and Zophar the Naamathite, Bildad engaged in a series of dialogues with Job, attempting to explain the cause of his afflictions and offering advice. Bildad's speeches emphasize the justice and righteousness of God, suggesting that Job's suffering must be a result of his sin (Job.8.1-22; 18.1-21; 25.1-6). He argues that God does not pervert justice and that if Job were to seek God and plead for mercy, he would be restored if he were truly pure and upright (Job.8.5-7). However, like the other friends, Bildad fails to grasp the true reason behind Job's suffering and mistakenly accuses him of wrongdoing. In the end, God rebukes Bildad and the other friends for not speaking what is right about Him, unlike Job (Job.42.7-9). Despite his misguided attempts to explain Job's situation, Bildad's presence and dialogue with Job highlight the complexities of human suffering and the importance of faith in the face of adversity.",
           "refs": [
-            2
+            "11"
           ]
         },
         {
@@ -71,7 +107,7 @@
           "short": "Eliphaz the Temanite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Eliphaz the Temanite was one of the three friends who visited Job during his time of suffering (Job.2.11). He is described as coming from Teman, an area known for its wisdom (Jer.49.7). Eliphaz, along with Bildad and Zophar, engaged in a series of dialogues with Job, attempting to explain the reasons behind Job's afflictions (Job.4-25). In his speeches, Eliphaz emphasizes the justice and sovereignty of God, suggesting that Job's suffering is a result of sin and urging him to repent (Job.4.1; 15.1; 22.1). However, at the end of the book, God rebukes Eliphaz and his two friends for not speaking what is right about Him, unlike Job (Job.42.7). God instructs them to offer sacrifices and have Job pray for them to be forgiven (Job.42.9). The Bible does not provide any further information about Eliphaz's life outside of his interactions with Job.",
           "refs": [
-            2
+            "11"
           ]
         },
         {
@@ -83,7 +119,10 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            2
+            "3",
+            "7",
+            "10",
+            "11"
           ]
         },
         {
@@ -95,7 +134,7 @@
           "short": "The Naamathites were the people group to which Zophar, one of Job's three friends, belonged.",
           "article": "The Naamathites are mentioned in the Book of Job as the people group to which Zophar, one of Job's three friends, belonged (Job.2.11; 11.1; 20.1; 42.9). Zophar is described as \"the Naamathite,\" indicating his association with this group. \n\nThe Naamathites are not mentioned elsewhere in the Bible, and little is known about their specific location, history, or culture. The name \"Naamathite\" suggests a connection to a place called Naamah, but the exact location of this place is uncertain. \n\nIn the Book of Job, Zophar, along with Eliphaz the Temanite and Bildad the Shuhite, come to comfort Job after hearing of his afflictions. The three friends engage in a series of dialogues with Job, attempting to explain his suffering and offering their perspectives on God's justice and the reasons for Job's trials. \n\nZophar's speeches, as a representative of the Naamathites, emphasize the idea that suffering is a consequence of sin and that Job must have committed some wrongdoing to deserve his misfortune. Zophar urges Job to repent and seek God's forgiveness (Job.11.13-20).",
           "refs": [
-            2
+            "11"
           ]
         },
         {
@@ -107,7 +146,19 @@
           "short": "The Shuhites were a people group to which Bildad, one of Job's friends, belonged.",
           "article": "The Shuhites are mentioned in the Book of Job (Job.2.11; 8.1; 18.1; 25.1; 42.9) in connection with Bildad, one of Job's three friends who came to comfort him during his affliction. Bildad is consistently referred to as \"Bildad the Shuhite,\" indicating that he belonged to the Shuhite people group. The Shuhites' exact location and origin are not specified in the Bible. Bildad, along with Eliphaz the Temanite and Zophar the Naamathite, engaged in a series of dialogues with Job, attempting to explain his suffering and urging him to repent. However, their understanding of God's ways was limited, and they often accused Job wrongly. In the end, God rebuked Bildad and his friends for not speaking rightly about Him, and they were required to offer a sacrifice and have Job pray for them to be forgiven.",
           "refs": [
-            2
+            "11"
+          ]
+        },
+        {
+          "name": "Teman",
+          "strong": "H8487G",
+          "type": "Male",
+          "briefest": "Grandson of Esau",
+          "brief": "Grandson of Esau, associated with an Edomite clan",
+          "short": "Teman was a grandson of Esau and is associated with an important Edomite clan known for its wisdom.",
+          "article": "Teman is mentioned in Gen.36.11,15,42 and 1Ch.1.36,53 as a son of Eliphaz and grandson of Esau. He was one of the chiefs of Edom. The name Teman is also associated with a prominent Edomite clan (Gen.36.34; 1Ch.1.45) and a region in Edom known for its wisdom (Jer.49.7; Oba.1.9). Several individuals from Teman are mentioned in the Book of Job, including Eliphaz the Temanite, one of Job's friends (Job.2.11; 4.1; 15.1; 22.1; 42.7,9). The Temanites were renowned for their wisdom, though Eliphaz's counsel to Job was ultimately misguided. Teman represents the wisdom and power of Edom, which was still inferior to the wisdom of God.",
+          "refs": [
+            "11"
           ]
         },
         {
@@ -119,7 +170,7 @@
           "short": "Zophar the Naamathite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Zophar the Naamathite was one of the three friends of Job who came to comfort him during his time of suffering. Along with Eliphaz the Temanite and Bildad the Shuhite, Zophar visited Job after hearing about his affliction (Job.2.11). Zophar is mentioned as the third speaker in the cycles of dialogue between Job and his friends. In his first speech (Job 11), Zophar rebukes Job for justifying himself and accuses him of mocking God. He asserts that God's wisdom is unsearchable and that Job should repent of his supposed sins. In his second speech (Job 20), Zophar describes the fate of the wicked, implying that Job's suffering is a result of his wrongdoing. Zophar's speeches reflect the traditional belief that suffering is a consequence of sin and that righteousness leads to prosperity. However, the book of Job challenges this simplistic view and presents a more complex understanding of God's justice and human suffering. In the end, God rebukes Zophar and his friends for speaking falsely about Him and instructs them to offer sacrifices and seek Job's intercession (Job.42.7-9).",
           "refs": [
-            2
+            "11"
           ]
         },
         {
@@ -131,7 +182,13 @@
           "short": "Satan, meaning \"adversary\" or \"accuser,\" is the devil, the chief enemy of God and tempter of humanity, who seeks to hinder God's purposes and lead people into sin (Job.1.6-12; Matthew 4:1-11; Revelation 12:9).",
           "article": "Satan, also known as the devil, is the chief adversary of God and the tempter of humanity. The name \"Satan\" comes from the Hebrew word meaning \"adversary\" or \"accuser.\" He is portrayed as a spiritual being who opposes God's purposes and seeks to lead people into sin and destruction. \n\nIn the Old Testament, Satan appears as an accuser in the heavenly court (Job.1.6-12; 2:1-7; Zechariah 3:1-2). He challenges the integrity of Job and receives permission from God to test him. The Old Testament also uses the term \"satan\" or \"adversary\" to describe human opponents or obstacles (1Sa.29.4; 2Sa.19.22; 1Ki.5.4). \n\nIn the New Testament, Satan is identified as the tempter of Jesus (Matthew 4:1-11; Mrk.1.13; Luke 4:1-13), the oppressor of God's people (Luke 13:16; Act.10.38), and the deceiver of the world (Revelation 12:9; 20:3, 8). He is also called the \"ruler of this world\" (Jhn.12.31; 14:30; 16:11) and the \"god of this age\" (2Co.4.4). \n\nJesus defeated Satan through His death and resurrection (Hebrews 2:14; 1Jn.3.8), and believers are called to resist him (Jam.4.7; 1Pe.5.8-9). The New Testament portrays Satan as a real and active spiritual adversary, but one whose power is limited and whose ultimate defeat is assured (Romans 16:20; Revelation 20:10). \n\nOther names for Satan include Beelzebub (Matthew 10:25; 12:24-27), Belial (2Co.6.15), and the serpent (Revelation 12:9; 20:2). These names highlight his role as the leader of demons, the personification of evil, and the deceiver of humanity.",
           "refs": [
-            2
+            "1",
+            "2a",
+            "2b",
+            "3",
+            "4",
+            "6",
+            "7"
           ]
         }
       ]
@@ -148,7 +205,8 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            3
+            "1",
+            "2"
           ]
         },
         {
@@ -160,7 +218,7 @@
           "short": "Leviathan is a large sea creature mentioned in several Old Testament passages, often associated with chaos, evil, or God's power over creation (Job.3.8; 41:1; Psalm 74:14; 104:26; Isaiah 27:1).",
           "article": "Leviathan is a large sea creature mentioned in various contexts throughout the Old Testament. The Hebrew word \"leviathan\" is derived from a root meaning \"to twist\" or \"to coil,\" suggesting a serpentine or dragon-like creature. \n\nIn Job.3.8, Leviathan is mentioned in the context of Job's lament, where he curses the day of his birth and invokes those who are skilled in rousing Leviathan to curse it as well. This passage suggests that Leviathan was associated with chaos or evil. \n\nJob.41.1-34 provides the most detailed description of Leviathan, portraying it as a powerful and fearsome creature with impenetrable scales, terrible teeth, and the ability to breathe fire. In this context, Leviathan is used as an illustration of God's power over creation and His ability to subdue even the mightiest of creatures. \n\nIn Psalm 74:14, Leviathan is depicted as having multiple heads, which God crushed and gave as food to the creatures of the wilderness. This imagery is likely symbolic, representing God's victory over the forces of chaos and evil. \n\nPsalm 104:26 mentions Leviathan as one of the sea creatures that God formed to play in the vast waters, showcasing God's creative power and the diversity of His creation. \n\nIsaiah 27:1 prophesies that on the day of the Lord's judgment, He will punish Leviathan, described as the fleeing and twisting serpent, with His fierce and mighty sword. This passage portrays Leviathan as a symbol of evil or chaos that will ultimately be defeated by God. \n\nThe exact identity of Leviathan is uncertain, with some scholars suggesting it may refer to a crocodile, a whale, or a mythological sea monster. However, the biblical references to Leviathan are primarily symbolic, representing chaos, evil, or the forces opposed to God. The passages emphasize God's sovereignty over creation and His ultimate victory over all that challenges His rule.",
           "refs": [
-            3
+            "8"
           ]
         }
       ]
@@ -177,7 +235,37 @@
           "short": "Eliphaz the Temanite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Eliphaz the Temanite was one of the three friends who visited Job during his time of suffering (Job.2.11). He is described as coming from Teman, an area known for its wisdom (Jer.49.7). Eliphaz, along with Bildad and Zophar, engaged in a series of dialogues with Job, attempting to explain the reasons behind Job's afflictions (Job.4-25). In his speeches, Eliphaz emphasizes the justice and sovereignty of God, suggesting that Job's suffering is a result of sin and urging him to repent (Job.4.1; 15.1; 22.1). However, at the end of the book, God rebukes Eliphaz and his two friends for not speaking what is right about Him, unlike Job (Job.42.7). God instructs them to offer sacrifices and have Job pray for them to be forgiven (Job.42.9). The Bible does not provide any further information about Eliphaz's life outside of his interactions with Job.",
           "refs": [
-            4
+            "1"
+          ]
+        },
+        {
+          "name": "Teman",
+          "strong": "H8487G",
+          "type": "Male",
+          "briefest": "Grandson of Esau",
+          "brief": "Grandson of Esau, associated with an Edomite clan",
+          "short": "Teman was a grandson of Esau and is associated with an important Edomite clan known for its wisdom.",
+          "article": "Teman is mentioned in Gen.36.11,15,42 and 1Ch.1.36,53 as a son of Eliphaz and grandson of Esau. He was one of the chiefs of Edom. The name Teman is also associated with a prominent Edomite clan (Gen.36.34; 1Ch.1.45) and a region in Edom known for its wisdom (Jer.49.7; Oba.1.9). Several individuals from Teman are mentioned in the Book of Job, including Eliphaz the Temanite, one of Job's friends (Job.2.11; 4.1; 15.1; 22.1; 42.7,9). The Temanites were renowned for their wisdom, though Eliphaz's counsel to Job was ultimately misguided. Teman represents the wisdom and power of Edom, which was still inferior to the wisdom of God.",
+          "refs": [
+            "1"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 5,
+      "entries": [
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "17",
+            "8"
           ]
         }
       ]
@@ -194,7 +282,7 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            6
+            "1"
           ]
         },
         {
@@ -206,7 +294,7 @@
           "short": "Sheba, also referred to as the South, was a kingdom known for its wealth, trade, and the visit of its queen to King Solomon (1Ki. 10:1-13; 2Chr. 9:1-12; Ps. 72:10, 15; Isa. 60:6; Jer. 6:20; Ezek. 27:22-23; 38:13; Luke 11:31).",
           "article": "Sheba, also known as the South, was an ancient kingdom located in the southern part of the Arabian Peninsula, in modern-day Yemen. It was renowned for its wealth, derived from its control of the spice and incense trade routes. The Bible mentions Sheba in connection with its trade in gold, spices, precious stones, and incense (1Ki. 10:2, 10; 2Chr. 9:1, 9; Ps. 72:15; Isa. 60:6; Jer. 6:20; Ezek. 27:22). \n\nThe most famous biblical account involving Sheba is the visit of the Queen of Sheba to King Solomon (1Ki. 10:1-13; 2Chr. 9:1-12). Intrigued by reports of Solomon's wisdom and prosperity, the queen journeyed to Jerusalem with a great caravan, bearing gifts of gold, spices, and precious stones. She tested Solomon with hard questions and was impressed by his wisdom and the splendor of his court. The queen praised Solomon and his God, acknowledging the divine source of his wisdom and success. \n\nSheba is also mentioned in prophetic and poetic texts, often as a symbol of distant and exotic lands (Ps. 72:10; Isa. 60:6; Ezek. 38:13). In the New Testament, Jesus refers to the Queen of the South (Sheba) as one who will rise up in judgment against those who reject His message, emphasizing her recognition of wisdom and truth (Luke 11:31). \n\nThe kingdom of Sheba played a significant role in the trade networks of the ancient Near East, and its mention in the Bible attests to its fame and influence during the biblical period.",
           "refs": [
-            6
+            "19"
           ]
         },
         {
@@ -218,7 +306,20 @@
           "short": "Tema, an Arabian city and tribe known for its caravans and trade, mentioned in prophetic and poetic texts (Job.6.19; Isa. 21:14; Jer. 25:23).",
           "article": "Tema is mentioned in several Old Testament passages as an Arabian city and tribe known for its caravans and trade. In Job.6.19, the caravans of Tema are described as eagerly seeking water in the desert, highlighting the challenges of travel and commerce in the arid region. Isaiah 21:14 portrays the inhabitants of Tema offering assistance to fugitives and providing them with bread and water, suggesting a hospitable nature. Jeremiah 25:23 lists Tema among the Arabian tribes and kingdoms that would face God's judgment and be made to drink the cup of His wrath. The exact location of Tema is uncertain, but it is believed to have been situated in the northern part of the Arabian Peninsula, along the trade routes connecting Arabia with Mesopotamia and the Levant. The Tema oasis was a significant stopover for caravans, providing water and provisions for travelers. The tribe of Tema was likely involved in facilitating trade and offering protection to merchant caravans passing through their territory. The biblical references to Tema underscore the importance of Arabian trade and the interactions between the peoples of the Near East in ancient times.",
           "refs": [
-            6
+            "19"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "4",
+            "14"
           ]
         }
       ]
@@ -235,7 +336,7 @@
           "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
           "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
           "refs": [
-            7
+            "9"
           ]
         }
       ]
@@ -252,7 +353,7 @@
           "short": "Bildad the Shuhite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Bildad the Shuhite was one of the three friends who came to comfort Job during his time of intense suffering (Job.2.11). Along with Eliphaz the Temanite and Zophar the Naamathite, Bildad engaged in a series of dialogues with Job, attempting to explain the cause of his afflictions and offering advice. Bildad's speeches emphasize the justice and righteousness of God, suggesting that Job's suffering must be a result of his sin (Job.8.1-22; 18.1-21; 25.1-6). He argues that God does not pervert justice and that if Job were to seek God and plead for mercy, he would be restored if he were truly pure and upright (Job.8.5-7). However, like the other friends, Bildad fails to grasp the true reason behind Job's suffering and mistakenly accuses him of wrongdoing. In the end, God rebukes Bildad and the other friends for not speaking what is right about Him, unlike Job (Job.42.7-9). Despite his misguided attempts to explain Job's situation, Bildad's presence and dialogue with Job highlight the complexities of human suffering and the importance of faith in the face of adversity.",
           "refs": [
-            8
+            "1"
           ]
         },
         {
@@ -264,7 +365,22 @@
           "short": "The Shuhites were a people group to which Bildad, one of Job's friends, belonged.",
           "article": "The Shuhites are mentioned in the Book of Job (Job.2.11; 8.1; 18.1; 25.1; 42.9) in connection with Bildad, one of Job's three friends who came to comfort him during his affliction. Bildad is consistently referred to as \"Bildad the Shuhite,\" indicating that he belonged to the Shuhite people group. The Shuhites' exact location and origin are not specified in the Bible. Bildad, along with Eliphaz the Temanite and Zophar the Naamathite, engaged in a series of dialogues with Job, attempting to explain his suffering and urging him to repent. However, their understanding of God's ways was limited, and they often accused Job wrongly. In the end, God rebuked Bildad and his friends for not speaking rightly about Him, and they were required to offer a sacrifice and have Job pray for them to be forgiven.",
           "refs": [
-            8
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "3",
+            "5",
+            "13",
+            "20"
           ]
         }
       ]
@@ -281,7 +397,7 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            9
+            "1"
           ]
         },
         {
@@ -293,7 +409,19 @@
           "short": "The Bear is a constellation referred to in God's speeches to Job, showcasing God's power and wisdom in creation.",
           "article": "The Bear is mentioned twice in the Book of Job as part of God's discourse with Job regarding the wonders of creation. In Job.9.9, Job acknowledges God as the Maker of the Bear, Orion, and the Pleiades, recognizing God's power and sovereignty over the stars. Later, in Job.38.32, God questions Job about his ability to guide the Bear with its cubs, emphasizing Job's limited understanding compared to God's wisdom. The Bear likely refers to the constellation Ursa Major, also known as the Great Bear, which is visible in the northern sky. The Biblical references to the Bear point to God's authority over the celestial bodies and His intricate design of the universe, far beyond human comprehension.",
           "refs": [
-            9
+            "9"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "2"
           ]
         },
         {
@@ -305,7 +433,7 @@
           "short": "Orion, a prominent constellation, is mentioned in Job.9.9, 38:31; Amo.5.8 as a display of God's power and creative work in the heavens.",
           "article": "Orion is a well-known constellation mentioned in three passages in the Old Testament: Job.9.9, Job.38.31, and Amo.5.8. In each of these references, Orion is used to illustrate God's power, wisdom, and sovereignty over creation. \n\nIn Job.9.9, Orion is listed along with other constellations, such as the Bear, Pleiades, and the chambers of the south, as an example of God's handiwork in the heavens. This passage emphasizes God's omnipotence and the vastness of His creation, which is beyond human understanding. \n\nIn Job.38.31, God challenges Job by asking, \"Can you bind the chains of the Pleiades or loose the cords of Orion?\" This rhetorical question highlights God's control over the constellations and the laws that govern the universe. It also serves to remind Job of his limited understanding and power compared to the infinite wisdom and might of God. \n\nIn Amo.5.8, the prophet declares that God \"made the Pleiades and Orion,\" using these constellations as examples of God's creative power. This passage is set in the context of a call to repentance and a warning of impending judgment, reminding the people of Israel that the God who created the stars is also the One who will hold them accountable for their actions. \n\nThe mention of Orion in these biblical passages serves to emphasize the majesty, power, and wisdom of God as displayed in His creation. The constellations, including Orion, are seen as evidence of God's handiwork and His sovereign control over the universe. These references also serve to humble humanity, reminding us of our limited understanding and the need to submit to the Creator of all things.",
           "refs": [
-            9
+            "9"
           ]
         },
         {
@@ -317,7 +445,7 @@
           "short": "The Pleiades are a star cluster mentioned in Job.9.9; 38:31 as a display of God's creative power and in Amo.5.8 as evidence of God's control over the natural world.",
           "article": "The Pleiades are mentioned in three passages in the Bible as an example of God's power and sovereignty over creation. In Job.9.9, they are listed along with the constellations Orion and the Bear as evidence of God's mighty works in the heavens. Later, in Job.38.31, God challenges Job by asking if he can bind the chains of the Pleiades or loose the cords of Orion, emphasizing the contrast between divine omnipotence and human limitations. The prophet Amos also mentions the Pleiades in Amo.5.8, where he describes God as the One who made the Pleiades and Orion, and who controls the cycle of day and night and the waters of the earth. These references to the Pleiades serve to highlight God's creative power, wisdom, and sovereign rule over the universe.",
           "refs": [
-            9
+            "9"
           ]
         },
         {
@@ -329,7 +457,7 @@
           "short": "Rahab is a poetic name for Egypt, often represented as a mythical sea monster that God defeated, symbolizing His power over the nations (Psalm 89:10; Isaiah 51:9).",
           "article": "Rahab is a poetic name used in the Old Testament to refer to Egypt, often represented as a mythical sea monster or dragon. The name Rahab means \"proud\" or \"arrogant\" in Hebrew. In Job.9.13 and 26:12, Rahab is mentioned in the context of God's power over creation and His ability to subdue the forces of chaos. In Psalm 89:10, God is praised for crushing Rahab and scattering His enemies, using the defeat of this sea monster as a metaphor for His triumph over the nations. Similarly, in Isaiah 51:9, the prophet calls upon God to awaken and defeat Rahab as He did in ancient times, using this imagery to plead for God's intervention on behalf of His people. The use of Rahab as a poetic name for Egypt emphasizes the nation's pride and opposition to God, while also highlighting God's supreme power and authority over all earthly powers.",
           "refs": [
-            9
+            "13"
           ]
         }
       ]
@@ -346,7 +474,7 @@
           "short": "The Naamathites were the people group to which Zophar, one of Job's three friends, belonged.",
           "article": "The Naamathites are mentioned in the Book of Job as the people group to which Zophar, one of Job's three friends, belonged (Job.2.11; 11.1; 20.1; 42.9). Zophar is described as \"the Naamathite,\" indicating his association with this group. \n\nThe Naamathites are not mentioned elsewhere in the Bible, and little is known about their specific location, history, or culture. The name \"Naamathite\" suggests a connection to a place called Naamah, but the exact location of this place is uncertain. \n\nIn the Book of Job, Zophar, along with Eliphaz the Temanite and Bildad the Shuhite, come to comfort Job after hearing of his afflictions. The three friends engage in a series of dialogues with Job, attempting to explain his suffering and offering their perspectives on God's justice and the reasons for Job's trials. \n\nZophar's speeches, as a representative of the Naamathites, emphasize the idea that suffering is a consequence of sin and that Job must have committed some wrongdoing to deserve his misfortune. Zophar urges Job to repent and seek God's forgiveness (Job.11.13-20).",
           "refs": [
-            11
+            "1"
           ]
         },
         {
@@ -358,7 +486,19 @@
           "short": "Zophar the Naamathite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Zophar the Naamathite was one of the three friends of Job who came to comfort him during his time of suffering. Along with Eliphaz the Temanite and Bildad the Shuhite, Zophar visited Job after hearing about his affliction (Job.2.11). Zophar is mentioned as the third speaker in the cycles of dialogue between Job and his friends. In his first speech (Job 11), Zophar rebukes Job for justifying himself and accuses him of mocking God. He asserts that God's wisdom is unsearchable and that Job should repent of his supposed sins. In his second speech (Job 20), Zophar describes the fate of the wicked, implying that Job's suffering is a result of his wrongdoing. Zophar's speeches reflect the traditional belief that suffering is a consequence of sin and that righteousness leads to prosperity. However, the book of Job challenges this simplistic view and presents a more complex understanding of God's justice and human suffering. In the end, God rebukes Zophar and his friends for speaking falsely about Him and instructs them to offer sacrifices and seek Job's intercession (Job.42.7-9).",
           "refs": [
-            11
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "7"
           ]
         },
         {
@@ -370,7 +510,7 @@
           "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
           "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
           "refs": [
-            11
+            "8"
           ]
         }
       ]
@@ -387,7 +527,38 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            12
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "6"
+          ]
+        }
+      ]
+    },
+    {
+      "chapter": 13,
+      "entries": [
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "3",
+            "7",
+            "8"
           ]
         }
       ]
@@ -404,7 +575,7 @@
           "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
           "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
           "refs": [
-            14
+            "13"
           ]
         }
       ]
@@ -421,7 +592,34 @@
           "short": "Eliphaz the Temanite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Eliphaz the Temanite was one of the three friends who visited Job during his time of suffering (Job.2.11). He is described as coming from Teman, an area known for its wisdom (Jer.49.7). Eliphaz, along with Bildad and Zophar, engaged in a series of dialogues with Job, attempting to explain the reasons behind Job's afflictions (Job.4-25). In his speeches, Eliphaz emphasizes the justice and sovereignty of God, suggesting that Job's suffering is a result of sin and urging him to repent (Job.4.1; 15.1; 22.1). However, at the end of the book, God rebukes Eliphaz and his two friends for not speaking what is right about Him, unlike Job (Job.42.7). God instructs them to offer sacrifices and have Job pray for them to be forgiven (Job.42.9). The Bible does not provide any further information about Eliphaz's life outside of his interactions with Job.",
           "refs": [
-            15
+            "1"
+          ]
+        },
+        {
+          "name": "Teman",
+          "strong": "H8487G",
+          "type": "Male",
+          "briefest": "Grandson of Esau",
+          "brief": "Grandson of Esau, associated with an Edomite clan",
+          "short": "Teman was a grandson of Esau and is associated with an important Edomite clan known for its wisdom.",
+          "article": "Teman is mentioned in Gen.36.11,15,42 and 1Ch.1.36,53 as a son of Eliphaz and grandson of Esau. He was one of the chiefs of Edom. The name Teman is also associated with a prominent Edomite clan (Gen.36.34; 1Ch.1.45) and a region in Edom known for its wisdom (Jer.49.7; Oba.1.9). Several individuals from Teman are mentioned in the Book of Job, including Eliphaz the Temanite, one of Job's friends (Job.2.11; 4.1; 15.1; 22.1; 42.7,9). The Temanites were renowned for their wisdom, though Eliphaz's counsel to Job was ultimately misguided. Teman represents the wisdom and power of Edom, which was still inferior to the wisdom of God.",
+          "refs": [
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "25",
+            "4",
+            "11",
+            "13"
           ]
         }
       ]
@@ -438,7 +636,19 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            16
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "11"
           ]
         }
       ]
@@ -455,7 +665,8 @@
           "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
           "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
           "refs": [
-            17
+            "13",
+            "16"
           ]
         }
       ]
@@ -472,7 +683,7 @@
           "short": "Bildad the Shuhite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Bildad the Shuhite was one of the three friends who came to comfort Job during his time of intense suffering (Job.2.11). Along with Eliphaz the Temanite and Zophar the Naamathite, Bildad engaged in a series of dialogues with Job, attempting to explain the cause of his afflictions and offering advice. Bildad's speeches emphasize the justice and righteousness of God, suggesting that Job's suffering must be a result of his sin (Job.8.1-22; 18.1-21; 25.1-6). He argues that God does not pervert justice and that if Job were to seek God and plead for mercy, he would be restored if he were truly pure and upright (Job.8.5-7). However, like the other friends, Bildad fails to grasp the true reason behind Job's suffering and mistakenly accuses him of wrongdoing. In the end, God rebukes Bildad and the other friends for not speaking what is right about Him, unlike Job (Job.42.7-9). Despite his misguided attempts to explain Job's situation, Bildad's presence and dialogue with Job highlight the complexities of human suffering and the importance of faith in the face of adversity.",
           "refs": [
-            18
+            "1"
           ]
         },
         {
@@ -484,7 +695,19 @@
           "short": "The Shuhites were a people group to which Bildad, one of Job's friends, belonged.",
           "article": "The Shuhites are mentioned in the Book of Job (Job.2.11; 8.1; 18.1; 25.1; 42.9) in connection with Bildad, one of Job's three friends who came to comfort him during his affliction. Bildad is consistently referred to as \"Bildad the Shuhite,\" indicating that he belonged to the Shuhite people group. The Shuhites' exact location and origin are not specified in the Bible. Bildad, along with Eliphaz the Temanite and Zophar the Naamathite, engaged in a series of dialogues with Job, attempting to explain his suffering and urging him to repent. However, their understanding of God's ways was limited, and they often accused Job wrongly. In the end, God rebuked Bildad and his friends for not speaking rightly about Him, and they were required to offer a sacrifice and have Job pray for them to be forgiven.",
           "refs": [
-            18
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "21"
           ]
         }
       ]
@@ -501,7 +724,19 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            19
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "22"
           ]
         }
       ]
@@ -518,7 +753,7 @@
           "short": "The Naamathites were the people group to which Zophar, one of Job's three friends, belonged.",
           "article": "The Naamathites are mentioned in the Book of Job as the people group to which Zophar, one of Job's three friends, belonged (Job.2.11; 11.1; 20.1; 42.9). Zophar is described as \"the Naamathite,\" indicating his association with this group. \n\nThe Naamathites are not mentioned elsewhere in the Bible, and little is known about their specific location, history, or culture. The name \"Naamathite\" suggests a connection to a place called Naamah, but the exact location of this place is uncertain. \n\nIn the Book of Job, Zophar, along with Eliphaz the Temanite and Bildad the Shuhite, come to comfort Job after hearing of his afflictions. The three friends engage in a series of dialogues with Job, attempting to explain his suffering and offering their perspectives on God's justice and the reasons for Job's trials. \n\nZophar's speeches, as a representative of the Naamathites, emphasize the idea that suffering is a consequence of sin and that Job must have committed some wrongdoing to deserve his misfortune. Zophar urges Job to repent and seek God's forgiveness (Job.11.13-20).",
           "refs": [
-            20
+            "1"
           ]
         },
         {
@@ -530,7 +765,20 @@
           "short": "Zophar the Naamathite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Zophar the Naamathite was one of the three friends of Job who came to comfort him during his time of suffering. Along with Eliphaz the Temanite and Bildad the Shuhite, Zophar visited Job after hearing about his affliction (Job.2.11). Zophar is mentioned as the third speaker in the cycles of dialogue between Job and his friends. In his first speech (Job 11), Zophar rebukes Job for justifying himself and accuses him of mocking God. He asserts that God's wisdom is unsearchable and that Job should repent of his supposed sins. In his second speech (Job 20), Zophar describes the fate of the wicked, implying that Job's suffering is a result of his wrongdoing. Zophar's speeches reflect the traditional belief that suffering is a consequence of sin and that righteousness leads to prosperity. However, the book of Job challenges this simplistic view and presents a more complex understanding of God's justice and human suffering. In the end, God rebukes Zophar and his friends for speaking falsely about Him and instructs them to offer sacrifices and seek Job's intercession (Job.42.7-9).",
           "refs": [
-            20
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "15",
+            "29"
           ]
         }
       ]
@@ -547,7 +795,22 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            21
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "15",
+            "20",
+            "14",
+            "22"
           ]
         },
         {
@@ -559,7 +822,7 @@
           "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
           "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
           "refs": [
-            21
+            "13"
           ]
         }
       ]
@@ -576,7 +839,19 @@
           "short": "Eliphaz the Temanite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Eliphaz the Temanite was one of the three friends who visited Job during his time of suffering (Job.2.11). He is described as coming from Teman, an area known for its wisdom (Jer.49.7). Eliphaz, along with Bildad and Zophar, engaged in a series of dialogues with Job, attempting to explain the reasons behind Job's afflictions (Job.4-25). In his speeches, Eliphaz emphasizes the justice and sovereignty of God, suggesting that Job's suffering is a result of sin and urging him to repent (Job.4.1; 15.1; 22.1). However, at the end of the book, God rebukes Eliphaz and his two friends for not speaking what is right about Him, unlike Job (Job.42.7). God instructs them to offer sacrifices and have Job pray for them to be forgiven (Job.42.9). The Bible does not provide any further information about Eliphaz's life outside of his interactions with Job.",
           "refs": [
-            22
+            "1"
+          ]
+        },
+        {
+          "name": "Teman",
+          "strong": "H8487G",
+          "type": "Male",
+          "briefest": "Grandson of Esau",
+          "brief": "Grandson of Esau, associated with an Edomite clan",
+          "short": "Teman was a grandson of Esau and is associated with an important Edomite clan known for its wisdom.",
+          "article": "Teman is mentioned in Gen.36.11,15,42 and 1Ch.1.36,53 as a son of Eliphaz and grandson of Esau. He was one of the chiefs of Edom. The name Teman is also associated with a prominent Edomite clan (Gen.36.34; 1Ch.1.45) and a region in Edom known for its wisdom (Jer.49.7; Oba.1.9). Several individuals from Teman are mentioned in the Book of Job, including Eliphaz the Temanite, one of Job's friends (Job.2.11; 4.1; 15.1; 22.1; 42.7,9). The Temanites were renowned for their wisdom, though Eliphaz's counsel to Job was ultimately misguided. Teman represents the wisdom and power of Edom, which was still inferior to the wisdom of God.",
+          "refs": [
+            "1"
           ]
         },
         {
@@ -588,7 +863,25 @@
           "short": "Ophir was a region famous for its high-quality gold, which was imported to Israel during the reigns of David and Solomon.",
           "article": "Ophir was a region known for its abundant and fine gold, which was highly prized in ancient times. It is mentioned in connection with the wealth and splendor of King Solomon, who received gold from Ophir through his naval expeditions in partnership with Hiram, king of Tyre (1Kgs. 9:28; 10:11; 2Chr. 8:18; 9:10). The gold of Ophir was renowned for its purity and value, and it was used in the construction and decoration of the temple and royal palaces (1Chr. 29:4; 2Chr. 8:18). The location of Ophir is uncertain, but scholars have proposed various possibilities, including the Arabian Peninsula, the Horn of Africa, and India. In poetic and prophetic texts, Ophir is used as a symbol of wealth and prosperity (Job.22.24; 28:16; Ps. 45:9; Isa. 13:12).",
           "refs": [
-            22
+            "24"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "3",
+            "17",
+            "23",
+            "25",
+            "26",
+            "2",
+            "13"
           ]
         }
       ]
@@ -605,7 +898,19 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            23
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "16"
           ]
         }
       ]
@@ -613,6 +918,18 @@
     {
       "chapter": 24,
       "entries": [
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "1"
+          ]
+        },
         {
           "name": "Sheol",
           "strong": "H7585",
@@ -622,7 +939,7 @@
           "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
           "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
           "refs": [
-            24
+            "19"
           ]
         }
       ]
@@ -639,7 +956,7 @@
           "short": "Bildad the Shuhite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Bildad the Shuhite was one of the three friends who came to comfort Job during his time of intense suffering (Job.2.11). Along with Eliphaz the Temanite and Zophar the Naamathite, Bildad engaged in a series of dialogues with Job, attempting to explain the cause of his afflictions and offering advice. Bildad's speeches emphasize the justice and righteousness of God, suggesting that Job's suffering must be a result of his sin (Job.8.1-22; 18.1-21; 25.1-6). He argues that God does not pervert justice and that if Job were to seek God and plead for mercy, he would be restored if he were truly pure and upright (Job.8.5-7). However, like the other friends, Bildad fails to grasp the true reason behind Job's suffering and mistakenly accuses him of wrongdoing. In the end, God rebukes Bildad and the other friends for not speaking what is right about Him, unlike Job (Job.42.7-9). Despite his misguided attempts to explain Job's situation, Bildad's presence and dialogue with Job highlight the complexities of human suffering and the importance of faith in the face of adversity.",
           "refs": [
-            25
+            "1"
           ]
         },
         {
@@ -651,7 +968,19 @@
           "short": "The Shuhites were a people group to which Bildad, one of Job's friends, belonged.",
           "article": "The Shuhites are mentioned in the Book of Job (Job.2.11; 8.1; 18.1; 25.1; 42.9) in connection with Bildad, one of Job's three friends who came to comfort him during his affliction. Bildad is consistently referred to as \"Bildad the Shuhite,\" indicating that he belonged to the Shuhite people group. The Shuhites' exact location and origin are not specified in the Bible. Bildad, along with Eliphaz the Temanite and Zophar the Naamathite, engaged in a series of dialogues with Job, attempting to explain his suffering and urging him to repent. However, their understanding of God's ways was limited, and they often accused Job wrongly. In the end, God rebuked Bildad and his friends for not speaking rightly about Him, and they were required to offer a sacrifice and have Job pray for them to be forgiven.",
           "refs": [
-            25
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "4"
           ]
         }
       ]
@@ -668,7 +997,7 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            26
+            "1"
           ]
         },
         {
@@ -680,8 +1009,7 @@
           "short": "Abaddon (Hebrew) or Apollyon (Greek), meaning \"destruction\" or \"destroyer,\" is the name of the angel of the bottomless pit .",
           "article": "Abaddon, or Apollyon in Greek, is mentioned in the Book of Revelation as the name of the angel of the bottomless pit (Rev.9.11). The name Abaddon is derived from the Hebrew word for \"destruction,\" while Apollyon is the Greek equivalent, meaning \"destroyer.\" In the vision of the fifth trumpet, a star falls from heaven and is given the key to the bottomless pit. When the pit is opened, locusts with the power to torment people come out, led by the angel Abaddon or Apollyon. This angel is described as the king over the locusts, which are sent as a judgment upon the earth. The identity of this angel is not explicitly stated, but some interpret it as a reference to Satan or a high-ranking demon associated with destruction.",
           "refs": [
-            26,
-            26
+            "6"
           ]
         },
         {
@@ -693,7 +1021,7 @@
           "short": "Rahab is a poetic name for Egypt, often represented as a mythical sea monster that God defeated, symbolizing His power over the nations (Psalm 89:10; Isaiah 51:9).",
           "article": "Rahab is a poetic name used in the Old Testament to refer to Egypt, often represented as a mythical sea monster or dragon. The name Rahab means \"proud\" or \"arrogant\" in Hebrew. In Job.9.13 and 26:12, Rahab is mentioned in the context of God's power over creation and His ability to subdue the forces of chaos. In Psalm 89:10, God is praised for crushing Rahab and scattering His enemies, using the defeat of this sea monster as a metaphor for His triumph over the nations. Similarly, in Isaiah 51:9, the prophet calls upon God to awaken and defeat Rahab as He did in ancient times, using this imagery to plead for God's intervention on behalf of His people. The use of Rahab as a poetic name for Egypt emphasizes the nation's pride and opposition to God, while also highlighting God's supreme power and authority over all earthly powers.",
           "refs": [
-            26
+            "12"
           ]
         },
         {
@@ -705,7 +1033,7 @@
           "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
           "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
           "refs": [
-            26
+            "6"
           ]
         }
       ]
@@ -722,7 +1050,23 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            27
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "2",
+            "10",
+            "11",
+            "13",
+            "9"
           ]
         }
       ]
@@ -730,6 +1074,18 @@
     {
       "chapter": 28,
       "entries": [
+        {
+          "name": "Cush",
+          "strong": "H3568A",
+          "type": "Place",
+          "briefest": "",
+          "brief": "Ancient region in Africa; associated with Egypt and Babylon",
+          "short": "Cush, often translated as Ethiopia, was an ancient region in Africa, mentioned in various contexts throughout the Bible.",
+          "article": "Cush, also known as Ethiopia in some translations, was a region located in the upper Nile valley, south of Egypt, in what is now modern-day Sudan and Ethiopia. The name Cush is derived from the name of one of the sons of Ham, the son of Noah (Genesis 10:6).",
+          "refs": [
+            "19"
+          ]
+        },
         {
           "name": "Ophir",
           "strong": "H0211H",
@@ -739,7 +1095,7 @@
           "short": "Ophir was a region famous for its high-quality gold, which was imported to Israel during the reigns of David and Solomon.",
           "article": "Ophir was a region known for its abundant and fine gold, which was highly prized in ancient times. It is mentioned in connection with the wealth and splendor of King Solomon, who received gold from Ophir through his naval expeditions in partnership with Hiram, king of Tyre (1Kgs. 9:28; 10:11; 2Chr. 8:18; 9:10). The gold of Ophir was renowned for its purity and value, and it was used in the construction and decoration of the temple and royal palaces (1Chr. 29:4; 2Chr. 8:18). The location of Ophir is uncertain, but scholars have proposed various possibilities, including the Arabian Peninsula, the Horn of Africa, and India. In poetic and prophetic texts, Ophir is used as a symbol of wealth and prosperity (Job.22.24; 28:16; Ps. 45:9; Isa. 13:12).",
           "refs": [
-            28
+            "16"
           ]
         },
         {
@@ -751,8 +1107,19 @@
           "short": "Abaddon (Hebrew) or Apollyon (Greek), meaning \"destruction\" or \"destroyer,\" is the name of the angel of the bottomless pit .",
           "article": "Abaddon, or Apollyon in Greek, is mentioned in the Book of Revelation as the name of the angel of the bottomless pit (Rev.9.11). The name Abaddon is derived from the Hebrew word for \"destruction,\" while Apollyon is the Greek equivalent, meaning \"destroyer.\" In the vision of the fifth trumpet, a star falls from heaven and is given the key to the bottomless pit. When the pit is opened, locusts with the power to torment people come out, led by the angel Abaddon or Apollyon. This angel is described as the king over the locusts, which are sent as a judgment upon the earth. The identity of this angel is not explicitly stated, but some interpret it as a reference to Satan or a high-ranking demon associated with destruction.",
           "refs": [
-            28,
-            28
+            "22"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "28"
           ]
         }
       ]
@@ -769,7 +1136,19 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            29
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "5"
           ]
         }
       ]
@@ -786,7 +1165,7 @@
           "short": "Adam, the first man created by God, sinned and brought death into the world, but through Christ, the last Adam, came life and resurrection.",
           "article": "Adam was the first man, created by God on the sixth day of creation (Gen.1.26-27). He was formed from the dust of the ground, and God breathed life into him, making him a living being (Gen.2.7). God placed Adam in the Garden of Eden to tend and keep it, and He created Eve, the first woman, from Adam's rib as a companion for him (Gen.2.15-25). \n\nGod allowed Adam to eat from any tree in the garden except the tree of the knowledge of good and evil, warning that eating from this tree would lead to death (Gen.2.16-17). However, Adam and Eve were tempted by the serpent and disobeyed God, eating the forbidden fruit (Gen.3.1-6). As a consequence, they were expelled from the Garden of Eden and subjected to death, pain, and hardship (Gen.3.16-24). \n\nAfter the fall, Adam and Eve had several children, including Cain, Abel, and Seth (Gen.4.1-2, 25). Adam lived for 930 years and died (Gen.5.5), but his legacy as the first man and the progenitor of the human race continued throughout the Bible. \n\nIn the New Testament, Adam is contrasted with Christ, who is referred to as the \"last Adam\" (1Co.15.45). While Adam's disobedience brought sin and death into the world, Christ's obedience and sacrifice brought righteousness and life (Rom.5.12-21). The apostle Paul teaches that all people die because of their connection to Adam, but those who are in Christ will be made alive at the resurrection (1Co.15.22). \n\nAdam's creation, fall, and redemption through Christ are central themes in the biblical narrative, highlighting God's plan to restore humanity's relationship with Him and the ultimate victory over sin and death through Jesus Christ.",
           "refs": [
-            31
+            "33"
           ]
         },
         {
@@ -798,7 +1177,7 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            31
+            "40"
           ]
         },
         {
@@ -810,8 +1189,23 @@
           "short": "Abaddon (Hebrew) or Apollyon (Greek), meaning \"destruction\" or \"destroyer,\" is the name of the angel of the bottomless pit .",
           "article": "Abaddon, or Apollyon in Greek, is mentioned in the Book of Revelation as the name of the angel of the bottomless pit (Rev.9.11). The name Abaddon is derived from the Hebrew word for \"destruction,\" while Apollyon is the Greek equivalent, meaning \"destroyer.\" In the vision of the fifth trumpet, a star falls from heaven and is given the key to the bottomless pit. When the pit is opened, locusts with the power to torment people come out, led by the angel Abaddon or Apollyon. This angel is described as the king over the locusts, which are sent as a judgment upon the earth. The identity of this angel is not explicitly stated, but some interpret it as a reference to Satan or a high-ranking demon associated with destruction.",
           "refs": [
-            31,
-            31
+            "12"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "2",
+            "35",
+            "14",
+            "23",
+            "28"
           ]
         }
       ]
@@ -828,7 +1222,8 @@
           "short": "Barachel the Buzite was the father of Elihu, one of the men who spoke to Job.",
           "article": "Barachel is mentioned in Job.32.2 and Job.32.6 as the father of Elihu, one of the men who engaged in a dialogue with Job. Barachel is described as a Buzite, indicating that he was from the region of Buz, possibly located in northern Arabia or southern Edom. Elihu, his son, is introduced as a younger man who had been listening to the conversation between Job and his three friends (Eliphaz, Bildad, and Zophar). After the three friends had finished speaking, Elihu became angry with Job for justifying himself rather than God and with the friends for not refuting Job's arguments effectively. Elihu then proceeded to present his own perspective on Job's situation and God's justice. Apart from being Elihu's father and a Buzite, no other information is provided about Barachel himself.",
           "refs": [
-            32
+            "2",
+            "6"
           ]
         },
         {
@@ -840,7 +1235,8 @@
           "short": "The Buzites were descendants of Buz, the son of Nahor, Abraham's brother.",
           "article": "The Buzites were a clan or tribe descended from Buz, the son of Nahor, who was Abraham's brother (Gen. 22:21). They are mentioned in the book of Job as the people from whom Elihu, one of Job's friends, came (Job.32.2, 6). Elihu is described as \"the son of Barachel the Buzite, of the family of Ram\" (Job.32.2). The Buzites likely lived in a region east of the Jordan River, as they are associated with the land of Uz (Jer. Job.25.23). Elihu's presence in the story of Job suggests that the Buzites maintained a belief in the God of Abraham and participated in theological discussions. The mention of the Buzites in the book of Job highlights the interaction between different clans and the shared religious heritage among the descendants of Abraham's extended family.",
           "refs": [
-            32
+            "2",
+            "6"
           ]
         },
         {
@@ -852,7 +1248,10 @@
           "short": "Elihu, a young man from the family of Ram, spoke to Job and his friends.",
           "article": "Elihu is a character in the Book of Job who speaks to Job and his three friends after they had finished their dialogue (Job.32-37). He is described as a young man from the family of Ram, and he became angry with Job for justifying himself rather than God and with Job's friends for not finding an answer to Job's complaints (Job.32.2-3). Elihu waited to speak until after the older men had finished, showing respect for their age (Job.32.4-6). In his speeches, Elihu emphasizes God's justice, sovereignty, and wisdom, arguing that God uses suffering to discipline and purify people (Job.33-37). He also asserts that God is greater than human understanding and that people should submit to His will (Job.36-37). After Elihu's speech, God Himself addresses Job out of the whirlwind (Job.38.1). The Bible does not provide any further information about Elihu's life or background.",
           "refs": [
-            32
+            "2",
+            "4",
+            "5",
+            "6"
           ]
         },
         {
@@ -864,7 +1263,11 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            32
+            "1",
+            "2",
+            "3",
+            "4",
+            "12"
           ]
         },
         {
@@ -876,7 +1279,20 @@
           "short": "Ram was an ancestor of Elihu, one of the men who spoke to Job.",
           "article": "Ram is mentioned in the book of Job as an ancestor of Elihu, the son of Barachel the Buzite, of the family of Ram (Job.32.2). Elihu was one of the men who came to comfort Job during his affliction and ended up speaking to him about God's justice and sovereignty. The mention of Ram in Elihu's lineage suggests that he was from a respected family. However, no further details are provided about Ram himself in the Bible.",
           "refs": [
-            32
+            "2"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "8",
+            "13"
           ]
         }
       ]
@@ -893,7 +1309,39 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            33
+            "1",
+            "31"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "4",
+            "6",
+            "14",
+            "29"
+          ]
+        },
+        {
+          "name": "Sheol",
+          "strong": "H7585",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "The underworld; the abode of the dead in the Bible",
+          "short": "Sheol, also referred to as the Pit, Gehenna, Tartarus, or Hades, is the biblical concept of the underworld or the abode of the dead, often associated with darkness, stillness, and separation from God.",
+          "article": "Sheol is the Hebrew term for the underworld or the abode of the dead, mentioned numerous times throughout the Old Testament. It is often associated with darkness, stillness, and a place where both the righteous and the unrighteous go after death (Job.17.13; Psalm 89:48; Ecclesiastes 9:10). In some instances, Sheol is described as being located in the depths of the earth (Numbers 16:30, 33; Deu.32.22). \n\nThe concept of Sheol evolved throughout the Old Testament, with later texts suggesting a distinction between the fate of the righteous and the wicked (Psalm 49:14-15; Proverbs 15:24). However, the Old Testament does not provide a clear, consistent picture of the afterlife, and the idea of Sheol is often used as a metaphor for death and the grave (Psalm 6:5; 88:3; Isaiah 38:18). \n\nIn the New Testament, the Greek terms Hades (Luke 16:23; Act.2.27, 31; Revelation 1:18; 20:13-14), Gehenna (Matthew 5:22, 29-30; 10:28; Mrk.9.43, 45, 47; Luke 12:5; Jam.3.6), and Tartarus (2Pe.2.4) are used to refer to the realm of the dead or a place of punishment. These terms are often translated as \"hell\" in English Bibles, but their meanings are not always synonymous with the modern concept of hell as a place of eternal torment. \n\nThe biblical understanding of Sheol and the afterlife developed over time, with the New Testament providing a clearer picture of the distinction between the fate of the righteous and the wicked. As a Christian, it is essential to interpret the concept of Sheol in light of the fuller revelation of the New Testament, which emphasizes the hope of eternal life through faith in Jesus Christ (Jhn.3.16; 11:25-26; 1Co.15.50-57).",
+          "refs": [
+            "18",
+            "22",
+            "24",
+            "28",
+            "30"
           ]
         }
       ]
@@ -910,7 +1358,7 @@
           "short": "Elihu, a young man from the family of Ram, spoke to Job and his friends.",
           "article": "Elihu is a character in the Book of Job who speaks to Job and his three friends after they had finished their dialogue (Job.32-37). He is described as a young man from the family of Ram, and he became angry with Job for justifying himself rather than God and with Job's friends for not finding an answer to Job's complaints (Job.32.2-3). Elihu waited to speak until after the older men had finished, showing respect for their age (Job.32.4-6). In his speeches, Elihu emphasizes God's justice, sovereignty, and wisdom, arguing that God uses suffering to discipline and purify people (Job.33-37). He also asserts that God is greater than human understanding and that people should submit to His will (Job.36-37). After Elihu's speech, God Himself addresses Job out of the whirlwind (Job.38.1). The Bible does not provide any further information about Elihu's life or background.",
           "refs": [
-            34
+            "1"
           ]
         },
         {
@@ -922,7 +1370,27 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            34
+            "5",
+            "7",
+            "35",
+            "36"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "10",
+            "12",
+            "5",
+            "23",
+            "31",
+            "37"
           ]
         }
       ]
@@ -939,7 +1407,7 @@
           "short": "Elihu, a young man from the family of Ram, spoke to Job and his friends.",
           "article": "Elihu is a character in the Book of Job who speaks to Job and his three friends after they had finished their dialogue (Job.32-37). He is described as a young man from the family of Ram, and he became angry with Job for justifying himself rather than God and with Job's friends for not finding an answer to Job's complaints (Job.32.2-3). Elihu waited to speak until after the older men had finished, showing respect for their age (Job.32.4-6). In his speeches, Elihu emphasizes God's justice, sovereignty, and wisdom, arguing that God uses suffering to discipline and purify people (Job.33-37). He also asserts that God is greater than human understanding and that people should submit to His will (Job.36-37). After Elihu's speech, God Himself addresses Job out of the whirlwind (Job.38.1). The Bible does not provide any further information about Elihu's life or background.",
           "refs": [
-            35
+            "1"
           ]
         },
         {
@@ -951,7 +1419,20 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            35
+            "16"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "13",
+            "2"
           ]
         }
       ]
@@ -968,7 +1449,21 @@
           "short": "Elihu, a young man from the family of Ram, spoke to Job and his friends.",
           "article": "Elihu is a character in the Book of Job who speaks to Job and his three friends after they had finished their dialogue (Job.32-37). He is described as a young man from the family of Ram, and he became angry with Job for justifying himself rather than God and with Job's friends for not finding an answer to Job's complaints (Job.32.2-3). Elihu waited to speak until after the older men had finished, showing respect for their age (Job.32.4-6). In his speeches, Elihu emphasizes God's justice, sovereignty, and wisdom, arguing that God uses suffering to discipline and purify people (Job.33-37). He also asserts that God is greater than human understanding and that people should submit to His will (Job.36-37). After Elihu's speech, God Himself addresses Job out of the whirlwind (Job.38.1). The Bible does not provide any further information about Elihu's life or background.",
           "refs": [
-            36
+            "1"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "5",
+            "22",
+            "26"
           ]
         }
       ]
@@ -985,7 +1480,22 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            37
+            "14"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "23",
+            "5",
+            "10",
+            "14"
           ]
         }
       ]
@@ -1002,7 +1512,7 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            38
+            "1"
           ]
         },
         {
@@ -1014,7 +1524,19 @@
           "short": "The Bear is a constellation referred to in God's speeches to Job, showcasing God's power and wisdom in creation.",
           "article": "The Bear is mentioned twice in the Book of Job as part of God's discourse with Job regarding the wonders of creation. In Job.9.9, Job acknowledges God as the Maker of the Bear, Orion, and the Pleiades, recognizing God's power and sovereignty over the stars. Later, in Job.38.32, God questions Job about his ability to guide the Bear with its cubs, emphasizing Job's limited understanding compared to God's wisdom. The Bear likely refers to the constellation Ursa Major, also known as the Great Bear, which is visible in the northern sky. The Biblical references to the Bear point to God's authority over the celestial bodies and His intricate design of the universe, far beyond human comprehension.",
           "refs": [
-            38
+            "32"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "41"
           ]
         },
         {
@@ -1026,7 +1548,7 @@
           "short": "Mazzaroth, mentioned in Job.38.32, is a term of uncertain meaning, possibly referring to constellations or the zodiac.",
           "article": "Mazzaroth is a term that appears only once in the Bible, in Job.38.32. The exact meaning of the term is uncertain, and various interpretations have been proposed by scholars. \n\nIn the context of Job 38, God is questioning Job about the mysteries of the universe and the natural world, demonstrating His omniscience and power as the Creator. God asks, \"Can you lead forth the Mazzaroth in their season, or can you guide the Bear with its children?\" (Job.38.32, ESV). The parallelism in this verse suggests that Mazzaroth is related to astronomical bodies or constellations. \n\nOne common interpretation is that Mazzaroth refers to the twelve constellations of the zodiac. The word Mazzaroth may be derived from the Akkadian term \"manzaztu,\" which means \"station\" or \"position,\" possibly referring to the positions of the stars and planets in the night sky. \n\nAnother view is that Mazzaroth could be a reference to the planets or the general arrangement of the heavenly bodies. Some scholars have suggested that it may be related to the Hebrew word \"mazzalot,\" which appears in 2Ki.23.5 and is often translated as \"constellations.\" \n\nThe mention of Mazzaroth in the context of God's questioning of Job underscores the limitless wisdom and power of God as the Creator and Sustainer of the universe.",
           "refs": [
-            38
+            "32"
           ]
         },
         {
@@ -1038,7 +1560,7 @@
           "short": "Orion, a prominent constellation, is mentioned in Job.9.9, 38:31; Amo.5.8 as a display of God's power and creative work in the heavens.",
           "article": "Orion is a well-known constellation mentioned in three passages in the Old Testament: Job.9.9, Job.38.31, and Amo.5.8. In each of these references, Orion is used to illustrate God's power, wisdom, and sovereignty over creation. \n\nIn Job.9.9, Orion is listed along with other constellations, such as the Bear, Pleiades, and the chambers of the south, as an example of God's handiwork in the heavens. This passage emphasizes God's omnipotence and the vastness of His creation, which is beyond human understanding. \n\nIn Job.38.31, God challenges Job by asking, \"Can you bind the chains of the Pleiades or loose the cords of Orion?\" This rhetorical question highlights God's control over the constellations and the laws that govern the universe. It also serves to remind Job of his limited understanding and power compared to the infinite wisdom and might of God. \n\nIn Amo.5.8, the prophet declares that God \"made the Pleiades and Orion,\" using these constellations as examples of God's creative power. This passage is set in the context of a call to repentance and a warning of impending judgment, reminding the people of Israel that the God who created the stars is also the One who will hold them accountable for their actions. \n\nThe mention of Orion in these biblical passages serves to emphasize the majesty, power, and wisdom of God as displayed in His creation. The constellations, including Orion, are seen as evidence of God's handiwork and His sovereign control over the universe. These references also serve to humble humanity, reminding us of our limited understanding and the need to submit to the Creator of all things.",
           "refs": [
-            38
+            "31"
           ]
         },
         {
@@ -1050,7 +1572,7 @@
           "short": "The Pleiades are a star cluster mentioned in Job.9.9; 38:31 as a display of God's creative power and in Amo.5.8 as evidence of God's control over the natural world.",
           "article": "The Pleiades are mentioned in three passages in the Bible as an example of God's power and sovereignty over creation. In Job.9.9, they are listed along with the constellations Orion and the Bear as evidence of God's mighty works in the heavens. Later, in Job.38.31, God challenges Job by asking if he can bind the chains of the Pleiades or loose the cords of Orion, emphasizing the contrast between divine omnipotence and human limitations. The prophet Amos also mentions the Pleiades in Amo.5.8, where he describes God as the One who made the Pleiades and Orion, and who controls the cycle of day and night and the waters of the earth. These references to the Pleiades serve to highlight God's creative power, wisdom, and sovereign rule over the universe.",
           "refs": [
-            38
+            "31"
           ]
         }
       ]
@@ -1067,7 +1589,9 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            40
+            "1",
+            "3",
+            "6"
           ]
         },
         {
@@ -1079,7 +1603,7 @@
           "short": "The Jordan River and its surrounding region played a significant role in the history of Israel, from the time of the patriarchs to the New Testament era.",
           "article": "The Jordan River, the most prominent river in the Bible, flows from north to south through the Jordan Valley and empties into the Dead Sea. The river and its surrounding region, also known as the Jordan Valley or the Plain of Jordan, are mentioned numerous times throughout the Old and New Testaments. The Jordan River formed the eastern boundary of the Promised Land (Numbers 34:12) and was crossed by the Israelites under Joshua's leadership when they entered Canaan (Joshua 3-4). The river also served as a boundary between the tribes settling east and west of the Jordan (Joshua 22:25). Several significant events took place along the Jordan, including the parting of the river for Elijah and Elisha (2Ki.2.6-14), Naaman's healing (2Ki.5.10-14), and John the Baptist's ministry of baptism (Matthew 3:5-6; Mrk.1.5). The Jordan Valley was known for its fertile land, as seen in Lot's choice to settle there (Genesis 13:10-11). The region also served as a refuge for Elijah (1Ki.17.3-5) and David (2Sa.17.22-24). In the New Testament, Jesus was baptized in the Jordan River (Matthew 3:13; Mrk.1.9) and conducted ministry in the region (Matthew 4:25; 19:1). The Jordan River and its surrounding area continue to hold great significance for Christians, Jews, and Muslims today.",
           "refs": [
-            40
+            "23"
           ]
         },
         {
@@ -1091,7 +1615,21 @@
           "short": "Behemoth, mentioned in Job.40.15, is a powerful and majestic creature that God uses to illustrate His creative power and sovereignty.",
           "article": "Behemoth is a mysterious creature mentioned in the book of Job, specifically in chapter 40, verse 15. In this passage, God is speaking to Job and draws his attention to the Behemoth as an example of His creative power and wisdom. \n\nThe description of Behemoth suggests that it is a large, powerful, and majestic creature. It is said to eat grass like an ox and has immense strength in its loins and belly (Job.40.15-16). Its bones are compared to tubes of bronze and limbs like bars of iron, indicating its sturdy and robust build (Job.40.18). \n\nBehemoth is described as the \"first of the works of God,\" implying that it is a prime example of God's creative abilities (Job.40.19). The passage also mentions that only its Creator can approach it with a sword, suggesting that Behemoth is not easily overcome or controlled by humans (Job.40.19). \n\nThe exact identity of Behemoth is uncertain, and various interpretations have been proposed. Some scholars suggest that it may refer to a hippopotamus, elephant, or even a mythical creature. However, the primary purpose of the Behemoth in the book of Job is to illustrate God's power, wisdom, and sovereignty over His creation, rather than to provide a zoological description.",
           "refs": [
-            40
+            "15"
+          ]
+        },
+        {
+          "name": "LORD",
+          "strong": "H3068G",
+          "type": "Supernatural",
+          "briefest": "",
+          "brief": "Names or title used to refer to God",
+          "short": "Throughout the Bible, God is referred to by various names and titles, each revealing different aspects of His character, nature, and relationship with His people.",
+          "article": "The Bible uses a wide variety of names and titles to refer to God, each carrying specific meaning and significance. These names and titles reveal different aspects of God's character, attributes, and His relationship with humanity. \n\nLORD (Yahweh): The personal name of God, often translated as \"LORD\" (all capitals) in English Bibles, emphasizing His self-existence, eternality, and covenant relationship with His people (Exodus 3:14-15). \n\nGod (Elohim): A general term for God, highlighting His power, sovereignty, and majesty (Genesis 1:1). \n\nLord (Adonai): A title emphasizing God's authority and lordship (Genesis 15:2). \n\nAlmighty (Shaddai): A name depicting God's all-sufficiency and power (Genesis 17:1). \n\nMost High (Elyon): A title stressing God's supremacy and sovereignty (Genesis 14:18-20). \n\nEverlasting (Olam): A name emphasizing God's eternal nature (Genesis 21:33). \n\nJealous (Qanna): A name revealing God's zeal for His own glory and His people's devotion (Exodus 34:14). \n\nLORD of Hosts (Yahweh Sabaoth): A title portraying God as the commander of heavenly armies (1Sa.1.3). \n\nMore names...",
+          "refs": [
+            "2",
+            "9",
+            "19"
           ]
         }
       ]
@@ -1108,7 +1646,7 @@
           "short": "Leviathan is a large sea creature mentioned in several Old Testament passages, often associated with chaos, evil, or God's power over creation (Job.3.8; 41:1; Psalm 74:14; 104:26; Isaiah 27:1).",
           "article": "Leviathan is a large sea creature mentioned in various contexts throughout the Old Testament. The Hebrew word \"leviathan\" is derived from a root meaning \"to twist\" or \"to coil,\" suggesting a serpentine or dragon-like creature. \n\nIn Job.3.8, Leviathan is mentioned in the context of Job's lament, where he curses the day of his birth and invokes those who are skilled in rousing Leviathan to curse it as well. This passage suggests that Leviathan was associated with chaos or evil. \n\nJob.41.1-34 provides the most detailed description of Leviathan, portraying it as a powerful and fearsome creature with impenetrable scales, terrible teeth, and the ability to breathe fire. In this context, Leviathan is used as an illustration of God's power over creation and His ability to subdue even the mightiest of creatures. \n\nIn Psalm 74:14, Leviathan is depicted as having multiple heads, which God crushed and gave as food to the creatures of the wilderness. This imagery is likely symbolic, representing God's victory over the forces of chaos and evil. \n\nPsalm 104:26 mentions Leviathan as one of the sea creatures that God formed to play in the vast waters, showcasing God's creative power and the diversity of His creation. \n\nIsaiah 27:1 prophesies that on the day of the Lord's judgment, He will punish Leviathan, described as the fleeing and twisting serpent, with His fierce and mighty sword. This passage portrays Leviathan as a symbol of evil or chaos that will ultimately be defeated by God. \n\nThe exact identity of Leviathan is uncertain, with some scholars suggesting it may refer to a crocodile, a whale, or a mythological sea monster. However, the biblical references to Leviathan are primarily symbolic, representing chaos, evil, or the forces opposed to God. The passages emphasize God's sovereignty over creation and His ultimate victory over all that challenges His rule.",
           "refs": [
-            41
+            "1"
           ]
         }
       ]
@@ -1125,7 +1663,7 @@
           "short": "Bildad the Shuhite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Bildad the Shuhite was one of the three friends who came to comfort Job during his time of intense suffering (Job.2.11). Along with Eliphaz the Temanite and Zophar the Naamathite, Bildad engaged in a series of dialogues with Job, attempting to explain the cause of his afflictions and offering advice. Bildad's speeches emphasize the justice and righteousness of God, suggesting that Job's suffering must be a result of his sin (Job.8.1-22; 18.1-21; 25.1-6). He argues that God does not pervert justice and that if Job were to seek God and plead for mercy, he would be restored if he were truly pure and upright (Job.8.5-7). However, like the other friends, Bildad fails to grasp the true reason behind Job's suffering and mistakenly accuses him of wrongdoing. In the end, God rebukes Bildad and the other friends for not speaking what is right about Him, unlike Job (Job.42.7-9). Despite his misguided attempts to explain Job's situation, Bildad's presence and dialogue with Job highlight the complexities of human suffering and the importance of faith in the face of adversity.",
           "refs": [
-            42
+            "9"
           ]
         },
         {
@@ -1137,7 +1675,8 @@
           "short": "Eliphaz the Temanite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Eliphaz the Temanite was one of the three friends who visited Job during his time of suffering (Job.2.11). He is described as coming from Teman, an area known for its wisdom (Jer.49.7). Eliphaz, along with Bildad and Zophar, engaged in a series of dialogues with Job, attempting to explain the reasons behind Job's afflictions (Job.4-25). In his speeches, Eliphaz emphasizes the justice and sovereignty of God, suggesting that Job's suffering is a result of sin and urging him to repent (Job.4.1; 15.1; 22.1). However, at the end of the book, God rebukes Eliphaz and his two friends for not speaking what is right about Him, unlike Job (Job.42.7). God instructs them to offer sacrifices and have Job pray for them to be forgiven (Job.42.9). The Bible does not provide any further information about Eliphaz's life outside of his interactions with Job.",
           "refs": [
-            42
+            "7",
+            "9"
           ]
         },
         {
@@ -1149,7 +1688,7 @@
           "short": "Jemimah was the first of three daughters born to Job after God restored his fortunes, as recorded in the book of Job.",
           "article": "Jemimah is mentioned in the book of Job as one of the three daughters born to him after God restored his fortunes. She was the first daughter, followed by Keziah and Keren-happuch. The name Jemimah means \"dove\" or \"warm,\" possibly signifying the peace and comfort that came to Job's life after his trials. The Bible notes that Job's daughters were the most beautiful women in all the land, and he granted them an inheritance along with their brothers, which was unusual in that culture. Jemimah's presence in the story emphasizes the completeness of Job's restoration and the blessings he received after his period of suffering.",
           "refs": [
-            42
+            "14"
           ]
         },
         {
@@ -1161,7 +1700,19 @@
           "short": "Job, a blameless and upright man from Uz, endured severe trials and maintained his faith in God.",
           "article": "Job was a man from the land of Uz, described as blameless, upright, and one who feared God and shunned evil (Job.1.1). He was blessed with seven sons, three daughters, and great wealth (Job.1.2-3). However, God allowed Satan to test Job's faith through a series of severe trials, including the loss of his children, wealth, and health (Job.1.6-2.10). \n\nThroughout his suffering, Job maintained his integrity and did not sin against God (Job.1.22; 2.10). He engaged in a lengthy dialogue with his three friends - Eliphaz, Bildad, and Zophar - who came to comfort him but ultimately accused him of wrongdoing (Job.2.11-31.40). A fourth friend, Elihu, also spoke to Job, emphasizing God's justice and sovereignty (Job.32-37). \n\nFinally, God spoke to Job, challenging him to understand the mysteries of creation and divine wisdom (Job.38-41). Job acknowledged God's power and repented of his questioning (Job.42.1-6). In the end, God restored Job's fortunes, giving him twice as much as he had before, and blessed him with seven more sons and three more daughters (Job.42.10-17). \n\nJob's story is a testament to faith in the face of adversity, and he is mentioned alongside Noah and Daniel as an example of righteousness (Ezk.14.14,20). His perseverance is also commended in the New Testament (Jas.5.11). The book of Job grapples with the question of suffering and the sovereignty of God, ultimately showcasing God's wisdom and the importance of trust in Him.",
           "refs": [
-            42
+            "1",
+            "7a",
+            "7b",
+            "8a",
+            "8b",
+            "8c",
+            "9",
+            "10a",
+            "10b",
+            "12",
+            "15",
+            "16",
+            "17"
           ]
         },
         {
@@ -1173,7 +1724,7 @@
           "short": "Keren-happuch was the name of Job's third daughter, born to him after God restored his fortunes.",
           "article": "Keren-happuch is mentioned in Job.42.14 as the name of Job's third daughter, born to him after God restored his fortunes. The name Keren-happuch means \"horn of antimony,\" which was a cosmetic used for beautifying the eyes. \n\nThe context of Keren-happuch's mention is the conclusion of the Book of Job, where God blessed Job abundantly after his period of suffering and testing. Job's restoration included not only material wealth but also a new family. He had seven sons and three daughters, and Keren-happuch was the youngest of the daughters. \n\nThe Bible notes that Job's daughters were the most beautiful in all the land, and he gave them an inheritance along with their brothers (Job.42.15). This was unusual in ancient Near Eastern culture and demonstrates Job's love and respect for his daughters. \n\nThe mention of Keren-happuch and her sisters highlights the completeness of Job's restoration and the blessing of family in his life after enduring great trials. It also emphasizes the value and dignity given to women in this narrative.",
           "refs": [
-            42
+            "14"
           ]
         },
         {
@@ -1185,7 +1736,7 @@
           "short": "Keziah was the name of Job's second daughter, born to him after God restored his fortunes.",
           "article": "Keziah is mentioned in Job.42.14 as the name of Job's second daughter, born to him after God restored his fortunes. The name Keziah means \"cassia,\" which is a fragrant spice. \n\nThe context of Keziah's mention is the conclusion of the Book of Job, where God blessed Job abundantly after his period of suffering and testing. Job's restoration included not only material wealth but also a new family. He had seven sons and three daughters, and Keziah was the second of the daughters. \n\nThe Bible notes that Job's daughters were the most beautiful in all the land, and he gave them an inheritance along with their brothers (Job.42.15). This was unusual in ancient Near Eastern culture and demonstrates Job's love and respect for his daughters. \n\nThe mention of Keziah and her sisters highlights the completeness of Job's restoration and the blessing of family in his life after enduring great trials. It also emphasizes the value and dignity given to women in this narrative.",
           "refs": [
-            42
+            "14"
           ]
         },
         {
@@ -1197,7 +1748,7 @@
           "short": "The Naamathites were the people group to which Zophar, one of Job's three friends, belonged.",
           "article": "The Naamathites are mentioned in the Book of Job as the people group to which Zophar, one of Job's three friends, belonged (Job.2.11; 11.1; 20.1; 42.9). Zophar is described as \"the Naamathite,\" indicating his association with this group. \n\nThe Naamathites are not mentioned elsewhere in the Bible, and little is known about their specific location, history, or culture. The name \"Naamathite\" suggests a connection to a place called Naamah, but the exact location of this place is uncertain. \n\nIn the Book of Job, Zophar, along with Eliphaz the Temanite and Bildad the Shuhite, come to comfort Job after hearing of his afflictions. The three friends engage in a series of dialogues with Job, attempting to explain his suffering and offering their perspectives on God's justice and the reasons for Job's trials. \n\nZophar's speeches, as a representative of the Naamathites, emphasize the idea that suffering is a consequence of sin and that Job must have committed some wrongdoing to deserve his misfortune. Zophar urges Job to repent and seek God's forgiveness (Job.11.13-20).",
           "refs": [
-            42
+            "9"
           ]
         },
         {
@@ -1209,7 +1760,20 @@
           "short": "The Shuhites were a people group to which Bildad, one of Job's friends, belonged.",
           "article": "The Shuhites are mentioned in the Book of Job (Job.2.11; 8.1; 18.1; 25.1; 42.9) in connection with Bildad, one of Job's three friends who came to comfort him during his affliction. Bildad is consistently referred to as \"Bildad the Shuhite,\" indicating that he belonged to the Shuhite people group. The Shuhites' exact location and origin are not specified in the Bible. Bildad, along with Eliphaz the Temanite and Zophar the Naamathite, engaged in a series of dialogues with Job, attempting to explain his suffering and urging him to repent. However, their understanding of God's ways was limited, and they often accused Job wrongly. In the end, God rebuked Bildad and his friends for not speaking rightly about Him, and they were required to offer a sacrifice and have Job pray for them to be forgiven.",
           "refs": [
-            42
+            "9"
+          ]
+        },
+        {
+          "name": "Teman",
+          "strong": "H8487G",
+          "type": "Male",
+          "briefest": "Grandson of Esau",
+          "brief": "Grandson of Esau, associated with an Edomite clan",
+          "short": "Teman was a grandson of Esau and is associated with an important Edomite clan known for its wisdom.",
+          "article": "Teman is mentioned in Gen.36.11,15,42 and 1Ch.1.36,53 as a son of Eliphaz and grandson of Esau. He was one of the chiefs of Edom. The name Teman is also associated with a prominent Edomite clan (Gen.36.34; 1Ch.1.45) and a region in Edom known for its wisdom (Jer.49.7; Oba.1.9). Several individuals from Teman are mentioned in the Book of Job, including Eliphaz the Temanite, one of Job's friends (Job.2.11; 4.1; 15.1; 22.1; 42.7,9). The Temanites were renowned for their wisdom, though Eliphaz's counsel to Job was ultimately misguided. Teman represents the wisdom and power of Edom, which was still inferior to the wisdom of God.",
+          "refs": [
+            "7",
+            "9"
           ]
         },
         {
@@ -1221,7 +1785,7 @@
           "short": "Zophar the Naamathite was one of Job's three friends who came to comfort him during his affliction.",
           "article": "Zophar the Naamathite was one of the three friends of Job who came to comfort him during his time of suffering. Along with Eliphaz the Temanite and Bildad the Shuhite, Zophar visited Job after hearing about his affliction (Job.2.11). Zophar is mentioned as the third speaker in the cycles of dialogue between Job and his friends. In his first speech (Job 11), Zophar rebukes Job for justifying himself and accuses him of mocking God. He asserts that God's wisdom is unsearchable and that Job should repent of his supposed sins. In his second speech (Job 20), Zophar describes the fate of the wicked, implying that Job's suffering is a result of his wrongdoing. Zophar's speeches reflect the traditional belief that suffering is a consequence of sin and that righteousness leads to prosperity. However, the book of Job challenges this simplistic view and presents a more complex understanding of God's justice and human suffering. In the end, God rebukes Zophar and his friends for speaking falsely about Him and instructs them to offer sacrifices and seek Job's intercession (Job.42.7-9).",
           "refs": [
-            42
+            "9"
           ]
         }
       ]

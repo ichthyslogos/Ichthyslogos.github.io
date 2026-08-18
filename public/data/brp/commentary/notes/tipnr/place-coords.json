@@ -1,0 +1,4575 @@
+{
+  "source": {
+    "key": "tipnr",
+    "name": "STEP 专有名词注释 (TIPNR)",
+    "lang": "en"
+  },
+  "count": 913,
+  "coords": {
+    "Abana": {
+      "lat": 33.545097,
+      "lng": 36.224661,
+      "cat": "river"
+    },
+    "Abdon": {
+      "lat": 33.047808,
+      "lng": 35.146201,
+      "cat": "city"
+    },
+    "Abel-beth-maacah": {
+      "lat": 33.268526,
+      "lng": 35.578046,
+      "cat": "city"
+    },
+    "Abel-keramim": {
+      "lat": 32.02425,
+      "lng": 35.82352,
+      "cat": "city"
+    },
+    "Abel-meholah": {
+      "lat": 32.35601,
+      "lng": 35.536929,
+      "cat": "city"
+    },
+    "Abilene": {
+      "lat": 33.5873,
+      "lng": 36.09171,
+      "cat": "region"
+    },
+    "Abronah": {
+      "lat": 29.75804307645581,
+      "lng": 35.0306017443078,
+      "cat": "city"
+    },
+    "Accad": {
+      "lat": 33.09201653975629,
+      "lng": 44.12924814594658,
+      "cat": "city"
+    },
+    "Acco": {
+      "lat": 32.927583,
+      "lng": 35.081555,
+      "cat": "city"
+    },
+    "Achaia": {
+      "lat": 37.98333333333333,
+      "lng": 23.73333333333333,
+      "cat": "city"
+    },
+    "Achor_Valley": {
+      "lat": 31.83689,
+      "lng": 35.399737,
+      "cat": "region"
+    },
+    "Achshaph": {
+      "lat": 32.95182083157021,
+      "lng": 35.17382658065705,
+      "cat": "city"
+    },
+    "Achzib": {
+      "lat": 31.7,
+      "lng": 35,
+      "cat": "city"
+    },
+    "Adadah": {
+      "lat": 31.1858,
+      "lng": 34.96745,
+      "cat": "city"
+    },
+    "Adam": {
+      "lat": 32.09772014797369,
+      "lng": 35.56469085401976,
+      "cat": "city"
+    },
+    "Adamah": {
+      "lat": 32.7253,
+      "lng": 35.4382,
+      "cat": "city"
+    },
+    "Adami-nekeb": {
+      "lat": 32.6105,
+      "lng": 35.54289,
+      "cat": "city"
+    },
+    "Addar": {
+      "lat": 30.9522,
+      "lng": 34.7187,
+      "cat": "city"
+    },
+    "Adithaim": {
+      "lat": 31.7001,
+      "lng": 34.89532,
+      "cat": "city"
+    },
+    "Admah": {
+      "lat": 31.11942270162137,
+      "lng": 35.41253049195169,
+      "cat": "city"
+    },
+    "Adoraim": {
+      "lat": 31.51666666666667,
+      "lng": 34.98333333333333,
+      "cat": "city"
+    },
+    "Adramyttium": {
+      "lat": 39.5748,
+      "lng": 26.9367,
+      "cat": "city"
+    },
+    "Adriatic_Sea": {
+      "lat": 42.415,
+      "lng": 16.3735,
+      "cat": "water"
+    },
+    "Adullam": {
+      "lat": 31.65,
+      "lng": 35,
+      "cat": "city"
+    },
+    "Adummim": {
+      "lat": 31.817585,
+      "lng": 35.361646,
+      "cat": "city"
+    },
+    "Aenon": {
+      "lat": 32.398936,
+      "lng": 35.54351,
+      "cat": "city"
+    },
+    "Ahava": {
+      "lat": 33.625197,
+      "lng": 42.786647,
+      "cat": "river"
+    },
+    "Ahlab": {
+      "lat": 33.02498036359259,
+      "lng": 35.44544657992798,
+      "cat": "city"
+    },
+    "Ai": {
+      "lat": 31.91697811712517,
+      "lng": 35.26122639380886,
+      "cat": "city"
+    },
+    "Aijalon": {
+      "lat": 31.84117376619545,
+      "lng": 35.02537926743067,
+      "cat": "city"
+    },
+    "Ain": {
+      "lat": 31.370835,
+      "lng": 34.860665,
+      "cat": "city"
+    },
+    "Akeldama": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Akrabbim": {
+      "lat": 30.688292,
+      "lng": 35.263182,
+      "cat": "city"
+    },
+    "Alemeth": {
+      "lat": 31.828406,
+      "lng": 35.287637,
+      "cat": "city"
+    },
+    "Alexandria": {
+      "lat": 31.2278414761719,
+      "lng": 29.9569242709775,
+      "cat": "city"
+    },
+    "Allammelech": {
+      "lat": 32.97829,
+      "lng": 35.182915,
+      "cat": "city"
+    },
+    "Allon-bacuth": {
+      "lat": 31.93053920580005,
+      "lng": 35.22103274923676,
+      "cat": "city"
+    },
+    "Alush": {
+      "lat": 28.770015,
+      "lng": 33.40046,
+      "cat": "city"
+    },
+    "Amad": {
+      "lat": 33.019337,
+      "lng": 35.173644,
+      "cat": "city"
+    },
+    "Amalek": {
+      "lat": 30.65977,
+      "lng": 34.835554,
+      "cat": "region"
+    },
+    "Amam": {
+      "lat": 31.162327,
+      "lng": 35.057114,
+      "cat": "city"
+    },
+    "Amana": {
+      "lat": 33.68137,
+      "lng": 36.055039,
+      "cat": "city"
+    },
+    "Amaw": {
+      "lat": 36.654616,
+      "lng": 38.068879,
+      "cat": "city"
+    },
+    "Ammah": {
+      "lat": 31.869005,
+      "lng": 35.343177,
+      "cat": "city"
+    },
+    "Ammon": {
+      "lat": 31.95018855468469,
+      "lng": 35.92413135872749,
+      "cat": "nation"
+    },
+    "Amphipolis": {
+      "lat": 40.82322547229525,
+      "lng": 23.83863142894023,
+      "cat": "city"
+    },
+    "Anab": {
+      "lat": 31.403888,
+      "lng": 34.944185,
+      "cat": "city"
+    },
+    "Anaharath": {
+      "lat": 32.607039,
+      "lng": 35.397389,
+      "cat": "city"
+    },
+    "Ananiah": {
+      "lat": 31.83291,
+      "lng": 35.219683,
+      "cat": "city"
+    },
+    "Anathoth": {
+      "lat": 31.81291276898118,
+      "lng": 35.26349894226843,
+      "cat": "city"
+    },
+    "Angle": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Anim": {
+      "lat": 31.373521,
+      "lng": 35.074552,
+      "cat": "city"
+    },
+    "Antioch": {
+      "lat": 38.31643056393041,
+      "lng": 31.17948683048973,
+      "cat": "city"
+    },
+    "Antipatris": {
+      "lat": 32.10043792968003,
+      "lng": 34.94650938910333,
+      "cat": "city"
+    },
+    "Aphek": {
+      "lat": 32.77826806589006,
+      "lng": 35.69874935270775,
+      "cat": "city"
+    },
+    "Apollonia": {
+      "lat": 40.58763251343323,
+      "lng": 23.35335168557556,
+      "cat": "city"
+    },
+    "Ar": {
+      "lat": 31.44980942220132,
+      "lng": 35.59395836278803,
+      "cat": "city"
+    },
+    "Arab": {
+      "lat": 31.450746,
+      "lng": 35.045648,
+      "cat": "city"
+    },
+    "Arabah": {
+      "lat": 32.029676,
+      "lng": 35.520995,
+      "cat": "region"
+    },
+    "Arabia": {
+      "lat": 27.4,
+      "lng": 37.7,
+      "cat": "nation"
+    },
+    "Arad": {
+      "lat": 31.28098170907087,
+      "lng": 35.12636584365214,
+      "cat": "city"
+    },
+    "Aram-maacah": {
+      "lat": 33.2,
+      "lng": 36.5,
+      "cat": "city"
+    },
+    "Aram-naharaim": {
+      "lat": 35.1,
+      "lng": 42,
+      "cat": "city"
+    },
+    "Aram-zobah": {
+      "lat": 33.519299,
+      "lng": 36.31344999999999,
+      "cat": "city"
+    },
+    "Ararat": {
+      "lat": 39.70289295384448,
+      "lng": 44.29818047261773,
+      "cat": "mountain"
+    },
+    "Areopagus": {
+      "lat": 37.98333333333333,
+      "lng": 23.73333333333333,
+      "cat": "city"
+    },
+    "Argob": {
+      "lat": 33.144,
+      "lng": 36.136,
+      "cat": "city"
+    },
+    "Arnon": {
+      "lat": 31.4288,
+      "lng": 35.677009,
+      "cat": "river"
+    },
+    "Aroer": {
+      "lat": 31.14893187321126,
+      "lng": 34.9848522498051,
+      "cat": "city"
+    },
+    "Arpad": {
+      "lat": 35.136204,
+      "lng": 36.749488,
+      "cat": "city"
+    },
+    "Arubboth": {
+      "lat": 31.68123465358001,
+      "lng": 34.97639817516712,
+      "cat": "city"
+    },
+    "Arumah": {
+      "lat": 32.154887,
+      "lng": 35.318192,
+      "cat": "city"
+    },
+    "Arvad": {
+      "lat": 34.856082,
+      "lng": 35.858485,
+      "cat": "city"
+    },
+    "Ashan": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Ashdod": {
+      "lat": 31.80299971086164,
+      "lng": 34.6351145939134,
+      "cat": "city"
+    },
+    "Ashkelon": {
+      "lat": 31.66240510553615,
+      "lng": 34.54722773494757,
+      "cat": "city"
+    },
+    "Ashkenaz": {
+      "lat": 40.6,
+      "lng": 44.6,
+      "cat": "city"
+    },
+    "Ashnah": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Ashtaroth": {
+      "lat": 32.8333333333,
+      "lng": 36.0166666667,
+      "cat": "city"
+    },
+    "Ashteroth-karnaim": {
+      "lat": 32.7666666667,
+      "lng": 36.0166666667,
+      "cat": "city"
+    },
+    "Asia": {
+      "lat": 39.23,
+      "lng": 32.73,
+      "cat": "city"
+    },
+    "Assos": {
+      "lat": 39.48955031303715,
+      "lng": 26.33586734239906,
+      "cat": "city"
+    },
+    "Assyria": {
+      "lat": 36.35941,
+      "lng": 43.152887,
+      "cat": "nation"
+    },
+    "Ataroth": {
+      "lat": 31.85891795409998,
+      "lng": 35.12831317484221,
+      "cat": "city"
+    },
+    "Ataroth-addar": {
+      "lat": 31.85891795409998,
+      "lng": 35.12831317484221,
+      "cat": "city"
+    },
+    "Atharim": {
+      "lat": 30.880918,
+      "lng": 34.63062,
+      "cat": "city"
+    },
+    "Athens": {
+      "lat": 37.98333333333333,
+      "lng": 23.73333333333333,
+      "cat": "city"
+    },
+    "Atroth-shophan": {
+      "lat": 31.9617,
+      "lng": 35.9115,
+      "cat": "city"
+    },
+    "Attalia": {
+      "lat": 36.88082580070078,
+      "lng": 30.69456557778969,
+      "cat": "city"
+    },
+    "Aven_Valley": {
+      "lat": 34.006944,
+      "lng": 36.203889,
+      "cat": "region"
+    },
+    "Avith": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "city"
+    },
+    "Avvim": {
+      "lat": 31.53577362133176,
+      "lng": 35.09409986578734,
+      "cat": "city"
+    },
+    "Azal": {
+      "lat": 31.77809503341373,
+      "lng": 35.2471976093501,
+      "cat": "mountain"
+    },
+    "Azekah": {
+      "lat": 31.70063856043753,
+      "lng": 34.93618589974822,
+      "cat": "city"
+    },
+    "Azmon": {
+      "lat": 30.958506,
+      "lng": 34.3805,
+      "cat": "city"
+    },
+    "Aznoth-tabor": {
+      "lat": 32.68695640243183,
+      "lng": 35.39091304299688,
+      "cat": "mountain"
+    },
+    "Baalah": {
+      "lat": 31.24495217357714,
+      "lng": 34.8408885849849,
+      "cat": "city"
+    },
+    "Baalah_Mount": {
+      "lat": 31.865518,
+      "lng": 34.746856,
+      "cat": "mountain"
+    },
+    "Baalath": {
+      "lat": 31.927451,
+      "lng": 35.055378,
+      "cat": "city"
+    },
+    "Baalath-beer": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Baal-hazor": {
+      "lat": 31.979434,
+      "lng": 35.279229,
+      "cat": "city"
+    },
+    "Baal-meon": {
+      "lat": 31.679454,
+      "lng": 35.734892,
+      "cat": "city"
+    },
+    "Baal-perazim": {
+      "lat": 31.756332,
+      "lng": 35.223059,
+      "cat": "region"
+    },
+    "Baal-shalishah": {
+      "lat": 32.029737,
+      "lng": 35.222604,
+      "cat": "city"
+    },
+    "Baal-tamar": {
+      "lat": 31.82378102460309,
+      "lng": 35.23100936128631,
+      "cat": "city"
+    },
+    "Baal-zephon": {
+      "lat": 29.938441,
+      "lng": 32.395473,
+      "cat": "city"
+    },
+    "Babylon": {
+      "lat": 32.53650368616845,
+      "lng": 44.42088287373876,
+      "cat": "capital"
+    },
+    "Bahurim": {
+      "lat": 31.824736,
+      "lng": 35.388486,
+      "cat": "city"
+    },
+    "Bajith": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Balah": {
+      "lat": 31.24495217357714,
+      "lng": 34.8408885849849,
+      "cat": "city"
+    },
+    "Bamoth": {
+      "lat": 31.76503129703305,
+      "lng": 35.71856575741812,
+      "cat": "city"
+    },
+    "Bamoth-baal": {
+      "lat": 31.76503129703305,
+      "lng": 35.71856575741812,
+      "cat": "city"
+    },
+    "Bashan": {
+      "lat": 32.80007552505443,
+      "lng": 35.93730130476259,
+      "cat": "region"
+    },
+    "Bath-rabbim": {
+      "lat": 31.80052000870321,
+      "lng": 35.80901866717255,
+      "cat": "city"
+    },
+    "Beautiful_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Beer": {
+      "lat": 30.998062,
+      "lng": 35.498547,
+      "cat": "city"
+    },
+    "Beer-elim": {
+      "lat": 30.998062,
+      "lng": 35.498547,
+      "cat": "city"
+    },
+    "Beer-lahai-roi": {
+      "lat": 30.68771281376111,
+      "lng": 34.49479554246946,
+      "cat": "city"
+    },
+    "Beeroth": {
+      "lat": 31.90007449127097,
+      "lng": 35.21668800602465,
+      "cat": "city"
+    },
+    "Beersheba": {
+      "lat": 31.24495217357714,
+      "lng": 34.8408885849849,
+      "cat": "city"
+    },
+    "Bene-berak": {
+      "lat": 32.035782,
+      "lng": 34.827108,
+      "cat": "city"
+    },
+    "Bene-jaakan": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Benjamin_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Beracah_Valley": {
+      "lat": 31.61065,
+      "lng": 35.165648,
+      "cat": "region"
+    },
+    "Berea": {
+      "lat": 40.5167,
+      "lng": 22.2,
+      "cat": "city"
+    },
+    "Bered": {
+      "lat": 30.68771281376111,
+      "lng": 34.49479554246946,
+      "cat": "city"
+    },
+    "Berothah": {
+      "lat": 33.93148,
+      "lng": 36.152049,
+      "cat": "city"
+    },
+    "Besor": {
+      "lat": 31.398056,
+      "lng": 34.436667,
+      "cat": "river"
+    },
+    "Betah": {
+      "lat": 33.93148,
+      "lng": 36.152049,
+      "cat": "city"
+    },
+    "Beten": {
+      "lat": 32.934736,
+      "lng": 35.270799,
+      "cat": "city"
+    },
+    "Beth-anath": {
+      "lat": 33.146864,
+      "lng": 35.427134,
+      "cat": "city"
+    },
+    "Beth-anoth": {
+      "lat": 31.558456,
+      "lng": 35.124483,
+      "cat": "city"
+    },
+    "Bethany": {
+      "lat": 31.77166591433378,
+      "lng": 35.26212203964414,
+      "cat": "village"
+    },
+    "Beth-arabah": {
+      "lat": 31.84332,
+      "lng": 35.50649,
+      "cat": "city"
+    },
+    "Beth-arbel": {
+      "lat": 32.56101132918748,
+      "lng": 35.84782996762625,
+      "cat": "city"
+    },
+    "Beth-aven": {
+      "lat": 31.89571707979081,
+      "lng": 35.25309824700233,
+      "cat": "city"
+    },
+    "Beth-azmaveth": {
+      "lat": 31.834203,
+      "lng": 35.260706,
+      "cat": "city"
+    },
+    "Beth-barah": {
+      "lat": 31.8363211491438,
+      "lng": 35.55260017422344,
+      "cat": "city"
+    },
+    "Beth-biri": {
+      "lat": 31.391668,
+      "lng": 34.940502,
+      "cat": "city"
+    },
+    "Beth-car": {
+      "lat": 31.83273947023218,
+      "lng": 35.1801628605877,
+      "cat": "city"
+    },
+    "Beth-dagon": {
+      "lat": 31.908,
+      "lng": 34.775,
+      "cat": "city"
+    },
+    "Beth-eden": {
+      "lat": 33.519299,
+      "lng": 36.31344999999999,
+      "cat": "city"
+    },
+    "Beth-eked": {
+      "lat": 32.5559631396043,
+      "lng": 35.33078927843792,
+      "cat": "city"
+    },
+    "Bethel": {
+      "lat": 31.93053920580005,
+      "lng": 35.22103274923676,
+      "cat": "city"
+    },
+    "Beth-emek": {
+      "lat": 32.978855,
+      "lng": 35.167096,
+      "cat": "city"
+    },
+    "Bethesda": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Beth-ezel": {
+      "lat": 31.743719,
+      "lng": 34.694006,
+      "cat": "city"
+    },
+    "Beth-gamul": {
+      "lat": 31.519692,
+      "lng": 35.844714,
+      "cat": "city"
+    },
+    "Beth-haccherem": {
+      "lat": 31.665911,
+      "lng": 35.241516,
+      "cat": "city"
+    },
+    "Beth-haggan": {
+      "lat": 32.58418313614938,
+      "lng": 35.18229165870594,
+      "cat": "city"
+    },
+    "Beth-haram": {
+      "lat": 31.816667,
+      "lng": 35.583333,
+      "cat": "city"
+    },
+    "Beth-hoglah": {
+      "lat": 31.837062,
+      "lng": 35.513151,
+      "cat": "city"
+    },
+    "Beth-horon_Lower": {
+      "lat": 31.87892595986906,
+      "lng": 35.12356744466153,
+      "cat": "city"
+    },
+    "Beth-horon_Upper": {
+      "lat": 31.85891795409998,
+      "lng": 35.12831317484221,
+      "cat": "city"
+    },
+    "Beth-jeshimoth": {
+      "lat": 31.77691134657884,
+      "lng": 35.59865748950166,
+      "cat": "city"
+    },
+    "Beth-lebaoth": {
+      "lat": 31.391668,
+      "lng": 34.940502,
+      "cat": "city"
+    },
+    "Bethlehem": {
+      "lat": 31.70536129174666,
+      "lng": 35.21026630105202,
+      "cat": "city"
+    },
+    "Beth-merhak": {
+      "lat": 31.391668,
+      "lng": 34.940502,
+      "cat": "city"
+    },
+    "Beth-millo": {
+      "lat": 32.21369123124062,
+      "lng": 35.2817986718367,
+      "cat": "city"
+    },
+    "Beth-nimrah": {
+      "lat": 31.900811,
+      "lng": 35.625693,
+      "cat": "city"
+    },
+    "Beth-pazzez": {
+      "lat": 32.46349905885267,
+      "lng": 35.3036831926058,
+      "cat": "city"
+    },
+    "Beth-pelet": {
+      "lat": 31.215418,
+      "lng": 34.942986,
+      "cat": "city"
+    },
+    "Beth-peor": {
+      "lat": 31.656099,
+      "lng": 35.71187,
+      "cat": "city"
+    },
+    "Bethphage": {
+      "lat": 31.79038300543012,
+      "lng": 35.25667232374259,
+      "cat": "village"
+    },
+    "Beth-rehob": {
+      "lat": 33.219354,
+      "lng": 35.544122,
+      "cat": "city"
+    },
+    "Bethsaida": {
+      "lat": 32.90784828392077,
+      "lng": 35.62697295608815,
+      "cat": "city"
+    },
+    "Beth-shean": {
+      "lat": 32.5042384550589,
+      "lng": 35.50307739108582,
+      "cat": "city"
+    },
+    "Beth-shemesh": {
+      "lat": 31.75274835811488,
+      "lng": 34.97660913147738,
+      "cat": "mountain"
+    },
+    "Beth-shittah": {
+      "lat": 32.552496,
+      "lng": 35.438257,
+      "cat": "city"
+    },
+    "Beth-tappuah": {
+      "lat": 31.52973,
+      "lng": 35.050377,
+      "cat": "city"
+    },
+    "Beth-togarmah": {
+      "lat": 40.065539,
+      "lng": 45.036328,
+      "cat": "city"
+    },
+    "Beth-zur": {
+      "lat": 31.596107,
+      "lng": 35.10262,
+      "cat": "city"
+    },
+    "Betonim": {
+      "lat": 32.0105,
+      "lng": 35.706297,
+      "cat": "city"
+    },
+    "Bezek": {
+      "lat": 32.3667,
+      "lng": 35.4,
+      "cat": "city"
+    },
+    "Bezer": {
+      "lat": 32.51613740944529,
+      "lng": 36.48829075785014,
+      "cat": "city"
+    },
+    "Bilhah": {
+      "lat": 31.24495217357714,
+      "lng": 34.8408885849849,
+      "cat": "city"
+    },
+    "Bithynia": {
+      "lat": 40.905503,
+      "lng": 30.685778,
+      "cat": "city"
+    },
+    "Biziothiah": {
+      "lat": 31.24495217357714,
+      "lng": 34.8408885849849,
+      "cat": "city"
+    },
+    "Bor-ashan": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Bozez": {
+      "lat": 31.85716450320853,
+      "lng": 35.28714718824809,
+      "cat": "city"
+    },
+    "Bozkath": {
+      "lat": 31.56485056116292,
+      "lng": 34.8467256730566,
+      "cat": "city"
+    },
+    "Bozrah": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "city"
+    },
+    "Broad_Wall": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Brook_of_Egypt": {
+      "lat": 31.032047,
+      "lng": 33.854957,
+      "cat": "river"
+    },
+    "Brook_of_the_Arabah": {
+      "lat": 35.136204,
+      "lng": 36.749488,
+      "cat": "river"
+    },
+    "Brook_of_the_Willows": {
+      "lat": 32.309099,
+      "lng": 35.5599,
+      "cat": "river"
+    },
+    "Buz": {
+      "lat": 26.625139,
+      "lng": 37.919663,
+      "cat": "city"
+    },
+    "Cabbon": {
+      "lat": 31.5,
+      "lng": 34.7667,
+      "cat": "city"
+    },
+    "Cabul": {
+      "lat": 32.865661,
+      "lng": 35.211814,
+      "cat": "city"
+    },
+    "Caesarea": {
+      "lat": 32.499544608298,
+      "lng": 34.89218497556097,
+      "cat": "region"
+    },
+    "Caesarea_Philippi": {
+      "lat": 33.2480599128704,
+      "lng": 35.69463725353769,
+      "cat": "region"
+    },
+    "Calah": {
+      "lat": 36.142884,
+      "lng": 43.312178,
+      "cat": "city"
+    },
+    "Calneh": {
+      "lat": 32.127213,
+      "lng": 45.229995,
+      "cat": "city"
+    },
+    "Canaan": {
+      "lat": 31.69352950368834,
+      "lng": 34.84388288576839,
+      "cat": "nation"
+    },
+    "Capernaum": {
+      "lat": 32.88059412581622,
+      "lng": 35.57515767479308,
+      "cat": "city"
+    },
+    "Caphtor": {
+      "lat": 35.171239,
+      "lng": 25.007204,
+      "cat": "island"
+    },
+    "Cappadocia": {
+      "lat": 36.731904,
+      "lng": 35.486302,
+      "cat": "city"
+    },
+    "Carchemish": {
+      "lat": 36.82928161099629,
+      "lng": 38.01576051001015,
+      "cat": "capital"
+    },
+    "Carmel": {
+      "lat": 31.43333151674604,
+      "lng": 35.13333188530802,
+      "cat": "mountain"
+    },
+    "Carmel_Mount": {
+      "lat": 32.729350157734,
+      "lng": 35.04978957235391,
+      "cat": "mountain"
+    },
+    "Casiphia": {
+      "lat": 35.136204,
+      "lng": 36.749488,
+      "cat": "city"
+    },
+    "Cauda": {
+      "lat": 34.84351,
+      "lng": 24.091671,
+      "cat": "city"
+    },
+    "Cenchreae": {
+      "lat": 37.88460365000972,
+      "lng": 22.9933595701051,
+      "cat": "city"
+    },
+    "Chaldea": {
+      "lat": 30.9620520474569,
+      "lng": 46.10374195774169,
+      "cat": "city"
+    },
+    "Chebar": {
+      "lat": 33.159129,
+      "lng": 44.06293,
+      "cat": "river"
+    },
+    "Chephar-ammoni": {
+      "lat": 31.966667,
+      "lng": 35.25,
+      "cat": "city"
+    },
+    "Chephirah": {
+      "lat": 31.836401,
+      "lng": 35.095272,
+      "cat": "city"
+    },
+    "Cherith": {
+      "lat": 32.309099,
+      "lng": 35.5599,
+      "cat": "river"
+    },
+    "Cherub": {
+      "lat": 32.53650368616845,
+      "lng": 44.42088287373876,
+      "cat": "city"
+    },
+    "Chesalon": {
+      "lat": 31.781049,
+      "lng": 35.05113,
+      "cat": "mountain"
+    },
+    "Chesil": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Chesulloth": {
+      "lat": 32.683231,
+      "lng": 35.324694,
+      "cat": "city"
+    },
+    "Chilmad": {
+      "lat": 36.35941,
+      "lng": 43.152887,
+      "cat": "city"
+    },
+    "Chinnereth": {
+      "lat": 32.80677585520321,
+      "lng": 35.58936052679091,
+      "cat": "water"
+    },
+    "Chinneroth": {
+      "lat": 32.80677585520321,
+      "lng": 35.58936052679091,
+      "cat": "city"
+    },
+    "Chios": {
+      "lat": 38.44484,
+      "lng": 26.063302,
+      "cat": "island"
+    },
+    "Chitlish": {
+      "lat": 31.823337,
+      "lng": 34.777779,
+      "cat": "city"
+    },
+    "Chorazin": {
+      "lat": 32.90909168933021,
+      "lng": 35.55292324144203,
+      "cat": "city"
+    },
+    "Cilicia": {
+      "lat": 36.91802695356275,
+      "lng": 34.89153398422567,
+      "cat": "city"
+    },
+    "City_of_Salt": {
+      "lat": 31.46152536164766,
+      "lng": 35.39241108242345,
+      "cat": "city"
+    },
+    "Cnidus": {
+      "lat": 36.68502255790917,
+      "lng": 27.37439432376754,
+      "cat": "city"
+    },
+    "Colossae": {
+      "lat": 37.78333333333333,
+      "lng": 29.25,
+      "cat": "city"
+    },
+    "Corban": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Corinth": {
+      "lat": 37.9059573586561,
+      "lng": 22.87788175588845,
+      "cat": "city"
+    },
+    "Corner_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Cos": {
+      "lat": 36.80467006054953,
+      "lng": 27.08994040521288,
+      "cat": "city"
+    },
+    "Cush": {
+      "lat": 21.959788,
+      "lng": 31.343557,
+      "cat": "nation"
+    },
+    "Cushan": {
+      "lat": 21.959788,
+      "lng": 31.343557,
+      "cat": "city"
+    },
+    "Cuthah": {
+      "lat": 32.733333,
+      "lng": 44.666667,
+      "cat": "city"
+    },
+    "Cyprus": {
+      "lat": 35.018306,
+      "lng": 33.207693,
+      "cat": "island"
+    },
+    "Cyrene": {
+      "lat": 32.824979,
+      "lng": 21.858301,
+      "cat": "city"
+    },
+    "Dabbesheth": {
+      "lat": 33,
+      "lng": 35.266682,
+      "cat": "city"
+    },
+    "Daberath": {
+      "lat": 32.69171267584284,
+      "lng": 35.37171031061986,
+      "cat": "city"
+    },
+    "Dalmatia": {
+      "lat": 43.515484,
+      "lng": 16.071538,
+      "cat": "city"
+    },
+    "Damascus": {
+      "lat": 33.519299,
+      "lng": 36.31344999999999,
+      "cat": "capital"
+    },
+    "Dan": {
+      "lat": 33.24865997897308,
+      "lng": 35.65248345039043,
+      "cat": "city"
+    },
+    "Dannah": {
+      "lat": 31.561025,
+      "lng": 34.975472,
+      "cat": "city"
+    },
+    "Debir": {
+      "lat": 31.41666959977098,
+      "lng": 34.96667012280085,
+      "cat": "city"
+    },
+    "Decapolis": {
+      "lat": 32.6817875,
+      "lng": 35.8700227,
+      "cat": "region"
+    },
+    "Dedan": {
+      "lat": 26.625139,
+      "lng": 37.919663,
+      "cat": "city"
+    },
+    "Derbe": {
+      "lat": 37.35092016962404,
+      "lng": 33.27141769926378,
+      "cat": "city"
+    },
+    "Diblathaim": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Dibon": {
+      "lat": 31.1858,
+      "lng": 34.96745,
+      "cat": "city"
+    },
+    "Dilean": {
+      "lat": 31.56485056116292,
+      "lng": 34.8467256730566,
+      "cat": "city"
+    },
+    "Dimnah": {
+      "lat": 32.781808,
+      "lng": 35.321364,
+      "cat": "city"
+    },
+    "Dimonah": {
+      "lat": 31.1858,
+      "lng": 34.96745,
+      "cat": "city"
+    },
+    "Dinhabah": {
+      "lat": 30.336614,
+      "lng": 35.529889,
+      "cat": "city"
+    },
+    "Diviners'_Oak": {
+      "lat": 32.21369123124062,
+      "lng": 35.2817986718367,
+      "cat": "city"
+    },
+    "Dizahab": {
+      "lat": 28.507836,
+      "lng": 34.516339,
+      "cat": "city"
+    },
+    "Dophkah": {
+      "lat": 28.770015,
+      "lng": 33.40046,
+      "cat": "city"
+    },
+    "Dor": {
+      "lat": 32.61323618394521,
+      "lng": 34.91889683434057,
+      "cat": "city"
+    },
+    "Dothan": {
+      "lat": 32.42064338380848,
+      "lng": 35.18019829952955,
+      "cat": "city"
+    },
+    "Dragon_Spring": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Dumah": {
+      "lat": 27.4,
+      "lng": 37.7,
+      "cat": "city"
+    },
+    "Dung_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Dura": {
+      "lat": 32.53650368616845,
+      "lng": 44.42088287373876,
+      "cat": "city"
+    },
+    "East": {
+      "lat": 31.95018855468469,
+      "lng": 35.92413135872749,
+      "cat": "city"
+    },
+    "East_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Ebal_Mount": {
+      "lat": 32.23293813761263,
+      "lng": 35.27304180036391,
+      "cat": "mountain"
+    },
+    "Ebenezer": {
+      "lat": 31.83273947023218,
+      "lng": 35.1801628605877,
+      "cat": "city"
+    },
+    "Ebez": {
+      "lat": 32.261621,
+      "lng": 35.328129,
+      "cat": "city"
+    },
+    "Ecbatana": {
+      "lat": 34.798311,
+      "lng": 48.514966,
+      "cat": "capital"
+    },
+    "Eder": {
+      "lat": 31.1858,
+      "lng": 34.96745,
+      "cat": "city"
+    },
+    "Edom": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "nation"
+    },
+    "Edrei": {
+      "lat": 32.62413707696097,
+      "lng": 36.09899663593119,
+      "cat": "city"
+    },
+    "Eglaim": {
+      "lat": 30.998062,
+      "lng": 35.498547,
+      "cat": "city"
+    },
+    "Eglon": {
+      "lat": 31.5,
+      "lng": 34.7667,
+      "cat": "city"
+    },
+    "Egypt": {
+      "lat": 30.108086,
+      "lng": 31.33822,
+      "cat": "nation"
+    },
+    "Egypt_Sea": {
+      "lat": 27.088473,
+      "lng": 34.771729,
+      "cat": "water"
+    },
+    "Ekron": {
+      "lat": 31.77761410537458,
+      "lng": 34.85214575880509,
+      "cat": "city"
+    },
+    "Elah_Valley": {
+      "lat": 31.690629,
+      "lng": 34.963136,
+      "cat": "region"
+    },
+    "Elam": {
+      "lat": 32.18919123705116,
+      "lng": 48.25788647687722,
+      "cat": "nation"
+    },
+    "Elath": {
+      "lat": 29.528502,
+      "lng": 35.005732,
+      "cat": "city"
+    },
+    "Elealeh": {
+      "lat": 31.813796,
+      "lng": 35.824275,
+      "cat": "city"
+    },
+    "Elim": {
+      "lat": 29.306194,
+      "lng": 32.980924,
+      "cat": "city"
+    },
+    "Ellasar": {
+      "lat": 37.056944,
+      "lng": 40.997222,
+      "cat": "city"
+    },
+    "Elon": {
+      "lat": 31.973818,
+      "lng": 35.116531,
+      "cat": "city"
+    },
+    "Elonbeth-hanan": {
+      "lat": 31.852593,
+      "lng": 35.109078,
+      "cat": "city"
+    },
+    "El-paran": {
+      "lat": 29.151667,
+      "lng": 33.541944,
+      "cat": "city"
+    },
+    "Eltekeh": {
+      "lat": 31.869521,
+      "lng": 35.06688,
+      "cat": "city"
+    },
+    "Eltekon": {
+      "lat": 31.66057,
+      "lng": 34.995406,
+      "cat": "city"
+    },
+    "Eltolad": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Emek-keziz": {
+      "lat": 31.837062,
+      "lng": 35.513151,
+      "cat": "city"
+    },
+    "Emmaus": {
+      "lat": 31.83945022372554,
+      "lng": 34.9895293285359,
+      "cat": "village"
+    },
+    "Enaim": {
+      "lat": 31.784368,
+      "lng": 34.90968,
+      "cat": "city"
+    },
+    "Enam": {
+      "lat": 32.15,
+      "lng": 35.126,
+      "cat": "city"
+    },
+    "En-dor": {
+      "lat": 32.62570020915744,
+      "lng": 35.38566744418715,
+      "cat": "city"
+    },
+    "Eneglaim": {
+      "lat": 30.998062,
+      "lng": 35.498547,
+      "cat": "city"
+    },
+    "En-gannim": {
+      "lat": 31.75,
+      "lng": 34.950106,
+      "cat": "city"
+    },
+    "Engedi": {
+      "lat": 31.46152536164766,
+      "lng": 35.39241108242345,
+      "cat": "city"
+    },
+    "En-haddah": {
+      "lat": 32.478425,
+      "lng": 35.254452,
+      "cat": "city"
+    },
+    "En-hakkore": {
+      "lat": 31.75274835811488,
+      "lng": 34.97660913147738,
+      "cat": "city"
+    },
+    "En-hazor": {
+      "lat": 33.1,
+      "lng": 35.35,
+      "cat": "city"
+    },
+    "En-rogel": {
+      "lat": 31.767775,
+      "lng": 35.234408,
+      "cat": "city"
+    },
+    "En-shemesh": {
+      "lat": 31.77402,
+      "lng": 35.270231,
+      "cat": "city"
+    },
+    "Ephah": {
+      "lat": 28.932881,
+      "lng": 34.90832,
+      "cat": "city"
+    },
+    "Ephes-dammim": {
+      "lat": 31.691186,
+      "lng": 34.944496,
+      "cat": "city"
+    },
+    "Ephesus": {
+      "lat": 37.95331433666365,
+      "lng": 27.36782511573013,
+      "cat": "city"
+    },
+    "Ephraim_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Ephron_Mount": {
+      "lat": 31.675746,
+      "lng": 35.042407,
+      "cat": "mountain"
+    },
+    "Erech": {
+      "lat": 32.322222,
+      "lng": 45.636111,
+      "cat": "city"
+    },
+    "Esau_Mount": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "mountain"
+    },
+    "Esek": {
+      "lat": 31.39129109635703,
+      "lng": 34.56057015639144,
+      "cat": "city"
+    },
+    "Eshan": {
+      "lat": 31.420175,
+      "lng": 35.033537,
+      "cat": "city"
+    },
+    "Eshcol_Valley": {
+      "lat": 31.54909871686872,
+      "lng": 35.09356062020027,
+      "cat": "region"
+    },
+    "Eshtaol": {
+      "lat": 31.782429,
+      "lng": 35.009012,
+      "cat": "city"
+    },
+    "Eshtemoa": {
+      "lat": 31.373521,
+      "lng": 35.074552,
+      "cat": "city"
+    },
+    "Etam": {
+      "lat": 31.370835,
+      "lng": 34.860665,
+      "cat": "city"
+    },
+    "Etham": {
+      "lat": 30.467511,
+      "lng": 32.282767,
+      "cat": "city"
+    },
+    "Ether": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Eth-kazin": {
+      "lat": 32.781808,
+      "lng": 35.321364,
+      "cat": "city"
+    },
+    "Euphrates": {
+      "lat": 35.090577,
+      "lng": 40.42778,
+      "cat": "river"
+    },
+    "Ezel_Stone": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Ezem": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Ezion-geber": {
+      "lat": 29.75804307645581,
+      "lng": 35.0306017443078,
+      "cat": "city"
+    },
+    "Fair_Havens": {
+      "lat": 34.92138418681769,
+      "lng": 24.73114125973342,
+      "cat": "city"
+    },
+    "Fish_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Forest_Ephraim": {
+      "lat": 32.381111,
+      "lng": 35.764722,
+      "cat": "city"
+    },
+    "Forum_of_Appius": {
+      "lat": 41.468706,
+      "lng": 12.993929,
+      "cat": "city"
+    },
+    "Foundation_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Fountain_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Gaash": {
+      "lat": 32.121473,
+      "lng": 35.150392,
+      "cat": "city"
+    },
+    "Gabbatha": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Galatia": {
+      "lat": 37.57813498250009,
+      "lng": 32.45318282875567,
+      "cat": "city"
+    },
+    "Galilee": {
+      "lat": 32.70674542474383,
+      "lng": 35.30152807767973,
+      "cat": "region"
+    },
+    "Gallim": {
+      "lat": 31.816667,
+      "lng": 35.25,
+      "cat": "city"
+    },
+    "Gamad": {
+      "lat": 34.856082,
+      "lng": 35.858485,
+      "cat": "city"
+    },
+    "Gareb": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Gath": {
+      "lat": 31.69352950368834,
+      "lng": 34.84388288576839,
+      "cat": "city"
+    },
+    "Gath-hepher": {
+      "lat": 32.73918470119603,
+      "lng": 35.32822661816711,
+      "cat": "city"
+    },
+    "Gath-rimmon": {
+      "lat": 32.06972222222223,
+      "lng": 34.88305555555556,
+      "cat": "city"
+    },
+    "Gaza": {
+      "lat": 31.52481769532773,
+      "lng": 34.4333647185274,
+      "cat": "city"
+    },
+    "Geba": {
+      "lat": 31.85787804122625,
+      "lng": 35.25975521608824,
+      "cat": "city"
+    },
+    "Gebal": {
+      "lat": 34.11910360710159,
+      "lng": 35.6461419556213,
+      "cat": "city"
+    },
+    "Gebim": {
+      "lat": 31.8,
+      "lng": 35.25,
+      "cat": "city"
+    },
+    "Gederah": {
+      "lat": 31.823337,
+      "lng": 34.777779,
+      "cat": "city"
+    },
+    "Gederoth": {
+      "lat": 31.823337,
+      "lng": 34.777779,
+      "cat": "city"
+    },
+    "Gederothaim": {
+      "lat": 31.823337,
+      "lng": 34.777779,
+      "cat": "city"
+    },
+    "Gedor": {
+      "lat": 31.823337,
+      "lng": 34.777779,
+      "cat": "city"
+    },
+    "Gennesaret": {
+      "lat": 32.85935860372527,
+      "lng": 35.50993742021974,
+      "cat": "city"
+    },
+    "Gerar": {
+      "lat": 31.39129109635703,
+      "lng": 34.56057015639144,
+      "cat": "city"
+    },
+    "Gerizim_Mount": {
+      "lat": 32.19956174365378,
+      "lng": 35.27285228460234,
+      "cat": "mountain"
+    },
+    "Geruth_Chimham": {
+      "lat": 31.70536129174666,
+      "lng": 35.21026630105202,
+      "cat": "city"
+    },
+    "Geshur": {
+      "lat": 33,
+      "lng": 36.41667,
+      "cat": "city"
+    },
+    "Gethsemane": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Gezer": {
+      "lat": 31.87611111111111,
+      "lng": 34.9225,
+      "cat": "city"
+    },
+    "Giah": {
+      "lat": 31.869005,
+      "lng": 35.343177,
+      "cat": "city"
+    },
+    "Gibbethon": {
+      "lat": 31.976623,
+      "lng": 35.004896,
+      "cat": "city"
+    },
+    "Gibeah": {
+      "lat": 31.43333151674604,
+      "lng": 35.13333188530802,
+      "cat": "city"
+    },
+    "Gibeath-elohim": {
+      "lat": 31.93053920580005,
+      "lng": 35.22103274923676,
+      "cat": "city"
+    },
+    "Gibeon": {
+      "lat": 31.84684772753698,
+      "lng": 35.18491237777512,
+      "cat": "city"
+    },
+    "Gidom": {
+      "lat": 31.93466,
+      "lng": 35.297063,
+      "cat": "city"
+    },
+    "Gihon": {
+      "lat": 31.773116,
+      "lng": 35.237186,
+      "cat": "river"
+    },
+    "Gilboa": {
+      "lat": 32.516667,
+      "lng": 35.4,
+      "cat": "mountain"
+    },
+    "Gilboa_Mount": {
+      "lat": 32.50984080716704,
+      "lng": 35.40843470396692,
+      "cat": "mountain"
+    },
+    "Gilead": {
+      "lat": 32.042523,
+      "lng": 35.724241,
+      "cat": "region"
+    },
+    "Gilgal": {
+      "lat": 32.029737,
+      "lng": 35.222604,
+      "cat": "city"
+    },
+    "Giloh": {
+      "lat": 31.616667,
+      "lng": 35.083333,
+      "cat": "city"
+    },
+    "Gimzo": {
+      "lat": 31.928659,
+      "lng": 34.943219,
+      "cat": "city"
+    },
+    "Gittaim": {
+      "lat": 31.963575,
+      "lng": 34.952536,
+      "cat": "city"
+    },
+    "Goah": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Gog": {
+      "lat": 46,
+      "lng": 47,
+      "cat": "city"
+    },
+    "Golan": {
+      "lat": 32.80007552505443,
+      "lng": 35.93730130476259,
+      "cat": "city"
+    },
+    "Golgotha": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Gomorrah": {
+      "lat": 31.15724866533878,
+      "lng": 35.4739543300078,
+      "cat": "city"
+    },
+    "Goshen": {
+      "lat": 30.72850163814402,
+      "lng": 31.80469223616506,
+      "cat": "region"
+    },
+    "Gozan": {
+      "lat": 36.840013,
+      "lng": 40.06889,
+      "cat": "city"
+    },
+    "Great_Sea": {
+      "lat": 33.24,
+      "lng": 33.47,
+      "cat": "water"
+    },
+    "Greece": {
+      "lat": 37.95331433666365,
+      "lng": 27.36782511573013,
+      "cat": "nation"
+    },
+    "Guard_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Gur": {
+      "lat": 32.45,
+      "lng": 35.2833,
+      "cat": "city"
+    },
+    "Gurbaal": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "city"
+    },
+    "Habor": {
+      "lat": 36.344972,
+      "lng": 40.789333,
+      "cat": "city"
+    },
+    "Hachilah": {
+      "lat": 31.466604,
+      "lng": 35.216691,
+      "cat": "city"
+    },
+    "Hadad-rimmon": {
+      "lat": 32.524106,
+      "lng": 35.205136,
+      "cat": "city"
+    },
+    "Hadashah": {
+      "lat": 31.679512,
+      "lng": 34.695903,
+      "cat": "city"
+    },
+    "Hadid": {
+      "lat": 31.963575,
+      "lng": 34.952536,
+      "cat": "city"
+    },
+    "Hadrach": {
+      "lat": 33.519299,
+      "lng": 36.31344999999999,
+      "cat": "city"
+    },
+    "Haeleph": {
+      "lat": 31.792733,
+      "lng": 35.196862,
+      "cat": "city"
+    },
+    "Halah": {
+      "lat": 36.344972,
+      "lng": 40.789333,
+      "cat": "city"
+    },
+    "Halak_Mount": {
+      "lat": 30.916667,
+      "lng": 34.833333,
+      "cat": "mountain"
+    },
+    "Halhul": {
+      "lat": 31.579549,
+      "lng": 35.099103,
+      "cat": "city"
+    },
+    "Hali": {
+      "lat": 32.934736,
+      "lng": 35.270799,
+      "cat": "city"
+    },
+    "Hall_of_Judgment": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Hall_of_Pillars": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Hall_of_the_Throne": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Ham": {
+      "lat": 30.108086,
+      "lng": 31.33822,
+      "cat": "city"
+    },
+    "Hamath": {
+      "lat": 35.136204,
+      "lng": 36.749488,
+      "cat": "capital"
+    },
+    "Hammath": {
+      "lat": 33.125828,
+      "lng": 35.165,
+      "cat": "city"
+    },
+    "Hamonah": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Hamon-gog_Valley": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "region"
+    },
+    "Hanes": {
+      "lat": 29.085425,
+      "lng": 30.934402,
+      "cat": "city"
+    },
+    "Hannathon": {
+      "lat": 32.916002,
+      "lng": 35.426637,
+      "cat": "city"
+    },
+    "Hara": {
+      "lat": 36.344972,
+      "lng": 40.789333,
+      "cat": "city"
+    },
+    "Haradah": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Haran": {
+      "lat": 36.86386407659651,
+      "lng": 39.03219672227345,
+      "cat": "city"
+    },
+    "Harmon": {
+      "lat": 32.28023100000001,
+      "lng": 35.19792900000002,
+      "cat": "city"
+    },
+    "Harod": {
+      "lat": 32.549638,
+      "lng": 35.355647,
+      "cat": "city"
+    },
+    "Harosheth-hagoyim": {
+      "lat": 32.691177,
+      "lng": 35.110039,
+      "cat": "city"
+    },
+    "Hashmonah": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Hauran": {
+      "lat": 32.80007552505443,
+      "lng": 35.93730130476259,
+      "cat": "city"
+    },
+    "Havilah": {
+      "lat": 30.14,
+      "lng": 35.22,
+      "cat": "city"
+    },
+    "Havvoth-jair": {
+      "lat": 32.042523,
+      "lng": 35.724241,
+      "cat": "city"
+    },
+    "Hazar-addar": {
+      "lat": 30.9522,
+      "lng": 34.7187,
+      "cat": "city"
+    },
+    "Hazar-enan": {
+      "lat": 34.229499,
+      "lng": 37.240077,
+      "cat": "city"
+    },
+    "Hazar-gaddah": {
+      "lat": 31.162327,
+      "lng": 35.057114,
+      "cat": "city"
+    },
+    "Hazar-shual": {
+      "lat": 31.215418,
+      "lng": 34.942986,
+      "cat": "city"
+    },
+    "Hazar-susah": {
+      "lat": 31.391668,
+      "lng": 34.940502,
+      "cat": "city"
+    },
+    "Hazar-susim": {
+      "lat": 31.391668,
+      "lng": 34.940502,
+      "cat": "city"
+    },
+    "Hazer-hatticon": {
+      "lat": 35.136204,
+      "lng": 36.749488,
+      "cat": "city"
+    },
+    "Hazerim": {
+      "lat": 31.52481769532773,
+      "lng": 34.4333647185274,
+      "cat": "city"
+    },
+    "Hazeroth": {
+      "lat": 28.916667,
+      "lng": 34.5,
+      "cat": "city"
+    },
+    "Hazor": {
+      "lat": 33.01718199667929,
+      "lng": 35.56804856758258,
+      "cat": "city"
+    },
+    "Hazor-hadattah": {
+      "lat": 31.162327,
+      "lng": 35.057114,
+      "cat": "city"
+    },
+    "Hebron": {
+      "lat": 31.53577362133176,
+      "lng": 35.09409986578734,
+      "cat": "city"
+    },
+    "Hebron_Valley": {
+      "lat": 31.54909871686872,
+      "lng": 35.09356062020027,
+      "cat": "region"
+    },
+    "Helam": {
+      "lat": 32.1843727808126,
+      "lng": 35.70287002746794,
+      "cat": "city"
+    },
+    "Helbah": {
+      "lat": 34.066067,
+      "lng": 35.865801,
+      "cat": "city"
+    },
+    "Helbon": {
+      "lat": 33.664912,
+      "lng": 36.248576,
+      "cat": "city"
+    },
+    "Helech": {
+      "lat": 34.856082,
+      "lng": 35.858485,
+      "cat": "city"
+    },
+    "Heleph": {
+      "lat": 33.134416,
+      "lng": 35.332157,
+      "cat": "city"
+    },
+    "Helkath": {
+      "lat": 32.955448,
+      "lng": 35.211971,
+      "cat": "city"
+    },
+    "Helkath-hazzurim": {
+      "lat": 31.880126,
+      "lng": 35.280188,
+      "cat": "city"
+    },
+    "Hena": {
+      "lat": 34.467725,
+      "lng": 41.964955,
+      "cat": "city"
+    },
+    "Hepher": {
+      "lat": 32.3667,
+      "lng": 34.8833,
+      "cat": "city"
+    },
+    "Heres": {
+      "lat": 32.19998298531073,
+      "lng": 35.63331303389634,
+      "cat": "city"
+    },
+    "Hereth": {
+      "lat": 31.621492,
+      "lng": 35.029273,
+      "cat": "city"
+    },
+    "Hermon_Mount": {
+      "lat": 33.41615982399708,
+      "lng": 35.85725617635589,
+      "cat": "mountain"
+    },
+    "Heshbon": {
+      "lat": 31.80052000870321,
+      "lng": 35.80901866717255,
+      "cat": "city"
+    },
+    "Heshmon": {
+      "lat": 31.215418,
+      "lng": 34.942986,
+      "cat": "city"
+    },
+    "Hethlon": {
+      "lat": 34.73799,
+      "lng": 36.340918,
+      "cat": "city"
+    },
+    "Hierapolis": {
+      "lat": 37.924517,
+      "lng": 29.124525,
+      "cat": "city"
+    },
+    "Hobah": {
+      "lat": 33.5,
+      "lng": 36.466667,
+      "cat": "city"
+    },
+    "Holon": {
+      "lat": 31.50100308502659,
+      "lng": 35.92063125199366,
+      "cat": "city"
+    },
+    "Holy_Place": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Hor_Mount": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Horem": {
+      "lat": 33.166667,
+      "lng": 35.433333,
+      "cat": "city"
+    },
+    "Horesh": {
+      "lat": 31.45113920529978,
+      "lng": 35.08840337232346,
+      "cat": "city"
+    },
+    "Hor-haggidgad": {
+      "lat": 30.358285,
+      "lng": 35.19027,
+      "cat": "city"
+    },
+    "Horonaim": {
+      "lat": 31.288056,
+      "lng": 35.515,
+      "cat": "city"
+    },
+    "Horse_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Hosah": {
+      "lat": 32.178502,
+      "lng": 35.22758,
+      "cat": "city"
+    },
+    "House_of_the_Forest": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Hukkok": {
+      "lat": 32.882153,
+      "lng": 35.496694,
+      "cat": "city"
+    },
+    "Humtah": {
+      "lat": 31.53577362133176,
+      "lng": 35.09409986578734,
+      "cat": "city"
+    },
+    "Ibleam": {
+      "lat": 32.45,
+      "lng": 35.2833,
+      "cat": "city"
+    },
+    "Iconium": {
+      "lat": 37.88353038890398,
+      "lng": 32.4942625657248,
+      "cat": "city"
+    },
+    "Idalah": {
+      "lat": 32.733333,
+      "lng": 35.166667,
+      "cat": "city"
+    },
+    "Idumea": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "region"
+    },
+    "Iim": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Ijon": {
+      "lat": 33.32804402945069,
+      "lng": 35.61187505342423,
+      "cat": "city"
+    },
+    "Illyricum": {
+      "lat": 43.515484,
+      "lng": 16.071538,
+      "cat": "city"
+    },
+    "Immer": {
+      "lat": 36.35941,
+      "lng": 43.152887,
+      "cat": "city"
+    },
+    "India": {
+      "lat": 22,
+      "lng": 77,
+      "cat": "city"
+    },
+    "Iphtah": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Iphtahel_Valley": {
+      "lat": 32.832774,
+      "lng": 35.277225,
+      "cat": "region"
+    },
+    "Irpeel": {
+      "lat": 31.869343,
+      "lng": 35.197712,
+      "cat": "city"
+    },
+    "Italy": {
+      "lat": 41.9,
+      "lng": 12.48333333333333,
+      "cat": "city"
+    },
+    "Ithlah": {
+      "lat": 31.823593,
+      "lng": 35.075769,
+      "cat": "city"
+    },
+    "Ithnan": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Ivvah": {
+      "lat": 34.467725,
+      "lng": 41.964955,
+      "cat": "city"
+    },
+    "Iye-abarim": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Iyim": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Jabbok": {
+      "lat": 32.193237,
+      "lng": 35.676305,
+      "cat": "river"
+    },
+    "Jabesh": {
+      "lat": 32.37982175236296,
+      "lng": 35.61158746493092,
+      "cat": "city"
+    },
+    "Jabez": {
+      "lat": 31.70536129174666,
+      "lng": 35.21026630105202,
+      "cat": "city"
+    },
+    "Jabneel": {
+      "lat": 31.865518,
+      "lng": 34.746856,
+      "cat": "city"
+    },
+    "Jagur": {
+      "lat": 31.1858,
+      "lng": 34.96745,
+      "cat": "city"
+    },
+    "Jahaz": {
+      "lat": 31.50100308502659,
+      "lng": 35.92063125199366,
+      "cat": "city"
+    },
+    "Jair": {
+      "lat": 32.042523,
+      "lng": 35.724241,
+      "cat": "city"
+    },
+    "Janen": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Janim": {
+      "lat": 31.516667,
+      "lng": 35.166667,
+      "cat": "city"
+    },
+    "Janoah": {
+      "lat": 32.155895,
+      "lng": 35.361606,
+      "cat": "city"
+    },
+    "Japhia": {
+      "lat": 32.691633,
+      "lng": 35.274955,
+      "cat": "city"
+    },
+    "Jarmuth": {
+      "lat": 31.70926894307416,
+      "lng": 34.96995387025439,
+      "cat": "city"
+    },
+    "Jattir": {
+      "lat": 31.40143851886152,
+      "lng": 35.06941349210527,
+      "cat": "city"
+    },
+    "Jazer": {
+      "lat": 31.94352951689796,
+      "lng": 35.72776961157128,
+      "cat": "city"
+    },
+    "Jazer_Sea": {
+      "lat": 31.94352951689796,
+      "lng": 35.72776961157128,
+      "cat": "water"
+    },
+    "Jehud": {
+      "lat": 32.033636,
+      "lng": 34.889599,
+      "cat": "city"
+    },
+    "Jekabzeel": {
+      "lat": 31.1858,
+      "lng": 34.96745,
+      "cat": "city"
+    },
+    "Jemnath": {
+      "lat": 31.80299971086164,
+      "lng": 34.6351145939134,
+      "cat": "city"
+    },
+    "Jericho": {
+      "lat": 31.87060143818292,
+      "lng": 35.44386371224434,
+      "cat": "city"
+    },
+    "Jericho_Valley": {
+      "lat": 31.87060143818292,
+      "lng": 35.44386371224434,
+      "cat": "region"
+    },
+    "Jeruel": {
+      "lat": 31.572903,
+      "lng": 35.406346,
+      "cat": "city"
+    },
+    "Jerusalem": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "capital"
+    },
+    "Jeshanah": {
+      "lat": 31.980029,
+      "lng": 35.229709,
+      "cat": "city"
+    },
+    "Jeshimon": {
+      "lat": 31.46152536164766,
+      "lng": 35.39241108242345,
+      "cat": "city"
+    },
+    "Jeshua": {
+      "lat": 31.162327,
+      "lng": 35.057114,
+      "cat": "city"
+    },
+    "Jetur": {
+      "lat": 33.41615982399708,
+      "lng": 35.85725617635589,
+      "cat": "city"
+    },
+    "Jezreel": {
+      "lat": 32.5559631396043,
+      "lng": 35.33078927843792,
+      "cat": "city"
+    },
+    "Jezreel_Valley": {
+      "lat": 32.5559631396043,
+      "lng": 35.33078927843792,
+      "cat": "region"
+    },
+    "Jogbehah": {
+      "lat": 32.028743,
+      "lng": 35.862887,
+      "cat": "city"
+    },
+    "Jokdeam": {
+      "lat": 31.366667,
+      "lng": 35,
+      "cat": "city"
+    },
+    "Jokneam": {
+      "lat": 32.66454576550823,
+      "lng": 35.10891818863304,
+      "cat": "city"
+    },
+    "Joktheel": {
+      "lat": 31.56485056116292,
+      "lng": 34.8467256730566,
+      "cat": "city"
+    },
+    "Joppa": {
+      "lat": 32.05351968494696,
+      "lng": 34.75042606009946,
+      "cat": "city"
+    },
+    "Jordan": {
+      "lat": 32.309099,
+      "lng": 35.5599,
+      "cat": "river"
+    },
+    "Jotbah": {
+      "lat": 29.75804307645581,
+      "lng": 35.0306017443078,
+      "cat": "city"
+    },
+    "Jotbathah": {
+      "lat": 29.75804307645581,
+      "lng": 35.0306017443078,
+      "cat": "city"
+    },
+    "Judea": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "region"
+    },
+    "Juttah": {
+      "lat": 31.45,
+      "lng": 35.083333,
+      "cat": "city"
+    },
+    "Kabzeel": {
+      "lat": 31.1858,
+      "lng": 34.96745,
+      "cat": "city"
+    },
+    "Tahtim-hodshi": {
+      "lat": 34.558327,
+      "lng": 36.522943,
+      "cat": "city"
+    },
+    "Kadesh": {
+      "lat": 30.68771281376111,
+      "lng": 34.49479554246946,
+      "cat": "city"
+    },
+    "Kain": {
+      "lat": 31.5,
+      "lng": 35.166667,
+      "cat": "city"
+    },
+    "Kamon": {
+      "lat": 32.042523,
+      "lng": 35.724241,
+      "cat": "city"
+    },
+    "Kanah": {
+      "lat": 32.138219,
+      "lng": 35.038971,
+      "cat": "city"
+    },
+    "Karka": {
+      "lat": 30.958506,
+      "lng": 34.3805,
+      "cat": "city"
+    },
+    "Karkor": {
+      "lat": 32.1843727808126,
+      "lng": 35.70287002746794,
+      "cat": "city"
+    },
+    "Kartan": {
+      "lat": 33.125828,
+      "lng": 35.165,
+      "cat": "city"
+    },
+    "Kedemoth": {
+      "lat": 31.646073,
+      "lng": 35.894537,
+      "cat": "city"
+    },
+    "Kedesh": {
+      "lat": 33.11298357486105,
+      "lng": 35.53361334150225,
+      "cat": "city"
+    },
+    "Kehelathah": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Keilah": {
+      "lat": 31.614175,
+      "lng": 35.002752,
+      "cat": "city"
+    },
+    "Kenath": {
+      "lat": 32.756919,
+      "lng": 36.6164,
+      "cat": "city"
+    },
+    "Kerioth-hezron": {
+      "lat": 31.162327,
+      "lng": 35.057114,
+      "cat": "city"
+    },
+    "Kibroth-hattaavah": {
+      "lat": 28.916667,
+      "lng": 34.5,
+      "cat": "city"
+    },
+    "Kibzaim": {
+      "lat": 31.833333,
+      "lng": 35.3,
+      "cat": "city"
+    },
+    "Kidron": {
+      "lat": 31.772134,
+      "lng": 35.236596,
+      "cat": "river"
+    },
+    "Kinah": {
+      "lat": 31.1858,
+      "lng": 34.96745,
+      "cat": "city"
+    },
+    "King's_Highway": {
+      "lat": 31.18132579594509,
+      "lng": 35.70214779044711,
+      "cat": "city"
+    },
+    "King's_Valley": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "region"
+    },
+    "Kir": {
+      "lat": 31.18132579594509,
+      "lng": 35.70214779044711,
+      "cat": "city"
+    },
+    "Kiriathaim": {
+      "lat": 33.125828,
+      "lng": 35.165,
+      "cat": "city"
+    },
+    "Kiriath-huzoth": {
+      "lat": 31.76503129703305,
+      "lng": 35.71856575741812,
+      "cat": "city"
+    },
+    "Kiriath-jearim": {
+      "lat": 31.771104,
+      "lng": 34.993812,
+      "cat": "city"
+    },
+    "Kishion": {
+      "lat": 32.559061,
+      "lng": 35.246206,
+      "cat": "city"
+    },
+    "Kishon": {
+      "lat": 32.761948,
+      "lng": 35.064096,
+      "cat": "river"
+    },
+    "Kitron": {
+      "lat": 32.753141,
+      "lng": 35.279335,
+      "cat": "city"
+    },
+    "Koa": {
+      "lat": 34.798311,
+      "lng": 48.514966,
+      "cat": "city"
+    },
+    "Kue": {
+      "lat": 36.91802695356275,
+      "lng": 34.89153398422567,
+      "cat": "city"
+    },
+    "Laban": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Lachish": {
+      "lat": 31.56485056116292,
+      "lng": 34.8467256730566,
+      "cat": "city"
+    },
+    "Lahmam": {
+      "lat": 31.566667,
+      "lng": 34.9,
+      "cat": "city"
+    },
+    "Laishah": {
+      "lat": 31.8,
+      "lng": 35.25,
+      "cat": "city"
+    },
+    "Lakkum": {
+      "lat": 32.68695640243183,
+      "lng": 35.39091304299688,
+      "cat": "mountain"
+    },
+    "Laodicea": {
+      "lat": 37.76986723761415,
+      "lng": 29.06450110237073,
+      "cat": "city"
+    },
+    "Lasea": {
+      "lat": 34.93491734364034,
+      "lng": 24.80919899172515,
+      "cat": "city"
+    },
+    "Lasha": {
+      "lat": 31.718148,
+      "lng": 35.584826,
+      "cat": "city"
+    },
+    "Lasharon": {
+      "lat": 32.72544,
+      "lng": 35.467002,
+      "cat": "city"
+    },
+    "Lebanon": {
+      "lat": 33.752479,
+      "lng": 35.590804,
+      "cat": "range"
+    },
+    "Lebanon_Mount": {
+      "lat": 33.752479,
+      "lng": 35.590804,
+      "cat": "mountain"
+    },
+    "Lebaoth": {
+      "lat": 31.391668,
+      "lng": 34.940502,
+      "cat": "city"
+    },
+    "Lebonah": {
+      "lat": 32.07077,
+      "lng": 35.239871,
+      "cat": "city"
+    },
+    "Lehi": {
+      "lat": 31.75274835811488,
+      "lng": 34.97660913147738,
+      "cat": "city"
+    },
+    "Libnah": {
+      "lat": 31.56485056116292,
+      "lng": 34.8467256730566,
+      "cat": "city"
+    },
+    "Libya": {
+      "lat": 32.824979,
+      "lng": 21.858301,
+      "cat": "city"
+    },
+    "Lod": {
+      "lat": 31.95138888888889,
+      "lng": 34.89527777777778,
+      "cat": "city"
+    },
+    "Lo-debar": {
+      "lat": 32.662488,
+      "lng": 35.783568,
+      "cat": "city"
+    },
+    "Luhith": {
+      "lat": 31.288056,
+      "lng": 35.515,
+      "cat": "city"
+    },
+    "Luz": {
+      "lat": 37,
+      "lng": 36.57,
+      "cat": "city"
+    },
+    "Lycaonia": {
+      "lat": 37.88353038890398,
+      "lng": 32.4942625657248,
+      "cat": "city"
+    },
+    "Lycia": {
+      "lat": 36.27471786927205,
+      "lng": 29.3186378339052,
+      "cat": "nation"
+    },
+    "Lystra": {
+      "lat": 37.57813498250009,
+      "lng": 32.45318282875567,
+      "cat": "city"
+    },
+    "Maacah": {
+      "lat": 33.2,
+      "lng": 36.5,
+      "cat": "city"
+    },
+    "Maarath": {
+      "lat": 31.621003,
+      "lng": 35.102328,
+      "cat": "city"
+    },
+    "Maareh-geba": {
+      "lat": 31.82378102460309,
+      "lng": 35.23100936128631,
+      "cat": "city"
+    },
+    "Macedonia": {
+      "lat": 40.632155565205,
+      "lng": 22.9320868699276,
+      "cat": "nation"
+    },
+    "Machpelah": {
+      "lat": 31.52464794555393,
+      "lng": 35.11073465087356,
+      "cat": "city"
+    },
+    "Madmannah": {
+      "lat": 31.391668,
+      "lng": 34.940502,
+      "cat": "city"
+    },
+    "Madmenah": {
+      "lat": 31.8,
+      "lng": 35.25,
+      "cat": "city"
+    },
+    "Madon": {
+      "lat": 32.799879,
+      "lng": 35.459506,
+      "cat": "city"
+    },
+    "Magadan": {
+      "lat": 32.84733494629723,
+      "lng": 35.5229361797708,
+      "cat": "city"
+    },
+    "Magog": {
+      "lat": 46,
+      "lng": 47,
+      "cat": "city"
+    },
+    "Mahanaim": {
+      "lat": 32.214708,
+      "lng": 35.632914,
+      "cat": "city"
+    },
+    "Mahaneh-dan": {
+      "lat": 31.758315,
+      "lng": 34.994252,
+      "cat": "city"
+    },
+    "Makaz": {
+      "lat": 31.870364,
+      "lng": 34.981728,
+      "cat": "city"
+    },
+    "Makheloth": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Makkedah": {
+      "lat": 31.935117,
+      "lng": 34.781326,
+      "cat": "city"
+    },
+    "Malta": {
+      "lat": 35.85282675242785,
+      "lng": 14.53243601407711,
+      "cat": "city"
+    },
+    "Mamre": {
+      "lat": 31.54909871686872,
+      "lng": 35.09356062020027,
+      "cat": "city"
+    },
+    "Manahath": {
+      "lat": 31.752603,
+      "lng": 35.181972,
+      "cat": "city"
+    },
+    "Maon": {
+      "lat": 31.41666666666668,
+      "lng": 35.1166666666667,
+      "cat": "city"
+    },
+    "Marah": {
+      "lat": 29.35,
+      "lng": 32.933333,
+      "cat": "city"
+    },
+    "Mareal": {
+      "lat": 32.697409,
+      "lng": 35.241789,
+      "cat": "region"
+    },
+    "Mareshah": {
+      "lat": 31.60393321295081,
+      "lng": 34.90237777777779,
+      "cat": "city"
+    },
+    "Maroth": {
+      "lat": 31.743719,
+      "lng": 34.694006,
+      "cat": "city"
+    },
+    "Masrekah": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "city"
+    },
+    "Massah": {
+      "lat": 28.73106102564323,
+      "lng": 33.84169995726504,
+      "cat": "city"
+    },
+    "Mattanah": {
+      "lat": 31.718148,
+      "lng": 35.584826,
+      "cat": "city"
+    },
+    "Mearah": {
+      "lat": 33.633333,
+      "lng": 35.433333,
+      "cat": "city"
+    },
+    "Meconah": {
+      "lat": 31.370835,
+      "lng": 34.860665,
+      "cat": "city"
+    },
+    "Medeba": {
+      "lat": 31.72045763248588,
+      "lng": 35.79197231962891,
+      "cat": "city"
+    },
+    "Media": {
+      "lat": 34.798311,
+      "lng": 48.514966,
+      "cat": "nation"
+    },
+    "Megiddo": {
+      "lat": 32.58418313614938,
+      "lng": 35.18229165870594,
+      "cat": "city"
+    },
+    "Me-jarkon": {
+      "lat": 32.132898,
+      "lng": 34.788144,
+      "cat": "city"
+    },
+    "Memphis": {
+      "lat": 29.849632,
+      "lng": 31.253958,
+      "cat": "capital"
+    },
+    "Mephaath": {
+      "lat": 31.85,
+      "lng": 35.933333,
+      "cat": "city"
+    },
+    "Meribah": {
+      "lat": 28.73106102564323,
+      "lng": 33.84169995726504,
+      "cat": "city"
+    },
+    "Merom": {
+      "lat": 33.075269,
+      "lng": 35.60548,
+      "cat": "city"
+    },
+    "Meroz": {
+      "lat": 32.68695640243183,
+      "lng": 35.39091304299688,
+      "cat": "mountain"
+    },
+    "Mesha": {
+      "lat": 28.85726,
+      "lng": 34.859127,
+      "cat": "city"
+    },
+    "Meshech": {
+      "lat": 46,
+      "lng": 47,
+      "cat": "city"
+    },
+    "Meshech-Tubal": {
+      "lat": 46,
+      "lng": 47,
+      "cat": "city"
+    },
+    "Mesopotamia": {
+      "lat": 32.53650368616845,
+      "lng": 44.42088287373876,
+      "cat": "city"
+    },
+    "Michmash": {
+      "lat": 31.87018434231688,
+      "lng": 35.27923581936973,
+      "cat": "village"
+    },
+    "Michmethath": {
+      "lat": 32.183333,
+      "lng": 35.283333,
+      "cat": "city"
+    },
+    "Middin": {
+      "lat": 31.743894,
+      "lng": 35.401591,
+      "cat": "city"
+    },
+    "Midian": {
+      "lat": 28.932881,
+      "lng": 34.90832,
+      "cat": "city"
+    },
+    "Migdal-el": {
+      "lat": 33.232131,
+      "lng": 35.362942,
+      "cat": "city"
+    },
+    "Migdal-gad": {
+      "lat": 31.666667,
+      "lng": 34.583333,
+      "cat": "city"
+    },
+    "Migdol": {
+      "lat": 30.020296,
+      "lng": 32.372233,
+      "cat": "city"
+    },
+    "Migron": {
+      "lat": 31.82378102460309,
+      "lng": 35.23100936128631,
+      "cat": "city"
+    },
+    "Miletus": {
+      "lat": 37.5,
+      "lng": 27.3,
+      "cat": "city"
+    },
+    "Millo": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Minni": {
+      "lat": 40.6,
+      "lng": 44.6,
+      "cat": "city"
+    },
+    "Minnith": {
+      "lat": 31.75,
+      "lng": 35.85,
+      "cat": "city"
+    },
+    "Mishal": {
+      "lat": 33.047808,
+      "lng": 35.146201,
+      "cat": "city"
+    },
+    "Misrephoth-maim": {
+      "lat": 33.118952,
+      "lng": 35.139434,
+      "cat": "city"
+    },
+    "Mithkah": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Mitylene": {
+      "lat": 39.10033557286295,
+      "lng": 26.55180477541001,
+      "cat": "city"
+    },
+    "Mizar_Mount": {
+      "lat": 33.41615982399708,
+      "lng": 35.85725617635589,
+      "cat": "mountain"
+    },
+    "Mizpah": {
+      "lat": 31.83273947023218,
+      "lng": 35.1801628605877,
+      "cat": "city"
+    },
+    "Mizpeh": {
+      "lat": 31.56485056116292,
+      "lng": 34.8467256730566,
+      "cat": "city"
+    },
+    "Mizpeh_Valley": {
+      "lat": 33.28177,
+      "lng": 35.573371,
+      "cat": "region"
+    },
+    "Moab": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "nation"
+    },
+    "Moladah": {
+      "lat": 31.162327,
+      "lng": 35.057114,
+      "cat": "city"
+    },
+    "Moreh": {
+      "lat": 32.21369123124062,
+      "lng": 35.2817986718367,
+      "cat": "city"
+    },
+    "Moresheth": {
+      "lat": 31.60393321295081,
+      "lng": 34.90237777777779,
+      "cat": "city"
+    },
+    "Moriah_Mount": {
+      "lat": 31.77759385009378,
+      "lng": 35.23525140955081,
+      "cat": "mountain"
+    },
+    "Mortar": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Moserah": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Moseroth": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Most_Holy_Place": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Mozah": {
+      "lat": 31.802641,
+      "lng": 35.158376,
+      "cat": "city"
+    },
+    "Muster_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Myra": {
+      "lat": 36.2307717908834,
+      "lng": 30.01145882074154,
+      "cat": "city"
+    },
+    "Mysia": {
+      "lat": 39.50664305923271,
+      "lng": 26.08059270470616,
+      "cat": "city"
+    },
+    "Naamah": {
+      "lat": 31.871782,
+      "lng": 34.871894,
+      "cat": "city"
+    },
+    "Naaran": {
+      "lat": 31.949518,
+      "lng": 35.45873,
+      "cat": "city"
+    },
+    "Nahalol": {
+      "lat": 32.722209,
+      "lng": 35.35282,
+      "cat": "city"
+    },
+    "Nain": {
+      "lat": 32.63083336680386,
+      "lng": 35.34782689102158,
+      "cat": "village"
+    },
+    "Naioth": {
+      "lat": 31.83273947023218,
+      "lng": 35.1801628605877,
+      "cat": "city"
+    },
+    "Naphath": {
+      "lat": 32.58418313614938,
+      "lng": 35.18229165870594,
+      "cat": "city"
+    },
+    "Nazareth": {
+      "lat": 32.70674542474383,
+      "lng": 35.30152807767973,
+      "cat": "city"
+    },
+    "Neah": {
+      "lat": 32.894254,
+      "lng": 35.221877,
+      "cat": "city"
+    },
+    "Neapolis": {
+      "lat": 40.94413199321298,
+      "lng": 24.41767995412326,
+      "cat": "city"
+    },
+    "Neballat": {
+      "lat": 31.992079,
+      "lng": 34.957563,
+      "cat": "city"
+    },
+    "Nebo": {
+      "lat": 31.606256,
+      "lng": 35.037417,
+      "cat": "mountain"
+    },
+    "Nebo_Mount": {
+      "lat": 31.76135780447535,
+      "lng": 35.74614824478083,
+      "cat": "mountain"
+    },
+    "Negeb": {
+      "lat": 30.3,
+      "lng": 34.2,
+      "cat": "region"
+    },
+    "Nephtoah": {
+      "lat": 31.683036,
+      "lng": 35.167987,
+      "cat": "city"
+    },
+    "Netaim": {
+      "lat": 31.823337,
+      "lng": 34.777779,
+      "cat": "city"
+    },
+    "Netophah": {
+      "lat": 31.735465,
+      "lng": 35.220503,
+      "cat": "city"
+    },
+    "New_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Nezib": {
+      "lat": 31.58805,
+      "lng": 34.992389,
+      "cat": "city"
+    },
+    "Nibshan": {
+      "lat": 31.46152536164766,
+      "lng": 35.39241108242345,
+      "cat": "city"
+    },
+    "Nicopolis": {
+      "lat": 39.024033,
+      "lng": 20.73573,
+      "cat": "city"
+    },
+    "Nile": {
+      "lat": 30.092632,
+      "lng": 31.230987,
+      "cat": "river"
+    },
+    "Nimrim": {
+      "lat": 31.133191,
+      "lng": 35.531138,
+      "cat": "city"
+    },
+    "Nineveh": {
+      "lat": 36.35941,
+      "lng": 43.152887,
+      "cat": "capital"
+    },
+    "Nob": {
+      "lat": 31.799605,
+      "lng": 35.23298,
+      "cat": "city"
+    },
+    "Oboth": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Olives_Mount": {
+      "lat": 31.77809503341373,
+      "lng": 35.2471976093501,
+      "cat": "mountain"
+    },
+    "On": {
+      "lat": 30.108086,
+      "lng": 31.33822,
+      "cat": "city"
+    },
+    "Ono": {
+      "lat": 32.02222222222223,
+      "lng": 34.86666666666667,
+      "cat": "city"
+    },
+    "Ophel": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Ophir": {
+      "lat": 22,
+      "lng": 77,
+      "cat": "city"
+    },
+    "Ophni": {
+      "lat": 31.961989,
+      "lng": 35.215483,
+      "cat": "city"
+    },
+    "Ophrah": {
+      "lat": 31.95378955858199,
+      "lng": 35.29913577541004,
+      "cat": "city"
+    },
+    "Paddan": {
+      "lat": 36.86386407659651,
+      "lng": 39.03219672227345,
+      "cat": "city"
+    },
+    "Pamphylia": {
+      "lat": 37.00520811721595,
+      "lng": 30.90494591606115,
+      "cat": "city"
+    },
+    "Paphos": {
+      "lat": 34.75410576175517,
+      "lng": 32.40016213313376,
+      "cat": "city"
+    },
+    "Parah": {
+      "lat": 31.833333,
+      "lng": 35.3,
+      "cat": "city"
+    },
+    "Paran": {
+      "lat": 29.151667,
+      "lng": 33.541944,
+      "cat": "city"
+    },
+    "Paran_Mount": {
+      "lat": 29.151667,
+      "lng": 33.541944,
+      "cat": "mountain"
+    },
+    "Patara": {
+      "lat": 36.27471786927205,
+      "lng": 29.3186378339052,
+      "cat": "city"
+    },
+    "Pathros": {
+      "lat": 28.322364,
+      "lng": 30.692312,
+      "cat": "city"
+    },
+    "Patmos": {
+      "lat": 37.30752,
+      "lng": 26.548274,
+      "cat": "island"
+    },
+    "Pau": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "city"
+    },
+    "Pelusium": {
+      "lat": 28.838778,
+      "lng": 33.420573,
+      "cat": "city"
+    },
+    "Peniel": {
+      "lat": 32.1843727808126,
+      "lng": 35.70287002746794,
+      "cat": "city"
+    },
+    "People's_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Peor": {
+      "lat": 31.76503129703305,
+      "lng": 35.71856575741812,
+      "cat": "city"
+    },
+    "Perazim_Mount": {
+      "lat": 31.756332,
+      "lng": 35.223059,
+      "cat": "mountain"
+    },
+    "Perez-uzza": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Perga": {
+      "lat": 37.00520811721595,
+      "lng": 30.90494591606115,
+      "cat": "city"
+    },
+    "Pergamum": {
+      "lat": 39.11894592031751,
+      "lng": 27.16512610475739,
+      "cat": "city"
+    },
+    "Persia": {
+      "lat": 34.798311,
+      "lng": 48.514966,
+      "cat": "nation"
+    },
+    "Pethor": {
+      "lat": 36.654616,
+      "lng": 38.068879,
+      "cat": "city"
+    },
+    "Pharpar": {
+      "lat": 33.379601,
+      "lng": 36.306085,
+      "cat": "river"
+    },
+    "Philadelphia": {
+      "lat": 38.34904803135629,
+      "lng": 28.51946209047604,
+      "cat": "city"
+    },
+    "Philippi": {
+      "lat": 41.0119594798466,
+      "lng": 24.28619097780519,
+      "cat": "city"
+    },
+    "Philistia": {
+      "lat": 33.56316734135746,
+      "lng": 35.36634649354799,
+      "cat": "nation"
+    },
+    "Phoenicia": {
+      "lat": 33.56316734135746,
+      "lng": 35.36634649354799,
+      "cat": "nation"
+    },
+    "Phoenix": {
+      "lat": 35.1988857652248,
+      "lng": 24.08098202270813,
+      "cat": "city"
+    },
+    "Phrygia": {
+      "lat": 37.76986723761415,
+      "lng": 29.06450110237073,
+      "cat": "city"
+    },
+    "Pi-beseth": {
+      "lat": 30.583333,
+      "lng": 31.5,
+      "cat": "city"
+    },
+    "Pi-hahiroth": {
+      "lat": 29.94658,
+      "lng": 32.425144,
+      "cat": "city"
+    },
+    "Pirathon": {
+      "lat": 32.286022,
+      "lng": 35.022944,
+      "cat": "city"
+    },
+    "Pisgah": {
+      "lat": 31.76503129703305,
+      "lng": 35.71856575741812,
+      "cat": "mountain"
+    },
+    "Pisidia": {
+      "lat": 38.31643056393041,
+      "lng": 31.17948683048973,
+      "cat": "city"
+    },
+    "Pithom": {
+      "lat": 30.59385132817632,
+      "lng": 32.18555803140015,
+      "cat": "city"
+    },
+    "Pontus": {
+      "lat": 40.905222,
+      "lng": 37.799969,
+      "cat": "city"
+    },
+    "Potsherd_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Punon": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Puteoli": {
+      "lat": 40.83563065297087,
+      "lng": 14.2677438666742,
+      "cat": "city"
+    },
+    "Raamah": {
+      "lat": 15.68,
+      "lng": 42.78,
+      "cat": "city"
+    },
+    "Raamses": {
+      "lat": 30.59385132817632,
+      "lng": 32.18555803140015,
+      "cat": "city"
+    },
+    "Rabbith": {
+      "lat": 32.391416,
+      "lng": 35.377302,
+      "cat": "city"
+    },
+    "Rakkath": {
+      "lat": 32.79553799444466,
+      "lng": 35.52922039819518,
+      "cat": "city"
+    },
+    "Rakkon": {
+      "lat": 32.132898,
+      "lng": 34.788144,
+      "cat": "city"
+    },
+    "Ramah": {
+      "lat": 31.89637863532434,
+      "lng": 35.20173068977705,
+      "cat": "village"
+    },
+    "Ramath-lehi": {
+      "lat": 31.75274835811488,
+      "lng": 34.97660913147738,
+      "cat": "city"
+    },
+    "Rameses": {
+      "lat": 30.799370210096,
+      "lng": 31.834216685474,
+      "cat": "city"
+    },
+    "Ramoth": {
+      "lat": 32.56526757366849,
+      "lng": 36.00555930879645,
+      "cat": "city"
+    },
+    "Recah": {
+      "lat": 31.70536129174666,
+      "lng": 35.21026630105202,
+      "cat": "city"
+    },
+    "Red_Sea": {
+      "lat": 27.088473,
+      "lng": 34.771729,
+      "cat": "water"
+    },
+    "Rehob": {
+      "lat": 33.125828,
+      "lng": 35.165,
+      "cat": "city"
+    },
+    "Rehoboth": {
+      "lat": 31.066829,
+      "lng": 34.59783,
+      "cat": "city"
+    },
+    "Rekem": {
+      "lat": 31.869343,
+      "lng": 35.197712,
+      "cat": "city"
+    },
+    "Remeth": {
+      "lat": 32.5559631396043,
+      "lng": 35.33078927843792,
+      "cat": "city"
+    },
+    "Rephaim_Valley": {
+      "lat": 31.756332,
+      "lng": 35.223059,
+      "cat": "region"
+    },
+    "Rephidim": {
+      "lat": 28.73106102564323,
+      "lng": 33.84169995726504,
+      "cat": "city"
+    },
+    "Resen": {
+      "lat": 36.35941,
+      "lng": 43.152887,
+      "cat": "city"
+    },
+    "Rezeph": {
+      "lat": 35.95,
+      "lng": 39.016667,
+      "cat": "city"
+    },
+    "Rhegium": {
+      "lat": 38.11158003147303,
+      "lng": 15.64327902497161,
+      "cat": "city"
+    },
+    "Rhodes": {
+      "lat": 36.44192632910195,
+      "lng": 28.22672173336723,
+      "cat": "island"
+    },
+    "Riblah": {
+      "lat": 34.431703,
+      "lng": 36.545259,
+      "cat": "city"
+    },
+    "Rimmon": {
+      "lat": 31.93466,
+      "lng": 35.297063,
+      "cat": "city"
+    },
+    "Rimmon-perez": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Rissah": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Rithmah": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Rock_of_Escape": {
+      "lat": 31.41666666666668,
+      "lng": 35.1166666666667,
+      "cat": "city"
+    },
+    "Rogelim": {
+      "lat": 32.214708,
+      "lng": 35.632914,
+      "cat": "city"
+    },
+    "Rome": {
+      "lat": 41.9,
+      "lng": 12.48333333333333,
+      "cat": "nation"
+    },
+    "Sahar": {
+      "lat": 33.664912,
+      "lng": 36.248576,
+      "cat": "city"
+    },
+    "Salamis": {
+      "lat": 35.17724606944397,
+      "lng": 33.90755212865949,
+      "cat": "city"
+    },
+    "Salecah": {
+      "lat": 32.493941,
+      "lng": 36.710337,
+      "cat": "city"
+    },
+    "Salim": {
+      "lat": 32.39933414034645,
+      "lng": 35.52644309698702,
+      "cat": "city"
+    },
+    "Salmone": {
+      "lat": 35.21229729880597,
+      "lng": 26.27449174374278,
+      "cat": "city"
+    },
+    "Salt_Sea": {
+      "lat": 31.538593,
+      "lng": 35.482268,
+      "cat": "water"
+    },
+    "Salt_Valley": {
+      "lat": 31.087328,
+      "lng": 35.38374,
+      "cat": "region"
+    },
+    "Samaria": {
+      "lat": 32.28023100000001,
+      "lng": 35.19792900000002,
+      "cat": "capital"
+    },
+    "Samos": {
+      "lat": 37.715172,
+      "lng": 26.934167,
+      "cat": "island"
+    },
+    "Samothrace": {
+      "lat": 40.467279,
+      "lng": 25.486069,
+      "cat": "city"
+    },
+    "Sansannah": {
+      "lat": 31.391668,
+      "lng": 34.940502,
+      "cat": "city"
+    },
+    "Sarid": {
+      "lat": 32.68978573733861,
+      "lng": 35.19666870006055,
+      "cat": "city"
+    },
+    "Seba": {
+      "lat": 9.022736,
+      "lng": 38.746799,
+      "cat": "city"
+    },
+    "Sebam": {
+      "lat": 31.815283,
+      "lng": 35.766738,
+      "cat": "city"
+    },
+    "Secacah": {
+      "lat": 31.766667,
+      "lng": 35.283333,
+      "cat": "city"
+    },
+    "Second_Quarter": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Secu": {
+      "lat": 31.883333,
+      "lng": 35.2,
+      "cat": "city"
+    },
+    "Seir": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "city"
+    },
+    "Seir_Mount": {
+      "lat": 30.734691,
+      "lng": 35.60625,
+      "cat": "mountain"
+    },
+    "Seirah": {
+      "lat": 31.93053920580005,
+      "lng": 35.22103274923676,
+      "cat": "city"
+    },
+    "Sela": {
+      "lat": 30.32243571223214,
+      "lng": 35.45627946919968,
+      "cat": "city"
+    },
+    "Seleucia": {
+      "lat": 36.11101750333098,
+      "lng": 35.92680788324002,
+      "cat": "city"
+    },
+    "Seneh": {
+      "lat": 31.85309428405443,
+      "lng": 35.28616916703533,
+      "cat": "city"
+    },
+    "Sephar": {
+      "lat": 14.550219,
+      "lng": 44.392642,
+      "cat": "city"
+    },
+    "Sepharad": {
+      "lat": 38.47682690345803,
+      "lng": 28.11413118732089,
+      "cat": "city"
+    },
+    "Sepharvaim": {
+      "lat": 33.789693,
+      "lng": 44.459399,
+      "cat": "city"
+    },
+    "Shaalbim": {
+      "lat": 31.870364,
+      "lng": 34.981728,
+      "cat": "city"
+    },
+    "Shaalim": {
+      "lat": 31.84684772753698,
+      "lng": 35.18491237777512,
+      "cat": "city"
+    },
+    "Shaaraim": {
+      "lat": 31.7001,
+      "lng": 34.89532,
+      "cat": "city"
+    },
+    "Shahazumah": {
+      "lat": 32.40643,
+      "lng": 35.504628,
+      "cat": "city"
+    },
+    "Shalishah": {
+      "lat": 31.84684772753698,
+      "lng": 35.18491237777512,
+      "cat": "city"
+    },
+    "Shallecheth": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Shamir": {
+      "lat": 32.36047,
+      "lng": 35.250054,
+      "cat": "city"
+    },
+    "Shaphir": {
+      "lat": 31.743719,
+      "lng": 34.694006,
+      "cat": "city"
+    },
+    "Sharon": {
+      "lat": 32.639068,
+      "lng": 34.945929,
+      "cat": "region"
+    },
+    "Sharuhen": {
+      "lat": 31.282222,
+      "lng": 34.4825,
+      "cat": "city"
+    },
+    "Shaveh": {
+      "lat": 31.58333333329998,
+      "lng": 35.70000000000012,
+      "cat": "city"
+    },
+    "Sheba": {
+      "lat": 9.022736,
+      "lng": 38.746799,
+      "cat": "city"
+    },
+    "Shebarim": {
+      "lat": 31.91697811712517,
+      "lng": 35.26122639380886,
+      "cat": "city"
+    },
+    "Shechem": {
+      "lat": 32.21369123124062,
+      "lng": 35.2817986718367,
+      "cat": "city"
+    },
+    "Sheep_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Shelah": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Shema": {
+      "lat": 31.162327,
+      "lng": 35.057114,
+      "cat": "city"
+    },
+    "Shen": {
+      "lat": 31.83273947023218,
+      "lng": 35.1801628605877,
+      "cat": "city"
+    },
+    "Shepham": {
+      "lat": 34.353071,
+      "lng": 36.385705,
+      "cat": "city"
+    },
+    "Shephelah": {
+      "lat": 31.77761410537458,
+      "lng": 34.85214575880509,
+      "cat": "city"
+    },
+    "Shepher_Mount": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Shihor-libnath": {
+      "lat": 32.538496,
+      "lng": 34.907697,
+      "cat": "city"
+    },
+    "Shikkeron": {
+      "lat": 31.77761410537458,
+      "lng": 34.85214575880509,
+      "cat": "city"
+    },
+    "Shiloh": {
+      "lat": 32.05570050712985,
+      "lng": 35.28952869712683,
+      "cat": "city"
+    },
+    "Shimron": {
+      "lat": 32.70528895585606,
+      "lng": 35.21333285757741,
+      "cat": "city"
+    },
+    "Shinar": {
+      "lat": 32.53650368616845,
+      "lng": 44.42088287373876,
+      "cat": "city"
+    },
+    "Shion": {
+      "lat": 32.716666,
+      "lng": 35.333334,
+      "cat": "city"
+    },
+    "Shittim": {
+      "lat": 31.85826217905818,
+      "lng": 35.64156652792805,
+      "cat": "city"
+    },
+    "Shittim_Valley": {
+      "lat": 31.85826217905818,
+      "lng": 35.64156652792805,
+      "cat": "region"
+    },
+    "Shoa": {
+      "lat": 34.798311,
+      "lng": 48.514966,
+      "cat": "city"
+    },
+    "Shual": {
+      "lat": 31.95378955858199,
+      "lng": 35.29913577541004,
+      "cat": "city"
+    },
+    "Shunem": {
+      "lat": 32.60563102234625,
+      "lng": 35.33430585716489,
+      "cat": "village"
+    },
+    "Shur": {
+      "lat": 30.2354,
+      "lng": 33.247,
+      "cat": "city"
+    },
+    "Sibmah": {
+      "lat": 31.815283,
+      "lng": 35.766738,
+      "cat": "city"
+    },
+    "Sibraim": {
+      "lat": 35.136204,
+      "lng": 36.749488,
+      "cat": "city"
+    },
+    "Siddim_Valley": {
+      "lat": 31.235341,
+      "lng": 35.517624,
+      "cat": "region"
+    },
+    "Sidon": {
+      "lat": 33.56316734135746,
+      "lng": 35.36634649354799,
+      "cat": "city"
+    },
+    "Silla": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Sin": {
+      "lat": 28.838778,
+      "lng": 33.420573,
+      "cat": "city"
+    },
+    "Sinai": {
+      "lat": 28.539722,
+      "lng": 33.973333,
+      "cat": "mountain"
+    },
+    "Siphmoth": {
+      "lat": 31.373521,
+      "lng": 35.074552,
+      "cat": "city"
+    },
+    "Sirah": {
+      "lat": 31.55,
+      "lng": 35.1,
+      "cat": "city"
+    },
+    "Sitnah": {
+      "lat": 31.39129109635703,
+      "lng": 34.56057015639144,
+      "cat": "city"
+    },
+    "Smyrna": {
+      "lat": 38.45196037886051,
+      "lng": 27.16192104844777,
+      "cat": "city"
+    },
+    "Socoh": {
+      "lat": 31.68123465358001,
+      "lng": 34.97639817516712,
+      "cat": "city"
+    },
+    "Sodom": {
+      "lat": 31.19656033132318,
+      "lng": 35.39648411813492,
+      "cat": "city"
+    },
+    "Solomon's_Portico": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Sorek_Valley": {
+      "lat": 31.825731,
+      "lng": 34.989013,
+      "cat": "region"
+    },
+    "Spain": {
+      "lat": 40.481391,
+      "lng": -3.175332,
+      "cat": "city"
+    },
+    "Straight": {
+      "lat": 33.519299,
+      "lng": 36.31344999999999,
+      "cat": "city"
+    },
+    "Succoth": {
+      "lat": 30.62077414398056,
+      "lng": 32.25869322351544,
+      "cat": "city"
+    },
+    "Suph": {
+      "lat": 31.9,
+      "lng": 35.8,
+      "cat": "city"
+    },
+    "Suphah": {
+      "lat": 31.9,
+      "lng": 35.8,
+      "cat": "city"
+    },
+    "Sur": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Susa": {
+      "lat": 32.18919123705116,
+      "lng": 48.25788647687722,
+      "cat": "capital"
+    },
+    "Sychar": {
+      "lat": 32.20307656686443,
+      "lng": 35.31192106402537,
+      "cat": "city"
+    },
+    "Syene": {
+      "lat": 24.066181,
+      "lng": 32.895862,
+      "cat": "city"
+    },
+    "Syracuse": {
+      "lat": 37.06823247873927,
+      "lng": 15.2948238829937,
+      "cat": "city"
+    },
+    "Syria": {
+      "lat": 33.519299,
+      "lng": 36.31344999999999,
+      "cat": "nation"
+    },
+    "Syrtis": {
+      "lat": 31.766667,
+      "lng": 18.505556,
+      "cat": "water"
+    },
+    "Taanach": {
+      "lat": 32.51723975501718,
+      "lng": 35.21632508826309,
+      "cat": "city"
+    },
+    "Taanath-shiloh": {
+      "lat": 32.15,
+      "lng": 35.383333,
+      "cat": "city"
+    },
+    "Tabbath": {
+      "lat": 32.35601,
+      "lng": 35.536929,
+      "cat": "city"
+    },
+    "Taberah": {
+      "lat": 28.916667,
+      "lng": 34.5,
+      "cat": "city"
+    },
+    "Tabor": {
+      "lat": 31.93053920580005,
+      "lng": 35.22103274923676,
+      "cat": "mountain"
+    },
+    "Tabor_Mount": {
+      "lat": 32.68695640243183,
+      "lng": 35.39091304299688,
+      "cat": "mountain"
+    },
+    "Tadmor": {
+      "lat": 34.5540491686839,
+      "lng": 38.26590497164145,
+      "cat": "city"
+    },
+    "Tahath": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Tahpanhes": {
+      "lat": 30.860556,
+      "lng": 32.171389,
+      "cat": "city"
+    },
+    "Tamar": {
+      "lat": 31.024923,
+      "lng": 35.064154,
+      "cat": "city"
+    },
+    "Tappuah": {
+      "lat": 32.11666666666667,
+      "lng": 35.23333333333333,
+      "cat": "city"
+    },
+    "Taralah": {
+      "lat": 31.792733,
+      "lng": 35.196862,
+      "cat": "city"
+    },
+    "Tarshish": {
+      "lat": 36.95299512880268,
+      "lng": -6.379340234132555,
+      "cat": "city"
+    },
+    "Tarsus": {
+      "lat": 36.91802695356275,
+      "lng": 34.89153398422567,
+      "cat": "city"
+    },
+    "Tekoa": {
+      "lat": 31.63622127191993,
+      "lng": 35.21407721824517,
+      "cat": "city"
+    },
+    "Tel-abib": {
+      "lat": 32.127213,
+      "lng": 45.229995,
+      "cat": "city"
+    },
+    "Telaim": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Telassar": {
+      "lat": 32.18919123705116,
+      "lng": 48.25788647687722,
+      "cat": "city"
+    },
+    "Telem": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Tel-harsha": {
+      "lat": 32.127213,
+      "lng": 45.229995,
+      "cat": "city"
+    },
+    "Tel-melah": {
+      "lat": 32.127213,
+      "lng": 45.229995,
+      "cat": "city"
+    },
+    "Tema": {
+      "lat": 27.633172,
+      "lng": 38.554125,
+      "cat": "city"
+    },
+    "Teman": {
+      "lat": 30.203813,
+      "lng": 35.732568,
+      "cat": "city"
+    },
+    "Terah": {
+      "lat": 30.317396,
+      "lng": 35.407152,
+      "cat": "mountain"
+    },
+    "Thebes": {
+      "lat": 25.700025,
+      "lng": 32.639441,
+      "cat": "capital"
+    },
+    "Thebez": {
+      "lat": 32.3241024517848,
+      "lng": 35.36825275634464,
+      "cat": "city"
+    },
+    "Thessalonica": {
+      "lat": 40.632155565205,
+      "lng": 22.9320868699276,
+      "cat": "city"
+    },
+    "Three_Taverns": {
+      "lat": 41.59132,
+      "lng": 12.828636,
+      "cat": "city"
+    },
+    "Thyatira": {
+      "lat": 38.92579128786831,
+      "lng": 27.85655574592795,
+      "cat": "city"
+    },
+    "Tibhath": {
+      "lat": 33.93148,
+      "lng": 36.152049,
+      "cat": "city"
+    },
+    "Tigris": {
+      "lat": 35.983343,
+      "lng": 43.346466,
+      "cat": "river"
+    },
+    "Timnah": {
+      "lat": 31.784368,
+      "lng": 34.90968,
+      "cat": "city"
+    },
+    "Timnath-heres": {
+      "lat": 32.121473,
+      "lng": 35.150392,
+      "cat": "city"
+    },
+    "Tiphsah": {
+      "lat": 35.847967,
+      "lng": 38.73235,
+      "cat": "city"
+    },
+    "Tirzah": {
+      "lat": 32.27136869937776,
+      "lng": 35.29430386845415,
+      "cat": "city"
+    },
+    "Tishbe": {
+      "lat": 33.01718199667929,
+      "lng": 35.56804856758258,
+      "cat": "city"
+    },
+    "Tob": {
+      "lat": 32.561735,
+      "lng": 36.240494,
+      "cat": "city"
+    },
+    "Tochen": {
+      "lat": 31.8099,
+      "lng": 34.9365,
+      "cat": "city"
+    },
+    "Tolad": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Tophel": {
+      "lat": 30.936991,
+      "lng": 35.61687,
+      "cat": "city"
+    },
+    "Topheth": {
+      "lat": 31.769079,
+      "lng": 35.227994,
+      "cat": "region"
+    },
+    "Tower_of_Eder": {
+      "lat": 31.70536129174666,
+      "lng": 35.21026630105202,
+      "cat": "city"
+    },
+    "Tower_of_Hananel": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Tower_of_the_Hundred": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Tower_of_the_Ovens": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Trachonitis": {
+      "lat": 32.833333,
+      "lng": 36.5,
+      "cat": "region"
+    },
+    "Travelers_Valley": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "region"
+    },
+    "Troas": {
+      "lat": 39.50664305923271,
+      "lng": 26.08059270470616,
+      "cat": "city"
+    },
+    "Tubal": {
+      "lat": 40.905222,
+      "lng": 37.799969,
+      "cat": "city"
+    },
+    "Tyre": {
+      "lat": 33.27582782266882,
+      "lng": 35.19257453545583,
+      "cat": "city"
+    },
+    "Ulai": {
+      "lat": 32.178696,
+      "lng": 48.22489,
+      "cat": "river"
+    },
+    "Ummah": {
+      "lat": 33.104377,
+      "lng": 35.180623,
+      "cat": "city"
+    },
+    "Uphaz": {
+      "lat": 22,
+      "lng": 77,
+      "cat": "city"
+    },
+    "Ur": {
+      "lat": 30.9620520474569,
+      "lng": 46.10374195774169,
+      "cat": "city"
+    },
+    "Uz": {
+      "lat": 30.0334,
+      "lng": 36.44839,
+      "cat": "city"
+    },
+    "Uzal": {
+      "lat": 15.354879,
+      "lng": 44.215092,
+      "cat": "city"
+    },
+    "Uzza": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Uzzen-sheerah": {
+      "lat": 31.887821,
+      "lng": 35.045649,
+      "cat": "city"
+    },
+    "Valley_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "region"
+    },
+    "Waheb": {
+      "lat": 27.088473,
+      "lng": 34.771729,
+      "cat": "water"
+    },
+    "Washer's_Field": {
+      "lat": 31.769079,
+      "lng": 35.227994,
+      "cat": "region"
+    },
+    "Water_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Way_of_Holiness": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Wildgoats_Rocks": {
+      "lat": 31.46152536164766,
+      "lng": 35.39241108242345,
+      "cat": "city"
+    },
+    "Yeshanah_Gate": {
+      "lat": 31.777444,
+      "lng": 35.234935,
+      "cat": "city"
+    },
+    "Yiron": {
+      "lat": 33.088748,
+      "lng": 35.414111,
+      "cat": "city"
+    },
+    "Zaanan": {
+      "lat": 31.743719,
+      "lng": 34.694006,
+      "cat": "city"
+    },
+    "Zaanannim": {
+      "lat": 33.11298357486105,
+      "lng": 35.53361334150225,
+      "cat": "city"
+    },
+    "Zalmonah": {
+      "lat": 31.49684513710609,
+      "lng": 35.78284105296996,
+      "cat": "city"
+    },
+    "Zanoah": {
+      "lat": 31.716667,
+      "lng": 35,
+      "cat": "city"
+    },
+    "Zaphon": {
+      "lat": 32.23771,
+      "lng": 35.585865,
+      "cat": "city"
+    },
+    "Zarephath": {
+      "lat": 33.4333,
+      "lng": 35.3,
+      "cat": "city"
+    },
+    "Zarethan": {
+      "lat": 32.267821,
+      "lng": 35.576613,
+      "cat": "city"
+    },
+    "Zeboiim": {
+      "lat": 31.11942270162137,
+      "lng": 35.41253049195169,
+      "cat": "city"
+    },
+    "Zeboim": {
+      "lat": 31.10182240291489,
+      "lng": 35.47633656511371,
+      "cat": "city"
+    },
+    "Zeboim_Valley": {
+      "lat": 31.936283,
+      "lng": 35.424836,
+      "cat": "region"
+    },
+    "Zedad": {
+      "lat": 34.312571,
+      "lng": 36.925484,
+      "cat": "city"
+    },
+    "Zela": {
+      "lat": 31.792733,
+      "lng": 35.196862,
+      "cat": "city"
+    },
+    "Zelzah": {
+      "lat": 31.717666,
+      "lng": 35.187019,
+      "cat": "city"
+    },
+    "Zemaraim": {
+      "lat": 31.910999,
+      "lng": 35.45728,
+      "cat": "city"
+    },
+    "Zenan": {
+      "lat": 31.743719,
+      "lng": 34.694006,
+      "cat": "city"
+    },
+    "Zephath": {
+      "lat": 30.880918,
+      "lng": 34.63062,
+      "cat": "city"
+    },
+    "Zephathah_Valley": {
+      "lat": 31.615198,
+      "lng": 34.910085,
+      "cat": "region"
+    },
+    "Zer": {
+      "lat": 33.125828,
+      "lng": 35.165,
+      "cat": "city"
+    },
+    "Zered": {
+      "lat": 30.884128,
+      "lng": 35.897633,
+      "cat": "city"
+    },
+    "Zeredah": {
+      "lat": 32.23293813761263,
+      "lng": 35.27304180036391,
+      "cat": "mountain"
+    },
+    "Zereth-shahar": {
+      "lat": 31.616962,
+      "lng": 35.567522,
+      "cat": "city"
+    },
+    "Ziddim": {
+      "lat": 32.814279,
+      "lng": 35.435872,
+      "cat": "city"
+    },
+    "Ziklag": {
+      "lat": 31.37760000000001,
+      "lng": 34.87356199999998,
+      "cat": "city"
+    },
+    "Zimri": {
+      "lat": 32.18919123705116,
+      "lng": 48.25788647687722,
+      "cat": "city"
+    },
+    "Zin": {
+      "lat": 30.68771281376111,
+      "lng": 34.49479554246946,
+      "cat": "city"
+    },
+    "Zior": {
+      "lat": 31.589719,
+      "lng": 35.148296,
+      "cat": "city"
+    },
+    "Ziph": {
+      "lat": 31.244952,
+      "lng": 34.840888,
+      "cat": "city"
+    },
+    "Ziphron": {
+      "lat": 34.229499,
+      "lng": 37.240077,
+      "cat": "city"
+    },
+    "Ziz": {
+      "lat": 31.572903,
+      "lng": 35.406346,
+      "cat": "city"
+    },
+    "Zoan": {
+      "lat": 30.97461982407924,
+      "lng": 31.88417306768534,
+      "cat": "city"
+    },
+    "Zoar": {
+      "lat": 30.9265225301655,
+      "lng": 35.4190606947832,
+      "cat": "city"
+    },
+    "Zobah": {
+      "lat": 34.312571,
+      "lng": 36.925484,
+      "cat": "city"
+    },
+    "Zophim": {
+      "lat": 31.767811,
+      "lng": 35.725296,
+      "cat": "city"
+    },
+    "Zorah": {
+      "lat": 31.762141,
+      "lng": 34.969319,
+      "cat": "city"
+    },
+    "Zuph": {
+      "lat": 31.846847,
+      "lng": 35.184912,
+      "cat": "city"
+    }
+  }
+}

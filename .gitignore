@@ -15,3 +15,6 @@ __pycache__/
 # 与网站隔离约定一致；public/data 与 data-src 必须提交（CI 依赖，见 docs/DEPLOY.md）
 # 测试截图产物（gui 验证用，不入库）
 gui-test-screenshots/
+
+# 超大素材（>100MB，GitHub 单文件限制；仅本地数据流水线使用，CI 不依赖）
+data-src/geography/normalized/polities.json

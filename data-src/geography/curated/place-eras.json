@@ -1,0 +1,221 @@
+{
+  "_comment": "STEP 圣经地点时间窗与时代名 curated 特例表（TEMPORAL-MAP-DB.md：城市显示规则 city.start <= y AND city.end >= y；文档化人工审定，非来源数据）。格式：{ 地点名: { valid_time: [from, to], names: [{ name, from, to }] } }。BCE 为负。未列入的地点：与 Pleiades 名称匹配继承；否则默认全时代存在。",
+  "Jerusalem": {
+    "valid_time": [
+      -1800,
+      100
+    ],
+    "names": [
+      {
+        "name": "Jebus",
+        "from": -1800,
+        "to": -1000
+      },
+      {
+        "name": "Aelia Capitolina",
+        "from": 135,
+        "to": 324
+      }
+    ]
+  },
+  "Rome": {
+    "valid_time": [
+      -753,
+      100
+    ]
+  },
+  "Babylon": {
+    "valid_time": [
+      -2300,
+      100
+    ],
+    "names": [
+      {
+        "name": "Babel",
+        "from": -2300,
+        "to": -600
+      }
+    ]
+  },
+  "Nineveh": {
+    "valid_time": [
+      -1800,
+      -612
+    ]
+  },
+  "Athens": {
+    "valid_time": [
+      -1400,
+      100
+    ]
+  },
+  "Antioch": {
+    "valid_time": [
+      -300,
+      100
+    ]
+  },
+  "Alexandria": {
+    "valid_time": [
+      -331,
+      100
+    ]
+  },
+  "Damascus": {
+    "valid_time": [
+      -3000,
+      100
+    ]
+  },
+  "Corinth": {
+    "valid_time": [
+      -900,
+      100
+    ]
+  },
+  "Ephesus": {
+    "valid_time": [
+      -1100,
+      100
+    ]
+  },
+  "Sidon": {
+    "valid_time": [
+      -3000,
+      100
+    ]
+  },
+  "Tyre": {
+    "valid_time": [
+      -3000,
+      100
+    ]
+  },
+  "Memphis": {
+    "valid_time": [
+      -3100,
+      640
+    ]
+  },
+  "Thebes": {
+    "valid_time": [
+      -3200,
+      -30
+    ]
+  },
+  "Susa": {
+    "valid_time": [
+      -4200,
+      100
+    ]
+  },
+  "Ecbatana": {
+    "valid_time": [
+      -700,
+      100
+    ]
+  },
+  "Carthage": {
+    "valid_time": [
+      -814,
+      698
+    ]
+  },
+  "Philippi": {
+    "valid_time": [
+      -356,
+      100
+    ]
+  },
+  "Thessalonica": {
+    "valid_time": [
+      -316,
+      100
+    ]
+  },
+  "Pergamum": {
+    "valid_time": [
+      -400,
+      100
+    ]
+  },
+  "Capernaum": {
+    "valid_time": [
+      -200,
+      640
+    ]
+  },
+  "Nazareth": {
+    "valid_time": [
+      -100,
+      100
+    ]
+  },
+  "Bethlehem": {
+    "valid_time": [
+      -1400,
+      100
+    ]
+  },
+  "Caesarea": {
+    "valid_time": [
+      -25,
+      640
+    ]
+  },
+  "Ur": {
+    "valid_time": [
+      -4000,
+      -500
+    ]
+  },
+  "Haran": {
+    "valid_time": [
+      -3000,
+      -600
+    ]
+  },
+  "Shechem": {
+    "valid_time": [
+      -2000,
+      100
+    ]
+  },
+  "Hebron": {
+    "valid_time": [
+      -2000,
+      100
+    ]
+  },
+  "Jericho": {
+    "valid_time": [
+      -9000,
+      100
+    ]
+  },
+  "Gaza": {
+    "valid_time": [
+      -3000,
+      100
+    ]
+  },
+  "Persepolis": {
+    "valid_time": [
+      -515,
+      -330
+    ]
+  },
+  "Ugarit": {
+    "valid_time": [
+      -6000,
+      -1190
+    ]
+  },
+  "Egypt": {
+    "valid_time": [
+      -2200,
+      -30
+    ],
+    "_note": "STEP nation 标记原窗口 -2200~100；埃及于前 30 年被罗马吞并为行省（Aegyptus），nation 标记应止于 -30"
+  }
+}

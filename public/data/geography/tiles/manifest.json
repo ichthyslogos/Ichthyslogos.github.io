@@ -1,0 +1,292 @@
+{
+ "layers": [
+  {
+   "id": "territories",
+   "maxZoom": 7,
+   "slices": [
+    {
+     "id": "abraham",
+     "tiles": 70,
+     "features": 6,
+     "maxBytes": 1189
+    },
+    {
+     "id": "exodus",
+     "tiles": 115,
+     "features": 8,
+     "maxBytes": 1781
+    },
+    {
+     "id": "david",
+     "tiles": 112,
+     "features": 10,
+     "maxBytes": 1576
+    },
+    {
+     "id": "assyria",
+     "tiles": 196,
+     "features": 32,
+     "maxBytes": 4292
+    },
+    {
+     "id": "babylon",
+     "tiles": 432,
+     "features": 50,
+     "maxBytes": 6993
+    },
+    {
+     "id": "persia",
+     "tiles": 418,
+     "features": 49,
+     "maxBytes": 6848
+    },
+    {
+     "id": "rome_entry",
+     "tiles": 707,
+     "features": 43,
+     "maxBytes": 8940
+    },
+    {
+     "id": "jesus",
+     "tiles": 746,
+     "features": 42,
+     "maxBytes": 8416
+    },
+    {
+     "id": "paul",
+     "tiles": 749,
+     "features": 42,
+     "maxBytes": 8476
+    },
+    {
+     "id": "temple_fall",
+     "tiles": 806,
+     "features": 41,
+     "maxBytes": 8269
+    },
+    {
+     "id": "all",
+     "tiles": 0,
+     "features": 0,
+     "maxBytes": 0
+    }
+   ]
+  },
+  {
+   "id": "cities",
+   "maxZoom": 10,
+   "slices": [
+    {
+     "id": "abraham",
+     "tiles": 2099,
+     "features": 4267,
+     "maxBytes": 21853
+    },
+    {
+     "id": "exodus",
+     "tiles": 2595,
+     "features": 5865,
+     "maxBytes": 23052
+    },
+    {
+     "id": "david",
+     "tiles": 2832,
+     "features": 6240,
+     "maxBytes": 23822
+    },
+    {
+     "id": "assyria",
+     "tiles": 3707,
+     "features": 11712,
+     "maxBytes": 30948
+    },
+    {
+     "id": "babylon",
+     "tiles": 3734,
+     "features": 12042,
+     "maxBytes": 31093
+    },
+    {
+     "id": "persia",
+     "tiles": 4708,
+     "features": 18009,
+     "maxBytes": 60479
+    },
+    {
+     "id": "rome_entry",
+     "tiles": 6815,
+     "features": 28850,
+     "maxBytes": 62993
+    },
+    {
+     "id": "jesus",
+     "tiles": 9340,
+     "features": 51907,
+     "maxBytes": 72505
+    },
+    {
+     "id": "paul",
+     "tiles": 9341,
+     "features": 51919,
+     "maxBytes": 72608
+    },
+    {
+     "id": "temple_fall",
+     "tiles": 9341,
+     "features": 51925,
+     "maxBytes": 72608
+    },
+    {
+     "id": "all",
+     "tiles": 10012,
+     "features": 65528,
+     "maxBytes": 83128
+    }
+   ]
+  },
+  {
+   "id": "urban",
+   "maxZoom": 9,
+   "slices": [
+    {
+     "id": "abraham",
+     "tiles": 0,
+     "features": 0,
+     "maxBytes": 0
+    },
+    {
+     "id": "exodus",
+     "tiles": 0,
+     "features": 0,
+     "maxBytes": 0
+    },
+    {
+     "id": "david",
+     "tiles": 0,
+     "features": 0,
+     "maxBytes": 0
+    },
+    {
+     "id": "assyria",
+     "tiles": 0,
+     "features": 0,
+     "maxBytes": 0
+    },
+    {
+     "id": "babylon",
+     "tiles": 0,
+     "features": 0,
+     "maxBytes": 0
+    },
+    {
+     "id": "persia",
+     "tiles": 6,
+     "features": 2,
+     "maxBytes": 228
+    },
+    {
+     "id": "rome_entry",
+     "tiles": 0,
+     "features": 0,
+     "maxBytes": 0
+    },
+    {
+     "id": "jesus",
+     "tiles": 162,
+     "features": 93,
+     "maxBytes": 1590
+    },
+    {
+     "id": "paul",
+     "tiles": 162,
+     "features": 93,
+     "maxBytes": 1590
+    },
+    {
+     "id": "temple_fall",
+     "tiles": 162,
+     "features": 93,
+     "maxBytes": 1590
+    },
+    {
+     "id": "all",
+     "tiles": 162,
+     "features": 95,
+     "maxBytes": 1590
+    }
+   ]
+  },
+  {
+   "id": "territory-labels",
+   "maxZoom": 7,
+   "slices": [
+    {
+     "id": "abraham",
+     "tiles": 22,
+     "features": 6,
+     "maxBytes": 284
+    },
+    {
+     "id": "exodus",
+     "tiles": 31,
+     "features": 8,
+     "maxBytes": 338
+    },
+    {
+     "id": "david",
+     "tiles": 35,
+     "features": 10,
+     "maxBytes": 423
+    },
+    {
+     "id": "assyria",
+     "tiles": 69,
+     "features": 32,
+     "maxBytes": 1178
+    },
+    {
+     "id": "babylon",
+     "tiles": 101,
+     "features": 50,
+     "maxBytes": 1949
+    },
+    {
+     "id": "persia",
+     "tiles": 105,
+     "features": 49,
+     "maxBytes": 1918
+    },
+    {
+     "id": "rome_entry",
+     "tiles": 132,
+     "features": 43,
+     "maxBytes": 1766
+    },
+    {
+     "id": "jesus",
+     "tiles": 125,
+     "features": 42,
+     "maxBytes": 1700
+    },
+    {
+     "id": "paul",
+     "tiles": 123,
+     "features": 42,
+     "maxBytes": 1715
+    },
+    {
+     "id": "temple_fall",
+     "tiles": 126,
+     "features": 41,
+     "maxBytes": 1666
+    },
+    {
+     "id": "all",
+     "tiles": 0,
+     "features": 0,
+     "maxBytes": 0
+    }
+   ]
+  }
+ ]
+}
