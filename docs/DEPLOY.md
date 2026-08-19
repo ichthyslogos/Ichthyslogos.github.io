@@ -6,10 +6,12 @@
 > - 只有**明确要求"部署/上线"**时，才执行部署（见下方"如何部署"）
 > - 历史遗留：此前版本曾为 push 自动部署，已按约定改为手动
 
-> **实际部署状态（2026-08-14）**：已上线 ✅
-> - 仓库：`git@github.com:ichthyslogos/Ichthyslogos.github.io.git`（用户站点）
-> - 线上地址：https://ichthyslogos.github.io/
+> **实际部署状态（2026-08-19）**：已上线 ✅
+> - 仓库：`git@github.com:ichthyslogos/Ichthyslogo.github.io.git`（项目站点，新仓库）
+> - 线上地址：https://ichthyslogos.github.io/Ichthyslogo.github.io/
 > - 部署用专用 SSH key：`~/.ssh/id_ed25519_fish`（repo 级 `core.sshCommand` 指定，不影响其他仓库）
+> - Pages 构建模式：workflow（`build_type: workflow`，2026-08-19 通过 API 启用）
+> - 历史：原用户站点仓库 `Ichthyslogos.github.io`（https://ichthyslogos.github.io/）为上一代部署目标
 
 FISH 是纯前端静态站（无后端），**可直接部署到 GitHub Pages**。已实测验证（模拟 `user.github.io/repo/` 子路径场景：资源、数据、路由全部正常）。
 
@@ -229,13 +231,14 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 ### 7.4 部署记录（2026-08-12 ~ 08-14，方式三：临时 push trigger）
 
 | 日期 | 内容 | 提交 |
-|---|---|---|
+| --- | --- | --- |
 | 08-12 | 教会史子页面 + ui-ux-pro-max 全站规范对齐 | `fb63802` |
 | 08-13 | 教会史移动端目录居中（offsetParent 修复） | `0134e13` |
 | 08-13 | 教会史中英混排防断行（word joiner，仅数据文件） | `e9f6d47` |
 | 08-14 | 马太亨利 66 卷空 section 修复 + 新增 ASV/DRC 译本 + 菜单宗派分组 + 面板拖拽调宽 + 中文注释暂时关闭 + 规划文档 | `9250387` |
+| 08-19 | **切换新仓库部署**（Ichthyslogo.github.io）：全局搜索第一阶段 + 护教专题源回填 + 正式版测试标识清理；Pages 经 API 启用（workflow 模式），workflow_dispatch 触发 | `5e902026` |
 
 流程要点（复用）：
 1. push 偶发瞬时失败（"could not read from remote"）→ 重试即可
-2. 部署验证：`curl https://ichthyslogos.github.io/ | grep assets/index-*.js` 与本地 `dist/index.html` 对比；**注意**：bundle hash 因 CI（Linux/node20）与本地（Windows/node24）构建平台差异可能不同，数据类改动以**数据文件内容**为准（manifest 译本/注释源清单、切片 200/404 状态）
+2. 部署验证：`curl https://ichthyslogos.github.io/Ichthyslogo.github.io/ | grep assets/index-*.js` 与本地 `dist/index.html` 对比；**注意**：bundle hash 因 CI（Linux/node20）与本地（Windows/node24）构建平台差异可能不同，数据类改动以**数据文件内容**为准（manifest 译本/注释源清单、切片 200/404 状态）
 3. 每次部署后三连 commit：功能改动 → `ci: 临时 push 触发部署` → `ci: 恢复仅手动触发（manual-only）`
