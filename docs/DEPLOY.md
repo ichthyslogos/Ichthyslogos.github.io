@@ -237,6 +237,7 @@ curl -s -H "Authorization: Bearer $TOKEN" \
 | 08-14 | 马太亨利 66 卷空 section 修复 + 新增 ASV/DRC 译本 + 菜单宗派分组 + 面板拖拽调宽 + 中文注释暂时关闭 + 规划文档 | `9250387` |
 | 08-19 | **切换新仓库部署**：全局搜索第一阶段 + 护教专题源回填 + 正式版测试标识清理；Pages 经 API 启用（workflow 模式），workflow_dispatch 触发 | `5e902026` |
 | 08-19 | **仓库改名 Ichthyslogo.github.io → Ichthyslogos.github.io**（用户站点，根路径上线）；remote 同步更新，workflow_dispatch 重新部署 | `838c57c8` |
+| 08-19 | 圣经词条人物/事件子页面 + 地图侧栏检索（地点+路线搜索/时期地点词条/路线激活）+ 搜索人物展开详情 + 导航图书馆词条化 + Theographic 数据修复（词典乱码/同名人物事件归属）；run #5 | `da3e9cfe` |
 
 流程要点（复用）：
 1. push 偶发瞬时失败（"could not read from remote"）→ 重试即可
