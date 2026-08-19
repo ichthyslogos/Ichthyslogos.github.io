@@ -143,7 +143,14 @@ export function searchEntities(query, index, limit = 8) {
   }
 
   const persons = run(index.persons, (p) => ({
-    title: p.zh || p.en, en: p.en, aliases: p.al, sub: p.zh && p.en !== p.zh ? p.en : '',
+    title: p.zh || p.en,
+    en: p.en,
+    aliases: p.al,
+    sub: [
+      p.zh && p.en !== p.zh ? p.en : '',
+      yearsLabel(p.by, p.dy),
+      p.rel ? `亲属 ${p.rel}` : '',
+    ].filter(Boolean).join(' · '),
   }))
   const places = run(index.places, (p) => ({
     title: p.zh || p.en, en: p.en, aliases: p.al, sub: p.zh && p.en !== p.zh ? p.en : '',
@@ -153,6 +160,9 @@ export function searchEntities(query, index, limit = 8) {
   }))
   const events = run(index.events, (e) => ({
     title: e.en, en: e.en, aliases: [], sub: e.story || (e.type === 'travel' ? '旅程' : ''),
+  }))
+  const timeline = run(index.timeline || [], (t) => ({
+    title: t.z || t.t, en: t.t, aliases: [], sub: t.y != null ? `${yearLabel(t.y)}${t.nv ? ` · ${t.nv} 节` : ''}` : '',
   }))
   const periods = run(index.periods, (p) => ({
     title: p.name, en: '', aliases: [], sub: p.era || '',
@@ -169,9 +179,24 @@ export function searchEntities(query, index, limit = 8) {
   }))
 
   const total =
-    persons.length + places.length + polities.length + events.length + periods.length +
+    persons.length + places.length + polities.length + events.length + periods.length + timeline.length +
     commentaries.length + topics.length + history.length
-  return { persons, places, polities, events, periods, commentaries, topics, history, total }
+  return { persons, places, polities, events, timeline, periods, commentaries, topics, history, total }
+}
+
+/** 年份显示：负数 → 前 N 年（传统编年，非考古学定年） */
+export function yearLabel(y) {
+  if (y == null) return ''
+  return y < 0 ? `约前 ${Math.abs(y)} 年` : `约公元 ${y} 年`
+}
+
+/** 人物生卒年显示：如「约前1997–前1821」 */
+export function yearsLabel(by, dy) {
+  if (by == null && dy == null) return ''
+  const f = (y) => (y < 0 ? `前${Math.abs(y)}` : `${y}`)
+  if (by != null && dy != null) return `约 ${f(by)}–${f(dy)}`
+  if (by != null) return `约 ${f(by)} 生`
+  return `约 ${f(dy)} 卒`
 }
 
 const CAT_LABELS = { summary: '总结', interpretation: '经文解释', fullCommentary: '完整解经' }

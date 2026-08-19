@@ -473,50 +473,23 @@ onMounted(async () => {
         'line-opacity': ['interpolate', ['linear'], ['zoom'], 7, 0.6, 10, 0.4, 13, 0.25],
       },
     })
-    // 国家区域标签（独立瓦片层 territory-labels：每实体一个 label 点，质心固定）
-    // 放在城市层之前：先占位——国家名不被城市标签/符号挤掉；蓝字之间参与碰撞
-    // （allow-overlap:false + symbol-sort-key 按面积：大国优先，小国重叠处让位），
-    // 位置固定在质心不移动；大写 + 字距 + 半透明，与城市点标签两套视觉
-    map.addSource('territory-labels', {
-      type: 'vector',
-      tiles: [`${TILE_ROOT}territory-labels/jesus/{z}/{x}/{y}.pbf${TILE_VERSION}`],
-      minzoom: 0,
-      maxzoom: LAYER_ZOOM.territories,
-    })
-    map.addLayer({
-      id: 'territory-label', type: 'symbol', source: 'territory-labels', 'source-layer': 'territory-labels',
-      layout: {
-        // 地图标签统一英文（中文显示暂时关闭；瓦片 zh 字段保留，恢复时改回 coalesce）
-        'text-field': ['get', 'name'],
-        'text-font': ['Noto Sans Regular'],
-        'text-transform': 'uppercase',
-        'text-letter-spacing': 0.14,
-        'text-size': ['interpolate', ['linear'], ['zoom'], 2, 10, 6, 13, 9, 15],
-        'text-allow-overlap': false, // 蓝字不重叠（位置仍固定在质心，不移动）
-        'symbol-sort-key': ['get', 'area'], // 面积大的国家优先占位
-      },
-      paint: {
-        'text-color': 'rgba(47, 93, 158, 0.7)',
-        'text-halo-color': 'rgba(255,255,255,0.92)',
-        'text-halo-width': 1.4,
-      },
-    })
 
     /* ---- Layer 3：圣经路线（UBS MARBLE GeoJSON；confidence 分层：实线/虚线/点线）
-     *   图例 zoom 表：道路 z11+（事件路线尺度） ---- */
+     *   无 minzoom：路线仅在选中旅程后才有数据（源为空时不渲染），
+     *   相机随 fitBounds 飞至 maxZoom 9 —— 若设 z11 门控则选中后"看不到路线" ---- */
     map.addSource('routes', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
     map.addLayer({
-      id: 'routes-solid', type: 'line', source: 'routes', minzoom: 11,
+      id: 'routes-solid', type: 'line', source: 'routes',
       filter: ['all', ['has', 'confidence'], ['>=', ['get', 'confidence'], 0.75]],
       paint: { 'line-color': '#b0692f', 'line-width': 2.5 },
     })
     map.addLayer({
-      id: 'routes-dashed', type: 'line', source: 'routes', minzoom: 11,
+      id: 'routes-dashed', type: 'line', source: 'routes',
       filter: ['all', ['has', 'confidence'], ['>=', ['get', 'confidence'], 0.5], ['<', ['get', 'confidence'], 0.75]],
       paint: { 'line-color': '#b0692f', 'line-width': 2, 'line-dasharray': [4, 3] },
     })
     map.addLayer({
-      id: 'routes-dotted', type: 'line', source: 'routes', minzoom: 11,
+      id: 'routes-dotted', type: 'line', source: 'routes',
       filter: ['all', ['has', 'confidence'], ['<', ['get', 'confidence'], 0.5]],
       paint: { 'line-color': '#b0692f', 'line-width': 1.5, 'line-dasharray': [1, 4] },
     })
@@ -614,6 +587,36 @@ onMounted(async () => {
         'text-color': ['get', 'color'],
         'text-halo-color': 'rgba(250,249,247,0.94)',
         'text-halo-width': 1.8,
+      },
+    })
+
+    /* ---- Layer 5.5：国家区域标签（独立瓦片层 territory-labels：每实体一个 label 点，质心固定）
+     *   放在城市层之后（最上符号层）：MapLibre 跨层碰撞按图层顺序取优先——后加的层
+     *   先占位，海洋/城市标签让位，国家名（蓝字大写）不被挤掉；蓝字之间仍参与碰撞
+     *   （allow-overlap:false + symbol-sort-key 按面积：大国优先，小国重叠处让位），
+     *   位置固定在质心不移动；大写 + 字距 + 半透明，与城市点标签两套视觉 ---- */
+    map.addSource('territory-labels', {
+      type: 'vector',
+      tiles: [`${TILE_ROOT}territory-labels/jesus/{z}/{x}/{y}.pbf${TILE_VERSION}`],
+      minzoom: 0,
+      maxzoom: LAYER_ZOOM.territories,
+    })
+    map.addLayer({
+      id: 'territory-label', type: 'symbol', source: 'territory-labels', 'source-layer': 'territory-labels',
+      layout: {
+        // 地图标签统一英文（中文显示暂时关闭；瓦片 zh 字段保留，恢复时改回 coalesce）
+        'text-field': ['get', 'name'],
+        'text-font': ['Noto Sans Regular'],
+        'text-transform': 'uppercase',
+        'text-letter-spacing': 0.14,
+        'text-size': ['interpolate', ['linear'], ['zoom'], 2, 10, 6, 13, 9, 15],
+        'text-allow-overlap': false, // 蓝字不重叠（位置仍固定在质心，不移动）
+        'symbol-sort-key': ['get', 'area'], // 面积大的国家优先占位
+      },
+      paint: {
+        'text-color': 'rgba(47, 93, 158, 0.7)',
+        'text-halo-color': 'rgba(255,255,255,0.92)',
+        'text-halo-width': 1.4,
       },
     })
 

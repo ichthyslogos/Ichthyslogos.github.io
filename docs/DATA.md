@@ -190,3 +190,25 @@ LexiconPopup 弹层（点击 Strong 码打开；滚动/切换章节/点外部关
 - 词条 `see` 为交叉引用（G/H 码均可点击跳转）
 - 释义为英文原文；希伯来数据来源 OSHB 项目（CC BY 4.0，`source.attribution` 字段署名：Open Scriptures Hebrew Bible Project）
 - 希腊素材块结构（zLD 格式）：`dict.zdx` 块表 → `dict.zdt` 串联 zlib 流 → 块内 `[count][off0][(size,nextOff)…]` + TEI 条目文本；占位条目（`@@@@`）解析时丢弃
+
+## Theographic 人物增强与编年时间线
+
+素材：`素材/theographic/`（[Theographic Bible Metadata](https://github.com/robertrouse/theographic-bible-metadata)，CC BY-SA 4.0，素材只读）：`people.json`（3067 人物，Airtable 导出，含生卒年/关系/词典）、`verses.json`（31102 节级人物标注）、`Events.csv`（450 编年事件）。
+
+```
+素材 theographic
+  │  node scripts/search/import-theographic.mjs   # 三阶段匹配 TIPNR ← Theographic（78.8%）
+  ▼
+data-src/theographic/{persons,events,content.meta}.json
+  │  node scripts/build-data.mjs（buildTheographic 复制到 public/data）
+  ▼
+public/data/theographic/   →  搜索面板人物详情懒加载（persons.json）
+  │  node scripts/search/build-search-index.mjs
+  ▼
+public/data/search/index.json  →  persons by/dy/rel 字段 + timeline 450 事件（中英文标题）
+```
+
+- **三阶段匹配**（准确性优先，冲突放弃）：① 唯一名直配（1003 人）② 节级首现消歧——TIPNR 首现「书:章:节」与 Theographic 首现节完全一致（1404 人）③ 主记录兜底——唯一 publish + 名字精确 + verseCount≥100 且 ≥ 组内次大 3 倍（1 人）；合计 2408/3056
+- **persons.json**（强码 → 记录）：`by/dy` 生卒年仅采用 `birthYear/deathYear` 字段（86 人；不用语义为经文提及范围的 minYear/maxYear）；`rel` 亲属（父/母/配偶/子女/兄弟姊妹，值为强码或英文显示名，1620 人）；`dict` Easton 词典摘录 ≤600 字符（1529 人）
+- **events.json**（450 条）：Ussher 式传统编年（400 条含年份，负数=公元前）；中文标题映射 `scripts/search/event-titles-zh.json`（和合本标准译名，导入零遗漏校验）
+- 详细设计见 `docs/SEARCH.md` §3/§4/§8

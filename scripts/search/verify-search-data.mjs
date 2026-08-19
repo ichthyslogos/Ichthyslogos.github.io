@@ -181,5 +181,48 @@ for (let p = 1; p <= 5; p++) {
 ok(index.history.length === histSrc, 'history 条目数与教会史源一致（含各部导论）',
   `索引 ${index.history.length} vs 源 ${histSrc}`)
 
+/* ---------- 8. Theographic 人物增强与时间线（与 data-src 源逐条比对） ---------- */
+const theoPersons = readJson(path.join(DATA, 'theographic/persons.json')).persons
+let yearBad = [], relBad = []
+for (const p of index.persons) {
+  const key = p.id.replace(/^person_/, '')
+  const t = theoPersons[key]
+  if (!t) {
+    if (p.by !== undefined || p.rel !== undefined) yearBad.push(p.en)
+    continue
+  }
+  if ((t.by ?? null) !== (p.by ?? null) || (t.dy ?? null) !== (p.dy ?? null)) yearBad.push(p.en)
+  const expectRel = t.rel
+    ? (t.rel.fa ? 1 : 0) + (t.rel.mo ? 1 : 0) + (t.rel.sp || []).length + (t.rel.ch || []).length + (t.rel.sb || []).length
+    : 0
+  if ((p.rel || 0) !== expectRel) relBad.push(p.en)
+}
+ok(yearBad.length === 0, '人物生卒年与 theographic 源一致', yearBad.slice(0, 5).join(', '))
+ok(relBad.length === 0, '人物亲属计数与 theographic 源一致', relBad.slice(0, 5).join(', '))
+const srcWithYears = Object.values(theoPersons).filter((t) => t.by !== undefined || t.dy !== undefined).length
+ok(index.persons.filter((p) => p.by !== undefined || p.dy !== undefined).length === srcWithYears,
+  '索引含生卒年人物数与源一致')
+const srcWithRel = Object.values(theoPersons).filter((t) => t.rel).length
+ok(index.persons.filter((p) => p.rel !== undefined && p.rel > 0).length === srcWithRel,
+  '索引含亲属人物数与源一致')
+
+const theoEvents = readJson(path.join(DATA, 'theographic/events.json')).events
+ok(index.timeline.length === theoEvents.length, 'timeline 数与 theographic events 源一致',
+  `索引 ${index.timeline.length} vs 源 ${theoEvents.length}`)
+const evById = new Map(theoEvents.map((e) => [String(e.id), e]))
+let tlBad = []
+for (const t of index.timeline) {
+  const e = evById.get(String(t.id).replace(/^t/, ''))
+  if (!e || e.t !== t.t || (e.zh || '') !== (t.z || '') || (e.y ?? null) !== (t.y ?? null) || (e.first || '') !== (t.first || '')) {
+    tlBad.push(t.id)
+  }
+}
+ok(tlBad.length === 0, 'timeline 标题/年份/跳转键与源一致', tlBad.slice(0, 5).join(', '))
+ok(theoEvents.every((e) => e.zh), 'events 源全部含中文标题')
+// 年份合理性（传统编年范围：前 4004 ~ 公元 100）
+ok(index.timeline.every((t) => t.y == null || (t.y >= -4004 && t.y <= 100)), 'timeline 年份在合理范围')
+// 跳转键指向真实书卷（01~66）
+ok(index.timeline.every((t) => !t.first || /^[0-6]\d$/.test(t.first.split(':')[0])), 'timeline first 书卷号合法')
+
 console.log(`\n核验完成：${pass} 通过，${fail} 失败`)
 process.exit(fail ? 1 : 0)

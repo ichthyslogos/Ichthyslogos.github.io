@@ -96,6 +96,24 @@ function parseStrong(strong) {
   return { code: m[1] + m[2], suffix: m[3] || '' }
 }
 
+/** 书卷 → 圣经时期映射（与 src/lib/data.js BOOK_PERIODS 保持一致；
+ *  地点条目 ps 字段（出现的时期）供地图侧栏「时期地点」词条与中文地点搜索用） */
+const BOOK_PERIODS = {
+  '01': 'abraham', '02': 'exodus', '03': 'exodus', '04': 'exodus', '05': 'exodus',
+  '06': 'exodus', '07': 'exodus', '08': 'exodus', '09': 'david', '10': 'david',
+  '11': 'david', '12': 'assyria', '13': 'david', '14': 'assyria', '15': 'persia',
+  '16': 'persia', '17': 'persia', '18': 'abraham', '19': 'david', '20': 'david',
+  '21': 'david', '22': 'david', '23': 'assyria', '24': 'babylon', '25': 'babylon',
+  '26': 'babylon', '27': 'babylon', '28': 'assyria', '29': 'assyria', '30': 'assyria',
+  '31': 'babylon', '32': 'assyria', '33': 'assyria', '34': 'assyria', '35': 'babylon',
+  '36': 'assyria', '37': 'persia', '38': 'persia', '39': 'persia', '40': 'jesus',
+  '41': 'jesus', '42': 'jesus', '43': 'jesus', '44': 'paul', '45': 'paul',
+  '46': 'paul', '47': 'paul', '48': 'paul', '49': 'paul', '50': 'paul', '51': 'paul',
+  '52': 'paul', '53': 'paul', '54': 'paul', '55': 'paul', '56': 'paul', '57': 'paul',
+  '58': 'paul', '59': 'paul', '60': 'temple_fall', '61': 'temple_fall', '62': 'temple_fall',
+  '63': 'temple_fall', '64': 'temple_fall', '65': 'temple_fall', '66': 'temple_fall',
+}
+
 /** brief 文本截断（索引轻量化；完整四级描述仍在按卷数据中） */
 const clip = (s, n = 110) => {
   if (!s) return ''
@@ -153,6 +171,7 @@ for (const e of entriesIdx.entries) {
       al: variants.filter(Boolean),
       first: '',
       n: 0,
+      psSet: new Set(), // 出现时期（书卷 → BOOK_PERIODS；地点条目输出 ps）
       ...(isPlace
         ? { lat: coord?.lat ?? null, lng: coord?.lng ?? null, cat: coord?.cat || '' }
         : { gender: e.type }),
@@ -160,7 +179,8 @@ for (const e of entriesIdx.entries) {
   }
 }
 
-// 按卷扫描出现（first = 最早书:章；n = 出现总次数）
+// 按卷扫描出现（first = 最早书:章:节 含节号，供跳转高亮 ?v=；n = 出现总次数；
+// psSet = 出现时期集合（地点输出 ps，地图侧栏「时期地点」词条用））
 const bookFiles = fs.readdirSync(path.join(tipnrDir, 'books')).filter((f) => f.endsWith('.json'))
 for (const f of bookFiles.sort()) {
   const bookId = f.replace(/\.json$/, '')
@@ -171,7 +191,12 @@ for (const f of bookFiles.sort()) {
       const ent = entMap.get(code + suffix || e.name)
       if (!ent) continue
       ent.n += (e.refs || []).length
-      if (!ent.first) ent.first = `${bookId}:${ch.chapter}`
+      const period = BOOK_PERIODS[bookId]
+      if (period) ent.psSet.add(period)
+      if (!ent.first) {
+        const refs = (e.refs || []).map(Number).filter(Boolean)
+        ent.first = `${bookId}:${ch.chapter}${refs.length ? ':' + Math.min(...refs) : ''}`
+      }
       if (!ent.b) ent.b = clip(e.briefest || e.brief || '')
     }
   }
@@ -180,12 +205,35 @@ for (const f of bookFiles.sort()) {
 const persons = []
 const places = []
 for (const ent of entMap.values()) {
+  const ps = ent.psSet.size ? [...ent.psSet] : undefined
+  if (ps) ent.ps = ps
+  delete ent.psSet
   if (ent.id.startsWith('place_')) {
     if (ent.lat === null && ent.lng === null && !ent.first) continue // 无任何信息的地点跳过
     places.push(ent)
   } else {
     persons.push(ent)
   }
+}
+
+/* ---------- 3a. Theographic 人物增强（生卒年/关系数；年份为 Ussher 传统编年） ---------- */
+const theoPath = path.join(DATA, 'theographic/persons.json')
+let theoPersons = {}
+if (exists(theoPath)) {
+  theoPersons = readJson(theoPath).persons || {}
+  let withYears = 0, withRel = 0
+  for (const p of persons) {
+    const key = p.id.replace(/^person_/, '')
+    const t = theoPersons[key]
+    if (!t) continue
+    if (t.by !== undefined || t.dy !== undefined) { p.by = t.by ?? null; p.dy = t.dy ?? null; withYears++ }
+    if (t.rel) {
+      p.rel = (t.rel.fa ? 1 : 0) + (t.rel.mo ? 1 : 0) + (t.rel.sp || []).length +
+        (t.rel.ch || []).length + (t.rel.sb || []).length
+      if (p.rel > 0) withRel++
+    }
+  }
+  console.log(`theographic 增强: 生卒年 ${withYears} · 关系 ${withRel} / ${persons.length} 人物`)
 }
 
 /* ---------- 3. 政权 / 历史区域（regions.json） ---------- */
@@ -230,6 +278,28 @@ const periods = periodsData.periods.map((p) => ({
   d: clip(p.desc || '', 120),
   journeys: (p.journey_ids || []).length,
 }))
+
+/* ---------- 5a. 编年时间线（Theographic Events；Ussher 传统编年，中文/英文标题） ---------- */
+const theoEventsPath = path.join(DATA, 'theographic/events.json')
+const timeline = []
+if (exists(theoEventsPath)) {
+  for (const e of readJson(theoEventsPath).events || []) {
+    timeline.push({
+      id: `t${e.id}`,
+      t: e.t,
+      ...(e.zh ? { z: e.zh } : {}),
+      y: e.y ?? null,
+      dur: e.dur || '',
+      first: e.first || '',
+      nv: e.nv || 0,
+      // 参与者强码数组（import-theographic 已 personLookup → 强码精确映射，
+      // 同名人物不混淆；人物页/事件页据此互相反查）
+      ...(e.ppl?.length ? { ppl: e.ppl } : {}),
+      ...(e.pplName?.length ? { pplName: e.pplName } : {}),
+    })
+  }
+  timeline.sort((a, b) => (a.y ?? 99999) - (b.y ?? 99999) || String(a.id).localeCompare(String(b.id), 'en'))
+}
 
 /* ---------- 7. 注释源清单（去重 by key；category 聚合）+ 段落索引文件 ---------- */
 const commManifest = readJson(path.join(DATA, 'brp/commentary/manifest.json'))
@@ -403,6 +473,8 @@ const index = {
       polities: 'Pleiades + STEP + DARE（geography/regions.json）',
       events: 'UBS MARBLE CC BY-SA 4.0（geography/journeys.json）',
       periods: 'FISH 时期索引（geography/periods.json）',
+      personExtra: 'Theographic Bible Metadata CC BY-SA 4.0（theographic/persons.json；生卒年/关系/词典，Ussher 传统编年）',
+      timeline: 'Theographic Bible Metadata CC BY-SA 4.0（theographic/events.json；编年事件，Ussher 传统编年）',
       commentaries: 'commentary/fullCommentary + mhcc（段落索引懒加载）',
       topics: 'apologetics/topics（护教学专题）',
       history: 'church-history part1-5（教会史章节）',
@@ -410,10 +482,13 @@ const index = {
     counts: {
       books: books.length,
       persons: persons.length,
+      personsWithYears: persons.filter((p) => p.by !== undefined).length,
+      personsWithRel: persons.filter((p) => p.rel).length,
       places: places.length,
       polities: polities.length,
       events: events.length,
       periods: periods.length,
+      timeline: timeline.length,
       commentaries: commentaries.length,
       commentarySections: commFiles.reduce((s, f) => s + f.n, 0),
       topics: topics.length,
@@ -429,6 +504,7 @@ const index = {
   polities,
   events,
   periods,
+  timeline,
   commentaries,
   topics,
   history,

@@ -2,8 +2,9 @@
 /**
  * AppHeader — 全局导航栏
  * 风格：60px 白底极简导航——左品牌（logo 图标 + 名称）、中菜单（大间距）。
- * 「圣经」为可展开词条（单点只展开/收起，不跳转）：经文（原读经研究）/ 地图两个子页；
- * 子页任一激活时「圣经」高亮；点击外部或选择子项后收起。
+ * 「圣经」「图书馆」为可展开词条（单点只展开/收起，不跳转；两词条互斥）：
+ *   圣经：经文 / 地图 / 人物 / 事件；图书馆：书籍 / 教会历史 / 数据来源。
+ * 护教为顶级词条；子页任一激活时对应词条高亮；点击外部、Esc 或选择子项后收起。
  */
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
@@ -14,24 +15,49 @@ import { openSearch } from '../lib/searchStore.js'
 const route = useRoute()
 const flat = computed(() => route.name === 'home')
 const bibleOpen = ref(false)
+const libraryOpen = ref(false)
 
-/** 圣经子页激活（经文 /brp 或地图 /map） */
-const bibleActive = computed(() => route.path.startsWith('/brp') || route.path.startsWith('/map'))
+/** 圣经子页激活（经文 /brp、地图 /map、人物 /persons、事件 /events） */
+const bibleActive = computed(
+  () =>
+    route.path.startsWith('/brp') ||
+    route.path.startsWith('/map') ||
+    route.path.startsWith('/persons') ||
+    route.path.startsWith('/events'),
+)
 
-function toggleBible(e) {
+/** 图书馆子页激活（书籍 /library、教会历史 /history、数据来源 /sources） */
+const libraryActive = computed(
+  () =>
+    route.path.startsWith('/library') ||
+    route.path.startsWith('/history') ||
+    route.path.startsWith('/sources'),
+)
+
+/** 下拉互斥：展开一个收起另一个 */
+function toggleBible() {
   bibleOpen.value = !bibleOpen.value
+  if (bibleOpen.value) libraryOpen.value = false
+}
+function toggleLibrary() {
+  libraryOpen.value = !libraryOpen.value
+  if (libraryOpen.value) bibleOpen.value = false
 }
 
 /** 点击外部关闭下拉 */
 function onDocClick(e) {
-  if (bibleOpen.value && !e.target.closest('.bible-menu')) {
+  if ((bibleOpen.value || libraryOpen.value) && !e.target.closest('.nav-menu')) {
     bibleOpen.value = false
+    libraryOpen.value = false
   }
 }
 
 /** Esc 关闭下拉（键盘可访问性） */
 function onDocKeydown(e) {
-  if (e.key === 'Escape' && bibleOpen.value) bibleOpen.value = false
+  if (e.key === 'Escape' && (bibleOpen.value || libraryOpen.value)) {
+    bibleOpen.value = false
+    libraryOpen.value = false
+  }
 }
 onMounted(() => {
   document.addEventListener('click', onDocClick)
@@ -56,9 +82,9 @@ onBeforeUnmount(() => {
           <span aria-hidden="true">🔍</span><span class="header-search-t">搜索</span>
         </button>
         <RouterLink to="/">首页</RouterLink>
-        <div class="bible-menu">
+        <div class="nav-menu">
           <button
-            class="bible-btn"
+            class="nav-btn"
             :class="{ active: bibleActive, open: bibleOpen }"
             :aria-expanded="bibleOpen"
             aria-haspopup="menu"
@@ -67,22 +93,54 @@ onBeforeUnmount(() => {
             <span>圣经</span>
           </button>
           <Transition name="menu">
-            <div v-if="bibleOpen" class="bible-pop" role="menu">
-              <RouterLink to="/brp" class="bible-item" role="menuitem" @click="bibleOpen = false">
-                <span class="bible-ico" aria-hidden="true">📖</span>
+            <div v-if="bibleOpen" class="nav-pop" role="menu">
+              <RouterLink to="/brp" class="nav-item" role="menuitem" @click="bibleOpen = false">
+                <span class="nav-ico" aria-hidden="true">📖</span>
                 <span>经文</span>
               </RouterLink>
-              <RouterLink to="/map" class="bible-item" role="menuitem" @click="bibleOpen = false">
-                <span class="bible-ico" aria-hidden="true">🗺️</span>
+              <RouterLink to="/map" class="nav-item" role="menuitem" @click="bibleOpen = false">
+                <span class="nav-ico" aria-hidden="true">🗺️</span>
                 <span>地图</span>
+              </RouterLink>
+              <RouterLink to="/persons" class="nav-item" role="menuitem" @click="bibleOpen = false">
+                <span class="nav-ico" aria-hidden="true">👤</span>
+                <span>人物</span>
+              </RouterLink>
+              <RouterLink to="/events" class="nav-item" role="menuitem" @click="bibleOpen = false">
+                <span class="nav-ico" aria-hidden="true">⏳</span>
+                <span>事件</span>
               </RouterLink>
             </div>
           </Transition>
         </div>
         <RouterLink to="/apologetics">护教</RouterLink>
-        <RouterLink to="/history">教会史</RouterLink>
-        <RouterLink to="/library">图书馆</RouterLink>
-        <RouterLink to="/sources">数据来源</RouterLink>
+        <div class="nav-menu">
+          <button
+            class="nav-btn"
+            :class="{ active: libraryActive, open: libraryOpen }"
+            :aria-expanded="libraryOpen"
+            aria-haspopup="menu"
+            @click="toggleLibrary"
+          >
+            <span>图书馆</span>
+          </button>
+          <Transition name="menu">
+            <div v-if="libraryOpen" class="nav-pop" role="menu">
+              <RouterLink to="/library" class="nav-item" role="menuitem" @click="libraryOpen = false">
+                <span class="nav-ico" aria-hidden="true">📚</span>
+                <span>书籍</span>
+              </RouterLink>
+              <RouterLink to="/history" class="nav-item" role="menuitem" @click="libraryOpen = false">
+                <span class="nav-ico" aria-hidden="true">⛪</span>
+                <span>教会历史</span>
+              </RouterLink>
+              <RouterLink to="/sources" class="nav-item" role="menuitem" @click="libraryOpen = false">
+                <span class="nav-ico" aria-hidden="true">📑</span>
+                <span>数据来源</span>
+              </RouterLink>
+            </div>
+          </Transition>
+        </div>
       </nav>
     </div>
   </header>
@@ -182,11 +240,11 @@ onBeforeUnmount(() => {
   border-radius: 2px;
   background: var(--gold);
 }
-/* 圣经下拉词条：按钮单点展开，不跳转 */
-.bible-menu {
+/* 可展开下拉词条（圣经 / 图书馆）：按钮单点展开，不跳转 */
+.nav-menu {
   position: relative;
 }
-.bible-btn {
+.nav-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -199,15 +257,15 @@ onBeforeUnmount(() => {
   cursor: pointer;
   transition: color var(--dur) var(--ease);
 }
-.bible-btn:hover,
-.bible-btn.active {
+.nav-btn:hover,
+.nav-btn.active {
   color: #101010;
   font-weight: 600;
 }
-.bible-btn.active {
+.nav-btn.active {
   position: relative;
 }
-.bible-btn.active::after {
+.nav-btn.active::after {
   content: '';
   position: absolute;
   left: 50%;
@@ -218,7 +276,7 @@ onBeforeUnmount(() => {
   border-radius: 2px;
   background: var(--gold);
 }
-.bible-pop {
+.nav-pop {
   position: absolute;
   top: calc(100% + 8px);
   left: 50%;
@@ -232,7 +290,7 @@ onBeforeUnmount(() => {
   /* 浮层最上层 */
   z-index: 1000;
 }
-.bible-item {
+.nav-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -241,20 +299,20 @@ onBeforeUnmount(() => {
   color: #3a3a3a;
   white-space: nowrap;
 }
-.bible-item:hover {
+.nav-item:hover {
   background: rgba(139, 115, 85, 0.08);
   color: #101010;
   text-decoration: none;
 }
-.bible-item.router-link-active {
+.nav-item.router-link-active {
   color: var(--gold);
   font-weight: 600;
   background: rgba(139, 115, 85, 0.07);
 }
-.bible-item.router-link-active::after {
+.nav-item.router-link-active::after {
   display: none;
 }
-.bible-ico {
+.nav-ico {
   font-size: 0.85rem;
 }
 /* 下拉动画 */
@@ -303,13 +361,13 @@ onBeforeUnmount(() => {
     display: none;
   }
   .nav a.router-link-active::after,
-  .bible-btn.active::after {
+  .nav-btn.active::after {
     width: 14px;
     bottom: -3px;
   }
   /* 移动端弹窗改用 fixed：脱离 .nav 的 overflow-x:auto 滚动容器——
      absolute 弹窗会被 nav 裁剪（只有几像素可见，展开项"不显示"） */
-  .bible-pop {
+  .nav-pop {
     position: fixed;
     top: 54px;
     left: 0.9rem;

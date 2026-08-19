@@ -468,8 +468,32 @@ function buildChurchHistory() {
   console.log(`[build-data] 输出 -> public/data/church-history/`)
 }
 
+/* ============ Theographic 人物/事件数据（素材库投影，原样复制） ============
+ * 源：data-src/theographic/（scripts/search/import-theographic.mjs 产出）
+ *     ├── persons.json   强码 → 生卒年/关系/词典摘录（匹配 TIPNR，Ussher 传统编年）
+ *     └── events.json    450 编年事件（标题/年份/经文/参与者）
+ * 输出（public/data/theographic/）：原样复制（搜索索引构建与前端懒加载共用）
+ * 许可：CC BY-SA 4.0；年份为传统编年，词典摘录来自 Easton's Bible Dictionary（公有领域）
+ */
+const THEO_SRC = join(SITE_ROOT, 'data-src', 'theographic')
+const THEO_OUT = join(SITE_ROOT, 'public', 'data', 'theographic')
+
+function buildTheographic() {
+  if (!existsSync(THEO_SRC)) return
+  mkdirSync(THEO_OUT, { recursive: true })
+  const persons = readJson(join(THEO_SRC, 'persons.json'))
+  const events = readJson(join(THEO_SRC, 'events.json'))
+  for (const f of ['persons.json', 'events.json', 'content.meta.json']) {
+    copyFileSync(join(THEO_SRC, f), join(THEO_OUT, f))
+  }
+  const relCount = Object.values(persons.persons).filter((p) => p.rel).length
+  console.log(`[build-data] Theographic：${Object.keys(persons.persons).length} 人物增强（关系 ${relCount}）/ ${events.events.length} 编年事件`)
+  console.log(`[build-data] 输出 -> public/data/theographic/`)
+}
+
 buildCommentary()
 buildApologetics()
 buildLibrary()
 buildChurchHistory()
+buildTheographic()
 

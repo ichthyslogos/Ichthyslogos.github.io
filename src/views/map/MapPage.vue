@@ -16,7 +16,8 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { fetchPlaceCoords, fetchJourneys, fetchGeometries, fetchPeriods } from '../../lib/data.js'
-import { CATS, CAT_DOT_COLOR, CAT_ICON, TYPE_LABELS } from '../../lib/geo.js'
+import { loadEntryIndex } from '../../lib/bibleEntries.js'
+import { CATS, CAT_DOT_COLOR, CAT_ICON, TYPE_LABELS, journeyZhBridged } from '../../lib/geo.js'
 import { setCurrentPeriod } from '../../lib/temporal.js'
 import MapLibreMap from '../../components/map/MapLibreMap.vue'
 
@@ -24,12 +25,6 @@ import MapLibreMap from '../../components/map/MapLibreMap.vue'
 const DEFAULT_PERIOD = 'jesus'
 
 const route = useRoute()
-
-/**
- * 旅程（路线）功能开关：暂时关闭 UI 入口，数据照常加载与保留（journeys.json、
- * 地图路线图层 props 均不动）；恢复时置回 true 即可。
- */
-const JOURNEYS_ENABLED = false
 
 const places = ref([]) // STEP 913 地点（侧栏统计与地点计数）
 const journeys = ref([])
@@ -237,18 +232,106 @@ const storyGroups = computed(() => {
     .sort((a, b) => (a.name === '其他' ? 1 : b.name === '其他' ? -1 : a.name.localeCompare(b.name)))
 })
 
-/** 搜索过滤（旅程名/故事名；搜索时自动展开匹配组） */
-const filteredGroups = computed(() => {
-  const q = query.value.trim().toLowerCase()
-  if (!q) return storyGroups.value
-  return storyGroups.value
-    .map((g) => ({ ...g, list: g.list.filter((j) => j.name.toLowerCase().includes(q)) }))
-    .filter((g) => g.list.length)
+/* ---- 统一搜索（地点 + 路线共用一框；词条索引懒加载） ---- */
+/** 搜索索引（含 1013 地点：zh/en/cat/lat/lng/ps 时期表） */
+const entryIndex = ref(null)
+const entryIndexError = ref('')
+async function ensureEntryIndex() {
+  if (entryIndex.value || entryIndexError.value) return
+  try {
+    entryIndex.value = await loadEntryIndex()
+  } catch (e) {
+    entryIndexError.value = String(e?.message || e)
+  }
+}
+watch(query, (q) => {
+  if (q.trim()) ensureEntryIndex()
 })
 
-function isStoryOpen(name) {
-  if (query.value.trim()) return true
-  return expandedStories.value.has(name)
+/** 路线搜索文本缓存：英文名/故事 + 类型中文名 + 关键词桥接中文版（"保罗" 命中 "Paul's …"） */
+const journeyTextCache = new Map()
+function journeySearchTextOf(j) {
+  let t = journeyTextCache.get(j.id)
+  if (t === undefined) {
+    const en = [j.name, j.story?.name].filter(Boolean).join(' ').toLowerCase()
+    t = `${en} ${TYPE_LABELS[j.type] || ''} ${journeyZhBridged(en)}`
+    journeyTextCache.set(j.id, t)
+  }
+  return t
+}
+
+/** 搜索结果：地点（中英文/别名）+ 路线（全量旅程，不限当前时期） */
+const searchResults = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  if (!q) return null
+  const placeHits = (entryIndex.value?.places || [])
+    .filter((p) =>
+      [p.zh, p.en, ...(p.al || [])].filter(Boolean).join(' ').toLowerCase().includes(q),
+    )
+    .slice(0, 8)
+  const journeyHits = journeys.value
+    .filter((j) => journeySearchTextOf(j).includes(q))
+    .slice(0, 8)
+  return { placeHits, journeyHits }
+})
+
+/** 地点搜索/时期地点列表点击 → 地图聚焦（金色标记 + flyTo；键 = 英文名） */
+function focusPlace(p) {
+  if (p.lat == null || p.lng == null) return
+  focusPlaces.value = [{ name: p.zh || p.en, key: p.en, lat: p.lat, lng: p.lng, cat: p.cat }]
+  activeFocusName.value = p.en
+  query.value = ''
+  if (isMobile.value) sheetOpen.value = false // 移动端收起抽屉看地图
+}
+
+/** 搜索结果点击路线 → 选中旅程（地图 fitBounds 至路线范围） */
+function pickJourneyFromSearch(id) {
+  activeJourneyId.value = id
+  query.value = ''
+  if (isMobile.value) {
+    mobileTab.value = 'journey'
+    sheetOpen.value = false
+  }
+}
+
+/* ---- 时期地点词条（当前时期的全部地点 + 分类筛选；随时间轴切换） ---- */
+const periodPlacesOpen = ref(false)
+/** 时期地点分类筛选（'' = 全部；单选，再点同项复位） */
+const placeCatFilter = ref('')
+/** 时期地点显示条数（分页加载） */
+const placeLimit = ref(80)
+watch(periodPlacesOpen, (open) => {
+  if (open) ensureEntryIndex()
+})
+
+/** 当前时期地点（index.places.ps = 地点出现的时期；全部时期 = 全量） */
+const periodPlaces = computed(() => {
+  const all = entryIndex.value?.places || []
+  if (!activePeriodId.value) return all
+  return all.filter((p) => (p.ps || []).includes(activePeriodId.value))
+})
+
+/** 当前时期出现的分类（按图例 CATS 顺序，只列有地点的分类） */
+const periodPlaceCats = computed(() => {
+  const present = new Set(periodPlaces.value.map((p) => p.cat))
+  return CATS.filter(([c]) => present.has(c))
+})
+
+/** 分类筛选 + 分页后的时期地点（出现次数降序——重要地点在前） */
+const shownPeriodPlaces = computed(() => {
+  let list = periodPlaces.value
+  if (placeCatFilter.value) list = list.filter((p) => p.cat === placeCatFilter.value)
+  return [...list].sort((a, b) => (b.n || 0) - (a.n || 0)).slice(0, placeLimit.value)
+})
+
+/** 切换时期：复位地点筛选与分页 */
+watch(activePeriodId, () => {
+  placeCatFilter.value = ''
+  placeLimit.value = 80
+})
+
+function catLabelOf(cat) {
+  return CATS.find(([c]) => c === cat)?.[1] || cat
 }
 
 /** 年代显示（负值 = BC）：-2100 → "2100 BC"，30 → "30 AD" */
@@ -261,6 +344,10 @@ function toggleStory(name) {
   if (s.has(name)) s.delete(name)
   else s.add(name)
   expandedStories.value = s
+}
+
+function isStoryOpen(name) {
+  return expandedStories.value.has(name)
 }
 
 /** 切换时期（Time Engine）：清空选中旅程与搜索 */
@@ -325,7 +412,7 @@ function segmentCount(j) {
         <h1 class="side-title">圣经地图</h1>
         <p class="side-sub">
           <span>{{ places.length }} STEP 地点</span>
-          <span v-if="JOURNEYS_ENABLED"> · <span>{{ periodJourneys.length }} 旅程</span></span>
+          <span> · {{ periodJourneys.length }} 旅程</span>
         </p>
         <!-- 桌面收起信息栏：隐藏成地图左上角小按钮（读经页头部信息栏同款交互） -->
         <button
@@ -341,7 +428,7 @@ function segmentCount(j) {
       <nav v-if="isMobile" class="side-tabs" aria-label="面板分区">
         <button :class="{ active: mobileTab === 'timeline' }" @click="mobileTab = 'timeline'; sheetOpen = true">时间轴</button>
         <button :class="{ active: mobileTab === 'legend' }" @click="mobileTab = 'legend'; sheetOpen = true">图例</button>
-        <button v-if="JOURNEYS_ENABLED" :class="{ active: mobileTab === 'journey' }" @click="mobileTab = 'journey'; sheetOpen = true">旅程</button>
+        <button :class="{ active: mobileTab === 'journey' }" @click="mobileTab = 'journey'; sheetOpen = true">旅程</button>
         <button
           class="side-tab-toggle"
           :aria-expanded="sheetOpen"
@@ -388,15 +475,44 @@ function segmentCount(j) {
       </div>
 
       <div class="side-body">
-        <!-- 搜索（桌面端位置；移动端在「旅程」分区内） -->
+        <!-- 统一搜索（地点 + 路线共用一框；支持中英文，词条索引懒加载） -->
         <input
-          v-if="JOURNEYS_ENABLED && !isMobile"
           v-model="query"
           class="journey-search"
           type="search"
-          placeholder="搜索旅程…"
-          aria-label="搜索旅程"
+          placeholder="搜索地点或路线…"
+          aria-label="搜索地点或路线"
         />
+        <!-- 搜索结果：地点（点击聚焦地图）+ 路线（点击选中旅程） -->
+        <div v-if="query.trim() && searchResults" class="search-results">
+          <template v-if="entryIndex">
+            <div v-if="searchResults.placeHits.length" class="sr-group">
+              <p class="sr-label">地点</p>
+              <button v-for="p in searchResults.placeHits" :key="p.id" class="sr-item" @click="focusPlace(p)">
+                <span class="sr-dot" :style="{ color: CAT_DOT_COLOR[p.cat] || '#3c4652' }" aria-hidden="true">{{ CAT_ICON[p.cat] || '●' }}</span>
+                <span class="sr-main">
+                  <span class="sr-name">{{ p.zh || p.en }}</span>
+                  <span class="sr-sub">{{ p.en }} · {{ catLabelOf(p.cat) }}</span>
+                </span>
+                <span class="sr-arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+            <div v-if="searchResults.journeyHits.length" class="sr-group">
+              <p class="sr-label">路线</p>
+              <button v-for="j in searchResults.journeyHits" :key="j.id" class="sr-item" @click="pickJourneyFromSearch(j.id)">
+                <span class="sr-dot route" aria-hidden="true">⤳</span>
+                <span class="sr-main">
+                  <span class="sr-name">{{ j.name }}</span>
+                  <span class="sr-sub">{{ j.story?.name || '' }}{{ j.story?.name ? ' · ' : '' }}{{ TYPE_LABELS[j.type] || j.type }}</span>
+                </span>
+                <span class="sr-arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+            <p v-if="!searchResults.placeHits.length && !searchResults.journeyHits.length" class="side-empty">无匹配地点或路线</p>
+          </template>
+          <p v-else-if="entryIndexError" class="side-empty">索引加载失败：{{ entryIndexError }}</p>
+          <p v-else class="side-empty">索引加载中…</p>
+        </div>
 
         <!-- 动态图例：当前时期疆域实体（词条式，默认收起；展开后按面积排序显示） -->
         <section v-show="!isMobile || mobileTab === 'legend'" class="legend-sec" aria-label="疆域图例">
@@ -445,9 +561,58 @@ function segmentCount(j) {
           </template>
         </section>
 
-        <!-- 旅程列表（按故事分组；随时间轴时期过滤；JOURNEYS_ENABLED 暂时关闭） -->
+        <!-- 时期地点词条（当前时期的全部地点；分类定向筛选；点击聚焦地图） -->
+        <section v-show="!isMobile || mobileTab === 'legend'" class="legend-sec" aria-label="时期地点">
+          <button
+            class="sec-title politics-toggle"
+            :aria-expanded="periodPlacesOpen"
+            @click="periodPlacesOpen = !periodPlacesOpen"
+          >
+            <span class="politics-caret" aria-hidden="true">{{ periodPlacesOpen ? '▾' : '▸' }}</span>
+            时期地点
+            <span v-if="activePeriod" class="sec-period">{{ activePeriod.name }}</span>
+            <span v-else class="sec-period">全部</span>
+            <span class="sec-count">{{ periodPlaces.length }} 地点</span>
+          </button>
+          <template v-if="periodPlacesOpen">
+            <template v-if="entryIndex">
+              <!-- 分类筛选 chips（只列当前时期出现的分类；单选，再点复位） -->
+              <div v-if="periodPlaceCats.length" class="place-cat-chips">
+                <button class="place-cat-chip" :class="{ on: !placeCatFilter }" @click="placeCatFilter = ''">全部</button>
+                <button
+                  v-for="[cat, label] in periodPlaceCats"
+                  :key="cat"
+                  class="place-cat-chip"
+                  :class="{ on: placeCatFilter === cat }"
+                  @click="placeCatFilter = placeCatFilter === cat ? '' : cat"
+                >{{ label }}</button>
+              </div>
+              <ul v-if="shownPeriodPlaces.length" class="place-list">
+                <li v-for="p in shownPeriodPlaces" :key="p.id">
+                  <button class="place-item" @click="focusPlace(p)">
+                    <span class="sr-dot" :style="{ color: CAT_DOT_COLOR[p.cat] || '#3c4652' }" aria-hidden="true">{{ CAT_ICON[p.cat] || '●' }}</span>
+                    <span class="sr-main">
+                      <span class="sr-name">{{ p.zh || p.en }}</span>
+                      <span class="sr-sub">{{ p.en }}</span>
+                    </span>
+                    <span class="place-n" aria-hidden="true">{{ p.n || 0 }}</span>
+                  </button>
+                </li>
+              </ul>
+              <p v-else class="side-empty">无匹配地点</p>
+              <button
+                v-if="(placeCatFilter ? periodPlaces.filter((p) => p.cat === placeCatFilter).length : periodPlaces.length) > placeLimit"
+                class="place-more"
+                @click="placeLimit += 80"
+              >显示更多</button>
+            </template>
+            <p v-else-if="entryIndexError" class="side-empty">索引加载失败：{{ entryIndexError }}</p>
+            <p v-else class="side-empty">索引加载中…</p>
+          </template>
+        </section>
+
+        <!-- 旅程列表（按故事分组；随时间轴时期过滤；点击选中 → 地图绘制路线） -->
         <section
-          v-if="JOURNEYS_ENABLED"
           v-show="!isMobile || mobileTab === 'journey'"
           class="journey-sec"
           aria-label="圣经旅程"
@@ -457,23 +622,14 @@ function segmentCount(j) {
             <span v-if="activePeriod" class="sec-period">{{ fmtYear(activePeriod.year) }}</span>
             <span class="sec-tag">UBS MARBLE</span>
           </h2>
-          <!-- 移动端搜索位于「旅程」分区内 -->
-          <input
-            v-if="isMobile"
-            v-model="query"
-            class="journey-search"
-            type="search"
-            placeholder="搜索旅程…"
-            aria-label="搜索旅程"
-          />
           <template v-if="loading">
             <p class="side-empty">加载中…</p>
           </template>
           <template v-else-if="error">
             <p class="side-empty">加载失败：{{ error }}</p>
           </template>
-          <template v-else-if="filteredGroups.length">
-            <div v-for="g in filteredGroups" :key="g.name" class="story-group">
+          <template v-else-if="storyGroups.length">
+            <div v-for="g in storyGroups" :key="g.name" class="story-group">
               <button class="story-head" :aria-expanded="isStoryOpen(g.name)" @click="toggleStory(g.name)">
                 <span class="story-caret" aria-hidden="true">{{ isStoryOpen(g.name) ? '▾' : '▸' }}</span>
                 <span class="story-name">{{ g.name }}</span>
@@ -496,13 +652,13 @@ function segmentCount(j) {
               </ul>
             </div>
           </template>
-          <p v-else class="side-empty">无匹配旅程</p>
+          <p v-else class="side-empty">当前时期无旅程</p>
         </section>
       </div>
 
       <footer v-if="!isMobile" class="side-foot">
         <p class="source-line">城市：Pleiades + STEP Bible + DARE · 国家：Cliopatria · 城区：AWMC</p>
-        <p v-if="JOURNEYS_ENABLED" class="source-line">路线：UBS MARBLE</p>
+        <p class="source-line">路线：UBS MARBLE</p>
         <p class="source-line license">CC BY 4.0 / CC BY-SA 4.0</p>
       </footer>
     </aside>

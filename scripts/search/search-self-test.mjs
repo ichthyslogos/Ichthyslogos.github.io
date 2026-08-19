@@ -17,6 +17,8 @@ import {
   prepareScripture,
   prepareCommentary,
   searchCommentary,
+  yearLabel,
+  yearsLabel,
 } from '../../src/lib/searchEngine.js'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
@@ -129,6 +131,49 @@ const hist = searchEntities('改教', index, 8)
 eq(hist.history.length > 0, true, '教会史：「改教」命中章节（源数据用词）')
 eq(hist.history.every((h) => h.raw.part >= 1 && h.raw.part <= 5), true, '教会史：部号合法')
 eq(searchEntities('圣经', index, 8).topics.length > 0, true, '主题：标签「圣经」命中')
+
+/* ---------- Theographic 人物增强（生卒年 / 亲属数） ---------- */
+const abIdx = index.persons.find((p) => p.en === 'Abraham')
+eq(abIdx?.by, -1997, '人物：亚伯拉罕生年（Ussher 前1997）')
+eq(abIdx?.dy, -1821, '人物：亚伯拉罕卒年（Ussher 前1821）')
+eq(typeof abIdx?.rel, 'number', '人物：亚伯拉罕亲属计数字段')
+const davIdx = index.persons.find((p) => p.en === 'David')
+eq(davIdx?.by, -1085, '人物：大卫生年（前1085）')
+eq(davIdx?.rel > 0, true, '人物：大卫亲属数 > 0')
+const mosesSub = searchEntities('摩西', index, 5).persons[0]
+eq(mosesSub?.sub.includes('前1571'), true, '人物：摩西条目 sub 含生卒年')
+const theoP = readJson('public/data/theographic/persons.json').persons
+eq(!!theoP.H85?.dict && theoP.H85.dict.includes('Father of a multitude'), true, '详情：亚伯拉罕词典摘录（Easton）')
+eq(theoP.H85?.rel?.fa, 'H8646G', '详情：亚伯拉罕父亲=他拉（强码）')
+eq(Array.isArray(theoP.H85?.rel?.ch) && theoP.H85.rel.ch.length === 8, true, '详情：亚伯拉罕 8 子')
+eq(typeof theoP.H1732?.rel?.ch?.length === 'number', true, '详情：大卫子女列表')
+
+/* ---------- 编年时间线（Theographic Events；中文/英文双语检索） ---------- */
+eq(index.timeline.length === 450, true, '时间线：450 条事件')
+eq(index.timeline.every((t) => t.z), true, '时间线：全部含中文标题')
+eq(index.timeline.every((t) => t.first && /^\d{2}:\d+:\d+$/.test(t.first)), true, '时间线：first 跳转键格式合法')
+const tlCreate = searchEntities('创造', index, 8)
+eq(tlCreate.timeline.some((t) => t.raw.z === '创造万物'), true, '时间线：「创造」命中创造万物')
+const tlAdam = searchEntities('亚当', index, 8)
+eq(tlAdam.timeline.filter((t) => /亚当/.test(t.raw.z)).length >= 3, true, '时间线：「亚当」多事件命中')
+const tlExod = searchEntities('出埃及', index, 8)
+eq(tlExod.timeline.some((t) => t.raw.z === '出埃及'), true, '时间线：「出埃及」命中出埃及事件')
+const tlFlood = searchEntities('洪水', index, 8)
+eq(tlFlood.timeline.filter((t) => /洪水/.test(t.raw.z)).length >= 2, true, '时间线：「洪水」多事件命中')
+const tlEn = searchEntities('flood', index, 8)
+eq(tlEn.timeline.some((t) => t.raw.t === 'The Great Flood'), true, '时间线：flood 命中英文标题')
+const tlDavid = searchEntities('大卫作王', index, 8)
+eq(tlDavid.timeline.some((t) => t.raw.z === '大卫作王'), true, '时间线：「大卫作王」命中')
+const tlSub = searchEntities('巴别塔', index, 8).timeline[0]
+eq(tlSub?.sub.includes('约前'), true, '时间线：sub 含年份标签')
+
+/* ---------- 年份格式化 ---------- */
+eq(yearLabel(-4003), '约前 4003 年', '年份：前4003 格式')
+eq(yearLabel(30), '约公元 30 年', '年份：公元30 格式')
+eq(yearsLabel(-1997, -1821), '约 前1997–前1821', '年份：生卒区间')
+eq(yearsLabel(-1571, null), '约 前1571 生', '年份：只有生年')
+eq(yearsLabel(null, -1452), '约 前1452 卒', '年份：只有卒年')
+eq(yearsLabel(null, null), '', '年份：无数据为空')
 
 console.log(`\n自测完成：${pass} 通过，${fail} 失败`)
 process.exit(fail ? 1 : 0)

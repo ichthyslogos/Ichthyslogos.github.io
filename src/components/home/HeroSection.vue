@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
         </p>
         <div class="hero-actions">
           <RouterLink to="/brp" class="btn btn-primary">进入读经研究 <span class="arrow">→</span></RouterLink>
-          <RouterLink to="/library" class="btn btn-outline">探索图书馆</RouterLink>
+          <RouterLink to="/library" class="btn btn-outline">浏览书籍</RouterLink>
         </div>
       </div>
     </section>

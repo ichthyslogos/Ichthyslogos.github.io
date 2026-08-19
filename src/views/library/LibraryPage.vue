@@ -1,6 +1,7 @@
 <script setup>
 /**
- * LibraryPage — 图书馆（书架浏览 ↔ 书目详情）
+ * LibraryPage — 书籍（原图书馆；书架浏览 ↔ 书目详情）
+ * 导航入口：导航栏「图书馆」词条 → 书籍（路由 /library 保持不变，URL 可分享）
  * 路由：/library（书架）与 /library/:bookId（详情），URL 即状态（可分享）
  * 布局：左栏分类筛选 + 主区（书目卡片网格 / 详情视图）
  * 数据：索引 content.json（分类+书目轻量条目）→ 详情 books/<id>.json 按需加载（data.js 缓存）
@@ -161,8 +162,8 @@ watch(
         </aside>
         <main class="lib-main">
           <header class="lib-head">
-            <p class="lib-eyebrow">LIBRARY · 图书馆</p>
-            <h1 class="lib-title">图书馆</h1>
+            <p class="lib-eyebrow">LIBRARY · 书籍</p>
+            <h1 class="lib-title">书籍</h1>
             <p class="lib-sub">经典文献资料库 · {{ index.books.length }} 部藏书</p>
             <div class="lib-search-wrap">
               <svg class="lib-search-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">

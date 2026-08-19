@@ -29,7 +29,7 @@ const cols = [
   {
     title: '资源',
     links: [
-      { label: '图书馆', to: '/library' },
+      { label: '书籍', to: '/library' },
       { label: '数据来源与许可', to: '/sources' },
     ],
   },
