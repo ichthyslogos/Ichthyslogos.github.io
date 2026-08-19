@@ -14,6 +14,7 @@
  * 时期选择：时间轴（10 个圣经时期 + 全部），切换时地图所有时间相关瓦片集同步切换。
  */
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useRoute } from 'vue-router'
 import { fetchPlaceCoords, fetchJourneys, fetchGeometries, fetchPeriods } from '../../lib/data.js'
 import { CATS, CAT_DOT_COLOR, CAT_ICON, TYPE_LABELS } from '../../lib/geo.js'
 import { setCurrentPeriod } from '../../lib/temporal.js'
@@ -21,6 +22,8 @@ import MapLibreMap from '../../components/map/MapLibreMap.vue'
 
 /** 默认时期：耶稣时期（30 AD） */
 const DEFAULT_PERIOD = 'jesus'
+
+const route = useRoute()
 
 /**
  * 旅程（路线）功能开关：暂时关闭 UI 入口，数据照常加载与保留（journeys.json、
@@ -165,6 +168,26 @@ function onTerritories(entities) {
   territoryEntities.value = entities || []
 }
 
+/* ---- 深链定位（搜索/读经页跳转）：?period=<时期 id> + ?focus=<地点英文名> [&fl=<显示名>] ---- */
+const focusPlaces = ref([]) // MapLibreMap 聚焦覆盖层（搜索结果/读经页「全屏地图」携带）
+const activeFocusName = ref('') // 选中聚焦地点（金色放大 + flyTo）
+/** 应用 URL 深链参数（places 加载完成后有效；period 合法性由 periods 校验） */
+function applyDeepLink() {
+  const q = route.query
+  const pid = typeof q.period === 'string' ? q.period : ''
+  if (pid && periods.value.some((p) => p.id === pid)) activePeriodId.value = pid
+  const fname = typeof q.focus === 'string' ? q.focus : ''
+  if (!fname) return
+  const hit = places.value.find((p) => p.name === fname)
+  if (!hit) return
+  // 地图标签统一英文（中文显示暂时关闭）：忽略 fl 显示名参数，聚焦层标签用英文名；
+  // fl 参数在深链中保留（调用方仍传），恢复中文显示时改回 `(q.fl || hit.name)`
+  focusPlaces.value = [{ name: hit.name, key: hit.name, lat: hit.lat, lng: hit.lng, cat: hit.cat }]
+  activeFocusName.value = hit.name
+  // 移动端深链进入时收起底部抽屉，地图全屏可见
+  if (isMobile.value) sheetOpen.value = false
+}
+
 onMounted(async () => {
   try {
     const [p, j, g, pe] = await Promise.all([fetchPlaceCoords(), fetchJourneys(), fetchGeometries(), fetchPeriods()])
@@ -172,12 +195,21 @@ onMounted(async () => {
     journeys.value = j.journeys || []
     geometries.value = g.geometries || {}
     periods.value = pe.periods || []
+    applyDeepLink()
   } catch (e) {
     error.value = String(e?.message || e)
   } finally {
     loading.value = false
   }
 })
+
+// 已在 /map 页时再次深链（如全局搜索打开 → 在地图中查看）：hash query 变化即应用
+watch(
+  () => route.query.focus,
+  () => {
+    if (places.value.length) applyDeepLink()
+  },
+)
 
 /** 当前时期对象（含 desc/journey_ids/era） */
 const activePeriod = computed(() => periods.value.find((p) => p.id === activePeriodId.value) || null)
@@ -492,6 +524,8 @@ function segmentCount(j) {
         :geometries="geometries"
         :active-journey-id="activeJourneyId"
         :active-period-id="activePeriodId"
+        :focus-places="focusPlaces"
+        :active-focus-name="activeFocusName"
         @territories="onTerritories"
       />
     </div>

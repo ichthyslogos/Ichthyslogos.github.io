@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "search:build": "node scripts/search/build-search-index.mjs",
     "data:import": "node scripts/import.mjs && node scripts/commentary/extract-place-coords.mjs && node scripts/geography/fetch-dare.mjs && node scripts/geography/fetch-pleiades.mjs && node scripts/geography/import-ubs-journeys.mjs && node scripts/geography/convert-gray-earth.mjs",
     "data:build": "node scripts/build-data.mjs && node scripts/geography/build-brp-historical.mjs && node scripts/geography/build-geography.mjs && node scripts/geography/build-periods.mjs && node scripts/geography/build-regions.mjs && node scripts/geography/build-geo-layers.mjs && node scripts/geography/build-tiles.mjs",
     "data:crossrefs": "node scripts/build-crossrefs.mjs",

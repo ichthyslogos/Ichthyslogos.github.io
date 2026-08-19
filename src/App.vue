@@ -1,6 +1,7 @@
 <script setup>
 // App 根组件：应用外壳（AppHeader + main 路由出口）。全局滚动收敛在 .app-main（见下方样式注释）。
 import AppHeader from './components/AppHeader.vue'
+import SearchPanel from './components/search/SearchPanel.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import AppHeader from './components/AppHeader.vue'
     <main class="app-main">
       <router-view />
     </main>
+    <SearchPanel />
   </div>
 </template>
 

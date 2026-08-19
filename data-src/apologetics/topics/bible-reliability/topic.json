@@ -1,0 +1,30 @@
+{
+  "id": "bible-reliability",
+  "title": {
+    "zh": "圣经可靠吗？",
+    "en": "Is the Bible Reliable?"
+  },
+  "description": "圣经的抄传准确、考古印证与内在一致性，检验其历史可信度。",
+  "tags": [
+    "历史",
+    "文献",
+    "考古"
+  ],
+  "categories": [
+    {
+      "id": "text",
+      "title": "文本与抄传",
+      "sub_questions": [
+        "corruption",
+        "contradictions"
+      ]
+    },
+    {
+      "id": "archaeology-evidence",
+      "title": "考古印证",
+      "sub_questions": [
+        "archaeology"
+      ]
+    }
+  ]
+}
