@@ -314,7 +314,10 @@ function focusGeoJSON() {
     if (p.lat == null || p.lng == null) continue
     feats.push({
       type: 'Feature',
-      properties: { name: p.name, active: p.name === props.activeFocusName },
+      // key = 调用方的选中键（原英文名）；name = 标签文本（调用方传入，当前为英文——
+      // 地图中文显示暂时关闭）。点击回传 key，选中判定不受显示名切换影响
+      // （select-focus 与调用方 activeName 同键）
+      properties: { name: p.name, key: p.key || p.name, active: (p.key || p.name) === props.activeFocusName },
       geometry: { type: 'Point', coordinates: [p.lng, p.lat] },
     })
   }
@@ -332,7 +335,8 @@ function syncFocusPlaces() {
   if (pts.length) {
     const bounds = new maplibregl.LngLatBounds()
     for (const p of pts) bounds.extend([p.lng, p.lat])
-    map.fitBounds(bounds, { padding: 48, maxZoom: 10 })
+    // 移动端窄屏/读经页小地图框留足边距，标签不被控件遮挡
+    map.fitBounds(bounds, { padding: 60, maxZoom: 10 })
   } else {
     map.flyTo({ center: [35.2, 31.7], zoom: 6 }) // 无地点：默认视野（耶路撒冷）
   }
@@ -345,7 +349,7 @@ function syncFocusActive() {
   if (!src) return
   src.setData(focusGeoJSON())
   mapEl.value?.setAttribute('data-focus-active', props.activeFocusName || '')
-  const active = props.focusPlaces.find((p) => p.name === props.activeFocusName)
+  const active = props.focusPlaces.find((p) => (p.key || p.name) === props.activeFocusName)
   if (!active || active.lat == null || active.lng == null) return
   map.flyTo({ center: [active.lng, active.lat], zoom: Math.max(map.getZoom(), 8) })
 }
@@ -381,6 +385,8 @@ onMounted(async () => {
   })
   // 缩放控件放右上角：左上角留给地图页信息栏收起后的「☰ 地图信息」小按钮（MapPage）
   map.addControl(new maplibregl.NavigationControl({ visualizePitch: false }), 'top-right')
+  // 比例尺（左下角）：读图测距参照（米/公里）
+  map.addControl(new maplibregl.ScaleControl({ maxWidth: 96, unit: 'metric' }), 'bottom-left')
 
   map.on('load', () => {
     mapEl.value?.setAttribute('data-ml', 'loaded')
@@ -480,6 +486,7 @@ onMounted(async () => {
     map.addLayer({
       id: 'territory-label', type: 'symbol', source: 'territory-labels', 'source-layer': 'territory-labels',
       layout: {
+        // 地图标签统一英文（中文显示暂时关闭；瓦片 zh 字段保留，恢复时改回 coalesce）
         'text-field': ['get', 'name'],
         'text-font': ['Noto Sans Regular'],
         'text-transform': 'uppercase',
@@ -551,8 +558,9 @@ onMounted(async () => {
       id: 'pleiades-label', type: 'symbol', source: 'cities', 'source-layer': 'cities',
       filter: ['all', ['!=', ['get', 'src'], 'step'], ['has', 'name'], ['!=', ['get', 'name'], ''], densityGate(), ['>=', ['zoom'], PLEIADES_MINZOOM.standard]],
       layout: {
+        // 地图标签统一英文（中文显示暂时关闭）
         'text-field': ['get', 'name'],
-        'text-size': 9.5,
+        'text-size': 10,
         // 同 cities-label：variable-anchor 自动避让，重叠名字全部显示
         'text-variable-anchor': ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
         'text-radial-offset': 0.7,
@@ -589,8 +597,10 @@ onMounted(async () => {
       id: 'cities-label', type: 'symbol', source: 'cities', 'source-layer': 'cities',
       filter: ['all', ['==', ['get', 'src'], 'step'], densityGate()],
       layout: {
+        // 地图标签统一英文（中文显示暂时关闭；瓦片 zh 字段保留，恢复时改回
+        // format 双行中英对照）；name（时代名）保留在弹窗中完整展示
         'text-field': ['get', 'name'],
-        'text-size': ['case', ['==', ['get', 'major'], 1], 12, 10.5],
+        'text-size': ['case', ['==', ['get', 'major'], 1], 13, 11.5],
         // 标签避让：在 8 个锚点（上/下/左/右/四角）间自动选择无冲突位置——
         // 同坐标多名字（Jerusalem/Jebus/Aelia Capitolina/Holy City）扇形展开全部显示；
         // 与 text-anchor/text-offset 互斥（用 text-radial-offset 控制贴点距离）
@@ -602,8 +612,8 @@ onMounted(async () => {
       },
       paint: {
         'text-color': ['get', 'color'],
-        'text-halo-color': 'rgba(250,249,247,0.9)',
-        'text-halo-width': 1.5,
+        'text-halo-color': 'rgba(250,249,247,0.94)',
+        'text-halo-width': 1.8,
       },
     })
 
@@ -634,7 +644,7 @@ onMounted(async () => {
       layout: {
         'text-field': ['get', 'name'],
         'text-font': ['Noto Sans Regular'],
-        'text-size': ['case', ['get', 'active'], 13, 11.5],
+        'text-size': ['case', ['get', 'active'], 14, 12.5],
         // 与 map 子页面同款重叠修复：variable-anchor 8 锚点自动避让——
         // 本章地点重叠（如多个地点同一位置）时名字扇形展开全部显示，文字不重叠
         'text-variable-anchor': ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
@@ -643,8 +653,8 @@ onMounted(async () => {
       },
       paint: {
         'text-color': '#8a5a12',
-        'text-halo-color': 'rgba(255,255,255,0.92)',
-        'text-halo-width': 1.6,
+        'text-halo-color': 'rgba(255,255,255,0.95)',
+        'text-halo-width': 2,
       },
     })
     syncFocusPlaces()
@@ -664,7 +674,7 @@ onMounted(async () => {
         layers: ['focus-places-dot', 'focus-places-dot-active', 'focus-places-label'],
       })
       if (focusFeats.length) {
-        emit('select-focus', focusFeats[0].properties.name)
+        emit('select-focus', focusFeats[0].properties.key || focusFeats[0].properties.name)
         return
       }
       // 2) 城市/地点：符号（dot）与名称（label）都参与拾取——点击图例本身或名字均可
@@ -696,9 +706,9 @@ onMounted(async () => {
         html += `<div class="ml-city-list">`
         for (const p of cities) {
           const en = p.en || p.name
-          const zh = p.zh
-          const title = zh ? `${zh}（${en}）` : en
-          // 分类符号 + 中文名（英文名）+ 时代名 + 存在窗口（第三方数据一律转义）
+          // 地图弹窗统一英文（中文显示暂时关闭；瓦片 zh 字段保留备用）
+          const title = en
+          // 分类符号 + 英文名 + 时代名 + 存在窗口（第三方数据一律转义）
           html += `<div class="ml-city-item">`
           html += `<span class="ml-cat-sym" style="color:${safeColor(p.color, CAT_COLOR[p.cat] || '#3c4652')}">${CAT_SYMBOL[p.cat] || '●'}</span>`
           html += `<span class="ml-city-main"><strong>${esc(title)}</strong>`
@@ -717,7 +727,9 @@ onMounted(async () => {
           )
           .join('')}</div>`
       }
-      new maplibregl.Popup({ closeButton: false, className: 'ml-popup' })
+      // 移动端（触屏）弹窗带关闭按钮 + 限宽：单手可关、不盖满地图；桌面 hover 场景靠点空白关闭
+      const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches
+      new maplibregl.Popup({ closeButton: isTouch, maxWidth: isTouch ? '264px' : '300px', className: 'ml-popup', offset: 10 })
         .setLngLat(e.lngLat)
         .setHTML(html)
         .addTo(map)
@@ -811,7 +823,7 @@ watch(() => props.activeFocusName, syncFocusActive)
 <template>
   <div class="ml-wrap">
     <div ref="mapEl" class="ml-map" role="img" aria-label="圣经地理地图"></div>
-    <!-- 信息密度控制器（地图右上角，缩放控件下方；两处地图共用） -->
+    <!-- 信息密度控制器（地图顶部中央横排；两处地图共用） -->
     <div class="density-ctl" role="group" aria-label="地图信息密度">
       <button
         v-for="d in DENSITY_OPTIONS"
@@ -835,14 +847,18 @@ watch(() => props.activeFocusName, syncFocusActive)
   z-index: 0;
   background: #c6d0d6;
 }
-/* 信息密度控制器：右上角缩放控件下方，竖排三档（简洁/标准/详细） */
+/* 信息密度控制器：地图顶部中央，横排三档（简洁/标准/详细）——
+   left:50%+translateX(-50%) 相对地图容器居中：map 子页收起/展开信息抽屉时
+   容器尺寸变化居中自动跟随（移动端底部抽屉为 fixed 浮层不改地图尺寸）；
+   顶部中央无其他控件冲突（缩放控件在右上角）；移动端加大触控目标 */
 .density-ctl {
   position: absolute;
-  top: 10.4rem;
-  right: 0.6rem;
+  top: 0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 30;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1px;
   background: #fff;
   border: 1px solid var(--line);
@@ -853,9 +869,9 @@ watch(() => props.activeFocusName, syncFocusActive)
 .density-ctl button {
   border: none;
   background: transparent;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   line-height: 1.2;
-  padding: 0.3rem 0.55rem;
+  padding: 0.34rem 0.6rem;
   border-radius: 5px;
   color: var(--muted);
   cursor: pointer;
@@ -869,13 +885,44 @@ watch(() => props.activeFocusName, syncFocusActive)
   color: var(--accent);
   font-weight: 700;
 }
+@media (max-width: 640px) {
+  .density-ctl {
+    top: 0.5rem;
+  }
+  .density-ctl button {
+    font-size: 0.76rem;
+    padding: 0.44rem 0.66rem;
+  }
+}
 .ml-popup .maplibregl-popup-content {
   border-radius: 8px;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
   background: #fffdf9;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 13.5px;
   color: #232a33;
+}
+/* 移动端弹窗：字号/行距加大（小屏阅读），关闭按钮触控区放大 */
+@media (max-width: 640px) {
+  .ml-popup .maplibregl-popup-content {
+    font-size: 14px;
+  }
+  .ml-popup .maplibregl-popup-close-button {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    color: #4a5560;
+  }
+  .ml-popup .ml-city-item {
+    padding: 6px 8px;
+  }
+  .ml-popup .ml-city-main strong {
+    font-size: 14.5px;
+  }
+  .ml-popup .ml-era,
+  .ml-popup .ml-time {
+    font-size: 12px;
+  }
 }
 .ml-popup .maplibregl-popup-content span {
   color: #8b7355;

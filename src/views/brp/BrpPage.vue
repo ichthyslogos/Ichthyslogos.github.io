@@ -271,6 +271,13 @@ watch([book, chapter, verses], () => {
       tryScroll()
       return
     }
+    // URL ?v= 深链（全局搜索/外部链接）：定位到指定节并高亮
+    const qv = Number(route.query.v)
+    if (Number.isInteger(qv) && qv > 0 && verses.value.length) {
+      pendingScroll.value = { bookId: book.value?.id, ch: chapter.value, vsNum: qv }
+      tryScroll()
+      return
+    }
     const sc = document.querySelector('.scripture-scroll')
     if (sc) sc.scrollTop = 0
   })

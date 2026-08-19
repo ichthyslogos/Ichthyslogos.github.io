@@ -1,6 +1,6 @@
 <script setup>
 /**
- * MapPanel — 地图抽屉（brp 子组件）
+ * MapPanel — 地图抽屉（brp 子组件；可读性大改版）
  *
  * 显示当前书卷+章节的地理位置：复用 map 子页面的 MapLibreMap（本地矢量瓦片 + MapLibre GL，
  * 离线可用；按书卷时代自动切换时期瓦片集——时代对应见 lib/data.js BOOK_PERIODS）
@@ -11,11 +11,20 @@
  * 本章地点渲染为地图聚焦覆盖层（常显，不受瓦片 LOD 裁剪/zoom 层级表影响）：
  * 地点因 zoom 原因被隐藏时依然可见；点选地点金色放大并 flyTo 定位。
  *
+ * 可读性大改版：
+ *   1. 中文优先：地点列表与地图标签显示中文名（zh-names.json 按 Strong 码映射），
+ *      英文名降为副标题/小字——中文读者一眼可读；
+ *   2. 移动端双视图 [地图 | 地点]：地图占满抽屉（不再被列表挤成 36vh 小窗），
+ *      列表独占整屏滚动；列表点选自动切回地图并定位；
+ *   3. 桌面端地图吸顶（sticky）：滚动浏览地点列表时地图始终可见；
+ *   4. 全屏深链：跳转 /map 携带 focus+period 参数，直接定位本章地点；
+ *   5. 数据零改动：坐标/瓦片/注释源数据全部只读，展示层重组。
+ *
  * 布局与解经面板同款：桌面右侧栏 / 移动端底部抽屉（与解经面板由 BrpPage 互斥控制）。
  */
 import { ref, computed, watch, nextTick, onBeforeUnmount, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import { fetchNotes, findNotesChapter, fetchPlaceCoords, fetchPeriods, periodOfBook } from '../../lib/data.js'
+import { fetchNotes, findNotesChapter, fetchPlaceCoords, fetchPeriods, fetchZhNames, periodOfBook } from '../../lib/data.js'
 import { CATS, CAT_DOT_COLOR, CAT_ICON } from '../../lib/geo.js'
 
 /** 地图组件按需加载：maplibre-gl 大依赖只在打开抽屉时才拉取（与 /map 页共享分包） */
@@ -26,12 +35,22 @@ const MapLibreMap = defineAsyncComponent(() => import('../../components/map/MapL
 const visibleCats = ref(new Set())
 /** 地点分类图例展开状态（默认收起——词条式，不长期占屏幕） */
 const catsOpen = ref(false)
+/** 移动端当前视图（map = 地图占满抽屉；list = 地点列表滚动） */
+const mobileView = ref('map')
 
 const router = useRouter()
 
-/** 全屏：跳转 map 子页面（读经页地图功能的全屏入口） */
+/** 全屏深链：跳转 map 子页面，携带当前选中（或首个有坐标）地点 + 本卷时期 */
 function openFullMap() {
-  router.push('/map')
+  const active = mappedPlaces.value.find((p) => p.name === activeName.value) || mappedPlaces.value[0]
+  const query = {}
+  if (active) {
+    query.focus = active.name
+    if (active.zh) query.fl = active.zh // 显示名（中文优先；MapPage 聚焦层标签）
+  }
+  const pid = periodId.value
+  if (pid) query.period = pid
+  router.push({ path: '/map', query })
 }
 
 const props = defineProps({
@@ -45,9 +64,10 @@ const emit = defineEmits(['toggle'])
 
 const notesData = ref(null)
 const coordsData = ref(null)
+const zhNamesData = ref(null) // Strong 码 → 中文名（zh-names.json；地点列表/地图标签中文优先）
 const notesError = ref('')
 const coordsError = ref('')
-const activeName = ref('') // 列表/地图双向高亮
+const activeName = ref('') // 列表/地图双向高亮（键 = 词条英文名，与解经面板跳转一致）
 const periods = ref([]) // 时期索引（显示时代徽章）
 
 /* ---- 抽屉拖拽拉伸（桌面端左缘把手调宽度） ---- */
@@ -145,26 +165,32 @@ const panelStyle = computed(() => {
   return s
 })
 
-/** 本章地点词条（type=Place），匹配坐标与分类后供地图/图例使用 */
+/** 本章地点词条（type=Place），匹配坐标/中文名/分类后供地图/图例使用 */
 const chapterPlaces = computed(() => {
   const ch = findNotesChapter(notesData.value, props.chapter)
   if (!ch || !ch.entries) return []
   const coords = coordsData.value?.coords || {}
+  const zhOf = zhNamesData.value || {}
   return ch.entries
     .filter((n) => n.type === 'Place')
     .map((n) => {
       const c = coords[n.name]
+      // 中文名按 Strong 码查 zh-names（TIPNR 词条均带 strong；查不到回退英文名）
+      const zh = (n.strong && zhOf[n.strong]) || ''
       return c
-        ? { ...n, lat: c.lat, lng: c.lng, cat: c.cat || 'city' }
-        : { ...n, lat: null, lng: null, cat: 'city' }
+        ? { ...n, zh, lat: c.lat, lng: c.lng, cat: c.cat || 'city' }
+        : { ...n, zh, lat: null, lng: null, cat: 'city' }
     })
 })
 
 /** 有坐标的地点（地图绘制） */
 const mappedPlaces = computed(() => chapterPlaces.value.filter((p) => p.lat != null && p.lng != null))
 
-/** 地图地点格式（MapLibreMap focusPlaces props；含分类供图标渲染） */
-const mapPlaces = computed(() => mappedPlaces.value.map((p) => ({ name: p.name, lat: p.lat, lng: p.lng, cat: p.cat })))
+/** 地图地点格式（MapLibreMap focusPlaces props；地图标签统一英文——中文显示暂时关闭，
+ *  name = 标签文本英文名，key = 选中键；地点列表仍显示中文名） */
+const mapPlaces = computed(() =>
+  mappedPlaces.value.map((p) => ({ name: p.name, key: p.name, lat: p.lat, lng: p.lng, cat: p.cat })),
+)
 
 /** 当前书卷对应的圣经时期（时代对应：疆域/城市瓦片集按此切换） */
 const periodId = computed(() => periodOfBook(props.book?.id))
@@ -197,10 +223,11 @@ watch(
     const isChapterChange = prevCh !== undefined && prevCh !== ch
     const s = ++seq
     try {
-      const [nd, cd] = await Promise.all([fetchNotes(bookId), fetchPlaceCoords()])
+      const [nd, cd, zn] = await Promise.all([fetchNotes(bookId), fetchPlaceCoords(), fetchZhNames()])
       if (s !== seq) return
       notesData.value = nd
       coordsData.value = cd
+      zhNamesData.value = zn
       notesError.value = ''
       coordsError.value = ''
       if (isChapterChange) activeName.value = ''
@@ -225,6 +252,8 @@ watch(
   () => props.focusSeq,
   async () => {
     if (!props.focusName || !props.open) return
+    // 跳转即看地图：移动端自动切到地图视图
+    if (isMobileView.value) mobileView.value = 'map'
     // 同名重复跳转：先清空再选中（activeName 两次变化），确保地图 flyTo 重新定位
     if (activeName.value === props.focusName) {
       activeName.value = ''
@@ -235,7 +264,10 @@ watch(
 )
 
 function pickPlace(name) {
-  activeName.value = activeName.value === name ? '' : name
+  const next = activeName.value === name ? '' : name
+  activeName.value = next
+  // 列表点选 → 移动端切回地图视图看定位效果
+  if (next && isMobileView.value) mobileView.value = 'map'
 }
 
 /** 地点分类显隐切换（与 map 子页面图例同款交互） */
@@ -273,24 +305,44 @@ function toggleCat(cat) {
       <h2 class="map-title">
         <span class="map-title-label">本章地图</span>
         <span v-if="book" class="map-title-ref">{{ book.zh }} · 第 {{ chapter }} 章</span>
+        <span v-if="chapterPlaces.length" class="map-title-count">{{ chapterPlaces.length }} 地点</span>
       </h2>
       <div class="map-head-actions">
-        <!-- 全屏：跳转 map 子页面（全屏地图） -->
+        <!-- 全屏：跳转 map 子页面（深链定位本章地点 + 时期） -->
         <button class="map-full" @click="openFullMap" aria-label="全屏地图（跳转地图子页面）" title="全屏地图">⛶</button>
         <!-- 关闭按钮：固定在抽屉右上角 -->
         <button class="map-close" @click="emit('toggle')" aria-label="收起地图抽屉">✕</button>
       </div>
     </header>
-    <div class="map-body">
-      <!-- 时期徽章：当前书卷对应的圣经时期（MapLibreMap 瓦片集同步切换；位于地图上方，
-           独立于地点列表——本章无地点词条时也显示） -->
-      <p v-if="periodInfo" class="map-period-row">
-        <span class="map-period-tag" :title="'本卷对应时期：' + periodInfo.name">
-          {{ periodInfo.name }} · {{ fmtYear(periodInfo.year) }}
-        </span>
-      </p>
-      <template v-if="chapterPlaces.length">
-        <!-- 本章地图（map 子页面同款 MapLibre 引擎；v-if 在打开时才挂载，避免隐藏抽屉 0 尺寸容器） -->
+
+    <!-- 移动端双视图切换（可读性核心改动：地图不再被列表挤成小窗，两视图各占整屏） -->
+    <nav v-if="isMobileView && chapterPlaces.length" class="view-tabs" role="tablist" aria-label="地图视图">
+      <button
+        role="tab"
+        :aria-selected="mobileView === 'map'"
+        :class="{ active: mobileView === 'map' }"
+        @click="mobileView = 'map'"
+      >🗺 地图</button>
+      <button
+        role="tab"
+        :aria-selected="mobileView === 'list'"
+        :class="{ active: mobileView === 'list' }"
+        @click="mobileView = 'list'"
+      >📍 地点列表</button>
+    </nav>
+
+    <div class="map-body" :class="{ 'view-list': isMobileView && mobileView === 'list' }">
+      <!-- ============ 地图视图（移动端整屏 / 桌面在列表上方） ============ -->
+      <section
+        v-show="chapterPlaces.length && (!isMobileView || mobileView === 'map')"
+        class="view-map"
+        aria-label="本章地点地图"
+      >
+        <p v-if="periodInfo" class="map-period-row">
+          <span class="map-period-tag" :title="'本卷对应时期：' + periodInfo.name">
+            {{ periodInfo.name }} · {{ fmtYear(periodInfo.year) }}
+          </span>
+        </p>
         <div v-if="open" class="map-frame">
           <MapLibreMap
             :visible-cats="visibleCats"
@@ -301,8 +353,17 @@ function toggleCat(cat) {
           />
         </div>
         <p v-if="mappedPlaces.length < chapterPlaces.length" class="map-hint">
-          部分地点暂无坐标（仅列出）
+          {{ chapterPlaces.length - mappedPlaces.length }} 个地点暂无坐标（见地点列表）
         </p>
+        <p class="map-attrib">底图 Pleiades · STEP · DARE · Cliopatria · AWMC（CC BY 4.0）</p>
+      </section>
+
+      <!-- ============ 列表视图（移动端整屏滚动 / 桌面在地图下方） ============ -->
+      <section
+        v-show="chapterPlaces.length && (!isMobileView || mobileView === 'list')"
+        class="view-listsec"
+        aria-label="本章地点列表"
+      >
         <!-- 地点分类图例（词条式，默认收起——不长期占屏幕；13 类几何符号 + 色点，可切换显示） -->
         <section class="legend-sec" aria-label="地点分类图例">
           <button
@@ -326,7 +387,7 @@ function toggleCat(cat) {
             </ul>
           </template>
         </section>
-        <!-- 图例：地点列表 -->
+        <!-- 地点列表：中文名主行 + 英文名/简介副行（中文读者一眼可读） -->
         <ul class="map-legend">
           <li v-for="p in chapterPlaces" :key="p.name" class="map-item">
             <button
@@ -336,13 +397,18 @@ function toggleCat(cat) {
               @click="pickPlace(p.name)"
             >
               <span class="item-symbol" :style="{ color: CAT_DOT_COLOR[p.cat] || '#3c4652' }" aria-hidden="true">{{ CAT_ICON[p.cat] || '●' }}</span>
-              <span class="map-item-name">{{ p.name }}</span>
-              <span v-if="p.brief" class="map-item-brief">{{ p.brief }}</span>
+              <span class="map-item-main">
+                <span class="map-item-name">{{ p.zh || p.name }}</span>
+                <span v-if="p.zh" class="map-item-en">{{ p.name }}</span>
+                <span v-if="p.brief" class="map-item-brief">{{ p.brief }}</span>
+              </span>
+              <span v-if="p.lat != null" class="map-item-go" aria-hidden="true">📍</span>
             </button>
           </li>
         </ul>
-      </template>
-      <p v-else class="map-empty">本章暂无地点注释<template v-if="notesError">（{{ notesError }}）</template></p>
+      </section>
+
+      <p v-if="!chapterPlaces.length" class="map-empty">本章暂无地点注释<template v-if="notesError">（{{ notesError }}）</template></p>
     </div>
   </aside>
 </template>
@@ -389,6 +455,15 @@ function toggleCat(cat) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.map-title-count {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--gold);
+  background: var(--gold-soft);
+  border-radius: var(--radius-pill);
+  padding: 0.08rem 0.5rem;
 }
 /* 右上角按钮区：全屏跳转 + 关闭抽屉（固定右上角，不随标题流式布局） */
 .map-head-actions {
@@ -449,11 +524,28 @@ function toggleCat(cat) {
   border-radius: 10px;
   overflow: hidden;
 }
+/* 桌面端地图吸顶：滚动浏览地点列表时地图不离开视野 */
+.view-map {
+  position: sticky;
+  top: -0.9rem; /* 抵消 map-body 的 padding-top，吸顶时贴齐抽屉上缘 */
+  z-index: 3;
+  background: var(--panel);
+  padding-top: 0.9rem;
+  margin-top: -0.9rem;
+}
 .map-hint {
   margin: 0.5rem 0 0;
   font-size: 0.78rem;
   color: var(--muted);
   font-style: italic;
+}
+/* 数据来源署名（准确性可溯） */
+.map-attrib {
+  margin: 0.45rem 0 0.8rem;
+  font-size: 0.68rem;
+  color: var(--muted);
+  opacity: 0.75;
+  letter-spacing: 0.02em;
 }
 /* 左缘拖拽把手：桌面端拉伸抽屉宽度 */
 .map-resize-handle {
@@ -479,6 +571,10 @@ function toggleCat(cat) {
 :global(body.panel-resizing) {
   user-select: none;
   cursor: col-resize;
+}
+/* 双视图切换条：仅移动端显示（基础隐藏，900px 下媒体查询内开启 flex） */
+.view-tabs {
+  display: none;
 }
 /* 地点分类图例（与 map 子页面同款：13 类符号 + 色点 + 切换勾选；词条式默认收起） */
 .legend-sec {
@@ -585,7 +681,7 @@ function toggleCat(cat) {
   line-height: 1;
   letter-spacing: -0.12em;
 }
-/* 图例：地点列表 */
+/* 图例：地点列表（中文名主行 + 英文/简介副行） */
 .map-legend {
   list-style: none;
   margin: 0.8rem 0 0;
@@ -597,13 +693,13 @@ function toggleCat(cat) {
 }
 .map-item-btn {
   display: flex;
-  align-items: baseline;
-  gap: 0.45rem;
+  align-items: flex-start;
+  gap: 0.5rem;
   width: 100%;
   text-align: left;
   border: none;
   background: transparent;
-  padding: 0.5rem 0.35rem;
+  padding: 0.55rem 0.35rem;
   cursor: pointer;
   transition: background var(--dur) var(--ease);
 }
@@ -616,17 +712,40 @@ function toggleCat(cat) {
 }
 .map-item-btn.active {
   background: var(--gold-soft);
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+.map-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1;
 }
 .map-item-name {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--ink);
-  flex-shrink: 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+.map-item-en {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-style: italic;
 }
 .map-item-brief {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: var(--muted);
   line-height: 1.5;
-  min-width: 0;
+}
+.map-item-go {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+.map-item-btn:hover .map-item-go,
+.map-item-btn.active .map-item-go {
+  opacity: 0.9;
 }
 .map-empty {
   margin: 0;
@@ -682,10 +801,89 @@ function toggleCat(cat) {
   .sheet-grabber.dragging::after {
     background: var(--gold);
   }
-  /* 移动端地图高度随抽屉（70vh）自适应 */
+  /* 双视图切换（可读性核心改动）：地图整屏 / 列表整屏，不再上下挤在一屏 */
+  .view-tabs {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+    padding: 0.4rem 0.8rem 0.5rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .view-tabs button {
+    flex: 1;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-pill);
+    background: #fff;
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .view-tabs button.active {
+    background: var(--gold-soft);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .map-body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 双视图各自内部滚动 */
+    padding: 0.7rem 0.9rem 1.2rem;
+  }
+  .view-map {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    position: static; /* 桌面 sticky 在移动端关闭 */
+    padding-top: 0;
+    margin-top: 0;
+    background: transparent;
+  }
   .map-frame {
-    height: 36vh;
-    min-height: 220px;
+    flex: 1;
+    min-height: 0;
+    height: auto; /* 高度随抽屉自适应（整屏地图） */
+    margin-bottom: 0.5rem;
+  }
+  .view-listsec {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* 列表视图下隐藏地图区（v-show 已隐藏 view-map，此处保证 body 不留白） */
+  .map-body.view-list {
+    display: block;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .map-body.view-list .view-listsec {
+    overflow: visible;
+  }
+  /* 列表条目：移动端加大触控行高（可读性） */
+  .map-item-btn {
+    padding: 0.7rem 0.4rem;
+  }
+  .map-item-name {
+    font-size: 1rem;
+  }
+  .map-item-brief {
+    font-size: 0.84rem;
+  }
+  .map-item-go {
+    opacity: 0.55; /* 触屏无 hover：常显定位提示 */
+    align-self: center;
+  }
+  .map-period-row {
+    margin-bottom: 0.5rem;
+  }
+  .map-attrib {
+    margin-bottom: 0.4rem;
   }
 }
 </style>
