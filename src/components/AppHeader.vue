@@ -10,7 +10,6 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import logoUrl from '../assets/logo.png'
-import { openSearch } from '../lib/searchStore.js'
 
 const route = useRoute()
 const flat = computed(() => route.name === 'home')
@@ -78,9 +77,6 @@ onBeforeUnmount(() => {
       </RouterLink>
 
       <nav class="nav">
-        <button class="header-search" aria-label="全局搜索" title="全局搜索（经文 / 人物 / 地点 / 政权 / 时期 / 事件）" @click="openSearch()">
-          <span aria-hidden="true">🔍</span><span class="header-search-t">搜索</span>
-        </button>
         <RouterLink to="/">首页</RouterLink>
         <div class="nav-menu">
           <button
@@ -185,24 +181,6 @@ onBeforeUnmount(() => {
   font-weight: 600;
   color: #101010;
   white-space: nowrap;
-}
-/* 全局搜索入口（导航左缘）：与导航同字号，触屏加大点击区 */
-.header-search {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.32rem;
-  border: none;
-  background: none;
-  padding: 0.2rem 0.1rem;
-  font-size: 0.92rem;
-  font-family: inherit;
-  color: #4a4a4a;
-  cursor: pointer;
-  transition: color var(--dur) var(--ease);
-}
-.header-search:hover {
-  color: #101010;
-  font-weight: 600;
 }
 .nav {
   display: flex;
@@ -339,6 +317,7 @@ onBeforeUnmount(() => {
   .brand-name {
     display: none;
   }
+  /* 移动端：导航紧凑排列 */
   .nav {
     position: static;
     transform: none;
@@ -350,14 +329,6 @@ onBeforeUnmount(() => {
     -webkit-overflow-scrolling: touch;
   }
   .nav::-webkit-scrollbar {
-    display: none;
-  }
-  /* 移动端搜索按钮：只留图标（省导航宽度，触屏加大点击区） */
-  .header-search {
-    font-size: 1rem;
-    padding: 0.3rem 0.2rem;
-  }
-  .header-search-t {
     display: none;
   }
   .nav a.router-link-active::after,

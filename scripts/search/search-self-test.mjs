@@ -15,8 +15,7 @@ import {
   searchScripture,
   countScripture,
   prepareScripture,
-  prepareCommentary,
-  searchCommentary,
+  scanCommentaryBook,
   yearLabel,
   yearsLabel,
 } from '../../src/lib/searchEngine.js'
@@ -112,15 +111,19 @@ eq(index.translations.some((t) => t.key === 'kjv' && t.lang === 'latin'), true, 
 const chisb = prepareScripture(readJson('public/data/search/scripture-chisb.json'))
 eq(searchScripture('太初', chisb, { limit: 5 }).length > 0, true, '全文：思高本命中「太初」')
 
-/* ---------- 注释段落（heading + 摘录） ---------- */
-const mh = prepareCommentary(readJson('public/data/search/commentary-matthew-henry-en.json'))
-const divHit = searchCommentary('divinity of christ', mh, { limit: 3 })
-eq(divHit.length > 0, true, '注释：divinity of christ 命中 MH')
-eq(divHit[0]?.heading.includes('Divinity of Christ'), true, '注释：heading 原文保留')
-eq(divHit[0]?.bookIndex === 42 && divHit[0]?.chapter === 1, true, '注释：命中约翰福音 1 章')
-eq(searchCommentary('a', mh).length, 0, '注释：拉丁单字符不检索')
-const mhSum = prepareCommentary(readJson('public/data/search/commentary-mhcc-summary.json'))
-eq(mhSum.secs.length > 1000, true, '注释：MH 简明总结段落规模')
+/* ---------- 注释段落全文（直接扫描注释数据库原文件；命中项含 snippet 摘录） ---------- */
+const mhJohn = readJson('public/data/brp/commentary/fullCommentary/matthew-henry-en/43.json')
+const mhHits = scanCommentaryBook(mhJohn, norm('divinity of christ'), 'divinity of christ')
+eq(mhHits.length > 0, true, '注释全文：divinity of christ 命中 MH 约翰福音正文中段')
+eq(mhHits[0]?.chapter === 1, true, '注释全文：命中约翰福音 1 章')
+eq((mhHits[0]?.heading + ' ' + (mhHits[0]?.snippet || '')).toLowerCase().includes('divinity'), true,
+  '注释全文：命中词出现在 heading 或 snippet')
+eq(!!mhHits[0]?.heading || !!mhHits[0]?.snippet, true, '注释全文：命中项带 heading/snippet')
+const mhccSum = readJson('public/data/brp/commentary/summary/mhcc/01.json')
+eq(scanCommentaryBook(mhccSum, norm('the'), 'the').length > 0, true, '注释全文：MH 简明总结层命中')
+const mhccInt = readJson('public/data/brp/commentary/interpretation/mhcc/01.json')
+eq(scanCommentaryBook(mhccInt, norm('the earth'), 'the earth').length > 0, true, '注释全文：MH 简明经文解释层命中')
+// 单字符拦截在调用方（runCommentary）执行，scanCommentaryBook 本身不做此限制
 
 /* ---------- 主题 / 教会史 ---------- */
 const top = searchEntities('复活', index, 8)

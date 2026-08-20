@@ -25,6 +25,7 @@ const router = createRouter({
     { path: '/history', name: 'history', component: () => import('../views/church-history/ChurchHistoryPage.vue') },
     { path: '/history/:part(\\d+)/:chapter', name: 'history-doc', component: () => import('../views/church-history/ChurchHistoryPage.vue') },
     { path: '/sources', name: 'sources', component: () => import('../views/sources/SourcesPage.vue') },
+    { path: '/search', name: 'search', component: () => import('../views/search/SearchPage.vue') },
     // 404 兜底：未知路径重定向首页（缺此路由时 router-view 渲染空白）
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],

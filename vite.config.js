@@ -35,6 +35,9 @@ function geoTile404() {
 export default defineConfig({
   plugins: [vue(), geoTile404()],
   base: './',
+  // 固定监听 IPv4 127.0.0.1：Vite 默认只绑 IPv6 回环 ::1，若浏览器把
+  // localhost 解析为 127.0.0.1 会 ERR_CONNECTION_REFUSED
+  server: { host: '127.0.0.1' },
   // maplibre-gl v5：不排除 dep 优化——排除后 dev 直接以原始 UMD（9MB，无 CJS 互操作）
   // 导入 node_modules 文件，浏览器端 import default 失败、地图页空白（生产构建经
   // rollup 转换无此问题）。v5 经 vite 预构建 + 自带 worker 均正常。

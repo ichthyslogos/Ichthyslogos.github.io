@@ -2,12 +2,14 @@
 /**
  * SearchPanel — 全局搜索浮层（第一阶段：纯数据检索，无 AI）
  * 四路结果：地址跳转卡 → 实体分组（人物/地点/政权/事件/时期/注释源/主题/教会史）
- *   → 经文全文（多译本可切换，按语言懒加载）→ 注释段落（heading+摘录，按源懒加载）。
+ *   → 经文全文（多译本可切换，按语言懒加载）→ 注释段落（全文检索注释数据库原文件，按宗派分组）。
  * 移动端全屏、桌面居中；Esc / 遮罩 / 取消按钮关闭；输入法组合期间不触发检索。
  */
-import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, nextTick, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
-import { searchOpen, closeSearch } from '../../lib/searchStore.js'
+import DictView from '../DictView.vue'
+import { searchOpen, searchInitialQuery, closeSearch } from '../../lib/searchStore.js'
+import { fetchCommentary, fetchCommentaryManifest } from '../../lib/data.js'
 import {
   buildBookLookup,
   parseReference,
@@ -15,17 +17,40 @@ import {
   searchScripture,
   countScripture,
   prepareScripture,
-  searchCommentary,
-  prepareCommentary,
+  scanCommentaryBook,
+  snippet,
+  norm,
+  yearLabel,
   yearsLabel,
 } from '../../lib/searchEngine.js'
 
 const router = useRouter()
 
+/* 页面模式：独立结果页（非浮层）。page=true 时组件在 /search 页内联渲染（复用同一套
+ * 检索逻辑），initialQuery 提供初始查询词；overlay（默认）保留全局横浮层体验。 */
+const props = defineProps({
+  page: { type: Boolean, default: false },
+  initialQuery: { type: String, default: '' },
+})
+
+/* 页面模式：挂载即加载索引并按 initialQuery 检索（浮层模式在打开时才加载） */
+onMounted(async () => {
+  if (!props.page) return
+  if (!index.value && !loadError.value) {
+    try {
+      const idx = await loadIndex()
+      index.value = idx
+      lookup.value = buildBookLookup(idx.books)
+    } catch (e) {
+      loadError.value = e.message
+    }
+  }
+  if (props.initialQuery) query.value = props.initialQuery // 触发 watch(query) → 检索
+})
+
 /* ---------- 索引加载（模块级缓存，多面板实例共享） ---------- */
 let indexPromise = null
 const scripturePromises = new Map() // transKey -> Promise
-const commentaryPromises = new Map() // file -> Promise
 function loadIndex() {
   if (!indexPromise) {
     indexPromise = fetch('data/search/index.json', { cache: 'no-store' }).then((r) => {
@@ -51,23 +76,6 @@ function loadScripture(key) {
     )
   }
   return scripturePromises.get(key)
-}
-function loadCommentary(file) {
-  if (!commentaryPromises.has(file)) {
-    commentaryPromises.set(
-      file,
-      fetch(`data/search/commentary-${file}.json`, { cache: 'no-store' })
-        .then((r) => {
-          if (!r.ok) throw new Error(`${file} 注释索引加载失败 (${r.status})`)
-          return r.json()
-        })
-        .catch((e) => {
-          commentaryPromises.delete(file)
-          throw e
-        }),
-    )
-  }
-  return commentaryPromises.get(file)
 }
 
 /* ---------- Theographic 人物详情（词典摘录 + 亲属名单；一次性懒加载） ---------- */
@@ -99,9 +107,10 @@ const scriptureResults = ref([])
 const scriptureTotal = ref(0)
 const verseResultsOpen = ref(false) // 全文组展开（默认收起只显示前几条）
 const transKey = ref('') // 经文全文译本（空 = 按语言自动）
-const commentaryFiles = ref([]) // 已加载的注释索引文件
+const commentaryResults = ref([]) // 注释段落命中（按宗派 group 聚合成组）
 const commentaryLoading = ref(false)
-const commentaryResults = ref([])
+const commentaryLoadingLabel = ref('') // 当前正在全文检索的宗派（渐进加载提示）
+const expandedCommGroups = reactive(new Set()) // 注释组内「显示全部」展开的宗派
 const inputEl = ref(null)
 
 /* ---------- 人物详情展开（Theographic 增强：词典 + 亲属） ---------- */
@@ -188,10 +197,79 @@ function autoTransKey() {
 }
 const activeTrans = computed(() => transList.value.find((t) => t.key === transKey.value) || null)
 
-/** 注释文件清单（来自 index.commentaries[].files，全量懒加载一次后缓存） */
-const commFileDefs = computed(() =>
-  (index.value?.commentaries || []).flatMap((c) => c.files || []),
-)
+/** 注释段落全文检索源清单（按宗派分组展示顺序）；书籍覆盖范围取注释数据库 manifest */
+const COMMENTARY_SEARCH_GROUPS = [
+  { group: '马太亨利', pairs: [['fullCommentary', 'matthew-henry-en']] },
+  { group: '马太亨利简明', pairs: [['summary', 'mhcc'], ['interpretation', 'mhcc']] },
+  {
+    group: '其他注释源',
+    pairs: [
+      ['fullCommentary', 'calvin'],
+      ['fullCommentary', 'rwp'],
+      ['fullCommentary', 'abbott'],
+      ['fullCommentary', 'catena'],
+    ],
+  },
+]
+
+/* 宗派分组（展示顺序）与注解源显示名 */
+const GROUP_ORDER = ['马太亨利', '马太亨利简明', '其他注释源']
+const SRC_LABEL = {
+  'fullCommentary|matthew-henry-en': '马太亨利 · 全书本',
+  'summary|mhcc': '马太亨利简明 · 总结',
+  'interpretation|mhcc': '马太亨利简明 · 经文解释',
+  'fullCommentary|calvin': '加尔文',
+  'fullCommentary|rwp': '罗伯逊（RWP）',
+  'fullCommentary|abbott': '阿博特（Abbott）',
+  'fullCommentary|catena': '经文汇编（Catena）',
+}
+function commSrcName(s) {
+  return SRC_LABEL[`${s.cat}|${s.key}`] || s.key
+}
+
+/** 解析注释全文检索计划（manifest 源清单 → 逐宗派的 (category, key, 覆盖书卷)），一次解析后缓存 */
+let commentaryPlan = null
+async function resolveCommentaryPlan() {
+  if (commentaryPlan) return commentaryPlan
+  const m = await fetchCommentaryManifest()
+  const plan = COMMENTARY_SEARCH_GROUPS.map((g) => ({
+    group: g.group,
+    sources: g.pairs
+      .map(([cat, key]) => {
+        const src = (m.sources || []).find((s) => s.category === cat && s.key === key)
+        return src ? { cat, key, books: src.books || [] } : null
+      })
+      .filter(Boolean),
+  })).filter((g) => g.sources.length)
+  commentaryPlan = plan
+  return plan
+}
+
+/* 注释结果按宗派分组（每组成默认收起只列前几条，可逐个「显示全部」展开） */
+const COMM_GROUP_SHOW = 6
+const commentaryGroups = computed(() => {
+  const g = new Map()
+  for (const s of commentaryResults.value) {
+    const k = s.group && GROUP_ORDER.includes(s.group) ? s.group : GROUP_ORDER[GROUP_ORDER.length - 1]
+    if (!g.has(k)) g.set(k, [])
+    g.get(k).push(s)
+  }
+  const ordered = GROUP_ORDER.filter((k) => g.has(k))
+  for (const k of g.keys()) if (!ordered.includes(k)) ordered.push(k)
+  return ordered.map((k) => {
+    const all = g.get(k)
+    const shown = expandedCommGroups.has(k) ? all.length : Math.min(COMM_GROUP_SHOW, all.length)
+    return { group: k, items: all.slice(0, shown), total: all.length, expanded: shown >= all.length }
+  })
+})
+function toggleCommGroup(k) {
+  expandedCommGroups.has(k) ? expandedCommGroups.delete(k) : expandedCommGroups.add(k)
+}
+/** 经文全文组展开/收起（展开时显示全部命中，收起回到前几条），再触发一次检索刷新 */
+function toggleScripture() {
+  verseResultsOpen.value = !verseResultsOpen.value
+  runSearch()
+}
 
 /* ---------- 检索执行（防抖 + 组合输入保护） ---------- */
 watch(query, () => {
@@ -220,21 +298,11 @@ async function runSearch() {
   await ensureScripture()
   if (seq !== searchSeq) return
   if (scriptureData.value) {
-    scriptureResults.value = searchScripture(q, scriptureData.value, { limit: verseResultsOpen.value ? 40 : 5 })
     scriptureTotal.value = countScripture(q, scriptureData.value)
+    scriptureResults.value = searchScripture(q, scriptureData.value, { limit: verseResultsOpen.value ? scriptureTotal.value : 5 })
   }
-  // 注释段落（懒加载全部注释索引文件后检索；失败不阻塞）
-  await ensureCommentary()
-  if (seq !== searchSeq) return
-  if (commentaryFiles.value.length) {
-    const limit = verseResultsOpen.value ? 16 : 4
-    const merged = []
-    for (const d of commentaryFiles.value) {
-      for (const hit of searchCommentary(q, d, { limit })) merged.push(hit)
-    }
-    merged.sort((a, b) => a.bookIndex - b.bookIndex || a.chapter - b.chapter)
-    commentaryResults.value = merged.slice(0, verseResultsOpen.value ? 20 : 6)
-  }
+  // 注释段落（全文检索注释数据库原文件，按宗派分组渐进加载；失败不阻塞）
+  runCommentary()
 }
 
 const refHit = ref(null)
@@ -265,20 +333,58 @@ async function ensureScripture() {
   }
 }
 
-/** 按需加载全部注释段落索引（一次性；7 文件 ~6MB，首次注释检索时加载） */
-async function ensureCommentary() {
-  if (commentaryFiles.value.length || commentaryLoading.value) return
+/** 注释段落全文检索：直接调用注释数据库原文件（data/brp/commentary/<cat>/<key>/<bookId>.json），
+ * 按宗派分组渐进加载（每组加载完即追加显示）。命中项含 group/key/cat 供分组与来源标注。
+ * 命中文本仅存命中项（heading + 摘录），完整注释跳读经页查看。 */
+async function runCommentary() {
   const q = query.value.trim()
-  if (!isCjk.value && q.replace(/[^a-z0-9]/gi, '').length < 2) return
+  const nq = norm(q)
+  // 中文 ≥1 字、拉丁 ≥2 字符才执行（避免单字母命中海量段落）
+  if (!nq || (!isCjk.value && q.replace(/[^a-z0-9]/gi, '').length < 2)) {
+    commentaryResults.value = []
+    commentaryLoading.value = false
+    commentaryLoadingLabel.value = ''
+    return
+  }
+  let plan
+  try {
+    plan = await resolveCommentaryPlan()
+  } catch {
+    commentaryLoading.value = false
+    return
+  }
+  const seq = searchSeq.value
+  if (seq !== searchSeq.value) return
+  commentaryResults.value = []
+  expandedCommGroups.clear()
   commentaryLoading.value = true
   try {
-    const list = await Promise.all(commFileDefs.value.map((f) => loadCommentary(f.file)))
-    for (const d of list) prepareCommentary(d)
-    commentaryFiles.value = list
-  } catch {
-    // 注释索引失败不阻塞其他检索
+    for (const g of plan) {
+      if (seq !== searchSeq.value) return
+      commentaryLoadingLabel.value = g.group
+      const groupHits = []
+      for (const s of g.sources) {
+        if (seq !== searchSeq.value) return
+        // 同源全部覆盖书卷并行拉取（注释数据库原文件；fetchCommentary 内部有内存缓存）
+        const datas = await Promise.all(s.books.map((bookId) => fetchCommentary(s.key, bookId, s.cat).catch(() => null)))
+        if (seq !== searchSeq.value) return
+        for (const data of datas) {
+          if (!data || !data.chapters) continue
+          const hits = scanCommentaryBook(data, nq, q)
+          for (const h of hits) { h.group = g.group; h.key = s.key; h.cat = s.cat }
+          groupHits.push(...hits)
+        }
+      }
+      if (groupHits.length) {
+        commentaryResults.value = commentaryResults.value.concat(groupHits)
+        await nextTick()
+      }
+    }
   } finally {
-    commentaryLoading.value = false
+    if (seq === searchSeq.value) {
+      commentaryLoading.value = false
+      commentaryLoadingLabel.value = ''
+    }
   }
 }
 
@@ -295,8 +401,17 @@ function pickTrans(key) {
 watch(searchOpen, async (open) => {
   document.body.style.overflow = open ? 'hidden' : ''
   if (open) {
+    // 消费首页/入口预填的关键词（一次性：读取后清空）
+    if (searchInitialQuery.value) {
+      query.value = searchInitialQuery.value
+      searchInitialQuery.value = ''
+    }
     await nextTick()
     inputEl.value?.focus()
+    if (index.value && query.value.trim()) {
+      // 索引已在内存：直接按（预填）关键词检索
+      runSearch()
+    }
     if (!index.value && !loadError.value) {
       try {
         const idx = await loadIndex()
@@ -319,6 +434,8 @@ watch(searchOpen, async (open) => {
     transKey.value = ''
     scriptureData.value = null
     commentaryResults.value = []
+    commentaryLoadingLabel.value = ''
+    expandedCommGroups.clear()
     expandedPerson.value = ''
   }
 })
@@ -337,6 +454,11 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
 
 function close() {
   closeSearch()
+}
+
+/** 页面模式：回到首页 */
+function goHome() {
+  router.push('/')
 }
 
 /* ---------- 跳转 ---------- */
@@ -388,12 +510,12 @@ function goHistory(h) {
   go(`/history/${h.part}/${h.no}`)
 }
 function goCommentarySec(s) {
-  const b = index.value?.books?.[s.bookIndex]
+  const b = (index.value?.books || []).find((x) => x.id === s.bookId)
   if (!b) return
-  go(`/brp/${b.id}/${s.chapter}`)
+  go(`/brp/${b.id}/${s.chapter}${s.ref ? `?v=${String(s.ref).split(',')[0]}` : ''}`)
 }
 function commSecAddr(s) {
-  const b = index.value?.books?.[s.bookIndex]
+  const b = (index.value?.books || []).find((x) => x.id === s.bookId)
   if (!b) return ''
   return `${b.zh} ${s.chapter}${s.ref ? `:${s.ref}` : ''}`
 }
@@ -438,16 +560,90 @@ const hasResults = computed(() => {
   )
 })
 
+/* ---------- 人物：每个同名者独立成母词条；别称常显（无需展开）；历史时期作子词条 ---------- */
+function firstLabel(first) {
+  if (!first) return ''
+  const [bid, ch, v] = first.split(':')
+  const b = (index.value?.books || []).find((x) => x.id === bid)
+  return `${b ? b.zh || b.en : bid} ${ch}${v ? ':' + v : ''}`
+}
+/** 时期 id → 显示名（亚伯拉罕时期 / 耶稣时期 / 保罗宣教时期 …） */
+function periodName(key) {
+  const found = (index.value?.periods || []).find((p) => p.id === key)
+  return found ? found.name : key
+}
+/** 每个同名人都是独立母词条：人名 + 别名（常显）+ 区分信息（子词条：历史时期） */
+const personRows = computed(() => {
+  const list = results.value?.persons || []
+  return list.map((item) => {
+    const raw = item.raw
+    return {
+      id: raw.id,
+      title: item.title,
+      en: raw.en,
+      zh: raw.zh,
+      bio: raw.b,
+      aliases: raw.al || [],
+      periods: (raw.ps || []).map((k) => ({ id: k, name: periodName(k) })),
+      timeline: timelineOf(raw.s),
+      tlShowAll: personTimelineOpen.has(raw.id),
+      first: raw.first,
+      sub: [
+        raw.zh && raw.en !== raw.zh ? raw.en : '',
+        raw.b ? (raw.b.length > 36 ? raw.b.slice(0, 36) + '…' : raw.b) : '',
+        yearsLabel(raw.by, raw.dy),
+        raw.n ? `${raw.n} 处` : '',
+        raw.first ? `首现 ${firstLabel(raw.first)}` : '',
+      ].filter(Boolean).join(' · '),
+    }
+  })
+})
+const personTotalCount = computed(() => personRows.value.length)
+/** 前往该历史时期地图 */
+function goPeriodKey(p) {
+  go(`/map?period=${encodeURIComponent(p.id)}`)
+}
+
+/* ---------- 编年时间线 ↔ 人物匹配：事件 ppl(强码) → 人物 s(强码) ---------- */
+const TL_SHOW = 4
+const personTimelineOpen = reactive(new Set()) // 展开「显示全部」时间线的人物 id
+let timelineIndex = null // normStrong(code) -> 事件[]
+/** Strong 码去前导零（H0121G → H121G），人物 s 与事件 ppl 格式对齐 */
+function normStrong(c) {
+  const m = String(c || '').trim().match(/^([A-Za-z]+)(\d+)(.*)$/)
+  return m ? m[1] + String(Number(m[2])) + m[3] : String(c || '').trim()
+}
+function buildTimelineIndex() {
+  if (timelineIndex) return timelineIndex
+  const idx = new Map()
+  for (const ev of index.value?.timeline || []) {
+    for (const code of ev.ppl || []) {
+      const k = normStrong(code)
+      if (!k) continue
+      if (!idx.has(k)) idx.set(k, [])
+      idx.get(k).push(ev)
+    }
+  }
+  timelineIndex = idx
+  return idx
+}
+function timelineOf(s) {
+  return (buildTimelineIndex().get(normStrong(s)) || [])
+    .slice()
+    .sort((a, b) => (a.y || 0) - (b.y || 0))
+}
+function togglePersonTimeline(pg) {
+  personTimelineOpen.has(pg.id) ? personTimelineOpen.delete(pg.id) : personTimelineOpen.add(pg.id)
+}
+
 const GROUPS = computed(() => {
     const r = results.value
     if (!r) return []
     const defs = [
-      { key: 'persons', icon: '👤', label: '人物', items: r.persons, act: togglePersonDetail, actIcon: 'ⓘ', actTitle: '词典与亲属' },
       { key: 'places', icon: '📍', label: '地点', items: r.places, act: goPlace, actIcon: '🗺', actTitle: '在地图中查看' },
       { key: 'polities', icon: '🏛', label: '政权 / 区域', items: r.polities, act: goPolity, actIcon: '🗺', actTitle: '在地图中查看' },
       { key: 'periods', icon: '⏳', label: '历史时期', items: r.periods, act: goPeriod, actIcon: '🗺', actTitle: '在地图中查看' },
       { key: 'events', icon: '📜', label: '事件 / 旅程', items: r.events, act: goEvent, actIcon: '🗺', actTitle: '在地图中查看' },
-      { key: 'timeline', icon: '⏱', label: '编年时间线', items: r.timeline, act: goTimeline, actIcon: '📖', actTitle: '查看该事件经文' },
       { key: 'topics', icon: '🧭', label: '主题专题', items: r.topics, act: goTopic, actIcon: '📄', actTitle: '查看专题' },
       { key: 'history', icon: '⛪', label: '教会历史', items: r.history, act: goHistory, actIcon: '📄', actTitle: '阅读该章' },
       { key: 'commentaries', icon: '📚', label: '注释源', items: r.commentaries, act: goCommentary, actIcon: '📖', actTitle: '前往读经页' },
@@ -478,10 +674,20 @@ function onCompositionEnd() {
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="sp">
-      <div v-if="searchOpen" class="sp-mask" @click.self="close">
-        <div class="sp-panel" role="dialog" aria-modal="true" aria-label="全局搜索">
+  <Teleport to="body" :disabled="page">
+    <Transition name="sp" :css="!page">
+      <div
+        v-if="page || searchOpen"
+        :class="page ? 'srch-page' : 'sp-mask'"
+        @click.self="!page && close()"
+      >
+        <div
+          class="sp-panel"
+          :class="page ? 'sp-panel--page' : ''"
+          :role="page ? undefined : 'dialog'"
+          :aria-modal="page ? undefined : 'true'"
+          :aria-label="page ? undefined : '全局搜索'"
+        >
           <header class="sp-head">
             <span class="sp-ico" aria-hidden="true">🔍</span>
             <input
@@ -502,7 +708,8 @@ function onCompositionEnd() {
             <button v-if="query" class="sp-clear" aria-label="清空" @click="query = ''">
               <span aria-hidden="true">×</span>
             </button>
-            <button class="sp-close" aria-label="关闭搜索" @click="close">取消</button>
+            <button v-if="page" class="sp-close" aria-label="回到首页" @click="goHome">回到首页</button>
+            <button v-else class="sp-close" aria-label="关闭搜索" @click="close">取消</button>
           </header>
 
           <div class="sp-body">
@@ -532,6 +739,91 @@ function onCompositionEnd() {
                 <span class="sp-ref-go" aria-hidden="true">→</span>
               </button>
 
+              <!-- 2a. 人物（每个同名者独立为母词条；别称常显无需展开；历史时期作子词条） -->
+              <section v-if="personRows.length" class="sp-group">
+                <h3 class="sp-group-h">
+                  <span aria-hidden="true">👤</span>人物
+                  <span class="sp-group-n">{{ personTotalCount }}</span>
+                </h3>
+                <ul class="sp-list">
+                  <li v-for="pg in personRows" :key="pg.id">
+                    <button class="sp-item" :class="{ open: expandedPerson === pg.id }" @click="togglePersonDetail(pg)">
+                      <span class="sp-item-main">
+                        <strong class="sp-item-t" v-html="mark(pg.title, query)"></strong>
+                        <small v-if="pg.sub" class="sp-item-sub" v-html="mark(pg.sub, query)"></small>
+                      </span>
+                      <span class="sp-item-act" aria-hidden="true">ⓘ</span>
+                    </button>
+
+                    <!-- 别称：无需展开即可看见 -->
+                    <div v-if="pg.aliases.length" class="sp-pmeta">
+                      <span class="sp-pmeta-k">别称</span>
+                      <span v-for="a in pg.aliases" :key="a" class="sp-pmeta-chip" v-html="mark(a, query)"></span>
+                    </div>
+
+                    <!-- 历史时期：子词条（点击前往该时期地图） -->
+                    <div v-if="pg.periods.length" class="sp-pmeta">
+                      <span class="sp-pmeta-k">时期</span>
+                      <button
+                        v-for="pd in pg.periods"
+                        :key="pd.id"
+                        class="sp-pmeta-chip sp-pmeta-link"
+                        @click="goPeriodKey(pd)"
+                      >{{ pd.name }}</button>
+                    </div>
+
+                    <!-- 编年时间线：与人物匹配的相关事件（点击前往经文） -->
+                    <template v-if="pg.timeline.length">
+                      <div class="sp-pmeta sp-pperiod">
+                        <span class="sp-pmeta-k">编年时间线</span>
+                        <span class="sp-pmeta-count">{{ pg.timeline.length }} 条</span>
+                      </div>
+                      <ul class="sp-tlist">
+                        <li
+                          v-for="tl in (pg.tlShowAll ? pg.timeline : pg.timeline.slice(0, TL_SHOW))"
+                          :key="tl.id"
+                        >
+                          <button class="sp-tl-item" @click="goTimeline(tl)">
+                            <span class="sp-tl-z" v-html="mark(tl.z, query)"></span>
+                            <span class="sp-tl-y">{{ yearLabel(tl.y) }}</span>
+                          </button>
+                        </li>
+                      </ul>
+                      <button
+                        v-if="pg.timeline.length > TL_SHOW"
+                        class="sp-more"
+                        @click="togglePersonTimeline(pg)"
+                      >{{ pg.tlShowAll ? '收起' : `显示全部 ${pg.timeline.length} 条` }}</button>
+                    </template>
+
+                    <div v-if="expandedPerson === pg.id" class="sp-pdetail">
+                          <template v-if="personDetail">
+                            <div v-if="personDetail.years || personDetail.appear || personDetail.firstRef" class="sp-pdetail-meta">
+                              <span v-if="personDetail.years">{{ personDetail.years }}</span>
+                              <span v-if="personDetail.appear">出现 {{ personDetail.appear }} 次</span>
+                              <span v-if="personDetail.firstRef">首现 {{ personDetail.firstRef }}</span>
+                            </div>
+                            <div v-if="personDetail.relLines.length" class="sp-pdetail-rel">
+                              <div v-for="(line, i) in personDetail.relLines" :key="i">{{ line }}</div>
+                            </div>
+                            <DictView v-if="personDetail.dict" :text="personDetail.dict" />
+                            <div
+                              v-if="!personDetail.relLines.length && !personDetail.dict && !personDetail.years && !personDetail.firstRef"
+                              class="sp-pdetail-none"
+                            >暂无词典与亲属数据</div>
+                            <div class="sp-pdetail-acts">
+                              <button v-if="personDetail.firstRaw?.first" class="sp-pdetail-btn" @click="goPerson(personDetail.firstRaw)">📖 首处经文{{ personDetail.firstRef ? `（${personDetail.firstRef}）` : '' }}</button>
+                              <button class="sp-pdetail-btn" @click="goPersonPage(personDetail.firstRaw)">📄 人物词条</button>
+                            </div>
+                          </template>
+                          <div v-else-if="theoError" class="sp-pdetail-none">详情数据加载失败</div>
+                          <div v-else class="sp-pdetail-none">加载中…</div>
+                          <div class="sp-pdetail-src">Easton 词典 · Theographic（传统编年）</div>
+                        </div>
+                    </li>
+                  </ul>
+              </section>
+
               <!-- 2. 实体分组 -->
               <section v-for="g in GROUPS" :key="g.key" class="sp-group">
                 <h3 class="sp-group-h">
@@ -542,7 +834,6 @@ function onCompositionEnd() {
                   <li v-for="item in g.items" :key="item.raw.id">
                     <button
                       class="sp-item"
-                      :class="{ open: g.key === 'persons' && expandedPerson === item.raw.id }"
                       :title="g.actTitle"
                       @click="g.act(item.raw)"
                     >
@@ -552,27 +843,6 @@ function onCompositionEnd() {
                       </span>
                       <span class="sp-item-act" aria-hidden="true">{{ g.actIcon }}</span>
                     </button>
-                    <div v-if="g.key === 'persons' && expandedPerson === item.raw.id" class="sp-pdetail">
-                      <template v-if="personDetail">
-                        <div v-if="personDetail.years || personDetail.appear || personDetail.firstRef" class="sp-pdetail-meta">
-                          <span v-if="personDetail.years">{{ personDetail.years }}</span>
-                          <span v-if="personDetail.appear">出现 {{ personDetail.appear }} 次</span>
-                          <span v-if="personDetail.firstRef">首现 {{ personDetail.firstRef }}</span>
-                        </div>
-                        <div v-if="personDetail.relLines.length" class="sp-pdetail-rel">
-                          <div v-for="(line, i) in personDetail.relLines" :key="i">{{ line }}</div>
-                        </div>
-                        <div v-if="personDetail.dict" class="sp-pdetail-dict">{{ personDetail.dict }}</div>
-                        <div v-if="!personDetail.relLines.length && !personDetail.dict && !personDetail.years && !personDetail.firstRef" class="sp-pdetail-none">暂无词典与亲属数据</div>
-                        <div class="sp-pdetail-acts">
-                          <button v-if="personDetail.firstRaw?.first" class="sp-pdetail-btn" @click="goPerson(personDetail.firstRaw)">📖 首处经文{{ personDetail.firstRef ? `（${personDetail.firstRef}）` : '' }}</button>
-                          <button class="sp-pdetail-btn" @click="goPersonPage(personDetail.firstRaw)">📄 人物词条</button>
-                        </div>
-                      </template>
-                      <div v-else-if="theoError" class="sp-pdetail-none">详情数据加载失败</div>
-                      <div v-else class="sp-pdetail-none">加载中…</div>
-                      <div class="sp-pdetail-src">Easton 词典 · Theographic（传统编年）</div>
-                    </div>
                   </li>
                 </ul>
               </section>
@@ -594,7 +864,7 @@ function onCompositionEnd() {
                 </div>
                 <div v-if="scriptureLoading" class="sp-loading">正在加载{{ activeTrans?.name || '' }}全文索引…</div>
                 <template v-else-if="scriptureResults.length">
-                  <ul class="sp-list">
+                  <ul class="sp-list" :class="{ 'sp-open': verseResultsOpen }">
                     <li v-for="(v, i) in scriptureResults" :key="i">
                       <button class="sp-item sp-verse" @click="goVerse(v)">
                         <span class="sp-item-main">
@@ -604,35 +874,49 @@ function onCompositionEnd() {
                       </button>
                     </li>
                   </ul>
-                  <button v-if="scriptureTotal > scriptureResults.length" class="sp-more" @click="verseResultsOpen = true; runSearch()">
-                    显示全部 {{ scriptureTotal }} 处
+                  <button
+                    v-if="scriptureResults.length && (verseResultsOpen || scriptureTotal > scriptureResults.length)"
+                    class="sp-more"
+                    @click="toggleScripture()"
+                  >
+                    {{ verseResultsOpen ? '收起' : `显示全部 ${scriptureTotal} 处` }}
                   </button>
                 </template>
                 <div v-else-if="index && !scriptureLoading" class="sp-none">无经文命中</div>
               </section>
 
-              <!-- 4. 注释段落（heading + 摘录；跳读经页看完整注释） -->
+              <!-- 4. 注释段落（按宗派分组；heading + 摘录，跳读经页看完整注释） -->
               <section class="sp-group">
                 <h3 class="sp-group-h">
                   <span aria-hidden="true">📚</span>注释段落
                   <span class="sp-group-n" v-if="commentaryResults.length">{{ commentaryResults.length }}</span>
                 </h3>
-                <div v-if="commentaryLoading" class="sp-loading">正在加载注释索引…</div>
+                <div v-if="commentaryLoading" class="sp-loading">正在全文检索注释数据库[{{ commentaryLoadingLabel || '…' }}]…</div>
                 <template v-else-if="commentaryResults.length">
-                  <ul class="sp-list">
-                    <li v-for="(s, i) in commentaryResults" :key="i">
-                      <button class="sp-item sp-verse" @click="goCommentarySec(s)">
-                        <span class="sp-item-main">
-                          <strong class="sp-item-addr">{{ commSecAddr(s) }}</strong>
-                          <small v-if="s.heading" class="sp-item-cmhead" v-html="mark(s.heading, query)"></small>
-                          <small class="sp-item-text" v-html="mark(s.text, query)"></small>
-                          <small class="sp-item-cmsrc">{{ s.name }}</small>
-                        </span>
-                      </button>
-                    </li>
-                  </ul>
+                  <div v-for="cg in commentaryGroups" :key="cg.group" class="sp-cmg">
+                    <h4 class="sp-cmg-h" @click="toggleCommGroup(cg.group)">
+                      <span class="sp-cmg-caret">{{ cg.expanded ? '▾' : '▸' }}</span>{{ cg.group }}<span class="sp-group-n">{{ cg.total }}</span>
+                    </h4>
+                    <ul class="sp-list" :class="{ 'sp-open': cg.expanded }">
+                      <li v-for="(s, i) in cg.items" :key="cg.group + i">
+                        <button class="sp-item sp-verse" @click="goCommentarySec(s)">
+                          <span class="sp-item-main">
+                            <strong class="sp-item-addr">{{ commSecAddr(s) }}</strong>
+                            <small v-if="s.heading" class="sp-item-cmhead" v-html="mark(s.heading, query)"></small>
+                            <small class="sp-item-text" v-html="mark(s.snippet || s.text, query)"></small>
+                            <small class="sp-item-cmsrc">{{ commSrcName(s) }}</small>
+                          </span>
+                        </button>
+                      </li>
+                    </ul>
+                    <button
+                      v-if="cg.items.length && (cg.expanded || cg.total > cg.items.length)"
+                      class="sp-more"
+                      @click="toggleCommGroup(cg.group)"
+                    >{{ cg.expanded ? '收起' : `显示全部 ${cg.total} 条` }}</button>
+                  </div>
                 </template>
-                <div v-else-if="index && !commentaryLoading" class="sp-none">无注释命中（仅检索标题与摘录，全文见读经页）</div>
+                <div v-else-if="index && !commentaryLoading" class="sp-none">无注释命中（全文检索马太亨利、马太亨利简明及加尔文/罗伯逊/阿博特/金链等源）</div>
               </section>
 
               <!-- 无任何结果 -->
@@ -658,7 +942,6 @@ function onCompositionEnd() {
               }}
               条 · 经文 {{ index.meta.counts.translations }} 译本 · 注释段 {{ index.meta.counts.commentarySections }}
             </span>
-            <span>第一阶段 · 纯数据检索（无 AI）</span>
           </footer>
         </div>
       </div>
@@ -842,10 +1125,27 @@ function onCompositionEnd() {
   font-size: 13px;
   font-weight: 600;
   color: #51617a;
-  position: sticky;
-  top: 0;
-  background: #fff;
-  z-index: 1;
+}
+.sp-cmg {
+  margin: 2px 0 8px;
+}
+.sp-cmg-h {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 5px 18px 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #3d5a80;
+  background: #f2f6fb;
+  border-left: 3px solid #7aa2c7;
+  cursor: pointer;
+  user-select: none;
+}
+.sp-cmg-caret {
+  font-size: 10px;
+  color: #7aa2c7;
 }
 .sp-group-n {
   background: #eef2f6;
@@ -901,6 +1201,84 @@ function onCompositionEnd() {
   flex: none;
   font-size: 16px;
   opacity: 0.55;
+  margin-left: 10px;
+}
+/* 人物别称 / 历史时期（母词条常显元信息；时期为可点击子词条） */
+.sp-pmeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 8px;
+  padding: 5px 14px 7px;
+  margin-top: -2px;
+  font-size: 12px;
+}
+.sp-pmeta-k {
+  flex: none;
+  color: #8b98a5;
+  font-weight: 600;
+}
+.sp-pmeta-chip {
+  display: inline-block;
+  padding: 1px 9px;
+  background: #eef3fa;
+  border: 1px solid #d9e4f0;
+  border-radius: 999px;
+  color: #3d5a80;
+  line-height: 1.6;
+}
+.sp-pmeta-link {
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.sp-pmeta-link:hover {
+  background: #e0e9f5;
+  border-color: #4a6fa5;
+}
+/* 人物编年时间线（与人物匹配的事件列表） */
+.sp-pperiod {
+  margin-top: 3px;
+  padding-top: 6px;
+  border-top: 1px dashed #e3e9f0;
+}
+.sp-pmeta-count {
+  color: #9aa7b3;
+  font-size: 11px;
+}
+.sp-tlist {
+  list-style: none;
+  margin: 0;
+  padding: 0 14px 8px;
+}
+.sp-tl-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 3px 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  color: #3d5a80;
+}
+.sp-tl-item:hover .sp-tl-z {
+  color: #1f3c68;
+  text-decoration: underline;
+}
+.sp-tl-z {
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.5;
+}
+.sp-tl-y {
+  flex: none;
+  font-size: 11.5px;
+  color: #9aa7b3;
+}
+.sp-tl-item + .sp-tl-item {
+  border-top: 1px solid #eef2f7;
 }
 /* 人物条目展开态：浅金底提示 */
 .sp-item.open {
@@ -928,9 +1306,6 @@ function onCompositionEnd() {
 .sp-pdetail-rel {
   margin-bottom: 6px;
   color: #2c4a7c;
-}
-.sp-pdetail-dict {
-  color: #55636f;
 }
 .sp-pdetail-none {
   color: #8b98a5;
@@ -986,6 +1361,17 @@ function onCompositionEnd() {
 .sp-item-cmsrc {
   font-size: 11.5px;
   color: #98a6b3;
+}
+/* 展开态：经文/注释正文不截断，不再锁成小滚动盒——结果随 .sp-body 整页滚动，
+   使空白处与非展开内容处均可滚轮滑动页面主体 */
+.sp-list.sp-open .sp-item-text {
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: vertical;
+  overflow: visible;
+}
+.sp-list.sp-open .sp-item-cmhead {
+  white-space: normal;
+  text-overflow: clip;
 }
 /* 译本切换条 */
 .sp-trans {
@@ -1043,16 +1429,47 @@ function onCompositionEnd() {
   line-height: 1.8;
 }
 
-/* 底部状态 */
+/* 底部数据统计：始终处于正常文档流（flex:none，非吸顶/覆盖），滚动到最底部才能看到，
+   不遮挡上方任何结果 */
 .sp-foot {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 16px;
-  border-top: 1px solid #e8ecf1;
+  flex: none;
+  padding: 10px 18px 16px;
   color: #98a6b3;
   font-size: 11.5px;
-  background: #fbfcfd;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ---------- 页面模式：独立结果页（非浮层） ---------- */
+.srch-page {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0 0;
+  overflow: hidden; /* 整页不滚，由内部 .sp-body 滚动（搜索框固定顶部） */
+  background: #fff;
+}
+.srch-page .sp-panel {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  max-height: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: #fff;
+  flex: 1;
+  min-height: 0;
+}
+.srch-page .sp-head {
+  border-bottom: 1px solid #eef1f5;
+}
+.srch-page .sp-input {
+  font-size: 1.05rem;
+}
+.srch-page .sp-body {
+  overflow-y: auto; /* 结果区可滚动；顶部搜索条固定不动 */
 }
 
 /* 移动端：全屏面板 */

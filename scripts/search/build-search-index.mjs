@@ -4,7 +4,7 @@
  * 从现有运行时数据（public/data/**）只读抽取，生成统一搜索索引到 public/data/search/：
  *   index.json                    轻量实体索引（打开搜索面板即加载）
  *   scripture-{key}.json          全部译本全本节文本（用户输入后按需懒加载）
- *   commentary-{file}.json        注释段落索引（标题 + 文本摘录，按源懒加载）
+ *   注释段落                      不预建索引；搜索时直接调用注释数据库原文件做全文检索
  *
  * 数据来源与许可：
  *   经文    translations/*（STEP Bible / NIV 导入数据，含和合本/思高本/KJV/ASV/DRC 等）
@@ -18,11 +18,11 @@
  *   主题    apologetics/topics/*.json（护教学专题，双语标题 + 标签）
  *   教会史  church-history/part1-5.json（章标题 + 时期名）
  *
- * 注释全文取舍（准确性优先）：源文件 73MB 全量入前端不可行；索引保留 heading 原文
- * 与 text 前 180 字符摘录（原样复制），命中后跳读经页看完整注释。正文中段关键词的
- * 覆盖留给第二阶段后端 FTS（见 docs/SEARCH.md）。
+ * 注释段落：不预建截断索引。前端做全文检索时直接调用注释数据库原文件
+ * （public/data/brp/commentary/<category>/<key>/<bookId>.json，见 SearchPanel.vue），
+ * 本脚本仅为注释源挂上宗派分组元数据并统计段落总数，供实体分类与页脚计数展示。
  *
- * 原则：源数据一律只读，本脚本不改写任何既有数据文件；索引条目文本原样复制保证准确。
+ * 原则：源数据一律只读，本脚本不改写任何既有数据文件；注释命中跳读经页看完整上下文。
  */
 
 import fs from 'node:fs'
@@ -301,89 +301,52 @@ if (exists(theoEventsPath)) {
   timeline.sort((a, b) => (a.y ?? 99999) - (b.y ?? 99999) || String(a.id).localeCompare(String(b.id), 'en'))
 }
 
-/* ---------- 7. 注释源清单（去重 by key；category 聚合）+ 段落索引文件 ---------- */
+/* ---------- 7. 注释源清单（去重 by key；聚合 category）+ 宗派分组元数据 ----------
+ * 注释段落全文检索不预建截断索引：搜索时前端直接调用注释数据库原文件
+ * （data/brp/commentary/<category>/<key>/<bookId>.json，见 SearchPanel.vue 注释段逻辑）。
+ * 此处在 index.json 挂上源清单与宗派分组，供实体分类与前端「按宗派分组」使用。 */
 const commManifest = readJson(path.join(DATA, 'brp/commentary/manifest.json'))
 const commMap = new Map()
 for (const s of commManifest.sources || []) {
-  if (!commMap.has(s.key)) {
-    commMap.set(s.key, { k: s.key, name: s.name, lang: s.lang || '', cats: [s.category] })
-  } else {
-    commMap.get(s.key).cats.push(s.category)
-  }
+  if (!commMap.has(s.key)) commMap.set(s.key, { k: s.key, name: s.name, lang: s.lang || '', cats: [s.category] })
+  else commMap.get(s.key).cats.push(s.category)
 }
-const commentaries = [...commMap.values()]
+// 宗派分组：马太亨利 / 马太亨利简明 / 其他注释源
+const GROUP_MH = '马太亨利'
+const GROUP_MHCC = '马太亨利简明'
+const GROUP_OTHER = '其他注释源'
+const sourceGroup = (k) => (k === 'matthew-henry-en' ? GROUP_MH : k === 'mhcc' ? GROUP_MHCC : GROUP_OTHER)
+const commentaries = [...commMap.values()].map((c) => ({ ...c, group: sourceGroup(c.k) }))
 
-/**
- * 注释段落索引：每个源一个懒加载文件 commentary-{file}.json。
- * 条目 [bookIdx, chapter, ref, heading, 摘录]（text 取前 180 字符，原样复制）。
- * file 命名：fullCommentary 源用源 key；mhcc 两类用 mhcc-summary / mhcc-interpretation。
- */
-const COMM_TEXT_CLIP = 180
-const commFiles = [] // { file, k, name, cats, secs } → 写入 index.commentaries
-const bookIdxById = new Map(books.map((b, i) => [b.id, i]))
+// 进入注释段落全文检索的源（按宗派分组；跨 category/key 覆盖全部注释数据库原文件）
+const FW_SEARCH_PAIRS = [
+  { cat: 'fullCommentary', key: 'matthew-henry-en', group: GROUP_MH },
+  { cat: 'summary', key: 'mhcc', group: GROUP_MHCC },
+  { cat: 'interpretation', key: 'mhcc', group: GROUP_MHCC },
+  { cat: 'fullCommentary', key: 'calvin', group: GROUP_OTHER },
+  { cat: 'fullCommentary', key: 'rwp', group: GROUP_OTHER },
+  { cat: 'fullCommentary', key: 'abbott', group: GROUP_OTHER },
+  { cat: 'fullCommentary', key: 'catena', group: GROUP_OTHER },
+]
 
-function buildCommentaryFile(file, k, name, cats, iterSections) {
-  const secs = []
-  for (const { bookId, chapter, ref, heading, text } of iterSections()) {
-    const bi = bookIdxById.get(bookId)
-    if (bi === undefined) continue // 66 卷外（如次经注释）暂不入索引
-    secs.push([bi, chapter, ref || '', heading || '', clip(text, COMM_TEXT_CLIP)])
-  }
-  fs.writeFileSync(path.join(OUT, `commentary-${file}.json`), JSON.stringify({ k, name, books: books.map((b) => b.id), secs }))
-  commFiles.push({ file, k, name, cats, n: secs.length })
-  console.log(`commentary-${file}.json: ${secs.length} 段`)
-}
-
-// 7a. fullCommentary 五源（sections 带 heading）
-const FULL_SOURCES = ['matthew-henry-en', 'calvin', 'rwp', 'abbott', 'catena']
-for (const src of FULL_SOURCES) {
-  const dir = path.join(DATA, `brp/commentary/fullCommentary/${src}`)
-  if (!exists(dir)) continue
-  const iter = function* () {
-    for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json')).sort()) {
-      const d = readJson(path.join(dir, f))
-      for (const ch of d.chapters || []) {
-        for (const s of ch.sections || []) {
-          yield { bookId: d.bookId || f.replace(/\.json$/, ''), chapter: ch.chapter, ref: s.ref, heading: s.heading, text: s.text }
+/** 注释段落总数（供页脚计数；仅统计进入段落全文检索的源） */
+function countCommentarySections() {
+  let n = 0
+  for (const { cat, key } of FW_SEARCH_PAIRS) {
+    for (const src of commManifest.sources || []) {
+      if (src.category !== cat || src.key !== key) continue
+      for (const b of src.books || []) {
+        const p = path.join(DATA, `brp/commentary/${cat}/${key}/${b}.json`)
+        if (!exists(p)) continue
+        const d = readJson(p)
+        for (const ch of d.chapters || []) {
+          n += (ch.sections || []).length
+          if (ch.summary) n += 1
         }
       }
     }
   }
-  buildCommentaryFile(src, src, src, ['fullCommentary'], iter)
-}
-
-// 7b. MH 简明中文注释：summary（按章总结）/ interpretation（按段经文解释）
-const mhccDir = (cat) => path.join(DATA, `brp/commentary/${cat}/mhcc`)
-if (exists(mhccDir('summary'))) {
-  const iter = function* () {
-    for (const f of fs.readdirSync(mhccDir('summary')).filter((x) => x.endsWith('.json')).sort()) {
-      const d = readJson(path.join(mhccDir('summary'), f))
-      for (const ch of d.chapters || []) {
-        yield { bookId: d.bookId || f.replace(/\.json$/, ''), chapter: ch.chapter, ref: '', heading: '', text: ch.summary }
-      }
-    }
-  }
-  buildCommentaryFile('mhcc-summary', 'mhcc', '马太亨利简明（总结）', ['summary'], iter)
-}
-if (exists(mhccDir('interpretation'))) {
-  const iter = function* () {
-    for (const f of fs.readdirSync(mhccDir('interpretation')).filter((x) => x.endsWith('.json')).sort()) {
-      const d = readJson(path.join(mhccDir('interpretation'), f))
-      for (const ch of d.chapters || []) {
-        for (const s of ch.sections || []) {
-          yield { bookId: d.bookId || f.replace(/\.json$/, ''), chapter: ch.chapter, ref: s.ref, heading: '', text: s.text }
-        }
-      }
-    }
-  }
-  buildCommentaryFile('mhcc-interpretation', 'mhcc', '马太亨利简明（经文解释）', ['interpretation'], iter)
-}
-
-// 注释条目挂上段落文件信息（面板按需懒加载 + 计数展示）
-for (const c of commentaries) {
-  const files = commFiles.filter((f) => f.k === c.k)
-  c.files = files.map((f) => ({ file: f.file, name: f.name, cats: f.cats, n: f.n }))
-  c.n = files.reduce((s, f) => s + f.n, 0)
+  return n
 }
 
 /* ---------- 8. 主题专题（apologetics/topics，双语标题 + 标签 + 问题） ---------- */
@@ -475,7 +438,7 @@ const index = {
       periods: 'FISH 时期索引（geography/periods.json）',
       personExtra: 'Theographic Bible Metadata CC BY-SA 4.0（theographic/persons.json；生卒年/关系/词典，Ussher 传统编年）',
       timeline: 'Theographic Bible Metadata CC BY-SA 4.0（theographic/events.json；编年事件，Ussher 传统编年）',
-      commentaries: 'commentary/fullCommentary + mhcc（段落索引懒加载）',
+      commentaries: 'commentary/fullCommentary + mhcc（全文检索直接调用注释数据库原文件）',
       topics: 'apologetics/topics（护教学专题）',
       history: 'church-history part1-5（教会史章节）',
     },
@@ -490,7 +453,7 @@ const index = {
       periods: periods.length,
       timeline: timeline.length,
       commentaries: commentaries.length,
-      commentarySections: commFiles.reduce((s, f) => s + f.n, 0),
+      commentarySections: countCommentarySections(),
       topics: topics.length,
       history: history.length,
       translations: translations.length,

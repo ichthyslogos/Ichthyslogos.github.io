@@ -253,13 +253,13 @@ const relRef = (recIds) => {
   return out
 }
 
-const dictClip = (raw, n = 600) => {
-  // 清洗 Airtable CSV 导出残留的公式前缀（'= 公式标记，如保罗 G3972G 词条开头）
-  const s = String(Array.isArray(raw) ? raw.join(' ') : raw || '')
+const dictClip = (raw) => {
+  // 清洗 Airtable CSV 导出残留的公式前缀（'= 公式标记，如保罗 G3972G 词条开头），
+  // 正文保持源词典完整内容（不再截断，人物页展示全词条）
+  return String(Array.isArray(raw) ? raw.join(' ') : raw || '')
     .replace(/^'=/, '')
     .replace(/\s+/g, ' ')
     .trim()
-  return s.length > n ? s.slice(0, n - 1) + '…' : s
 }
 
 const personsOut = {}

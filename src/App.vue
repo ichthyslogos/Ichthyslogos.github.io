@@ -1,12 +1,18 @@
 <script setup>
 // App 根组件：应用外壳（AppHeader + main 路由出口）。全局滚动收敛在 .app-main（见下方样式注释）。
+// 首页（Google 式）隐藏顶部导航栏，其余页面保留。
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import AppHeader from './components/AppHeader.vue'
 import SearchPanel from './components/search/SearchPanel.vue'
+
+const route = useRoute()
+const showHeader = computed(() => route.name !== 'home')
 </script>
 
 <template>
   <div class="app-shell">
-    <AppHeader />
+    <AppHeader v-if="showHeader" />
     <main class="app-main">
       <router-view />
     </main>

@@ -5,7 +5,7 @@
  *   1. parseReference   经文地址解析（约3:16 / 约翰福音 3:16 / John 3:16 / 诗23 …）
  *   2. searchEntities   实体检索（人物 / 地点 / 政权 / 事件 / 时期 / 注释源 / 主题 / 教会史）
  *   3. searchScripture  经文全文检索（多译本，在预归一化的匹配域上执行）
- *   4. searchCommentary 注释段落检索（heading + 摘录文本，懒加载后执行）
+ *   4. 注释段落全文检索 scanCommentaryBook + snippet（直接扫描注释数据库原文件）
  *
  * 归一化策略：lowercase → 繁体转简体 → 折叠变音符。
  * 繁→简仅用于「匹配域」，结果展示永远使用源文本原文（数据准确性优先）；
@@ -131,7 +131,7 @@ export function searchEntities(query, index, limit = 8) {
   const nq = norm(query)
   if (!nq) return null
 
-  const run = (list, make) => {
+  const run = (list, make, lim = limit) => {
     const out = []
     for (const raw of list) {
       const { title, en, aliases, sub } = make(raw)
@@ -139,19 +139,24 @@ export function searchEntities(query, index, limit = 8) {
       if (score > 0) out.push({ raw, score, title, en, aliases, sub })
     }
     out.sort((a, b) => b.score - a.score || (a.title || '').localeCompare(b.title || '', 'zh'))
-    return out.slice(0, limit)
+    return out.slice(0, lim)
   }
 
-  const persons = run(index.persons, (p) => ({
-    title: p.zh || p.en,
-    en: p.en,
-    aliases: p.al,
-    sub: [
-      p.zh && p.en !== p.zh ? p.en : '',
-      yearsLabel(p.by, p.dy),
-      p.rel ? `亲属 ${p.rel}` : '',
-    ].filter(Boolean).join(' · '),
-  }))
+  // 人物放宽上限：同名个体按 Strong 码后缀区分，需聚合完整集合再在面板聚成母/子词条
+  const persons = run(
+    index.persons,
+    (p) => ({
+      title: p.zh || p.en,
+      en: p.en,
+      aliases: p.al,
+      sub: [
+        p.zh && p.en !== p.zh ? p.en : '',
+        yearsLabel(p.by, p.dy),
+        p.rel ? `亲属 ${p.rel}` : '',
+      ].filter(Boolean).join(' · '),
+    }),
+    Math.max(limit * 3, 40),
+  )
   const places = run(index.places, (p) => ({
     title: p.zh || p.en, en: p.en, aliases: p.al, sub: p.zh && p.en !== p.zh ? p.en : '',
   }))
@@ -247,37 +252,54 @@ export function countScripture(query, data) {
   return n
 }
 
-/* ============ 4. 注释段落检索（heading + 摘录；懒加载文件执行） ============ */
+/* ============ 4. 注释段落全文检索（直接调用注释数据库原文件） ============ */
 
 /**
- * 预处理注释索引：生成归一化匹配域（heading + text 拼接，一次性缓存在文件对象上）。
- * data 为 commentary-*.json 的解析结果；books 为 index.json 的 books（书名解析用）。
+ * 命中前后文摘录：围绕原始查询串（忽略大小写）取一段窗口，两端补省略号；
+ * 原文中定位不到时回退到文本开头。
  */
-export function prepareCommentary(data) {
-  if (data._norm) return data
-  data._norm = data.secs.map(([, , , h, t]) => norm(`${h}\n${t}`))
-  return data
+export function snippet(text, rawQ, width = 60) {
+  const t = String(text || '')
+  if (!t) return ''
+  if (t.length <= width) return t
+  const low = t.toLowerCase()
+  const n = String(rawQ || '').trim().toLowerCase()
+  let i = n ? low.indexOf(n) : -1
+  if (i < 0) i = 0
+  const start = Math.max(0, i - Math.floor(width / 2))
+  const end = Math.min(t.length, start + width)
+  return (start > 0 ? '…' : '') + t.slice(start, end) + (end < t.length ? '…' : '')
 }
 
 /**
- * 注释段落检索：匹配 heading 与摘录文本，返回 ≤ limit 条
- * [{ file, name, secIndex, bookIndex, chapter, ref, heading, text }]（按书卷顺序）。
- * 中文 ≥1 字、拉丁 ≥2 字符才执行。
+ * 全文扫描一卷注释原文件（public/data/brp/commentary/<category>/<key>/<bookId>.json）。
+ * 逐章 summary 与 sections（heading + text）做归一化子串匹配，返回命中列表列表
+ * [{ bookId, chapter, ref, heading, text, snippet }]；
+ * 归一化匹配域缓存到对象上，后续同词重搜零成本。
  */
-export function searchCommentary(query, data, { limit = 8 } = {}) {
-  const nq = norm(query)
-  if (!nq) return []
-  if (/^[a-z0-9' ]+$/.test(nq) && nq.length < 2) return []
-  if (!data._norm) prepareCommentary(data)
-  const out = []
-  const fields = data._norm
-  const secs = data.secs
-  for (let i = 0; i < fields.length; i++) {
-    if (fields[i].includes(nq)) {
-      const [bi, ch, ref, heading, text] = secs[i]
-      out.push({ name: data.name, bookIndex: bi, chapter: ch, ref, heading, text })
-      if (out.length >= limit) break
+export function scanCommentaryBook(bookData, nq, rawQ = '') {
+  if (!bookData._scan) {
+    bookData._scan = []
+    for (const ch of bookData.chapters || []) {
+      if (ch.summary) {
+        bookData._scan.push({ chapter: ch.chapter, ref: '', heading: '', text: ch.summary, field: norm(ch.summary) })
+      }
+      for (const s of ch.sections || []) {
+        const h = s.heading || ''
+        const t = s.text || ''
+        if (!t && !h) continue
+        bookData._scan.push({ chapter: ch.chapter, ref: s.ref, heading: h, text: t, field: norm(`${h} ${t}`) })
+      }
     }
   }
-  return out
+  const hits = []
+  for (const e of bookData._scan) {
+    if (e.field.includes(nq)) {
+      hits.push({
+        bookId: bookData.bookId, chapter: e.chapter, ref: e.ref || '',
+        heading: e.heading, text: e.text, snippet: snippet(e.text, rawQ, 220),
+      })
+    }
+  }
+  return hits
 }

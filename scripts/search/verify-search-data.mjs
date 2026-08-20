@@ -115,51 +115,46 @@ const chiun = readJson(path.join(SEARCH, 'scripture-chiun.json'))
 const j316 = chiun.verses.find((v) => v[0] === 42 && v[1] === 3 && v[2] === 16)
 ok(!!j316 && j316[3].includes('神愛世人'), '约翰福音 3:16 保留繁体原文（神愛世人）')
 
-/* ---------- 6. 注释段落索引：摘录必须逐字节来自源文件 ---------- */
-// 每个注释源文件重建「定位键 → 源文本」池，再逐条验证索引摘录为其前缀
-function verifyCommentary(file, srcDir, extract) {
-  const idx = readJson(path.join(SEARCH, `commentary-${file}.json`))
-  const pool = new Map() // `${bookId}|${chapter}|${ref}` -> { heading, text }
-  for (const f of fs.readdirSync(srcDir).filter((x) => x.endsWith('.json')).sort()) {
-    const d = readJson(path.join(srcDir, f))
-    for (const item of extract(d)) {
-      pool.set(`${item.bookId}|${item.chapter}|${item.ref}`, item)
-    }
+/* ---------- 6. 注释数据库完整性（全文检索直接读取的源文件存在且非空） ---------- */
+// 新模型不生成 commentary-*.json 摘录索引；验证全文检索所调用的原文件均存在且含段落。
+function checkCommentarySource(cat, key) {
+  const dir = path.join(DATA, `brp/commentary/${cat}/${key}`)
+  if (!fs.existsSync(dir)) {
+    ok(false, `注释源目录缺失：${cat}/${key}`)
+    return
   }
-  let bad = 0
-  let missing = 0
-  for (const [bi, ch, ref, heading, text] of idx.secs) {
-    const bookId = BOOKS[bi]?.id
-    const src = pool.get(`${bookId}|${ch}|${ref}`)
-    if (!src) {
-      missing++
+  const m = (readJson(path.join(DATA, 'brp/commentary/manifest.json')).sources || []).find(
+    (s) => s.category === cat && s.key === key,
+  )
+  const books = m?.books || []
+  ok(books.length > 0, `注释源覆盖书卷：${cat}/${key}（${books.length} 卷）`)
+  let empty = 0
+  for (const b of books) {
+    const p = path.join(dir, `${b}.json`)
+    if (!fs.existsSync(p)) {
+      ok(false, `注释源缺卷：${cat}/${key}/${b}.json`)
       continue
     }
-    if ((heading && heading !== src.heading) || !src.text.startsWith(text.replace(/…$/, ''))) bad++
+    const d = readJson(p)
+    const paras = (d.chapters || []).reduce((n, c) => n + (c.sections ? c.sections.length : 0) + (c.summary ? 1 : 0), 0)
+    if (paras === 0) empty++
   }
-  ok(missing === 0, `commentary-${file}.json 定位键全部存在于源`, `缺失 ${missing}`)
-  ok(bad === 0, `commentary-${file}.json heading/摘录与源逐字节一致`, `不一致 ${bad}`)
-  ok(idx.secs.length === pool.size, `commentary-${file}.json 段落数与源一致`,
-    `索引 ${idx.secs.length} vs 源 ${pool.size}`)
+  ok(empty === 0, `注释源全书有段落：${cat}/${key}`, `空卷 ${empty}`)
 }
-
-for (const src of ['matthew-henry-en', 'calvin', 'rwp', 'abbott', 'catena']) {
-  const dir = path.join(DATA, `brp/commentary/fullCommentary/${src}`)
-  if (!fs.existsSync(dir)) continue
-  verifyCommentary(src, dir, (d) =>
-    (d.chapters || []).flatMap((c) =>
-      (c.sections || []).map((s) => ({ bookId: d.bookId, chapter: c.chapter, ref: s.ref || '', heading: s.heading || '', text: s.text || '' })),
-    ),
-  )
-}
-verifyCommentary('mhcc-summary', path.join(DATA, 'brp/commentary/summary/mhcc'), (d) =>
-  (d.chapters || []).map((c) => ({ bookId: d.bookId, chapter: c.chapter, ref: '', heading: '', text: c.summary || '' })),
-)
-verifyCommentary('mhcc-interpretation', path.join(DATA, 'brp/commentary/interpretation/mhcc'), (d) =>
-  (d.chapters || []).flatMap((c) =>
-    (c.sections || []).map((s) => ({ bookId: d.bookId, chapter: c.chapter, ref: s.ref || '', heading: '', text: s.text || '' })),
-  ),
-)
+for (const [cat, key] of [
+  ['fullCommentary', 'matthew-henry-en'],
+  ['summary', 'mhcc'],
+  ['interpretation', 'mhcc'],
+  ['fullCommentary', 'calvin'],
+  ['fullCommentary', 'rwp'],
+  ['fullCommentary', 'abbott'],
+  ['fullCommentary', 'catena'],
+]) checkCommentarySource(cat, key)
+// 宗派分组元数据随注释源挂载
+const commIdx = readJson(path.join(SEARCH, 'index.json')).commentaries
+ok(commIdx.some((c) => c.k === 'matthew-henry-en' && c.group === '马太亨利'), '元数据：马太亨利分组')
+ok(commIdx.some((c) => c.k === 'mhcc' && c.group === '马太亨利简明'), '元数据：马太亨利简明分组')
+ok(commIdx.some((c) => c.k === 'calvin' && c.group === '其他注释源'), '元数据：其他注释源分组')
 
 /* ---------- 7. 主题 / 教会史条目与源文件一致 ---------- */
 const topicFiles = fs.readdirSync(path.join(DATA, 'apologetics/topics')).filter((x) => x.endsWith('.json'))

@@ -11,6 +11,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import EmptyState from '../../components/EmptyState.vue'
+import DictView from '../../components/DictView.vue'
 import {
   loadEntryIndex,
   loadTheoPersons,
@@ -351,7 +352,7 @@ function loadMore() {
           <!-- 词典 -->
           <section v-if="dictText" class="dsection">
             <h2 class="ds-title">词典 <span class="ds-src">Easton's Illustrated Dictionary</span></h2>
-            <p class="dict-text">{{ dictText }}</p>
+            <DictView :text="dictText" />
           </section>
 
           <!-- 相关事件 -->
@@ -905,21 +906,6 @@ export default { name: 'PersonsPage' }
 .rel-n {
   color: #a7adb6;
   font-size: 0.75rem;
-}
-
-/* 词典 */
-.dict-text {
-  margin: 0;
-  max-width: 46rem;
-  font-family: var(--serif);
-  font-size: 0.95rem;
-  line-height: 1.95;
-  color: #4a5560;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--gold);
-  border-radius: var(--radius-sm);
-  padding: 1.3rem 1.6rem;
 }
 
 /* 相关事件 */

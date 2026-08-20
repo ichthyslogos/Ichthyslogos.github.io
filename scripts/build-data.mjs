@@ -157,7 +157,7 @@ const COMMENT_SRC = join(SITE_ROOT, 'data-src', 'brp', 'commentary')
 const COMMENT_OUT = join(OUT_DIR, 'commentary')
 
 /** 暂时关闭的注释源：data-src 数据保留，构建/显示时排除（恢复 = 从集合移除后重跑） */
-const DISABLED_SOURCES = new Set(['matthew-henry'])
+const DISABLED_SOURCES = new Set([])
 
 /** 栏目目录顺序（manifest 排序用） */
 const CATEGORY_ORDER = ['summary', 'interpretation', 'notes', 'fullCommentary']
@@ -170,7 +170,6 @@ const CATEGORY_ORDER = ['summary', 'interpretation', 'notes', 'fullCommentary']
  */
 const FULL_SOURCE_TRADITIONS = {
   'matthew-henry-en': 'reformed',
-  'matthew-henry': 'reformed',
   calvin: 'reformed',
   catena: 'church-fathers',
   rwp: 'baptist',
