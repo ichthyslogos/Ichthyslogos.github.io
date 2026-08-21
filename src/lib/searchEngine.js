@@ -12,7 +12,8 @@
  * 对照表由 OpenCC 字典机器生成（t2s-table.mjs），覆盖全部单字差异，绝不改变显示内容。
  */
 import { T2S } from './t2s-table.mjs'
-export { yearLabel, yearsLabel } from './bibleEntries.js'
+import { yearLabel, yearsLabel } from './bibleEntries.js'
+export { yearLabel, yearsLabel }
 
 /** 归一化（仅用于匹配域）：lowercase → 繁→简 → 折叠变音符与花式引号 */
 export function norm(s) {
@@ -92,7 +93,7 @@ export function parseReference(query, lookup) {
   return null
 }
 
-export function refLabel(book, chapter, verse) {
+function refLabel(book, chapter, verse) {
   return `${book.zh} ${chapter}${verse ? ':' + verse : ''}`
 }
 
@@ -318,7 +319,7 @@ export function scanCommentaryBook(bookData, nq, rawQ = '') {
  * 缓存在返回对象上，后续同词重搜零成本。
  * data 为 brp/strongs-index.json 的解析结果（{ count, items: { code: {lemma,translit,pos,gloss} } }）。
  */
-export function prepareStrongs(data) {
+function prepareStrongs(data) {
   if (data._norm) return data
   const arr = []
   for (const code of Object.keys(data.items || {})) {

@@ -10,7 +10,7 @@
  * 渲染：当前书卷+章节 → 概要（summary）+ 小节注释列表（ref + heading + text）
  * 无注释（卷/章缺失）→ 空状态提示。
  */
-import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, watch, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   fetchCommentary,
@@ -32,8 +32,6 @@ const props = defineProps({
   open: { type: Boolean, default: true },
   book: { type: Object, default: null }, // manifest 中的书卷信息（含 bookId）
   chapter: { type: Number, default: 0 },
-  focusNoteName: { type: String, default: '' }, // 经文高亮跳转：要展开的背景注释词条名
-  focusNoteSeq: { type: Number, default: 0 }, // 跳转序号（同名重复跳转也重新定位）
 })
 const emit = defineEmits(['toggle', 'focus-place']) // focus-place：地点词条跳转地图抽屉（BrpPage 联动）
 
@@ -492,51 +490,6 @@ watch(
     if (v) resetAllExpansions()
   },
 )
-
-// —— 经文高亮跳转联动：自动展开背景注释层并定位到对应词条 ——
-// 声明在 open 收起 watch 之后：同一次冲刷中先收起、后展开，避免揭示被清空
-const pendingNote = ref('')
-watch(
-  () => props.focusNoteSeq,
-  () => {
-    if (!props.focusNoteName || !props.open) return
-    pendingNote.value = props.focusNoteName
-    tryRevealNote()
-  },
-)
-// 词条数据就绪后补执行（跳转先于 fetchNotes 完成时）
-watch(notesChapter, () => {
-  if (pendingNote.value) tryRevealNote()
-})
-
-/** 展开背景注释层对应词条并滚动到可视区域（数据未就绪时静默等待 notesChapter） */
-function tryRevealNote() {
-  const name = pendingNote.value
-  if (!name) return
-  const ch = notesChapter.value
-  if (!ch?.entries) return
-  const i = ch.entries.findIndex((e) => e.name === name)
-  if (i < 0) {
-    pendingNote.value = '' // 本卷无此词条
-    return
-  }
-  const layers = new Set(openLayers.value)
-  layers.add('notes')
-  openLayers.value = layers
-  const opened = new Set(openNotes.value)
-  opened.add(i)
-  openNotes.value = opened
-  activeLayer.value = 'notes'
-  // 记为正在阅读项（与手动 toggleNote 同款状态，头部关闭按钮随滚动切换）
-  activeItem.value = { kind: 'note', idx: i, label: name }
-  itemCloseVisible.value = true
-  pendingNote.value = ''
-  nextTick(() => {
-    const toggle = panelBodyEl.value?.querySelector(`[data-layer="notes"] [data-item-idx="${i}"]`)
-    const el = toggle?.closest('.note-entry') || toggle
-    el?.scrollIntoView({ block: 'nearest' })
-  })
-}
 
 // 首次挂载加载注释源清单；关闭面板时收起源菜单
 watch(
@@ -1318,12 +1271,6 @@ function endSheetResize() {
   color: var(--gold);
   font-size: 0.8rem;
   margin: 0.35rem 0 0;
-}
-.study-empty {
-  color: var(--muted);
-  text-align: center;
-  padding: 2rem 0;
-  font-size: 0.95rem;
 }
 .panel-body {
   position: relative; /* 滚动定位基准（层置顶 scrollTo 用 offsetTop） */

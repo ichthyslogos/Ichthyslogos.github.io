@@ -10,7 +10,7 @@
 import { computed, ref, watch } from 'vue'
 import TranslationMenu from './TranslationMenu.vue'
 import VerseItem from './VerseItem.vue'
-import { fetchCrossrefs, findCrossrefChapter, fetchNotes, findNotesChapter, fetchZhNames, fetchNameVariants } from '../../lib/data.js'
+import { fetchCrossrefs, findCrossrefChapter } from '../../lib/data.js'
 
 const props = defineProps({
   book: { type: Object, required: true },
@@ -31,7 +31,7 @@ const props = defineProps({
   /** 移动端沉浸阅读：隐藏头部（标题/按钮）扩大阅读区；退出靠 BrpPage 悬浮按钮 */
   immersive: { type: Boolean, default: false },
 })
-const emit = defineEmits(['set-primary', 'toggle-compare', 'toggle-strong', 'toggle-sidebar', 'toggle-menu', 'goto-verse', 'toggle-immersive', 'open-tool', 'open-note'])
+const emit = defineEmits(['set-primary', 'toggle-compare', 'toggle-strong', 'toggle-sidebar', 'toggle-menu', 'goto-verse', 'toggle-immersive', 'open-tool'])
 
 /** 功能词条菜单（解经/地图）本地展开状态：瞬时浮层，选择后即关 */
 const toolMenuOpen = ref(false)
@@ -76,87 +76,6 @@ watch(
 const refsByVerse = computed(() =>
   findCrossrefChapter(crossrefBook.value, props.chapter),
 )
-
-// 背景注释（notes 栏目）：按卷加载（data.js 缓存，与解经抽屉共用同一份数据），
-// 用于给有注释的经节加背景高亮提示（带序号守卫：快速切卷丢弃过期响应；
-// 失败卷记入集合，避免每次切回都重复 404 请求）
-const notesBook = ref(null)
-const failedNotes = new Set()
-let notesSeq = 0
-watch(
-  () => props.book?.id,
-  async (id) => {
-    if (!id) return
-    const seq = ++notesSeq
-    if (failedNotes.has(id)) {
-      notesBook.value = null
-      return
-    }
-    try {
-      const data = await fetchNotes(id)
-      if (seq !== notesSeq) return
-      notesBook.value = data
-    } catch (e) {
-      if (seq !== notesSeq) return
-      // 仅 404（该卷确无注释）记入黑名单；瞬时网络错误保留重试机会
-      if (e?.status === 404) failedNotes.add(id)
-      notesBook.value = null
-    }
-  },
-  { immediate: true },
-)
-
-/** 当前章词条按节索引（refs → 节号）：节 → [{ type, name, nameZh, variants }]
- *  供 VerseItem 文本级高亮（经文含中文名/变体即高亮，节级锚定防多划） */
-const noteNamesByVerse = computed(() => {
-  const ch = findNotesChapter(notesBook.value, props.chapter)
-  if (!ch?.entries) return null
-  const map = new Map()
-  for (const e of ch.entries) {
-    if (!e.strong) continue
-    const norm = normCode(e.strong)
-    const item = {
-      type: e.type || 'Other',
-      name: e.name,
-      nameZh: noteZhNames.value?.[norm] || '',
-      variants: noteVariants.value?.[e.name] || [],
-    }
-    if (!item.nameZh && !item.variants.length) continue
-    for (const ref of e.refs || []) {
-      const vs = Number(ref)
-      if (!map.has(vs)) map.set(vs, [])
-      const arr = map.get(vs)
-      if (!arr.some((x) => x.name === item.name)) arr.push(item)
-    }
-  }
-  return map.size ? map : null
-})
-
-/** 某节词条（文本级高亮用） */
-const noteNamesOf = (verse) => noteNamesByVerse.value?.get(verse) || null
-
-/** 归一化 Strong 码：H0085 → H85；H6160G → H6160；G2424 → G2424（保留 H/G 区分新旧约，与 zh-names 表一致） */
-const normCode = (code) => {
-  const m = String(code).match(/^([HG])0*(\d+)/)
-  return m ? m[1] + m[2] : ''
-}
-
-// 词条简体中文名表/变体表：全站共享静态数据（data.js 自动缓存），组件内只加载一次，
-// 不随书卷切换重复请求（此前 watch book?.id 每换卷重取）
-const noteZhNames = ref(null)
-const noteVariants = ref(null)
-;(async () => {
-  try {
-    noteZhNames.value = await fetchZhNames()
-  } catch {
-    noteZhNames.value = null
-  }
-  try {
-    noteVariants.value = await fetchNameVariants()
-  } catch {
-    noteVariants.value = null
-  }
-})()
 
 /** 当前译本的书卷中文名表（用于串珠目标显示） */
 const zhNames = computed(() => {
@@ -287,9 +206,7 @@ function compareOf(verse) {
               :words="strongOf ? strongOf[v.verse] : null"
               :strong="strongOn"
               :refs="verseRefs(v.verse)"
-              :note-names="noteNamesOf(v.verse)"
               @goto="emit('goto-verse', $event)"
-              @open-note="emit('open-note', $event)"
             />
             <!-- 对照译本：仅当选择了 2+ 译本时逐节显示，清晰区别于主译本 -->
             <div v-if="compareOf(v.verse).length" class="vcmp">

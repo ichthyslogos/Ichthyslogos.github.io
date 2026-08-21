@@ -10,7 +10,7 @@
  * 顶栏「复位」按钮复原全部主题词条：清空过滤 + 节点回到原始构图 + 适配视图。
  */
 import { ref, computed, nextTick, watch, onMounted, onUnmounted, markRaw } from 'vue'
-import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 import { Controls } from '@vue-flow/controls'
 import { Background } from '@vue-flow/background'

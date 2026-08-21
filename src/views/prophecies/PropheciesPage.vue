@@ -13,7 +13,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EmptyState from '../../components/EmptyState.vue'
 import { loadEntryIndex } from '../../lib/bibleEntries.js'
-import { scrollMainTop, scrollToList } from '../../composables/useScroll.js'
+import { scrollMainTop } from '../../composables/useScroll.js'
 import SearchInput from '../../components/common/SearchInput.vue'
 
 const route = useRoute()

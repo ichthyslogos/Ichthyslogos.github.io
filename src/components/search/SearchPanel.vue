@@ -53,6 +53,14 @@ onMounted(async () => {
   if (props.initialQuery) query.value = props.initialQuery // 触发 watch(query) → 检索
 })
 
+/* 页面模式：路由 query 变化（组件已挂载）时同步搜索词并重新检索 */
+watch(
+  () => props.initialQuery,
+  (v) => {
+    if (props.page && v !== query.value) query.value = v
+  },
+)
+
 /* ---------- 索引加载（模块级缓存，多面板实例共享） ---------- */
 let indexPromise = null
 const scripturePromises = new Map() // transKey -> Promise
@@ -419,6 +427,20 @@ async function ensureScripture() {
   }
 }
 
+/** 并发限制：避免一次性向服务器发起上百个注释请求（连接池耗尽 → ERR_ABORTED / ERR_CONNECTION_RESET） */
+async function mapLimit(items, limit, fn) {
+  const results = new Array(items.length)
+  let i = 0
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (i < items.length) {
+      const idx = i++
+      results[idx] = await fn(items[idx], idx)
+    }
+  })
+  await Promise.all(workers)
+  return results
+}
+
 /** 注释段落全文检索：直接调用注释数据库原文件（data/brp/commentary/<cat>/<key>/<bookId>.json），
  * 按宗派分组渐进加载（每组加载完即追加显示）。命中项含 group/key/cat 供分组与来源标注。
  * 命中文本仅存命中项（heading + 摘录），完整注释跳读经页查看。 */
@@ -451,8 +473,8 @@ async function runCommentary() {
       const groupHits = []
       for (const s of g.sources) {
         if (seq !== searchSeq) return
-        // 同源全部覆盖书卷并行拉取（注释数据库原文件；fetchCommentary 内部有内存缓存）
-        const datas = await Promise.all(s.books.map((bookId) => fetchCommentary(s.key, bookId, s.cat).catch(() => null)))
+        // 同源全部覆盖书卷按批次拉取（注释数据库原文件；fetchCommentary 内部有内存缓存）
+        const datas = await mapLimit(s.books, 6, (bookId) => fetchCommentary(s.key, bookId, s.cat).catch(() => null))
         if (seq !== searchSeq) return
         for (const data of datas) {
           if (!data || !data.chapters) continue
@@ -1003,45 +1025,7 @@ function onCompositionEnd() {
                 <div v-else-if="index && !strongsLoading" class="sp-none">无原文词典命中</div>
               </section>
 
-              <!-- 3. 经文全文（多译本切换） -->
-              <section class="sp-group">
-                <h3 class="sp-group-h">
-                  <span aria-hidden="true">🔎</span>经文全文
-                  <span class="sp-group-n" v-if="scriptureTotal">{{ scriptureTotal }}</span>
-                </h3>
-                <!-- 译本切换条（横向滚动；移动端不溢出） -->
-                <div v-if="transList.length > 1" class="sp-trans" role="group" aria-label="选择译本">
-                  <button
-                    v-for="t in transList"
-                    :key="t.key"
-                    :class="{ active: t.key === transKey }"
-                    @click="pickTrans(t.key)"
-                  >{{ t.name }}</button>
-                </div>
-                <div v-if="scriptureLoading" class="sp-loading">正在加载{{ activeTrans?.name || '' }}全文索引…</div>
-                <template v-else-if="scriptureResults.length">
-                  <ul class="sp-list" :class="{ 'sp-open': verseResultsOpen }">
-                    <li v-for="(v, i) in scriptureResults" :key="i">
-                      <button class="sp-item sp-verse" @click="goVerse(v)">
-                        <span class="sp-item-main">
-                          <strong class="sp-item-addr">{{ verseAddr(v) }}</strong>
-                          <small class="sp-item-text" v-html="mark(v.text, query)"></small>
-                        </span>
-                      </button>
-                    </li>
-                  </ul>
-                  <button
-                    v-if="scriptureResults.length && (verseResultsOpen || scriptureTotal > scriptureResults.length)"
-                    class="sp-more"
-                    @click="toggleScripture()"
-                  >
-                    {{ verseResultsOpen ? '收起' : `显示全部 ${scriptureTotal} 处` }}
-                  </button>
-                </template>
-                <div v-else-if="index && !scriptureLoading" class="sp-none">无经文命中</div>
-              </section>
-
-              <!-- 3b. 护教论证（主题 + 子问题全文合并；护教页同款逻辑链条可视化） -->
+              <!-- 3. 护教论证（主题 + 子问题全文合并；护教页同款逻辑链条可视化） -->
               <section class="sp-group">
                 <h3 class="sp-group-h">
                   <span aria-hidden="true">🧭</span>护教论证
@@ -1099,6 +1083,44 @@ function onCompositionEnd() {
                   </ul>
                 </template>
                 <div v-else-if="index && !apolLoading" class="sp-none">无护教论证命中</div>
+              </section>
+
+              <!-- 3b. 经文全文（多译本切换） -->
+              <section class="sp-group">
+                <h3 class="sp-group-h">
+                  <span aria-hidden="true">🔎</span>经文全文
+                  <span class="sp-group-n" v-if="scriptureTotal">{{ scriptureTotal }}</span>
+                </h3>
+                <!-- 译本切换条（横向滚动；移动端不溢出） -->
+                <div v-if="transList.length > 1" class="sp-trans" role="group" aria-label="选择译本">
+                  <button
+                    v-for="t in transList"
+                    :key="t.key"
+                    :class="{ active: t.key === transKey }"
+                    @click="pickTrans(t.key)"
+                  >{{ t.name }}</button>
+                </div>
+                <div v-if="scriptureLoading" class="sp-loading">正在加载{{ activeTrans?.name || '' }}全文索引…</div>
+                <template v-else-if="scriptureResults.length">
+                  <ul class="sp-list" :class="{ 'sp-open': verseResultsOpen }">
+                    <li v-for="(v, i) in scriptureResults" :key="i">
+                      <button class="sp-item sp-verse" @click="goVerse(v)">
+                        <span class="sp-item-main">
+                          <strong class="sp-item-addr">{{ verseAddr(v) }}</strong>
+                          <small class="sp-item-text" v-html="mark(v.text, query)"></small>
+                        </span>
+                      </button>
+                    </li>
+                  </ul>
+                  <button
+                    v-if="scriptureResults.length && (verseResultsOpen || scriptureTotal > scriptureResults.length)"
+                    class="sp-more"
+                    @click="toggleScripture()"
+                  >
+                    {{ verseResultsOpen ? '收起' : `显示全部 ${scriptureTotal} 处` }}
+                  </button>
+                </template>
+                <div v-else-if="index && !scriptureLoading" class="sp-none">无经文命中</div>
               </section>
 
               <!-- 4. 注释段落（按宗派分组；heading + 摘录，跳读经页看完整注释） -->

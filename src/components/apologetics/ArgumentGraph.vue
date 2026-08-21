@@ -4,13 +4,13 @@
  *
  * 把主题数据以「无限画布 + 逻辑节点 + 关系边」呈现，支持：
  *   拖拽节点 / 缩放平移 / MiniMap / Controls / 双击定位 / 关系图例 /
- *   证据开关（折叠/展开证据层）/ 节点点击 → 右侧详情面板（含全文阅读与经文深链）
+ *   节点点击 → 右侧详情面板（含全文阅读与经文深链）
  *
  * 图层（自上而下逻辑流）：核心命题 → 命题 → 质疑 → 回应 → 证据/经文
  * 关系：探讨 contains / 反驳 refutes / 支持 supports / 回应 responds_to / 提供证据 evidences
  */
 import { ref, computed, nextTick, watch, onMounted, onUnmounted, markRaw } from 'vue'
-import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 import { Controls } from '@vue-flow/controls'
 import { Background } from '@vue-flow/background'
@@ -47,15 +47,12 @@ const topic = ref(null)
 const loading = ref(false)
 const error = ref('')
 
-/** 完整图谱（含证据层；evidence 折叠时过滤显示，保留其余节点拖拽状态） */
+/** 完整图谱（含证据层，恒展示；保留节点拖拽状态） */
 const allNodes = ref([])
 const allEdges = ref([])
 /** 当前展示的节点/边（Vue Flow 双向绑定） */
 const nodes = ref([])
 const edges = ref([])
-
-/** 证据层开关 */
-const showEvidence = ref(true)
 
 /** —— 内容筛选（与主题总图谱同款）：关键词 + 角色 —— */
 const query = ref('')
@@ -118,10 +115,6 @@ function applyFilter() {
     if (q && !argLabel(n).toLowerCase().includes(q)) return false
     return true
   })
-  // 证据层折叠 → 剔除证据节点；但显式筛选「证据」角色时强制展示证据层
-  if (!showEvidence.value && role !== 'evidence') {
-    list = list.filter((n) => !['graph-evidence', 'graph-scripture'].includes(n.type))
-  }
   nodes.value = list
   const keep = new Set(list.map((n) => n.id))
   edges.value = allEdges.value.filter((e) => keep.has(e.source) && keep.has(e.target))
@@ -132,14 +125,6 @@ watch([roleFilter, query], () => {
   applyFilter()
   nextTick(() => fitView({ padding: 0.15, maxZoom: 1, duration: 200 }))
 })
-
-/** 证据开关切换：更新显示并重定位视口 */
-async function toggleEvidence() {
-  showEvidence.value = !showEvidence.value
-  applyFilter()
-  await nextTick()
-  fitView({ padding: 0.18, maxZoom: 1, duration: 260 })
-}
 
 /** 图谱构建完成后自动适配视口 */
 watch(
@@ -239,11 +224,10 @@ const indexShownIds = computed(() => {
   return s
 })
 
-/** 复位：复原该主题全部词条（清空筛选 + 证据层展开 + 节点回原始构图 + 关闭详情 + 适配视图） */
+/** 复位：复原该主题全部词条（清空筛选 + 节点回原始构图 + 关闭详情 + 适配视图） */
 function resetTopic() {
   query.value = ''
   roleFilter.value = 'all'
-  showEvidence.value = true
   for (const n of allNodes.value) {
     const p = originPos.value.get(n.id)
     if (p) n.position = { x: p.x, y: p.y }
@@ -368,7 +352,7 @@ function onWindowResize() {
 <template>
   <div class="arg-graph">
     <!-- 顶部工具条 -->
-    <header class="ag-topbar">
+    <header class="ag-topbar" :class="{ 'ag-collapsed': topCollapsed }">
       <button class="ag-back" @click="emit('back')">← 所有主题</button>
       <div v-if="topic" class="ag-title-wrap" v-show="!topCollapsed">
         <span class="ag-title">{{ topic.title?.zh }}</span>
@@ -387,11 +371,8 @@ function onWindowResize() {
         <button class="ag-toggle" :class="{ on: indexOpen }" @click="indexOpen = !indexOpen" title="打开/收起论证索引">
           ☰ 索引
         </button>
-        <button class="ag-toggle" @click="resetTopic" title="复原该主题全部词条（证据层展开、节点回原始构图）">
+        <button class="ag-toggle" @click="resetTopic" title="复原该主题全部词条（节点回原始构图）">
           复位
-        </button>
-        <button class="ag-toggle" :class="{ on: showEvidence }" @click="toggleEvidence">
-          证据层 {{ showEvidence ? '展开' : '折叠' }}
         </button>
         <button class="ag-toggle" @click="fitView({ padding: 0.2, maxZoom: 1.1, duration: 260 })">适配视图</button>
       </div>
@@ -603,10 +584,10 @@ function onWindowResize() {
   transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .ag-back:hover { border-color: var(--gold); color: var(--gold); }
-.ag-title-wrap { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.ag-title-wrap { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; min-width: 0; }
 .ag-title { font-family: var(--serif); font-weight: 700; font-size: 1.15rem; color: var(--text); }
 .ag-title-en { font-size: 0.82rem; color: #a7adb6; letter-spacing: 0.03em; }
-.ag-tools { margin-left: auto; display: flex; align-items: center; gap: 0.7rem; }
+.ag-tools { margin-left: auto; display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; min-width: 0; }
 .ag-stats { font-size: var(--fs-xs); color: var(--muted); font-variant-numeric: tabular-nums; }
 .ag-toggle {
   flex-shrink: 0;
@@ -788,6 +769,9 @@ function onWindowResize() {
 /* 窄屏：顶栏收紧、索引抽屉改底部抽屉（地图信息栏同款） */
 @media (max-width: 900px) {
   .ag-topbar { flex-wrap: wrap; gap: 0.5rem; padding: 0.6rem 0.9rem; }
+  /* 收起后：隐藏「所有主题」与标题，整条工具条缩成一行按钮，最大化图谱阅读区 */
+  .ag-topbar.ag-collapsed { padding: 0.4rem 0.9rem; }
+  .ag-topbar.ag-collapsed .ag-back { display: none; }
   .ag-stats { display: none; }
   .ag-tools { gap: 0.45rem; }
   /* 按钮尺寸与主题总图谱 mg-btn 对齐（避免文字拥挤） */
@@ -818,6 +802,13 @@ function onWindowResize() {
   .ag-sheet-grab { display: block; }
   /* 遮罩置于抽屉之下 */
   .ag-scrim { z-index: 39; }
+}
+@media (max-width: 640px) {
+  .ag-title-en { display: none; }
+  .ag-hint { display: none; }
+}
+@media (max-width: 480px) {
+  .ag-title { font-size: 1rem; }
 }
 
 /* ===== 右侧详情面板 ===== */

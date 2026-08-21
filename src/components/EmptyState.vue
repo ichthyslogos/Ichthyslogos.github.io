@@ -3,6 +3,7 @@
 defineProps({
   title: { type: String, default: '暂无内容' },
   message: { type: String, default: '' },
+  hint: { type: String, default: '' },
 })
 </script>
 
@@ -11,6 +12,7 @@ defineProps({
     <div class="empty-icon" aria-hidden="true">⛵</div>
     <div class="empty-title">{{ title }}</div>
     <div v-if="message" class="empty-message">{{ message }}</div>
+    <div v-if="hint" class="empty-hint">{{ hint }}</div>
   </div>
 </template>
 
@@ -43,5 +45,10 @@ defineProps({
 .empty-message {
   max-width: 30rem;
   font-size: 0.9rem;
+}
+.empty-hint {
+  max-width: 30rem;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 </style>

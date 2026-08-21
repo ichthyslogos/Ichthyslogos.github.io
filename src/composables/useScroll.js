@@ -8,8 +8,3 @@
 export function scrollMainTop() {
   document.querySelector('.app-main')?.scrollTo(0, 0)
 }
-
-/** 平滑滚动到列表区（不用 #锚点跳转：与 hash 路由冲突） */
-export function scrollToList() {
-  document.getElementById('list')?.scrollIntoView({ behavior: 'smooth' })
-}

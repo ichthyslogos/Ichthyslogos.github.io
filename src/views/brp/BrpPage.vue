@@ -36,9 +36,6 @@ const mapOpen = ref(false)
 // 解经面板地点跳转联动：focusName + focusSeq（序号递增保证同名重复跳转也重新定位）
 const mapFocus = ref('')
 const mapFocusSeq = ref(0)
-// 经文高亮跳转联动：noteFocus + noteFocusSeq（背景注释词条定位）
-const noteFocus = ref('')
-const noteFocusSeq = ref(0)
 // 译本下拉展开（受控组件，由本页统一管理以支持移动端互斥）
 const menuOpen = ref(false)
 
@@ -75,15 +72,6 @@ function onFocusPlace(name) {
   mapOpen.value = true
   mapFocus.value = name
   mapFocusSeq.value++
-}
-
-/** 经文高亮文字点击：打开解经抽屉 → 背景注释层定位对应词条 */
-function onOpenNote(note) {
-  closeOthers('commentary')
-  mapOpen.value = false
-  panelOpen.value = true
-  noteFocus.value = note?.name || ''
-  noteFocusSeq.value++
 }
 const loading = ref(false)
 const error = ref('')
@@ -495,7 +483,6 @@ function onToggleMenu() {
           @goto-verse="onGotoVerse"
           @toggle-immersive="immersive = !immersive"
           @open-tool="openTool"
-          @open-note="onOpenNote"
         />
       </template>
     </section>
@@ -503,8 +490,6 @@ function onToggleMenu() {
       :open="panelOpen"
       :book="book"
       :chapter="chapter"
-      :focus-note-name="noteFocus"
-      :focus-note-seq="noteFocusSeq"
       @toggle="onToggleCommentary"
       @focus-place="onFocusPlace"
     />

@@ -40,14 +40,12 @@ const mobileView = ref('map')
 
 const router = useRouter()
 
-/** 全屏深链：跳转 map 子页面，携带当前选中（或首个有坐标）地点 + 本卷时期 */
+/** 全屏深链：跳转 map 子页面，把本抽屉内【所有】有坐标地点一并高亮（?foci=）+
+ *  本卷时期。这些高亮在 /map 页可被点击取消 */
 function openFullMap() {
-  const active = mappedPlaces.value.find((p) => p.name === activeName.value) || mappedPlaces.value[0]
   const query = {}
-  if (active) {
-    query.focus = active.name
-    if (active.zh) query.fl = active.zh // 显示名（中文优先；MapPage 聚焦层标签）
-  }
+  const pts = mappedPlaces.value
+  if (pts.length) query.foci = pts.map((p) => p.name).join(',')
   const pid = periodId.value
   if (pid) query.period = pid
   router.push({ path: '/map', query })
@@ -349,6 +347,7 @@ function toggleCat(cat) {
             :active-period-id="periodId"
             :focus-places="mapPlaces"
             :active-focus-name="activeName"
+            :locked="true"
             @select-focus="pickPlace"
           />
         </div>

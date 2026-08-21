@@ -71,11 +71,6 @@ export async function fetchStrongDict() {
   return fetchJson(BASE + 'strongs-dict.json')
 }
 
-/** 加载 TFLSJ 高级希腊词典（Full LSJ，约 16MB；详情页按需懒加载），fetchJson 内置缓存 */
-export async function fetchStrongLsj() {
-  return fetchJson(BASE + 'strongs-lsj.json')
-}
-
 /** 默认译本偏好顺序（URL 未指定译本时的回退链；和合本简体为默认，新放入的译本不影响此偏好） */
 const PREFERRED_TRANS = ['chisim', 'niv', 'chiun', 'chisb']
 
@@ -216,11 +211,6 @@ export async function fetchPlaceCoords() {
 /** 加载词条简体中文名表（归一化 Strong 码 → 中文名；注释高亮显示用），自动缓存 */
 export async function fetchZhNames() {
   return fetchJson(`${COMMENT_BASE}notes/${NOTES_SOURCE_KEY}/zh-names.json`, { cache: 'no-store' })
-}
-
-/** 加载词条译名变体表（条目名 → 和合本译名变体，如 Adam → 「那人」），自动缓存 */
-export async function fetchNameVariants() {
-  return fetchJson(`${COMMENT_BASE}notes/${NOTES_SOURCE_KEY}/name-variants.json`, { cache: 'no-store' })
 }
 
 /* ============ 圣经地理数据（地图页 /map） ============

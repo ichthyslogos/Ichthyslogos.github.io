@@ -12,14 +12,21 @@
  *
  * 技术栈（重建方案 v2）：MapLibre GL JS 6 + 本地 Vector Tile（GeoJSON 直连仅底图与旅程线）
  *   底图  Gray Earth 栅格（image source）+ NE 自然层 GeoJSON（海洋/河流/湖泊）
- *   国家  tiles/territories/<period>/   Cliopatria（时间轴切换瓦片集）
+ *   国家  territory-geo（按时期 GeoJSON，任意缩放不失真）  Cliopatria
  *   城市  tiles/cities/<period>/        Pleiades + STEP + DARE（各时期显示当时名称；LOD 预裁剪瓦片）
  *   城区  tiles/urban/<period>/         AWMC urban_areas
  *   路线  旅程 GeoJSON（UBS MARBLE，confidence 三层样式）
  *
  * 图层顺序（HISTORICAL-BASEMAP.md §8）：
  *   bg → base-gray → base-ocean/rivers/lakes → territory-fill/line →
- *   routes → urban → pleiades-dot/label → cities-dot/label → focus-places（brp 聚焦覆盖层，最上）
+ *   routes → urban → pleiades-dot/label → cities-dot/label → sel-dot/label（统一高亮，最上）
+ *   → focus-places（brp 本章地点上下文覆盖层；未选中的常显，选中的走高亮层）
+ *
+ * 高亮统一（点击选择 + 跳转聚焦 = 同一系统）：
+ *   所有高亮实体统一收进 selectedCities（唯一真源），渲染为一个 geojson 金色层
+ *   sel-dot/sel-label（地图点击的瓦片地点 + 跳转聚焦地点共用）。基础层按所选键
+ *   排除原色（excludeSelectedInFilter），避免金色与原色重叠。聚焦覆盖层只画
+ *   未选中的上下文圆点/名字；选中者淡出、由金色高亮层接管。
  */
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import maplibregl from 'maplibre-gl' // v5 UMD 构建：default = 命名空间（Map/NavigationControl/Popup…）
@@ -32,66 +39,34 @@ const props = defineProps({
   geometries: { type: Object, default: () => ({}) }, // geometry_id → [[lng,lat],...]
   activeJourneyId: { type: String, default: '' },
   activePeriodId: { type: String, default: null }, // 当前时期（瓦片集切换；null = 全部）
-  /** 聚焦地点（brp 地图抽屉的本章地点）[{ name, lat, lng, cat }]：
-   *  覆盖层常显，不受 CAT_ZOOM_GATE/瓦片 LOD 裁剪影响——地点被 zoom 隐藏时依然可见 */
+  /** 聚焦地点（brp 本章地点 / map 深链跳转）[{ name, key, lat, lng, cat }]：
+   *  上下文覆盖层常显，不受 CAT_ZOOM_GATE/瓦片 LOD 裁剪影响——地点被 zoom 隐藏时依然可见。
+   *  选中（activeFocusName 命中）的地点会并入统一高亮 selectedCities，渲染金色高亮层 */
   focusPlaces: { type: Array, default: () => [] },
-  activeFocusName: { type: String, default: '' }, // 选中聚焦地点（金色放大 + flyTo 定位）
+  activeFocusName: { type: String, default: '' }, // 选中聚焦地点（→ 并入统一高亮 + flyTo 定位）
+  /** 锁定模式（读经页地图抽屉）：高亮"定死"——地图点击不改变选中/高亮，且不显示详情卡。
+   *  仅作只读定位（点选跳转仍会高亮焦点地点），把交互选择能力留给 /map 全屏页 */
+  locked: { type: Boolean, default: false },
+  /** 预设高亮地点键（全屏深链 /map?foci=… 携带）：这些 key 对应的焦点地点一进来就并入
+   *  统一高亮 selectedCities（金色，列表在 /map 信息栏"已选地点"），且可被点击取消 */
+  preselectKeys: { type: Array, default: () => [] },
 })
-const emit = defineEmits(['territories', 'select-focus'])
+const emit = defineEmits(['territories', 'select-focus', 'selection'])
 
 /** 瓦片根路径（协议 §6：tiles/{layer}/{period}/{z}/{x}/{y}.pbf）
  *  绝对化：maplibre 内部 new Request(相对 URL) 在部分 WebView（IAB 等）中解析失败，
  *  new URL() 生成绝对地址后所有环境一致（相对当前页面解析，部署子路径同样安全）
  *  ?v= 版本参数：瓦片数据重建后强制浏览器取新瓦片（HTTP 缓存失效） */
 const TILE_ROOT = new URL('data/geography/tiles/', window.location.href).href
-const TILE_VERSION = '?v=20260818b'
-/** 单瓦片 URL（带版本参数） */
-const tileUrl = (layer, period, z, x, y) => `${TILE_ROOT}${layer}/${period}/${z}/${x}/${y}.pbf${TILE_VERSION}`
-/** 各矢量层缩放范围（与 build-tiles.mjs 一致；territories 全球 z7 上限，z8+ overzoom） */
-const LAYER_ZOOM = { territories: 7, urban: 9, cities: 10 }
-/** 城市 LOD 缩放带（与 build-tiles.mjs CITY_BANDS 一致——瓦片已预裁剪，前端无需再过滤） */
-const CITY_BANDS = [
-  { max: 3, lodMax: 0 }, { max: 5, lodMax: 1 }, { max: 8, lodMax: 2 }, { max: 10, lodMax: 3 },
-]
+const TILE_VERSION = '?v=20260822b'
+/** 各矢量层缩放范围（与 build-tiles.mjs 一致；疆域已改按时期 GeoJSON，不再走此处 zoom） */
+const LAYER_ZOOM = { urban: 9, cities: 10 }
 
-const CAT_COLOR = {
-  capital: '#8b7355', city: '#3c4652', village: '#8a94a3',
-  region: '#7a6a4a', nation: '#7a6a4a', mountain: '#a98d5f', range: '#a98d5f',
-  river: '#4a90c4', water: '#4a90c4', desert: '#c9a86a', coast: '#4a90c4', island: '#4a90c4',
-  site: '#9aa3ad',
-}
-/** 分类 → 几何符号（与 MapPage 图例 CAT_ICON 一致；地图标记用 symbol 图层渲染同款符号，
- *  字体为本地图 setGlyphs 的 Noto Sans，全 BMP 码点已预生成） */
 const CAT_SYMBOL_EXPR = ['match', ['get', 'cat'],
   'capital', '★', 'city', '●', 'village', '○', 'region', '◆', 'nation', '▲',
   'mountain', '△', 'range', '▴▴', 'river', '▬', 'water', '◍', 'desert', '◒',
   'coast', '◐', 'island', '◌', 'site', '✕',
   '●']
-/** JS 版分类符号（点击拾取 popup 列表显示用，与 CAT_SYMBOL_EXPR 保持一致） */
-const CAT_SYMBOL = {
-  capital: '★', city: '●', village: '○', region: '◆', nation: '▲',
-  mountain: '△', range: '▴▴', river: '▬', water: '◍', desert: '◒',
-  coast: '◐', island: '◌', site: '✕',
-}
-/** 分类缩放门控（图例 zoom 表 2026-08 校审）：
- *  nation 0-8；water/desert/range/coast 0-5；capital/region 4-10；city/river 6+；
- *  island 6-12；mountain/village 9+；site 11+（z11+ 由瓦片 z10 overzoom + 本门控补显） */
-const CAT_ZOOM_GATE = ['match', ['get', 'cat'],
-  'nation', ['<=', ['zoom'], 8.5],
-  'water', ['<=', ['zoom'], 5.5],
-  'desert', ['<=', ['zoom'], 5.5],
-  'range', ['<=', ['zoom'], 5.5],
-  'coast', ['<=', ['zoom'], 5.5],
-  'capital', ['all', ['>=', ['zoom'], 4], ['<=', ['zoom'], 10.5]],
-  'region', ['all', ['>=', ['zoom'], 4], ['<=', ['zoom'], 10.5]],
-  'city', ['>=', ['zoom'], 6],
-  'river', ['>=', ['zoom'], 6],
-  'island', ['all', ['>=', ['zoom'], 6], ['<=', ['zoom'], 12.5]],
-  'mountain', ['>=', ['zoom'], 9],
-  'village', ['>=', ['zoom'], 9],
-  'site', ['>=', ['zoom'], 11],
-  true,
-]
 
 /* ============ 信息密度（Map Data Engine：Zoom 过滤 + 重要性排序；§9 密度控制器） ============
  * 三档密度：简洁（大区域/国家/重要城市）→ 标准（+行政区/城市/重要地点）→ 详细（全部）。
@@ -163,12 +138,6 @@ const mapEl = ref(null)
 let map = null
 let ro = null
 
-/** 年代显示（负值 = BC）：-2100 → "2100 BC"，30 → "30 AD"（与 MapPage fmtYear 一致） */
-function fmtYear(y) {
-  if (y == null) return ''
-  return y < 0 ? `${-y} BC` : `${y} AD`
-}
-
 /** HTML 转义：瓦片属性来自第三方数据集（Pleiades/DARE 等），拼入弹窗 HTML 前必须转义 */
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
@@ -231,11 +200,13 @@ function applyPeriod(periodId) {
     src.setTiles(tiles)
   }
   const slices = periodId ? [periodId] : ['all']
-  // 城市/城区/疆域标签：按时期（或 all）切换瓦片集
-  for (const layer of ['cities', 'urban', 'territory-labels']) setTiles(layer, slices)
-  if (periodId) {
-    setTiles('territories', [periodId])
-    for (const id of ['territory-fill', 'territory-line']) {
+  // 城市/城区：按时期（或 all）切换瓦片集（疆域改按时期 GeoJSON，见下）
+  for (const layer of ['cities', 'urban']) setTiles(layer, slices)
+  // 疆域 GeoJSON：时期 → 拉该时期 GeoJSON；'全部' → 空集并隐藏疆域层
+  const terr = map.getSource('territory-geo')
+  if (periodId && terr) {
+    terr.setData(`${TILE_ROOT}territory-geo/${periodId}.geojson${TILE_VERSION}`)
+    for (const id of ['territory-fill', 'territory-line', 'territory-label']) {
       if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'visible')
     }
     fetch(new URL(`data/geography/tiles/territories/${periodId}/index.json`, window.location.href).href, { cache: 'no-store' })
@@ -248,12 +219,14 @@ function applyPeriod(periodId) {
         if (seq === periodSeq) emit('territories', [])
       })
   } else {
-    // '全部' 时期：无固定政治实体 → 隐藏疆域层（瓦片集保持上次，避免 setTiles([]) 边界问题）
-    for (const id of ['territory-fill', 'territory-line']) {
+    // '全部' 时期：无固定政治实体 → 隐藏疆域层（fill/line/label；GeoJSON 数据保持上次即可）
+    for (const id of ['territory-fill', 'territory-line', 'territory-label']) {
       if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none')
     }
     emit('territories', [])
   }
+  // 切换时期不清空地点高亮：高亮只在手动（✕/点选取消）或刷新页面时消失。
+  // （地图抽屉 locked 由 syncLockedSelection 单独管理，会在换章时自行清旧重选。）
   dumpRenderState('period', true)
 }
 
@@ -278,13 +251,16 @@ function applyCatFilter() {
     try {
       // 与原 filter 组合（AND），不覆盖——否则 STEP 专属层会混入 Pleiades 特征；
       // densityGate（分类 zoom 分级）一并保留，图例切换不得破坏 zoom 层级表
-      const parts = [baseFilter, catFilter, gate]
+      let parts = [baseFilter, catFilter, gate]
       if (extra) parts.push(extra)
+      // 隐藏已选中的实体（原色层），避免与金色高亮重叠/文字错位
+      parts = excludeSelectedInFilter(parts)
       map.setFilter(layer, ['all', ...parts])
     } catch (e) {
       mapEl.value?.setAttribute('data-cat-err', `${layer}: ${String(e?.message || e)}`)
     }
   }
+  renderSelection() // 高亮层同步（选中集变化时重建统一金色层）
 }
 
 /* ============ 路线（UBS MARBLE 旅程：confidence 三层样式） ============ */
@@ -304,33 +280,64 @@ function journeyGeoJSON(journeyId) {
   return { type: 'FeatureCollection', features: feats }
 }
 
-/* ============ 聚焦地点（brp 本章地点覆盖层） ============
- * 独立 GeoJSON 源 + 圆点/名称两层，加在全部图层之后（最上层）；
+/* ============ 聚焦地点上下文（brp 本章地点 / map 深链跳转） ============
+ * 独立 GeoJSON 源 + 圆点/名称两层，加在全部图层之后；
  * 无 minzoom / 无 CAT_ZOOM_GATE 门控——地点被 zoom 层级表隐藏时（村庄/遗址 z11+、
- * 山脉 z8+、或瓦片 LOD 裁剪）本层依然可见，满足"zoom 隐藏则取消隐藏"。 */
+ * 山脉 z8+、或瓦片 LOD 裁剪）本层依然可见，满足"zoom 隐藏则取消隐藏"。
+ * 本层只画【未选中】的上下文地点：选中的（activeFocusName 命中）并入统一高亮
+ * selectedCities，由金色层 sel-dot/sel-label 接管——聚焦与点击选择同一高亮系统。 */
 function focusGeoJSON() {
+  const selKeys = new Set(selectedCities.value.map((c) => c.key))
   const feats = []
   for (const p of props.focusPlaces) {
     if (p.lat == null || p.lng == null) continue
+    const key = p.key || p.name
     feats.push({
       type: 'Feature',
-      // key = 调用方的选中键（原英文名）；name = 标签文本（调用方传入，当前为英文——
-      // 地图中文显示暂时关闭）。点击回传 key，选中判定不受显示名切换影响
-      // （select-focus 与调用方 activeName 同键）
-      properties: { name: p.name, key: p.key || p.name, active: (p.key || p.name) === props.activeFocusName },
+      // name = 标签文本；key = 调用方的选中键。active = 是否已并入统一高亮
+      // （选中者过滤出本层，金色高亮层 sel-dot/sel-label 接管渲染）
+      properties: { name: p.name, key, active: selKeys.has(key) },
       geometry: { type: 'Point', coordinates: [p.lng, p.lat] },
     })
   }
   return { type: 'FeatureCollection', features: feats }
 }
 
-/** 聚焦地点变化 → 重建覆盖层 + fitBounds（无地点回默认视野） */
-function syncFocusPlaces() {
+/** 重建聚焦上下文源（数据）；选中集变化也要刷新（选中者淡出） */
+function buildFocusSource() {
   if (!map) return
   const src = map.getSource('focus-places')
   if (!src) return // 样式未就绪：load 回调末尾会调用一次
   src.setData(focusGeoJSON())
   mapEl.value?.setAttribute('data-focus', props.focusPlaces.map((p) => `${p.name}:${p.lat},${p.lng}`).join(' '))
+}
+
+/** 锁定模式（读经页地图抽屉）：默认把本章全部有坐标地点并入统一高亮（金色），
+ *  "定死"不变（地图点击已忽略）。focusPlaces 变化（换章）时先清旧再全选，避免残留上一章 */
+function syncLockedSelection() {
+  if (!props.locked || !map) return
+  if (selectedCities.value.length) clearSelection() // 清旧（clearSelection 内部 emit select-focus，抽屉会同步清 activeName）
+  const cur = new Set()
+  const add = []
+  for (const p of props.focusPlaces) {
+    if (p.lat == null || p.lng == null) continue
+    const entry = focusCityEntry(p)
+    if (entry && !cur.has(entry.key)) { cur.add(entry.key); add.push(entry) }
+  }
+  if (add.length) {
+    selectedCities.value = add
+    commitSelection()
+  }
+}
+
+/** 聚焦地点变化 → 重建上下文源 + fitBounds + 应用预设高亮（无地点回默认视野）。相机调整 */
+function syncFocusPlaces() {
+  if (!map) return
+  buildFocusSource()
+  // 锁定模式（读经页地图抽屉）：默认全选本章地点统一金色高亮且"定死"；
+  // 普通模式走 preselectKeys（/map 全屏深链多地点）
+  if (props.locked) syncLockedSelection()
+  else applyPreselect()
   const pts = props.focusPlaces.filter((p) => p.lat != null && p.lng != null)
   if (pts.length) {
     const bounds = new maplibregl.LngLatBounds()
@@ -342,16 +349,166 @@ function syncFocusPlaces() {
   }
 }
 
-/** 选中聚焦地点 → 金色放大 + flyTo 定位（缩放不低于 8；覆盖层任何缩放均可见） */
+/** 应用预设高亮：把 preselectKeys 对应的焦点地点并入统一高亮 selectedCities。
+ *  （/map 全屏深链多地点高亮；focusPlaces 就绪 + map 就绪时调用；去重由 addFocusToSelection 保证） */
+function applyPreselect() {
+  if (!map) return
+  for (const k of props.preselectKeys || []) {
+    const p = props.focusPlaces.find((x) => (x.key || x.name) === k)
+    if (p) addFocusToSelection(p)
+  }
+}
+
+/** 选中聚焦地点 → 并入统一高亮（金色 + 详情卡，与地图点击同一系统）+ flyTo 定位 */
 function syncFocusActive() {
   if (!map) return
-  const src = map.getSource('focus-places')
-  if (!src) return
-  src.setData(focusGeoJSON())
+  buildFocusSource()
   mapEl.value?.setAttribute('data-focus-active', props.activeFocusName || '')
   const active = props.focusPlaces.find((p) => (p.key || p.name) === props.activeFocusName)
   if (!active || active.lat == null || active.lng == null) return
+  addFocusToSelection(active)
   map.flyTo({ center: [active.lng, active.lat], zoom: Math.max(map.getZoom(), 8) })
+}
+
+/* ============ 地点高亮选择（点击地名/图标 + 跳转聚焦 → 统一高亮 + 详情；再点击取消。
+ *   同一坐标多个地名（Jerusalem/Jebus/Aelia Capitolia…）高亮全部列出，
+ *   详情卡内点击单条名字独立取消对应高亮）。
+ *   唯一真源：selectedCities。所有高亮（地图点击的瓦片地点 + 跳转聚焦地点）都收进这里，
+ *   渲染为一个统一的 geojson 金色层 sel-dot/sel-label（renderSelection）。
+ *   集变化 → commitSelection → applyCatFilter（基础层隐藏原色）+ renderSelection + buildFocusSource */
+const selectedCities = ref([])
+/** 参与点击拾取的图层（基础 + 统一高亮）：点击任一即可选中/取消 */
+const CITY_LAYERS = [
+  'cities-dot', 'cities-label', 'pleiades-dot', 'pleiades-label',
+  'sel-dot', 'sel-label', 'sel-hit',
+]
+/** 从瓦片 Feature 几何提取坐标与分组键（同坐标多名字分组） */
+function featLoc(f) {
+  const g = f?.geometry
+  if (g && g.type === 'Point' && Array.isArray(g.coordinates) && g.coordinates.length >= 2) {
+    return {
+      lng: g.coordinates[0],
+      lat: g.coordinates[1],
+      loc: `${g.coordinates[0].toFixed(3)},${g.coordinates[1].toFixed(3)}`,
+    }
+  }
+  return null
+}
+/** 瓦片 Feature 属性 → 地点身份（key = en || name；无名称则丢弃） */
+function cityIdentity(f, loc) {
+  const p = f?.properties || {}
+  const en = p.en || p.name || ''
+  if (!en) return null
+  return {
+    key: en, en, name: p.name, cat: p.cat, color: p.color, src: p.src, major: p.major,
+    from: p.from, to: p.to, polity: p.polity,
+    lng: loc.lng, lat: loc.lat, loc: loc.loc,
+  }
+}
+/** 跳转聚焦地点 → 统一高亮条目（与点击选择同构；金色 + 详情卡） */
+function focusCityEntry(p) {
+  if (p.lat == null || p.lng == null) return null
+  const key = p.key || p.name
+  if (!key) return null
+  return {
+    key, en: p.name, name: p.name, cat: p.cat, color: p.color, src: p.src || 'focus',
+    major: 1, from: p.from, to: p.to, polity: p.polity,
+    lng: p.lng, lat: p.lat, loc: `${p.lng.toFixed(3)},${p.lat.toFixed(3)}`,
+  }
+}
+/** 把跳转聚焦地点并入统一高亮集（已存在则不重复） */
+function addFocusToSelection(p) {
+  const entry = focusCityEntry(p)
+  if (!entry) return
+  if (!selectedCities.value.some((c) => c.key === entry.key)) {
+    selectedCities.value = [...selectedCities.value, entry]
+    commitSelection()
+  }
+}
+/** 重建统一高亮层：选中集 → geojson 金色源 sel-dot/sel-label。
+ *  （点击选择的瓦片地点 + 跳转聚焦地点都收进 selectedCities，由本层统一渲染） */
+function renderSelection() {
+  if (!map) return
+  const src = map.getSource('selected')
+  if (!src) return // 样式未就绪：load 回调末尾会再调一次
+  const feats = selectedCities.value
+    .filter((c) => c.lat != null && c.lng != null)
+    .map((c) => ({
+      type: 'Feature',
+      properties: { en: c.key, name: c.en, cat: c.cat, major: c.major ?? 1, color: c.color },
+      geometry: { type: 'Point', coordinates: [c.lng, c.lat] },
+    }))
+  src.setData({ type: 'FeatureCollection', features: feats })
+  mapEl.value?.setAttribute('data-selected', feats.map((f) => f.properties.en).join(','))
+}
+/** 刷新基础层：排除已选中项（隐藏原色，避免与金色高亮重叠/文字错位） */
+function excludeSelectedInFilter(parts) {
+  const keys = selectedCities.value.map((c) => c.key)
+  if (!keys.length) return parts
+  return [...parts, ['!', ['in', ['coalesce', ['get', 'en'], ['get', 'name']], ['literal', keys]]]]
+}
+/** 点击图标/地名：同一坐标的整组一起切换（全选中 ↔ 全部取消） */
+function toggleLocationGroup(group) {
+  if (!group.length) return
+  const loc = group[0].loc
+  const atLoc = selectedCities.value.filter((c) => c.loc === loc)
+  const allOn = group.every((id) => atLoc.some((c) => c.key === id.key))
+  if (allOn && atLoc.length) {
+    const removedKeys = new Set(atLoc.map((c) => c.key))
+    selectedCities.value = selectedCities.value.filter((c) => c.loc !== loc)
+    // 取消的是焦点地点 → 通知父组件清空 activeFocusName，避免聚焦上下文层残留圆点
+    if (props.activeFocusName && removedKeys.has(props.activeFocusName)) {
+      emit('select-focus', '')
+    }
+  } else {
+    const cur = new Set(selectedCities.value.map((c) => c.key))
+    const add = []
+    for (const id of group) if (!cur.has(id.key)) { cur.add(id.key); add.push(id) }
+    if (add.length) selectedCities.value = [...selectedCities.value, ...add]
+    else return // 全部已在选中 → 不应进入此分支（已在上面处理全选）
+  }
+  commitSelection()
+}
+/** 详情卡：点击单条名字 → 仅取消该条对应高亮 */
+function deselectCity(key) {
+  selectedCities.value = selectedCities.value.filter((c) => c.key !== key)
+  if (props.activeFocusName && key === props.activeFocusName) {
+    emit('select-focus', '')
+  }
+  commitSelection()
+}
+function clearSelection() {
+  if (!selectedCities.value.length) return
+  const hadFocus = props.activeFocusName && selectedCities.value.some((c) => c.key === props.activeFocusName)
+  selectedCities.value = []
+  if (hadFocus) emit('select-focus', '')
+  commitSelection()
+}
+/** 提交选中态（统一高亮唯一入口）：
+ *  基础层隐藏原色（applyCatFilter，其末尾重建高亮层）+
+ *  聚焦上下文层淡出已选中者（buildFocusSource）+
+ *  向父组件广播当前高亮列表（MapPage 信息栏"已选地点"图例渲染） */
+function commitSelection() {
+  applyCatFilter()
+  buildFocusSource()
+  emit('selection', selectedCities.value.map((c) => ({ ...c })))
+}
+/** 地图点击地点：以点击点为中心小范围重查，收集同一坐标全部重叠地名，
+ *  整组切换高亮（全选 ↔ 全部取消）——同一图标多名字（Jerusalem/Jebus…）一同高亮 */
+function toggleLocationFromClick(hits, e) {
+  const anchor = featLoc(hits[0]) || { lng: e.lngLat.lng, lat: e.lngLat.lat, loc: `${e.lngLat.lng.toFixed(3)},${e.lngLat.lat.toFixed(3)}` }
+  const box = [e.point.x - 22, e.point.y - 22, e.point.x + 22, e.point.y + 22]
+  const near = map.queryRenderedFeatures(box, { layers: CITY_LAYERS })
+  const seen = new Set()
+  const group = []
+  for (const f of near) {
+    const loc = featLoc(f) || anchor
+    if (loc.loc !== anchor.loc) continue
+    const id = cityIdentity(f, loc)
+    if (id && !seen.has(id.key)) { seen.add(id.key); group.push(id) }
+  }
+  if (!group.length) group.push(cityIdentity(hits[0], anchor))
+  toggleLocationGroup(group.filter(Boolean))
 }
 
 /* ============ 全局错误捕获（协议 §13；命名函数便于卸载，防监听泄漏） ============ */
@@ -443,19 +600,19 @@ onMounted(async () => {
       }
     })()
 
-    /* ---- Layer 2：疆域（Vector Tile：Cliopatria，按时期切换） ---- */
-    map.addSource('territories', {
-      type: 'vector',
-      tiles: [`${TILE_ROOT}territories/jesus/{z}/{x}/{y}.pbf${TILE_VERSION}`],
-      minzoom: 0,
-      maxzoom: LAYER_ZOOM.territories,
+    /* ---- Layer 2：疆域（按时期 GeoJSON：Cliopatria，build-territory-geojson.mjs）。
+     *  疆域矢量瓦片只生成到 z7（全球疆域刻意 z7 上限控瓦片量），放大 z8+ 会像素化、
+     *  z11+ 直接消失露出灰色底图（即"放大串起来"）。改用 GeoJSON source 后 mapLibre
+     *  直接渲染多边形，任意缩放级别永不失真/消失，也无需重建瓦片。 */
+    map.addSource('territory-geo', {
+      type: 'geojson',
+      data: `${TILE_ROOT}territory-geo/jesus.geojson${TILE_VERSION}`,
     })
-    // 帝国/王国级填充（Cliopatria 国家疆域；z0+ 全程可见）
+    // 帝国/王国级填充（Cliopatria 国家疆域；z0+ 全程可见；多边形 feature，点 feature 自动忽略）
     map.addLayer({
       id: 'territory-fill',
       type: 'fill',
-      source: 'territories',
-      'source-layer': 'territories',
+      source: 'territory-geo',
       // 国家层级提高：全程可见不消失（z8+ 渐降透明度，避免覆盖街景细节）
       paint: {
         'fill-color': ['get', 'color'],
@@ -465,8 +622,7 @@ onMounted(async () => {
     map.addLayer({
       id: 'territory-line',
       type: 'line',
-      source: 'territories',
-      'source-layer': 'territories',
+      source: 'territory-geo',
       paint: {
         'line-color': ['get', 'color'],
         'line-width': 1,
@@ -590,19 +746,59 @@ onMounted(async () => {
       },
     })
 
-    /* ---- Layer 5.5：国家区域标签（独立瓦片层 territory-labels：每实体一个 label 点，质心固定）
+    /* ---- Layer 5.3：统一高亮层（点击选择的瓦片地点 + 跳转聚焦地点 → 同一金色层）
+     *   geojson 源 `selected`：selectedCities（唯一真源）→ 金色图标+名称。
+     *   地图点击的瓦片地点、跳转聚焦（focusPlaces）的地点都收进 selectedCities，
+     *   由本层统一渲染（renderSelection 重建）。基础层已排除选中项（applyCatFilter），
+     *   聚焦上下文层已淡出选中者（buildFocusSource）——金色不与任何其他渲染重叠。
+     *   图标/名称样式沿用原高亮层：CAT 符号、金色描边、variable-anchor 避让。 ---- */
+    map.addSource('selected', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+    map.addLayer({
+      id: 'sel-dot', type: 'symbol', source: 'selected',
+      layout: {
+        'text-field': CAT_SYMBOL_EXPR,
+        'text-font': ['Noto Sans Regular'],
+        'text-size': ['interpolate', ['linear'], ['zoom'], 4, 10, 8, ['case', ['==', ['get', 'major'], 1], 15, 13]],
+        'text-allow-overlap': true,
+        'text-ignore-placement': true,
+      },
+      paint: {
+        'text-color': '#b8860b',
+        'text-halo-color': 'rgba(250,249,247,0.95)',
+        'text-halo-width': 2,
+      },
+    })
+    map.addLayer({
+      id: 'sel-label', type: 'symbol', source: 'selected',
+      layout: {
+        'text-field': ['get', 'name'],
+        'text-size': ['case', ['==', ['get', 'major'], 1], 16, 14],
+        'text-variable-anchor': ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
+        'text-radial-offset': 0.7,
+        'text-font': ['Noto Sans Regular'],
+        'text-allow-overlap': false,
+      },
+      paint: {
+        'text-color': '#a06d10',
+        'text-halo-color': 'rgba(250,249,247,0.97)',
+        'text-halo-width': 2.2,
+      },
+    })
+    // 高亮点击捕获圈：透明大圆，叠在金色标记位置上收紧点击目标——真实用户更容易
+    // 在金色 ★/名字附近"再点一下"取消高亮（不用精确点到小字形）。纳入 CITY_LAYERS。
+    map.addLayer({
+      id: 'sel-hit', type: 'circle', source: 'selected',
+      paint: { 'circle-radius': 9, 'circle-opacity': 0 },
+    })
+
+    /* ---- Layer 5.5：国家区域标签（随疆域 GeoJSON 的点 feature：label=1 质心点）
      *   放在城市层之后（最上符号层）：MapLibre 跨层碰撞按图层顺序取优先——后加的层
      *   先占位，海洋/城市标签让位，国家名（蓝字大写）不被挤掉；蓝字之间仍参与碰撞
      *   （allow-overlap:false + symbol-sort-key 按面积：大国优先，小国重叠处让位），
      *   位置固定在质心不移动；大写 + 字距 + 半透明，与城市点标签两套视觉 ---- */
-    map.addSource('territory-labels', {
-      type: 'vector',
-      tiles: [`${TILE_ROOT}territory-labels/jesus/{z}/{x}/{y}.pbf${TILE_VERSION}`],
-      minzoom: 0,
-      maxzoom: LAYER_ZOOM.territories,
-    })
     map.addLayer({
-      id: 'territory-label', type: 'symbol', source: 'territory-labels', 'source-layer': 'territory-labels',
+      id: 'territory-label', type: 'symbol', source: 'territory-geo',
+      filter: ['==', ['get', 'label'], 1], // 只绘 GeoJSON 中的 label 质心点（polygon 居中标签已弃）
       layout: {
         // 地图标签统一英文（中文显示暂时关闭；瓦片 zh 字段保留，恢复时改回 coalesce）
         'text-field': ['get', 'name'],
@@ -620,34 +816,18 @@ onMounted(async () => {
       },
     })
 
-    /* ---- Layer 6：聚焦地点覆盖层（brp 本章地点；无 zoom 门控、无 LOD 裁剪，常显最上层） ---- */
+    /* ---- Layer 6：聚焦地点上下文（brp 本章地点 / map 深链；无 zoom 门控、无 LOD 裁剪，
+     *   常显最上层）。已彻底移除叠加的"金环白心"上下文小圆点（focus-places-dot）——
+     *   只用名字标签识别未选中的本章地点，选中者一律并入统一金色高亮层 sel-dot/sel-label。
+     *   名字过滤 active：选中者淡出，由金色高亮层 sel-label 展示，避免双重渲染。 ---- */
     map.addSource('focus-places', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
     map.addLayer({
-      id: 'focus-places-dot', type: 'circle', source: 'focus-places',
-      filter: ['!', ['get', 'active']], // 未选中：金环白心小圆
-      paint: {
-        'circle-radius': 5,
-        'circle-color': '#fffdf4',
-        'circle-stroke-width': 2.5,
-        'circle-stroke-color': '#b8860b',
-      },
-    })
-    map.addLayer({
-      id: 'focus-places-dot-active', type: 'circle', source: 'focus-places',
-      filter: ['==', ['get', 'active'], true], // 选中：金色大圆 + 白描边
-      paint: {
-        'circle-radius': 8,
-        'circle-color': '#c8962e',
-        'circle-stroke-width': 2.5,
-        'circle-stroke-color': '#fffdf4',
-      },
-    })
-    map.addLayer({
       id: 'focus-places-label', type: 'symbol', source: 'focus-places',
+      filter: ['!', ['get', 'active']], // 未选中名字（选中者由金色高亮层 sel-label 展示）
       layout: {
         'text-field': ['get', 'name'],
         'text-font': ['Noto Sans Regular'],
-        'text-size': ['case', ['get', 'active'], 14, 12.5],
+        'text-size': 12.5,
         // 与 map 子页面同款重叠修复：variable-anchor 8 锚点自动避让——
         // 本章地点重叠（如多个地点同一位置）时名字扇形展开全部显示，文字不重叠
         'text-variable-anchor': ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
@@ -660,8 +840,11 @@ onMounted(async () => {
         'text-halo-width': 2,
       },
     })
+    // 先应用时期（切换时期不清空高亮；应用时期仅切换疆域/城市数据）→ 再应用聚焦
+    // 上下文与深链聚焦高亮。顺序为：时期 → 聚焦源 → 初始选中定位。
+    applyPeriod(props.activePeriodId)
     syncFocusPlaces()
-    // 初始 activeFocusName（挂载前已选中，如解经面板跳转先于地图挂载）→ 定位
+    // 初始 activeFocusName（挂载前已选中，如解经面板跳转先于地图挂载）→ 定位并高亮
     if (props.activeFocusName) syncFocusActive()
     applyCatFilter()
 
@@ -669,31 +852,29 @@ onMounted(async () => {
     mapEl.value?.setAttribute('data-ml', 'layers-ready')
     scheduleDiagnostics()
 
-    // 点击 → 聚焦地点（brp 本章地点）emit select-focus；否则 popup：城市/地点显示名称；
-    // 疆域显示国家名——多个重叠实体全部列出（色块 + 名称）
+    // 点击 → 聚焦地点（brp 本章地点）emit select-focus；否则统一高亮切换；否则匿名弹窗。
+    // locked 模式（读经页地图抽屉）：高亮"定死"——地图点击不改变选中/高亮，仅保留疆域弹窗
     map.on('click', (e) => {
-      // 1) 本章地点高亮层（圆点或名称都算）→ 选中高亮
+      // 1) 聚焦上下文层（未选中地点名字）→ 选中聚焦地点（并入统一高亮）；locked 时忽略
       const focusFeats = map.queryRenderedFeatures(e.point, {
-        layers: ['focus-places-dot', 'focus-places-dot-active', 'focus-places-label'],
+        layers: ['focus-places-label'],
       })
       if (focusFeats.length) {
-        emit('select-focus', focusFeats[0].properties.key || focusFeats[0].properties.name)
+        if (!props.locked) emit('select-focus', focusFeats[0].properties.key || focusFeats[0].properties.name)
         return
       }
-      // 2) 城市/地点：符号（dot）与名称（label）都参与拾取——点击图例本身或名字均可
-      const cityFeats = map.queryRenderedFeatures(e.point, {
-        layers: ['cities-dot', 'cities-label', 'pleiades-dot', 'pleiades-label'],
-      })
-      const terrFeats = map.queryRenderedFeatures(e.point, { layers: ['territory-fill', 'territory-label'] })
-      // 城市去重（同一地点多个时期切片同名）：重叠的图例全部列出，不再只取第一个
-      const seenC = new Set()
-      const cities = []
-      for (const f of cityFeats) {
-        const key = f.properties?.en || f.properties?.name || ''
-        if (!key || seenC.has(key)) continue
-        seenC.add(key)
-        cities.push(f.properties)
+      // 2) 统一高亮/地点/城市：点击图标或名字 → 高亮选择（金色 + 详情卡）。
+      //    已是高亮的（sel-dot/sel-label）点击即取消；再点其他地点新增高亮。
+      //    同一坐标多名字整组高亮，详情卡内点击单条名字独立取消。locked 时忽略
+      if (!props.locked) {
+        const cityHits = map.queryRenderedFeatures(e.point, { layers: CITY_LAYERS })
+        if (cityHits.length) {
+          toggleLocationFromClick(cityHits, e)
+          return
+        }
       }
+      // 3) 疆域：popup 显示国家名（重叠实体全部列出：色块 + 名称）
+      const terrFeats = map.queryRenderedFeatures(e.point, { layers: ['territory-fill', 'territory-label'] })
       // 疆域去重：同一政权多个时间切片同名，只列一条
       const seenT = new Set()
       const terrs = []
@@ -703,33 +884,13 @@ onMounted(async () => {
         seenT.add(name)
         terrs.push({ name, color: f.properties.color || '#c9b896' })
       }
-      if (!cities.length && !terrs.length) return
-      let html = ''
-      if (cities.length) {
-        html += `<div class="ml-city-list">`
-        for (const p of cities) {
-          const en = p.en || p.name
-          // 地图弹窗统一英文（中文显示暂时关闭；瓦片 zh 字段保留备用）
-          const title = en
-          // 分类符号 + 英文名 + 时代名 + 存在窗口（第三方数据一律转义）
-          html += `<div class="ml-city-item">`
-          html += `<span class="ml-cat-sym" style="color:${safeColor(p.color, CAT_COLOR[p.cat] || '#3c4652')}">${CAT_SYMBOL[p.cat] || '●'}</span>`
-          html += `<span class="ml-city-main"><strong>${esc(title)}</strong>`
-          if (p.name && p.name !== en) html += `<span class="ml-era">时代名：${esc(p.name)}</span>`
-          if (p.from != null && p.to != null) html += `<span class="ml-time">${fmtYear(p.from)} – ${fmtYear(p.to)}</span>`
-          if (p.polity) html += `<span class="ml-affil">隶属 <b>${esc(p.polity)}</b></span>`
-          html += `</span></div>`
-        }
-        html += `</div>`
-      }
-      if (terrs.length) {
-        html += `<div class="ml-terr-list">${terrs
-          .map(
-            (t) =>
-              `<span class="ml-terr-item"><span class="ml-swatch" style="background:${safeColor(t.color, '#c9b896')}"></span>${esc(t.name)}</span>`,
-          )
-          .join('')}</div>`
-      }
+      if (!terrs.length) return
+      let html = `<div class="ml-terr-list">${terrs
+        .map(
+          (t) =>
+            `<span class="ml-terr-item"><span class="ml-swatch" style="background:${safeColor(t.color, '#c9b896')}"></span>${esc(t.name)}</span>`,
+        )
+        .join('')}</div>`
       // 移动端（触屏）弹窗带关闭按钮 + 限宽：单手可关、不盖满地图；桌面 hover 场景靠点空白关闭
       const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches
       new maplibregl.Popup({ closeButton: isTouch, maxWidth: isTouch ? '264px' : '300px', className: 'ml-popup', offset: 10 })
@@ -739,17 +900,13 @@ onMounted(async () => {
     })
     map.on('mouseenter', 'territory-fill', () => (map.getCanvas().style.cursor = 'pointer'))
     map.on('mouseleave', 'territory-fill', () => (map.getCanvas().style.cursor = ''))
-    // 城市符号与名称层都可点击（点击图例本身或名字均触发 popup 列表）
-    for (const hit of ['cities-dot', 'cities-label', 'pleiades-dot', 'pleiades-label']) {
+    // 城市/高亮符号与名称层都可点击：点击图例本身或名字均可
+    for (const hit of CITY_LAYERS) {
       map.on('mouseenter', hit, () => (map.getCanvas().style.cursor = 'pointer'))
       map.on('mouseleave', hit, () => (map.getCanvas().style.cursor = ''))
     }
-    map.on('mouseenter', 'focus-places-dot', () => (map.getCanvas().style.cursor = 'pointer'))
-    map.on('mouseleave', 'focus-places-dot', () => (map.getCanvas().style.cursor = ''))
-    map.on('mouseenter', 'focus-places-dot-active', () => (map.getCanvas().style.cursor = 'pointer'))
-    map.on('mouseleave', 'focus-places-dot-active', () => (map.getCanvas().style.cursor = ''))
-
-    applyPeriod(props.activePeriodId)
+    map.on('mouseenter', 'focus-places-label', () => (map.getCanvas().style.cursor = 'pointer'))
+    map.on('mouseleave', 'focus-places-label', () => (map.getCanvas().style.cursor = ''))
   })
 
   // 相机每次移动结束 → 刷新 data-view（实时诊断；仅开发环境注册）
@@ -821,21 +978,38 @@ watch(density, () => applyCatFilter())
 /* ---- 聚焦地点（brp 本章地点） ---- */
 watch(() => props.focusPlaces, syncFocusPlaces)
 watch(() => props.activeFocusName, syncFocusActive)
+/* ---- 预设高亮（/map 全屏深链多地点）---- */
+watch(() => [...props.preselectKeys], () => applyPreselect())
+
+/** 定位到某个已高亮地点（图例主按钮点击 → 以该地点为中心放大；不解除此高亮） */
+function focusCity(key) {
+  if (!map) return
+  const c = selectedCities.value.find((x) => x.key === key)
+  if (c && c.lat != null && c.lng != null) {
+    map.flyTo({ center: [c.lng, c.lat], zoom: Math.max(map.getZoom(), 8), duration: 900 })
+  }
+}
+
+/** 向父组件暴露高亮操作方法（MapPage 信息栏"已选地点"图例：定位单个 / 取消单条 / 清除全部） */
+defineExpose({ deselectCity, clearSelection, selectedCities, focusCity })
 </script>
 
 <template>
   <div class="ml-wrap">
     <div ref="mapEl" class="ml-map" role="img" aria-label="圣经地理地图"></div>
-    <!-- 信息密度控制器（地图顶部中央横排；两处地图共用） -->
-    <div class="density-ctl" role="group" aria-label="地图信息密度">
+    <!-- 信息密度控制器（地图顶部中央横排；两处地图共用；locked 抽屉模式隐藏——层级按
+         保存/默认档位显示，交互选择能力留给 /map 全屏页） -->
+    <div v-if="!props.locked" class="density-ctl" role="group" aria-label="地图信息密度">
       <button
         v-for="d in DENSITY_OPTIONS"
         :key="d.key"
         :class="{ active: density === d.key }"
         :aria-pressed="density === d.key"
         @click="setDensity(d.key)"
-      >{{ d.label }}</button>
-    </div>
+      >{{ d.label }}</button></div>
+    <!-- 高亮地点列表已移入父组件信息栏图例（MapPage /map 侧栏"已选地点"）：
+         地图不再浮动占位卡（避免遮挡，移动端尤甚）；地图仅保留金色高亮符号/名字
+         （sel-dot/sel-label），列表与取消操作交给信息栏 -->
   </div>
 </template>
 
@@ -916,40 +1090,10 @@ watch(() => props.activeFocusName, syncFocusActive)
     font-size: 18px;
     color: #4a5560;
   }
-  .ml-popup .ml-city-item {
-    padding: 6px 8px;
-  }
-  .ml-popup .ml-city-main strong {
-    font-size: 14.5px;
-  }
-  .ml-popup .ml-era,
-  .ml-popup .ml-time {
-    font-size: 12px;
-  }
 }
 .ml-popup .maplibregl-popup-content span {
   color: #8b7355;
   font-size: 11px;
-}
-/* 政治归属（隶属政权；来自瓦片 polity 属性） */
-.ml-popup .ml-affil {
-  margin-top: 4px;
-  font-size: 11.5px;
-  color: #55606c;
-}
-.ml-popup .ml-affil b {
-  color: #8b5f2a;
-  font-weight: 700;
-}
-/* 时代名（该时期使用名称）与存在窗口起止（英文名/中文名/起始时间/终止时间） */
-.ml-popup .ml-era,
-.ml-popup .ml-time {
-  margin-top: 3px;
-  font-size: 11px;
-  color: #77828e;
-}
-.ml-popup .ml-time {
-  font-variant-numeric: tabular-nums;
 }
 /* 疆域列表（重叠实体全部列出：色块 + 国家名） */
 .ml-popup .ml-terr-list {
@@ -975,46 +1119,5 @@ watch(() => props.activeFocusName, syncFocusActive)
   border-radius: 2px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   flex-shrink: 0;
-}
-/* 城市/地点重叠列表（点击图例或名字 → 重叠的图例全部列出） */
-.ml-popup .ml-city-list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  max-height: 46vh;
-  overflow-y: auto;
-}
-.ml-popup .ml-city-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  padding: 4px 6px;
-  border-radius: 6px;
-  background: rgba(139, 115, 85, 0.06);
-}
-.ml-popup .ml-cat-sym {
-  flex-shrink: 0;
-  width: 1.05rem;
-  text-align: center;
-  font-size: 13px;
-  line-height: 1.5;
-  margin-top: 1px;
-}
-.ml-popup .ml-city-main {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
-}
-.ml-popup .ml-city-main strong {
-  font-size: 13px;
-  color: #232a33;
-  font-weight: 700;
-}
-.ml-popup .ml-city-main .ml-era,
-.ml-popup .ml-city-main .ml-time,
-.ml-popup .ml-city-main .ml-affil {
-  margin-top: 0;
-  font-size: 11px;
 }
 </style>

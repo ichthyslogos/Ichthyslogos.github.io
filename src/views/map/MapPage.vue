@@ -18,7 +18,6 @@ import { useRoute } from 'vue-router'
 import { fetchPlaceCoords, fetchJourneys, fetchGeometries, fetchPeriods } from '../../lib/data.js'
 import { loadEntryIndex } from '../../lib/bibleEntries.js'
 import { CATS, CAT_DOT_COLOR, CAT_ICON, TYPE_LABELS, journeyZhBridged } from '../../lib/geo.js'
-import { setCurrentPeriod } from '../../lib/temporal.js'
 import MapLibreMap from '../../components/map/MapLibreMap.vue'
 
 /** 默认时期：耶稣时期（30 AD） */
@@ -49,7 +48,7 @@ const catsOpen = ref(false)
 /* ---- 移动端：底部抽屉 + 分区标签（时间轴/图例/旅程）；桌面端不受影响 ---- */
 const isMobile = ref(false) // matchMedia 判定（与 CSS 断点 900px 一致）
 const mobileTab = ref('timeline') // 移动端当前分区
-const sheetOpen = ref(true) // 移动端抽屉展开/收起
+const sheetOpen = ref(false) // 移动端抽屉展开/收起（默认收起，避免遮挡地图）
 /** 桌面信息栏收起（隐藏成地图左上角小按钮；移动端走 sheetOpen） */
 const sideCollapsed = ref(false)
 /** 小按钮展开信息栏（桌面恢复侧栏；移动端恢复底部抽屉） */
@@ -166,19 +165,53 @@ function onTerritories(entities) {
 /* ---- 深链定位（搜索/读经页跳转）：?period=<时期 id> + ?focus=<地点英文名> [&fl=<显示名>] ---- */
 const focusPlaces = ref([]) // MapLibreMap 聚焦覆盖层（搜索结果/读经页「全屏地图」携带）
 const activeFocusName = ref('') // 选中聚焦地点（金色放大 + flyTo）
-/** 应用 URL 深链参数（places 加载完成后有效；period 合法性由 periods 校验） */
+const preselectKeys = ref([]) // 预设高亮地点键（读经页全屏深链 ?foci=：一进来全部高亮，可点击取消）
+const mapRef = ref(null) // MapLibreMap 实例（信息栏"已选地点"图例取消高亮）
+const selectedCities = ref([]) // 当前高亮地点（MapLibreMap 每次选中变化广播 → 信息栏"已选地点"图例）
+const selOpen = ref(false) // "已选地点"图例展开状态（词条式，默认收起）
+/** 接收 MapLibreMap 广播的高亮列表（金色选中地点） */
+function onSelection(list) {
+  selectedCities.value = list || []
+}
+/** 图例句点选 → 以该地点为中心放大定位（不解除高亮） */
+function focusSelected(key) {
+  mapRef.value?.focusCity(key)
+}
+/** 图例句点选 ✕ → 取消对应地点高亮（调 MapLibreMap 暴露方法） */
+function deselectSelected(key) {
+  mapRef.value?.deselectCity(key)
+}
+/** "清除全部" → 清空所有高亮 */
+function clearSelected() {
+  mapRef.value?.clearSelection()
+}
+/** 颜色校验：仅放行 #hex，其余回退分类色（防注入） */
+const HEX_RE = /^#[0-9a-fA-F]{3,8}$/
+function safeHex(c, fallback) {
+  return HEX_RE.test(String(c || '')) ? c : fallback
+}
+/** 应用 URL 深链参数（places 加载完成后有效；period 合法性由 periods 校验）
+ *  支持 ?focus=<单点> 与 ?foci=a,b,c（读经页全屏多地点高亮，逗号分隔） */
 function applyDeepLink() {
   const q = route.query
   const pid = typeof q.period === 'string' ? q.period : ''
   if (pid && periods.value.some((p) => p.id === pid)) activePeriodId.value = pid
-  const fname = typeof q.focus === 'string' ? q.focus : ''
-  if (!fname) return
-  const hit = places.value.find((p) => p.name === fname)
-  if (!hit) return
-  // 地图标签统一英文（中文显示暂时关闭）：忽略 fl 显示名参数，聚焦层标签用英文名；
-  // fl 参数在深链中保留（调用方仍传），恢复中文显示时改回 `(q.fl || hit.name)`
-  focusPlaces.value = [{ name: hit.name, key: hit.name, lat: hit.lat, lng: hit.lng, cat: hit.cat }]
-  activeFocusName.value = hit.name
+  // 收集深链地点名：?foci=a,b,c 多个 + ?focus= 单个（两者可同时，去重）
+  const names = []
+  for (const part of String(typeof q.foci === 'string' ? q.foci : '').split(',')) if (part) names.push(part)
+  if (typeof q.focus === 'string' && q.focus && !names.includes(q.focus)) names.push(q.focus)
+  const hits = names.map((n) => places.value.find((p) => p.name === n)).filter(Boolean)
+  if (!hits.length) return
+  // 地图标签统一英文（中文显示暂时关闭）：忽略 fl 显示名参数，聚焦层标签用英文名
+  focusPlaces.value = hits.map((h) => ({ name: h.name, key: h.name, lat: h.lat, lng: h.lng, cat: h.cat }))
+  // 多地点（foci）→ 预设全部高亮（MapLibreMap 并入统一高亮，可点击取消）；单点走 activeFocus
+  if (hits.length > 1 || names.length > 1) {
+    preselectKeys.value = hits.map((h) => h.name)
+    activeFocusName.value = ''
+  } else {
+    preselectKeys.value = []
+    activeFocusName.value = hits[0].name
+  }
   // 移动端深链进入时收起底部抽屉，地图全屏可见
   if (isMobile.value) sheetOpen.value = false
 }
@@ -198,9 +231,9 @@ onMounted(async () => {
   }
 })
 
-// 已在 /map 页时再次深链（如全局搜索打开 → 在地图中查看）：hash query 变化即应用
+// 已在 /map 页时再次深链（如全局搜索/读经页全屏跳转）：hash query 变化即应用
 watch(
-  () => route.query.focus,
+  () => [route.query.focus, route.query.foci],
   () => {
     if (places.value.length) applyDeepLink()
   },
@@ -208,9 +241,6 @@ watch(
 
 /** 当前时期对象（含 desc/journey_ids/era） */
 const activePeriod = computed(() => periods.value.find((p) => p.id === activePeriodId.value) || null)
-
-/** Temporal Engine 同步：时期变化 → currentYear/currentPeriod（TIME→ZOOM→RENDER 链的 TIME 状态） */
-watch(activePeriod, (p) => setCurrentPeriod(p), { immediate: true })
 
 /** 时期过滤后的旅程（Time Engine：current_year → 查询有效旅程） */
 const periodJourneys = computed(() => {
@@ -247,6 +277,9 @@ async function ensureEntryIndex() {
 watch(query, (q) => {
   if (q.trim()) ensureEntryIndex()
 })
+// 挂载即加载词条索引（模块级单次缓存），使「时期地点」在展开前计数即为真实值，
+// 顶栏搜索与深链地点命中也无需再等待懒加载。
+ensureEntryIndex()
 
 /** 路线搜索文本缓存：英文名/故事 + 类型中文名 + 关键词桥接中文版（"保罗" 命中 "Paul's …"） */
 const journeyTextCache = new Map()
@@ -284,6 +317,22 @@ function focusPlace(p) {
   if (isMobile.value) sheetOpen.value = false // 移动端收起抽屉看地图
 }
 
+/** 地图内聚焦交互：
+ *  - 空 → 取消聚焦：清空焦点上下文圆点残留
+ *  - 非空 → 点选/新增聚焦地点：更新 activeFocusName（MapLibreMap 据此并入统一高亮 + 定位） */
+function onSelectFocus(name) {
+  if (!name) {
+    activeFocusName.value = ''
+    focusPlaces.value = []
+  } else {
+    // 目标地点须已存在于 focusPlaces（焦点上下文层），否则忽略
+    if (focusPlaces.value.some((p) => (p.key || p.name) === name)) {
+      activeFocusName.value = name
+      preselectKeys.value = preselectKeys.value.filter((k) => k !== name) // 单独点选退出多选预留
+    }
+  }
+}
+
 /** 搜索结果点击路线 → 选中旅程（地图 fitBounds 至路线范围） */
 function pickJourneyFromSearch(id) {
   activeJourneyId.value = id
@@ -294,10 +343,12 @@ function pickJourneyFromSearch(id) {
   }
 }
 
-/* ---- 时期地点词条（当前时期的全部地点 + 分类筛选；随时间轴切换） ---- */
+/* ---- 时期地点词条（当前时期的全部地点 + 图例 + 搜索 + 分类筛选；随时间轴切换） ---- */
 const periodPlacesOpen = ref(false)
 /** 时期地点分类筛选（'' = 全部；单选，再点同项复位） */
 const placeCatFilter = ref('')
+/** 时期地点内搜索词（当前时期地点范围内中英文/别名过滤） */
+const placeQuery = ref('')
 /** 时期地点显示条数（分页加载） */
 const placeLimit = ref(80)
 watch(periodPlacesOpen, (open) => {
@@ -311,22 +362,42 @@ const periodPlaces = computed(() => {
   return all.filter((p) => (p.ps || []).includes(activePeriodId.value))
 })
 
-/** 当前时期出现的分类（按图例 CATS 顺序，只列有地点的分类） */
+/** 当前时期出现的分类（按图例 CATS 顺序，只列有地点的分类；含计数） */
 const periodPlaceCats = computed(() => {
-  const present = new Set(periodPlaces.value.map((p) => p.cat))
-  return CATS.filter(([c]) => present.has(c))
+  const count = new Map()
+  for (const p of periodPlaces.value) {
+    count.set(p.cat, (count.get(p.cat) || 0) + 1)
+  }
+  return CATS.filter(([c]) => count.has(c)).map(([c, label]) => ({ cat: c, label, count: count.get(c) }))
 })
 
-/** 分类筛选 + 分页后的时期地点（出现次数降序——重要地点在前） */
-const shownPeriodPlaces = computed(() => {
+/** 时期地点搜索（词条内：仅当前时期地点范围；支持中文/英文/别名；回车聚焦首个） */
+const normalizedPlaceQuery = computed(() => placeQuery.value.trim().toLowerCase())
+function onPlaceSearchKeydown(e) {
+  if (e.key === 'Enter') {
+    const hit = filteredPeriodPlaces.value[0]
+    if (hit) focusPlace(hit)
+  }
+}
+
+/** 分类筛选 + 搜索过滤 + 分页后的时期地点（出现次数降序——重要地点在前） */
+const shownPeriodPlaces = computed(() => filteredPeriodPlaces.value.slice(0, placeLimit.value))
+const filteredPeriodPlaces = computed(() => {
   let list = periodPlaces.value
   if (placeCatFilter.value) list = list.filter((p) => p.cat === placeCatFilter.value)
-  return [...list].sort((a, b) => (b.n || 0) - (a.n || 0)).slice(0, placeLimit.value)
+  const q = normalizedPlaceQuery.value
+  if (q) {
+    list = list.filter((p) =>
+      [p.zh, p.en, ...(p.al || [])].filter(Boolean).join(' ').toLowerCase().includes(q),
+    )
+  }
+  return [...list].sort((a, b) => (b.n || 0) - (a.n || 0))
 })
 
-/** 切换时期：复位地点筛选与分页 */
+/** 切换时期：复位地点筛选、搜索与分页 */
 watch(activePeriodId, () => {
   placeCatFilter.value = ''
+  placeQuery.value = ''
   placeLimit.value = 80
 })
 
@@ -514,6 +585,36 @@ function segmentCount(j) {
           <p v-else class="side-empty">索引加载中…</p>
         </div>
 
+        <!-- 已选地点：当前地图上金色高亮的地点（随点击/深链实时同步；词条式默认收起）。
+             从地图上的浮动卡片移入信息栏，避免移动端"☰ 地图信息"按钮遮挡 -->
+        <section v-show="!isMobile || mobileTab === 'legend'" class="legend-sec" aria-label="已选地点">
+          <button
+            class="sec-title politics-toggle"
+            :aria-expanded="selOpen"
+            @click="selOpen = !selOpen"
+          >
+            <span class="politics-caret" aria-hidden="true">{{ selOpen ? '▾' : '▸' }}</span>
+            已选地点
+            <span class="sec-count">{{ selectedCities.length }} 处</span>
+          </button>
+          <template v-if="selOpen">
+            <ul v-if="selectedCities.length" class="sel-legend">
+              <li v-for="c in selectedCities" :key="c.key" class="sel-legend-item">
+                <button class="sel-legend-btn" :title="`定位高亮地点：${c.en}`" @click="focusSelected(c.key)">
+                  <span class="sel-legend-sym" :style="{ color: safeHex(c.color, CAT_DOT_COLOR[c.cat] || '#3c4652') }" aria-hidden="true">{{ CAT_ICON[c.cat] || '●' }}</span>
+                  <span class="sel-legend-main">
+                    <span class="sel-legend-name">{{ c.en }}</span>
+                    <span v-if="c.name && c.name !== c.en" class="sel-legend-era">{{ c.name }}</span>
+                  </span>
+                </button>
+                <button class="sel-legend-rm" :title="`取消高亮：${c.en}`" aria-label="取消高亮" @click="deselectSelected(c.key)">✕</button>
+              </li>
+            </ul>
+            <button v-if="selectedCities.length" class="sel-legend-clear" @click="clearSelected">清除全部高亮</button>
+            <p v-else class="side-empty">未选择地点（点击地图地点即可高亮）</p>
+          </template>
+        </section>
+
         <!-- 动态图例：当前时期疆域实体（词条式，默认收起；展开后按面积排序显示） -->
         <section v-show="!isMobile || mobileTab === 'legend'" class="legend-sec" aria-label="疆域图例">
           <button
@@ -561,7 +662,7 @@ function segmentCount(j) {
           </template>
         </section>
 
-        <!-- 时期地点词条（当前时期的全部地点；分类定向筛选；点击聚焦地图） -->
+        <!-- 时期地点词条（当前时期全部地点：动态分类图例 + 搜索 + 分类筛选；点击聚焦地图） -->
         <section v-show="!isMobile || mobileTab === 'legend'" class="legend-sec" aria-label="时期地点">
           <button
             class="sec-title politics-toggle"
@@ -576,35 +677,66 @@ function segmentCount(j) {
           </button>
           <template v-if="periodPlacesOpen">
             <template v-if="entryIndex">
+              <!-- 本时期地点分类图例（动态：只列当前时期出现过、且未被隐藏的分类；
+                   符号/颜色与地点分类图例一致；点击可切换该分类显示） -->
+              <div v-if="periodPlaceCats.length" class="place-legend" role="group" aria-label="本期地点图例">
+                <button
+                  v-for="c in periodPlaceCats"
+                  :key="c.cat"
+                  class="pleg-btn"
+                  :class="{ off: !visibleCats.has(c.cat) }"
+                  :title="`${c.label}：本期 ${c.count} 处`"
+                  @click="toggleCat(c.cat)"
+                >
+                  <span class="pleg-dot" :style="{ color: CAT_DOT_COLOR[c.cat] }" aria-hidden="true">{{ CAT_ICON[c.cat] }}</span>
+                  <span class="pleg-name">{{ c.label }}</span>
+                  <span class="pleg-count">{{ c.count }}</span>
+                </button>
+              </div>
+
+              <!-- 时期地点内搜索（范围 = 当前时期地点；支持中英文/别名） -->
+              <div class="place-search-box">
+                <input
+                  v-model="placeQuery"
+                  class="place-search"
+                  type="search"
+                  placeholder="搜索本时期地点…"
+                  aria-label="搜索当前时期地点"
+                  @keydown="onPlaceSearchKeydown"
+                />
+                <button v-if="placeQuery" class="place-search-clear" aria-label="清除地点搜索" @click="placeQuery = ''">✕</button>
+              </div>
+
               <!-- 分类筛选 chips（只列当前时期出现的分类；单选，再点复位） -->
               <div v-if="periodPlaceCats.length" class="place-cat-chips">
                 <button class="place-cat-chip" :class="{ on: !placeCatFilter }" @click="placeCatFilter = ''">全部</button>
                 <button
-                  v-for="[cat, label] in periodPlaceCats"
-                  :key="cat"
+                  v-for="c in periodPlaceCats"
+                  :key="c.cat"
                   class="place-cat-chip"
-                  :class="{ on: placeCatFilter === cat }"
-                  @click="placeCatFilter = placeCatFilter === cat ? '' : cat"
-                >{{ label }}</button>
+                  :class="{ on: placeCatFilter === c.cat }"
+                  @click="placeCatFilter = placeCatFilter === c.cat ? '' : c.cat"
+                >{{ c.label }}</button>
               </div>
-              <ul v-if="shownPeriodPlaces.length" class="place-list">
+              <p v-if="placeQuery && !shownPeriodPlaces.length" class="side-empty">本期无匹配地点</p>
+              <ul v-else-if="shownPeriodPlaces.length" class="place-list">
                 <li v-for="p in shownPeriodPlaces" :key="p.id">
                   <button class="place-item" @click="focusPlace(p)">
                     <span class="sr-dot" :style="{ color: CAT_DOT_COLOR[p.cat] || '#3c4652' }" aria-hidden="true">{{ CAT_ICON[p.cat] || '●' }}</span>
                     <span class="sr-main">
                       <span class="sr-name">{{ p.zh || p.en }}</span>
-                      <span class="sr-sub">{{ p.en }}</span>
+                      <span class="sr-sub">{{ p.en }}{{ p.al?.length ? ' · ' + p.al.join('、') : '' }}</span>
                     </span>
                     <span class="place-n" aria-hidden="true">{{ p.n || 0 }}</span>
                   </button>
                 </li>
               </ul>
-              <p v-else class="side-empty">无匹配地点</p>
+              <p v-else class="side-empty">本期无地点</p>
               <button
-                v-if="(placeCatFilter ? periodPlaces.filter((p) => p.cat === placeCatFilter).length : periodPlaces.length) > placeLimit"
+                v-if="filteredPeriodPlaces.length > placeLimit"
                 class="place-more"
                 @click="placeLimit += 80"
-              >显示更多</button>
+              >显示更多（{{ filteredPeriodPlaces.length - placeLimit }}）</button>
             </template>
             <p v-else-if="entryIndexError" class="side-empty">索引加载失败：{{ entryIndexError }}</p>
             <p v-else class="side-empty">索引加载中…</p>
@@ -675,6 +807,7 @@ function segmentCount(j) {
         @click="openPanel"
       >☰ 地图信息</button>
       <MapLibreMap
+        ref="mapRef"
         :visible-cats="visibleCats"
         :journeys="journeys"
         :geometries="geometries"
@@ -682,7 +815,10 @@ function segmentCount(j) {
         :active-period-id="activePeriodId"
         :focus-places="focusPlaces"
         :active-focus-name="activeFocusName"
+        :preselect-keys="preselectKeys"
         @territories="onTerritories"
+        @select-focus="onSelectFocus"
+        @selection="onSelection"
       />
     </div>
   </main>
@@ -980,6 +1116,345 @@ function segmentCount(j) {
 .legend-check {
   font-size: 0.72rem;
   color: var(--gold);
+}
+/* ================= 已选地点（地图高亮列表，从浮动卡片移入信息栏） ================= */
+.sel-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0.4rem;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: rgba(184, 134, 11, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 34vh;
+  overflow-y: auto;
+}
+.sel-legend-item {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+.sel-legend-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 0.34rem 0.3rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--dur) var(--ease);
+}
+.sel-legend-btn:hover {
+  background: rgba(184, 134, 11, 0.14);
+}
+.sel-legend-sym {
+  width: 1.1rem;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  letter-spacing: -0.12em;
+}
+.sel-legend-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sel-legend-name {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sel-legend-era {
+  font-size: 0.7rem;
+  color: var(--gold);
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sel-legend-rm {
+  flex-shrink: 0;
+  margin-right: 0.15rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  line-height: 1;
+  color: var(--muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.sel-legend-rm:hover {
+  color: #c0392b;
+  background: rgba(192, 57, 43, 0.1);
+}
+.sel-legend-clear {
+  margin-top: 0.4rem;
+  width: 100%;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.76rem;
+  padding: 0.35rem;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.sel-legend-clear:hover {
+  border-color: #b8860b;
+  color: var(--gold);
+}
+/* ================= 时期地点：动态分类图例 ================= */
+.place-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  padding: 0.5rem 0.55rem;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: rgba(139, 115, 85, 0.04);
+  margin-bottom: 0.55rem;
+}
+.pleg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: none;
+  background: transparent;
+  padding: 0.14rem 0.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+.pleg-btn:hover {
+  background: var(--gold-soft);
+}
+.pleg-btn.off {
+  opacity: 0.5;
+}
+.pleg-btn.off .pleg-name {
+  color: var(--muted);
+}
+.pleg-dot {
+  min-width: 1.1rem;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1;
+  letter-spacing: -0.12em; /* 双符号（▴▴）收紧 */
+}
+.pleg-name {
+  font-size: 0.74rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+.pleg-count {
+  font-size: 0.68rem;
+  color: var(--muted);
+  background: var(--line-soft);
+  border-radius: 999px;
+  padding: 0.02rem 0.4rem;
+  line-height: 1.3;
+}
+/* ================= 时期地点：搜索框 ================= */
+.place-search-box {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+.place-search {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 0.8rem;
+  padding: 0.32rem 2rem 0.32rem 0.8rem;
+  transition: border-color var(--dur) var(--ease);
+}
+.place-search:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.place-search::-webkit-search-cancel-button,
+.place-search::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.place-search-clear {
+  position: absolute;
+  right: 0.55rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.1rem;
+  height: 1.1rem;
+  border: none;
+  border-radius: 50%;
+  background: #dadce0;
+  color: #fff;
+  font-size: 0.6rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--dur) var(--ease);
+}
+.place-search-clear:hover {
+  background: #bdc1c6;
+}
+/* ================= 时期地点：分类筛选 chips ================= */
+.place-cat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+.place-cat-chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 0.72rem;
+  padding: 0.18rem 0.7rem;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.place-cat-chip:hover {
+  border-color: var(--gold);
+}
+.place-cat-chip.on {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+  color: var(--gold-deep, var(--ink));
+  font-weight: 600;
+}
+/* ================= 时期地点：地点列表 ================= */
+.place-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.place-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0.34rem 0.3rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--dur) var(--ease);
+}
+.place-item:hover {
+  background: var(--gold-soft);
+}
+.place-n {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  color: var(--muted);
+  background: var(--line-soft);
+  border-radius: 999px;
+  padding: 0.02rem 0.4rem;
+  line-height: 1.3;
+}
+.place-more {
+  margin-top: 0.4rem;
+  width: 100%;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.76rem;
+  padding: 0.35rem;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.place-more:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+/* ========== 搜索结果条目共用样式（时期地点列表 + 顶栏统一搜索） ========== */
+.sr-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0.34rem 0.3rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--dur) var(--ease);
+}
+.sr-item:hover {
+  background: var(--gold-soft);
+}
+.sr-dot {
+  width: 1.2rem;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+.sr-dot.route {
+  color: var(--muted);
+}
+.sr-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+.sr-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sr-sub {
+  font-size: 0.7rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sr-arrow {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.sr-group {
+  margin-bottom: 0.4rem;
+}
+.sr-label {
+  margin: 0.35rem 0 0.1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.04em;
 }
 /* 旅程列表 */
 .story-group {
