@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/home/Home.vue'
 
 /**
  * 路由约定：新增子页面在 views/[子页面名]/ 下建页面，并在本文件注册

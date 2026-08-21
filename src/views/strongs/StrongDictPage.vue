@@ -9,6 +9,7 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EmptyState from '../../components/EmptyState.vue'
+import { scrollMainTop } from '../../composables/useScroll.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -129,10 +130,6 @@ watch(() => route.params.code, (code) => {
   if (code) loadDetail(code)
   else loadIndex()
 }, { immediate: true })
-
-function scrollMainTop() {
-  document.querySelector('.app-main')?.scrollTo(0, 0)
-}
 </script>
 
 <template>

@@ -11,6 +11,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import EmptyState from '../../components/EmptyState.vue'
+import SearchInput from '../../components/common/SearchInput.vue'
 import {
   loadEntryIndex,
   refLabel,
@@ -19,6 +20,7 @@ import {
   buildPersonResolver,
   eventPeriodId,
 } from '../../lib/bibleEntries.js'
+import { scrollMainTop } from '../../composables/useScroll.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -164,7 +166,7 @@ const nearbyEvents = computed(() => {
 watch(
   () => route.params.id,
   () => {
-    document.querySelector('.app-main')?.scrollTo(0, 0)
+    scrollMainTop()
   },
 )
 function openEvent(e) {
@@ -175,9 +177,6 @@ function openPerson(p) {
 }
 function backToExplore() {
   router.push('/events')
-}
-function scrollToList() {
-  document.getElementById('list')?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
@@ -194,14 +193,7 @@ function scrollToList() {
           <p class="section-sub">按时期分组的时间线，可搜索标题或参与者（如「保罗」「出埃及」）</p>
         </header>
 
-        <div class="search-bar">
-          <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="16.5" y1="16.5" x2="21" y2="21" />
-          </svg>
-          <input v-model="query" class="search-input" type="text" placeholder="搜索事件或参与者，如「出生」「大卫」「保罗」" />
-          <button v-if="query" class="search-clear" aria-label="清空搜索" @click="query = ''">✕</button>
-        </div>
+        <SearchInput v-model="query" placeholder="搜索事件或参与者，如「出生」「大卫」「保罗」" />
 
         <div class="filters">
           <div class="chip-row">
@@ -349,51 +341,6 @@ function scrollToList() {
   margin: 0.4rem 0 0;
   font-size: var(--fs-sm);
   color: var(--muted);
-}
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  max-width: 34rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: var(--panel);
-  padding: 0.5rem 1rem;
-  box-shadow: var(--shadow-sm);
-  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-.search-bar:focus-within {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
-}
-.search-icon {
-  flex-shrink: 0;
-  color: var(--muted);
-}
-.search-input {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0.92rem;
-  color: var(--text);
-}
-.search-input::placeholder {
-  color: #a7adb6;
-}
-.search-clear {
-  flex-shrink: 0;
-  border: none;
-  background: transparent;
-  color: #a7adb6;
-  font-size: 0.8rem;
-  padding: 0.2rem 0.4rem;
-  border-radius: var(--radius-pill);
-}
-.search-clear:hover {
-  color: var(--text);
-  background: var(--line-soft);
 }
 .filters {
   margin-top: 1.2rem;

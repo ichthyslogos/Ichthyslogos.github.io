@@ -467,33 +467,29 @@ function toggleAll() {
   expanded.value = allExpanded.value ? new Set() : new Set(chapterData.value.sections.map((_, i) => i))
 }
 
+/** 收起全部展开项（章节/经文/注释/层/选中项），可选回到面板顶部 */
+function resetAllExpansions(scrollTop = false) {
+  expanded.value = new Set()
+  openVerses.value = new Set()
+  openNotes.value = new Set()
+  openLayers.value = new Set()
+  activeLayer.value = ''
+  activeItem.value = null
+  itemCloseVisible.value = false
+  if (scrollTop && panelBodyEl.value) panelBodyEl.value.scrollTop = 0
+}
+
 // 切换书卷/章节：所有展开项全部关闭 + 面板回到顶部（不保留上次进度）
 watch(
   () => [props.book?.id, props.chapter],
-  () => {
-    expanded.value = new Set()
-    openVerses.value = new Set()
-    openNotes.value = new Set()
-    openLayers.value = new Set()
-    activeLayer.value = ''
-    activeItem.value = null
-    itemCloseVisible.value = false
-    if (panelBodyEl.value) panelBodyEl.value.scrollTop = 0
-  },
+  () => resetAllExpansions(true),
 )
 
 // 打开抽屉时同样全部收起（保持初始为标题列表）
 watch(
   () => props.open,
   (v) => {
-    if (!v) return
-    expanded.value = new Set()
-    openVerses.value = new Set()
-    openNotes.value = new Set()
-    openLayers.value = new Set()
-    activeLayer.value = ''
-    activeItem.value = null
-    itemCloseVisible.value = false
+    if (v) resetAllExpansions()
   },
 )
 
@@ -653,9 +649,8 @@ const isMobileView = ref(window.matchMedia('(max-width: 900px)').matches)
 
 /** 宽度限制：移动端 55vw~100vw，桌面 18rem~62vw（给经文留出空间） */
 function clampWidth(w) {
-  const mobile = window.matchMedia('(max-width: 900px)').matches
-  const min = mobile ? Math.round(window.innerWidth * 0.55) : 288
-  const max = mobile ? window.innerWidth : Math.round(window.innerWidth * 0.62)
+  const min = isMobileView.value ? Math.round(window.innerWidth * 0.55) : 288
+  const max = isMobileView.value ? window.innerWidth : Math.round(window.innerWidth * 0.62)
   return Math.min(Math.max(Math.round(w), min), max)
 }
 
@@ -692,9 +687,9 @@ function endResize() {
 // 恢复用户上次拖拽的宽度/抽屉高度；窗口尺寸变化（旋转/缩放）时重新限制
 onMounted(() => {
   const saved = Number(localStorage.getItem(RESIZE_STORAGE))
-  if (saved) panelWidth.value = clampWidth(saved)
+  if (Number.isFinite(saved) && saved > 0) panelWidth.value = clampWidth(saved)
   const savedH = Number(localStorage.getItem(SHEET_STORAGE))
-  if (savedH) sheetH.value = clampSheetHeight(savedH)
+  if (Number.isFinite(savedH) && savedH > 0) sheetH.value = clampSheetHeight(savedH)
   window.addEventListener('resize', onWindowResize)
 })
 onUnmounted(() => {

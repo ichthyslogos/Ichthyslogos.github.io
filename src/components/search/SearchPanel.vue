@@ -323,19 +323,23 @@ watch(query, () => {
 })
 
 let searchSeq = 0
+/** 清空全部检索结果与加载态（空查询/关闭面板时调用；索引缓存保留以便快速重搜） */
+function clearResults() {
+  refHit.value = null
+  results.value = null
+  scriptureResults.value = []
+  scriptureTotal.value = 0
+  commentaryResults.value = []
+  strongsResults.value = []
+  strongsLoading.value = false
+  apolResults.value = []
+  apolLoading.value = false
+}
 async function runSearch() {
   if (composing) return
   const q = query.value.trim()
   if (!index.value || !q) {
-    results.value = null
-    refHit.value = null
-    scriptureResults.value = []
-    scriptureTotal.value = 0
-    commentaryResults.value = []
-    strongsResults.value = []
-    strongsLoading.value = false
-    apolResults.value = []
-    apolLoading.value = false
+    clearResults()
     return
   }
   const seq = ++searchSeq
@@ -435,21 +439,21 @@ async function runCommentary() {
     commentaryLoading.value = false
     return
   }
-  const seq = searchSeq.value
-  if (seq !== searchSeq.value) return
+  const seq = searchSeq
+  if (seq !== searchSeq) return
   commentaryResults.value = []
   expandedCommGroups.clear()
   commentaryLoading.value = true
   try {
     for (const g of plan) {
-      if (seq !== searchSeq.value) return
+      if (seq !== searchSeq) return
       commentaryLoadingLabel.value = g.group
       const groupHits = []
       for (const s of g.sources) {
-        if (seq !== searchSeq.value) return
+        if (seq !== searchSeq) return
         // 同源全部覆盖书卷并行拉取（注释数据库原文件；fetchCommentary 内部有内存缓存）
         const datas = await Promise.all(s.books.map((bookId) => fetchCommentary(s.key, bookId, s.cat).catch(() => null)))
-        if (seq !== searchSeq.value) return
+        if (seq !== searchSeq) return
         for (const data of datas) {
           if (!data || !data.chapters) continue
           const hits = scanCommentaryBook(data, nq, q)
@@ -463,7 +467,7 @@ async function runCommentary() {
       }
     }
   } finally {
-    if (seq === searchSeq.value) {
+    if (seq === searchSeq) {
       commentaryLoading.value = false
       commentaryLoadingLabel.value = ''
     }
@@ -508,20 +512,12 @@ watch(searchOpen, async (open) => {
     clearTimeout(debounceTimer)
     // 关闭即清空搜索数据（下次打开回到空态；索引缓存保留以便快速重搜）
     query.value = ''
-    refHit.value = null
-    results.value = null
-    scriptureResults.value = []
-    scriptureTotal.value = 0
+    clearResults()
     verseResultsOpen.value = false
     transKey.value = ''
     scriptureData.value = null
-    commentaryResults.value = []
     commentaryLoadingLabel.value = ''
     expandedCommGroups.clear()
-    strongsResults.value = []
-    strongsLoading.value = false
-    apolResults.value = []
-    apolLoading.value = false
     expandedPerson.value = ''
   }
 })

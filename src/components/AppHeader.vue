@@ -13,6 +13,8 @@ import logoUrl from '../assets/logo.png'
 
 const route = useRoute()
 const flat = computed(() => route.name === 'home')
+/** 首页精确激活（/ 前缀匹配会误伤所有路径，故手动绑定） */
+const homeActive = computed(() => route.path === '/')
 const bibleOpen = ref(false)
 const libraryOpen = ref(false)
 
@@ -79,7 +81,7 @@ onBeforeUnmount(() => {
       </RouterLink>
 
       <nav class="nav">
-        <RouterLink to="/" exact-active-class="router-link-active" active-class="">首页</RouterLink>
+        <RouterLink to="/" :class="{ 'router-link-active': homeActive }">首页</RouterLink>
         <div class="nav-menu">
           <button
             class="nav-btn"

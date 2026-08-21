@@ -174,7 +174,7 @@ export function resolveCommentarySource(manifest, key, bookId) {
     const s = manifest.sources.find((x) => x.key === k)
     if (s && usable(s)) return s
   }
-  return manifest.sources.find(usable) || manifest.sources[0]
+  return manifest.sources.find(usable) || null
 }
 
 /** 从注释卷数据中取某章（无则返回 null） */

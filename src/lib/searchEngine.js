@@ -12,6 +12,7 @@
  * 对照表由 OpenCC 字典机器生成（t2s-table.mjs），覆盖全部单字差异，绝不改变显示内容。
  */
 import { T2S } from './t2s-table.mjs'
+export { yearLabel, yearsLabel } from './bibleEntries.js'
 
 /** 归一化（仅用于匹配域）：lowercase → 繁→简 → 折叠变音符与花式引号 */
 export function norm(s) {
@@ -99,8 +100,8 @@ export function refLabel(book, chapter, verse) {
 
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-/** 单个实体打分（0 = 不命中） */
-function scoreEntry(nq, title, en, aliases) {
+/** 单个实体打分（0 = 不命中）；wordRe 为查询词首匹配正则（调用方预编译一次） */
+function scoreEntry(nq, wordRe, title, en, aliases) {
   let s = 0
   const nT = norm(title)
   const nE = en ? norm(en) : ''
@@ -110,7 +111,7 @@ function scoreEntry(nq, title, en, aliases) {
   if (nE) {
     if (nE === nq) s = Math.max(s, 950)
     else if (nE.startsWith(nq)) s = Math.max(s, 450)
-    else if (new RegExp(`(^|[\\s'\\-])${escapeRe(nq)}`).test(nE)) s = Math.max(s, 280) // 词首命中
+    else if (wordRe.test(nE)) s = Math.max(s, 280) // 词首命中
     else if (nE.includes(nq)) s = Math.max(s, 120)
   }
   for (const a of aliases || []) {
@@ -130,12 +131,13 @@ function scoreEntry(nq, title, en, aliases) {
 export function searchEntities(query, index, limit = 8) {
   const nq = norm(query)
   if (!nq) return null
+  const wordRe = new RegExp(`(^|[\\s'\\-])${escapeRe(nq)}`)
 
   const run = (list, make, lim = limit) => {
     const out = []
     for (const raw of list) {
       const { title, en, aliases, sub } = make(raw)
-      const score = scoreEntry(nq, title, en, aliases)
+      const score = scoreEntry(nq, wordRe, title, en, aliases)
       if (score > 0) out.push({ raw, score, title, en, aliases, sub })
     }
     out.sort((a, b) => b.score - a.score || (a.title || '').localeCompare(b.title || '', 'zh'))
@@ -207,21 +209,6 @@ export function searchEntities(query, index, limit = 8) {
     persons.length + places.length + polities.length + events.length + periods.length + timeline.length +
     commentaries.length + topics.length + history.length + prophecies.length + Object.keys(personProphecies).length
   return { persons, places, polities, events, timeline, periods, commentaries, topics, history, prophecies, personProphecies, total }
-}
-
-/** 年份显示：负数 → 前 N 年（传统编年，非考古学定年） */
-export function yearLabel(y) {
-  if (y == null) return ''
-  return y < 0 ? `约前 ${Math.abs(y)} 年` : `约公元 ${y} 年`
-}
-
-/** 人物生卒年显示：如「约前1997–前1821」 */
-export function yearsLabel(by, dy) {
-  if (by == null && dy == null) return ''
-  const f = (y) => (y < 0 ? `前${Math.abs(y)}` : `${y}`)
-  if (by != null && dy != null) return `约 ${f(by)}–${f(dy)}`
-  if (by != null) return `约 ${f(by)} 生`
-  return `约 ${f(dy)} 卒`
 }
 
 const CAT_LABELS = { summary: '总结', interpretation: '经文解释', fullCommentary: '完整解经' }
@@ -361,6 +348,7 @@ export function searchStrongs(query, data, { limit = 20 } = {}) {
   if (!nq) return []
   if (/^[a-z0-9]+$/.test(nq) && nq.length < 2) return []
   if (!data._norm) prepareStrongs(data)
+  const wordRe = new RegExp(`(^|[\\s'\\-])${escapeRe(nq)}`)
   const out = []
   for (const e of data._norm) {
     let s = 0
@@ -374,7 +362,7 @@ export function searchStrongs(query, data, { limit = 20 } = {}) {
     else if (e.nTranslit.startsWith(nq)) s = Math.max(s, 450)
     else if (e.nTranslit.includes(nq)) s = Math.max(s, 180)
     if (e.nGloss === nq) s = Math.max(s, 900)
-    else if (new RegExp(`(^|[\\s'\\-])${escapeRe(nq)}`).test(e.nGloss)) s = Math.max(s, 400) // 词首命中
+    else if (wordRe.test(e.nGloss)) s = Math.max(s, 400) // 词首命中
     else if (e.nGloss.includes(nq)) s = Math.max(s, 150)
     if (s > 0) out.push({ code: e.code, lemma: e.lemma, translit: e.translit, pos: e.pos, gloss: e.gloss, score: s })
   }

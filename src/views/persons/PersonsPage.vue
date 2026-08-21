@@ -12,6 +12,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import EmptyState from '../../components/EmptyState.vue'
 import DictView from '../../components/DictView.vue'
+import SearchInput from '../../components/common/SearchInput.vue'
 import {
   loadEntryIndex,
   loadTheoPersons,
@@ -21,6 +22,7 @@ import {
   yearLabel,
   buildPersonResolver,
 } from '../../lib/bibleEntries.js'
+import { scrollMainTop } from '../../composables/useScroll.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -175,20 +177,13 @@ const facts = computed(() => {
 
 /* ---------- 导航 ---------- */
 function personCode(p) {
-  return p.id.replace(/^person_/, '')
+  return (p.id || '').replace(/^person_/, '')
 }
 function openPerson(p) {
   router.push(`/persons/${encodeURIComponent(personCode(p))}`)
 }
 function backToExplore() {
   router.push('/persons')
-}
-function scrollMainTop() {
-  document.querySelector('.app-main')?.scrollTo(0, 0)
-}
-/** 滚动到人物列表区（不用 #锚点跳转：与 hash 路由冲突） */
-function scrollToList() {
-  document.getElementById('list')?.scrollIntoView({ behavior: 'smooth' })
 }
 function loadMore() {
   limit.value += 60
@@ -208,19 +203,7 @@ function loadMore() {
           <p class="section-sub">搜索名字或强码（如「保罗」「G3972」「Mary」），或按时期筛选</p>
         </header>
 
-        <div class="search-bar">
-          <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="16.5" y1="16.5" x2="21" y2="21" />
-          </svg>
-          <input
-            v-model="query"
-            class="search-input"
-            type="text"
-            placeholder="搜索人物，如「大卫」「摩西」「Paul」"
-          />
-          <button v-if="query" class="search-clear" aria-label="清空搜索" @click="query = ''">✕</button>
-        </div>
+        <SearchInput v-model="query" placeholder="搜索人物，如「大卫」「摩西」「Paul」" />
 
         <div class="filters">
           <div class="chip-row">
@@ -369,10 +352,6 @@ function loadMore() {
   </div>
 </template>
 
-<script>
-export default { name: 'PersonsPage' }
-</script>
-
 <style scoped>
 .persons-page {
   flex: 1;
@@ -408,51 +387,6 @@ export default { name: 'PersonsPage' }
   margin: 0.4rem 0 0;
   font-size: var(--fs-sm);
   color: var(--muted);
-}
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  max-width: 34rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: var(--panel);
-  padding: 0.5rem 1rem;
-  box-shadow: var(--shadow-sm);
-  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-.search-bar:focus-within {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
-}
-.search-icon {
-  flex-shrink: 0;
-  color: var(--muted);
-}
-.search-input {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 0.92rem;
-  color: var(--text);
-}
-.search-input::placeholder {
-  color: #a7adb6;
-}
-.search-clear {
-  flex-shrink: 0;
-  border: none;
-  background: transparent;
-  color: #a7adb6;
-  font-size: 0.8rem;
-  padding: 0.2rem 0.4rem;
-  border-radius: var(--radius-pill);
-}
-.search-clear:hover {
-  color: var(--text);
-  background: var(--line-soft);
 }
 
 /* 筛选 chips */

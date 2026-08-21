@@ -62,17 +62,17 @@ export function refUrl(first) {
   return `/brp/${bookId}/${ch}${vs ? `?v=${vs}` : ''}`
 }
 
-/** 年份显示：-1749 → 前1749 */
+/** 年份显示：负数 → 前 N 年（传统编年，非考古学定年） */
 export function yearLabel(y) {
   if (y == null) return ''
-  return y < 0 ? `前${Math.abs(y)}` : String(y)
+  return y < 0 ? `约前 ${Math.abs(y)} 年` : `约公元 ${y} 年`
 }
 
 /** 生卒年区间：null 安全（两人皆无 → ''） */
 export function yearsLabel(by, dy) {
   if (by == null && dy == null) return ''
-  const f = yearLabel
-  if (by != null && dy != null) return `约 ${f(by)} – ${f(dy)}`
+  const f = (y) => (y < 0 ? `前${Math.abs(y)}` : String(y))
+  if (by != null && dy != null) return `约 ${f(by)}–${f(dy)}`
   if (by != null) return `约 ${f(by)} 生`
   return `约 ${f(dy)} 卒`
 }

@@ -12,7 +12,7 @@
  * 版权合规：主题描述标记「《游子吟》全文归档」的内容为受版权保护全文，
  *   子图谱详情面板不渲染正文全文，改以摘要 + 版权提示呈现。
  */
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { fetchApologetics } from '../../lib/data.js'
 import EmptyState from '../../components/EmptyState.vue'
@@ -29,16 +29,20 @@ const error = ref('')
 const view = ref('meta')
 const activeTopicId = ref('')
 
+/** 深链下钻：/apologetics?topic=<id>（搜索结果跳转用）。
+ * 组件已挂载时 query 变化也响应（watch），首次加载由 onMounted 触发。 */
+function applyTopicDeepLink(t) {
+  if (!t || !index.value) return
+  if (index.value.topics.some((x) => x.id === t)) openTopic(t)
+}
+watch(() => route.query.topic, applyTopicDeepLink)
+
 onMounted(async () => {
   loading.value = true
   try {
     index.value = await fetchApologetics()
     error.value = ''
-    // 支持深链：/apologetics?topic=<id> 直接下钻到该主题论证图（搜索结果跳转用）
-    const t = route.query.topic
-    if (t && index.value.topics.some((x) => x.id === t)) {
-      openTopic(t)
-    }
+    applyTopicDeepLink(route.query.topic)
   } catch (e) {
     error.value = e.message
   } finally {
