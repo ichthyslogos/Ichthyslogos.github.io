@@ -3,7 +3,7 @@
  * AppHeader — 全局导航栏
  * 风格：60px 白底极简导航——左品牌（logo 图标 + 名称）、中菜单（大间距）。
  * 「圣经」「图书馆」为可展开词条（单点只展开/收起，不跳转；两词条互斥）：
- *   圣经：经文 / 地图 / 人物 / 事件；图书馆：书籍 / 教会历史 / 数据来源。
+ *   圣经：经文 / 地图 / 人物 / 事件；图书馆：文库 / 教会历史 / 数据来源。
  * 护教为顶级词条；子页任一激活时对应词条高亮；点击外部、Esc 或选择子项后收起。
  */
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
@@ -16,13 +16,15 @@ const flat = computed(() => route.name === 'home')
 const bibleOpen = ref(false)
 const libraryOpen = ref(false)
 
-/** 圣经子页激活（经文 /brp、地图 /map、人物 /persons、事件 /events） */
+/** 圣经子页激活（经文 /brp、地图 /map、人物 /persons、事件 /events、预言 /prophecies、原文词典 /strongs） */
 const bibleActive = computed(
   () =>
     route.path.startsWith('/brp') ||
     route.path.startsWith('/map') ||
     route.path.startsWith('/persons') ||
-    route.path.startsWith('/events'),
+    route.path.startsWith('/events') ||
+    route.path.startsWith('/prophecies') ||
+    route.path.startsWith('/strongs'),
 )
 
 /** 图书馆子页激活（书籍 /library、教会历史 /history、数据来源 /sources） */
@@ -77,7 +79,7 @@ onBeforeUnmount(() => {
       </RouterLink>
 
       <nav class="nav">
-        <RouterLink to="/">首页</RouterLink>
+        <RouterLink to="/" exact-active-class="router-link-active" active-class="">首页</RouterLink>
         <div class="nav-menu">
           <button
             class="nav-btn"
@@ -106,6 +108,14 @@ onBeforeUnmount(() => {
                 <span class="nav-ico" aria-hidden="true">⏳</span>
                 <span>事件</span>
               </RouterLink>
+              <RouterLink to="/prophecies" class="nav-item" role="menuitem" @click="bibleOpen = false">
+                <span class="nav-ico" aria-hidden="true">🔯</span>
+                <span>预言</span>
+              </RouterLink>
+              <RouterLink to="/strongs" class="nav-item" role="menuitem" @click="bibleOpen = false">
+                <span class="nav-ico" aria-hidden="true">📜</span>
+                <span>原文词典</span>
+              </RouterLink>
             </div>
           </Transition>
         </div>
@@ -124,7 +134,7 @@ onBeforeUnmount(() => {
             <div v-if="libraryOpen" class="nav-pop" role="menu">
               <RouterLink to="/library" class="nav-item" role="menuitem" @click="libraryOpen = false">
                 <span class="nav-ico" aria-hidden="true">📚</span>
-                <span>书籍</span>
+                <span>文库</span>
               </RouterLink>
               <RouterLink to="/history" class="nav-item" role="menuitem" @click="libraryOpen = false">
                 <span class="nav-ico" aria-hidden="true">⛪</span>

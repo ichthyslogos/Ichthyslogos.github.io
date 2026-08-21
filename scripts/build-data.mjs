@@ -64,6 +64,24 @@ function cleanText(text, lang) {
  */
 rmSync(join(OUT_DIR, 'translations'), { recursive: true, force: true })
 
+// 和合本简体（逐字 Strong）：独立于上方统一格式扫描，由专用脚本生成
+// 译文切片 + 逐字 Strong 数据（public/data/brp/strongs/*），并注册进 manifest
+let buildChisim
+try {
+  ;({ build: buildChisim } = await import('./brp/build-chisim.mjs'))
+} catch (e) {
+  console.error('[build-data] 无法加载 build-chisim.mjs：', e.message)
+}
+if (buildChisim) buildChisim()
+
+// Strong 词典（原文→lemma→gloss→定义）：STEPBible TBESG/TBESH，产出 public/data/brp/strongs-dict.json
+try {
+  const { build: buildStrongsDict } = await import('./brp/build-strongs-dict.mjs')
+  buildStrongsDict()
+} catch (e) {
+  console.error('[build-data] 无法构建 strongs-dict：', e.message)
+}
+
 const files = readdirSync(SRC_DIR).filter((f) => f.endsWith('.json'))
 if (!files.length) {
   console.error('[build-data] data-src/brp/translations/ 中没有译本 JSON，请先运行 node scripts/import.mjs')
@@ -133,9 +151,24 @@ for (const file of files) {
   console.log(`[build-data] ${key}: ${books.length} 卷 / ${manifest.translations.at(-1).books.reduce((s, b) => s + b.chapterCount, 0)} 章`)
 }
 
+// 和合本简体（chisim）：由 build-chisim 生成，书卷表沿用和合本（66 卷正典，id 对齐）
+{
+  const chi = manifest.translations.find((t) => t.key === 'chiun')
+  if (chi) {
+    manifest.translations.push({
+      key: 'chisim',
+      name: '和合本 (简体)',
+      original: false,
+      lang: 'zh-Hans',
+      tradition: 'protestant',
+      books: chi.books.map((b) => ({ ...b })),
+    })
+  }
+}
+
 // 译本顺序：显式顺序表（和合本简中 → 繁中 → 思高本 → NIV → 英文 → 法文），未登记 key 按字母序排后；
 // 原文（original）始终排在译本之后，保证 manifest 顺序稳定可预期
-const TRANSLATION_ORDER = ['chiun', 'chisb', 'niv', 'kjv', 'frebdm1744']
+const TRANSLATION_ORDER = ['chiun', 'chisim', 'chisb', 'niv', 'kjv', 'frebdm1744']
 const orderOf = (t) => {
   const i = TRANSLATION_ORDER.indexOf(t.key)
   return t.original ? 1e6 + i : (i === -1 ? 1e5 : i)

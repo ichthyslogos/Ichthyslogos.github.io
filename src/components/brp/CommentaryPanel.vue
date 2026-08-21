@@ -11,6 +11,7 @@
  * 无注释（卷/章缺失）→ 空状态提示。
  */
 import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   fetchCommentary,
   fetchCommentaryManifest,
@@ -35,6 +36,9 @@ const props = defineProps({
   focusNoteSeq: { type: Number, default: 0 }, // 跳转序号（同名重复跳转也重新定位）
 })
 const emit = defineEmits(['toggle', 'focus-place']) // focus-place：地点词条跳转地图抽屉（BrpPage 联动）
+
+/** 站点根路径（尊重 vite base；深层路由下相对 fetch 会解析错目录，统一用根路径） */
+const ROOT = import.meta.env.BASE_URL === './' ? '/' : import.meta.env.BASE_URL
 
 const sources = ref([]) // 全量源（含语言组成员）
 const sourceKey = ref('')
@@ -306,7 +310,61 @@ const notesError = ref('')
 /** 背景注释来源（标注用，同完整解经层显示来源；当前仅 tipnr 一个源） */
 const notesSource = computed(() => sourcesOfCategory(conciseManifest.value, 'notes')[0] || null)
 /** 当前章背景注释（无数据返回 null → 「本章暂无背景注释」） */
-const notesChapter = computed(() => findNotesChapter(notesData.value, props.chapter))
+const notesChapter = computed(() => {
+  const ch = findNotesChapter(notesData.value, props.chapter)
+  if (!ch?.entries || ch.entries.length < 2) return ch
+  // 背景注释按「跳转种类」重排：无跳转 → 人物 → 地理位置（不显示分组标题）
+  return { ...ch, entries: [...ch.entries].sort(sortNotesByJump) }
+})
+/** 排序键：0 无跳转 · 1 人物（可跳人物词条）· 2 地理位置（可跳地图） */
+function jumpKind(n) {
+  if (notePerson(n)) return 1
+  if (n && n.type === 'Place') return 2
+  return 0
+}
+function sortNotesByJump(a, b) {
+  return jumpKind(a) - jumpKind(b)
+}
+
+/* —— 背景注释 ↔ 人物词条：TIPNR strong → persons-map，把人物词条链接到 /persons/:id —— */
+const router = useRouter()
+let personsMapPromise = null
+const personsMap = ref(null) // strong 码 → {id, zh, en}
+function loadPersonsMap() {
+  if (!personsMapPromise) {
+    personsMapPromise = fetch(`${ROOT}data/search/persons-map.json`, { cache: 'no-store' })
+      .then((r) => {
+        if (!r.ok) throw new Error(`persons-map 加载失败 (${r.status})`)
+        return r.json()
+      })
+      .catch((e) => {
+        personsMapPromise = null
+        throw e
+      })
+  }
+  return personsMapPromise
+}
+watch(
+  () => props.open,
+  async (open) => {
+    if (!open) return
+    try {
+      personsMap.value = await loadPersonsMap()
+    } catch (e) {
+      personsMap.value = null
+    }
+  },
+  { immediate: true },
+)
+/** 注释词条 → 对应人物（可跳转）；无 → null（非人物/人名未收录，仅地点等） */
+function notePerson(n) {
+  const m = personsMap.value
+  if (!m || !n) return null
+  return m[n.strong] || null
+}
+function goNotePerson(p) {
+  router.push(`/persons/${encodeURIComponent(p.id)}`)
+}
 /** 词条展开状态：Set<索引>，默认收起；展开的词条记为正在阅读项 */
 const openNotes = ref(new Set())
 function toggleNote(i) {
@@ -816,7 +874,6 @@ function endSheetResize() {
                   v-for="(n, i) in notesChapter.entries"
                   :key="i"
                   class="note-entry"
-                  :class="{ 'note-entry-place': n.type === 'Place' }"
                 >
                   <div class="note-row">
                     <button
@@ -826,7 +883,7 @@ function endSheetResize() {
                       @click="toggleNote(i)"
                     >
                       <span class="chevron" :class="{ open: openNotes.has(i) }" aria-hidden="true">▸</span>
-                      <span class="note-name" :class="{ 'note-name-place': n.type === 'Place' }">{{ n.name }}</span>
+                      <span class="note-name">{{ n.name }}</span>
                       <span v-if="n.type" class="note-type">{{ n.type }}</span>
                     </button>
                     <!-- 地点词条：跳转到地图抽屉定位高亮（BrpPage 打开地图面板） -->
@@ -836,6 +893,13 @@ function endSheetResize() {
                       :title="'在地图中查看 ' + n.name"
                       @click="emit('focus-place', n.name)"
                     >地图</button>
+                    <!-- 人物词条：跳转到本人人物词条页（/persons/:id，原生强码映射） -->
+                    <button
+                      v-if="notePerson(n)"
+                      class="note-person-btn"
+                      :title="'前往人物词条：' + (notePerson(n).zh || notePerson(n).en)"
+                      @click.stop="goNotePerson(notePerson(n))"
+                    >人物 ↗</button>
                   </div>
                   <div v-if="openNotes.has(i)" class="note-content">
                     <p v-if="n.short" class="note-short">{{ n.short }}</p>
@@ -1199,13 +1263,6 @@ function endSheetResize() {
   font-weight: 600;
   color: var(--ink);
 }
-/* 地点词条高亮：地名蓝底（与经文内 Place 高亮同色系），与其他类型明显区分 */
-.note-name-place {
-  background: #dbeaf6;
-  color: #205a86;
-  border-radius: 4px;
-  padding: 0.05em 0.3em;
-}
 /* 地图跳转按钮：点击打开地图抽屉并定位高亮该地点 */
 .note-map-btn {
   flex-shrink: 0;
@@ -1221,6 +1278,23 @@ function endSheetResize() {
 }
 .note-map-btn:hover {
   background: var(--accent);
+  color: #fff;
+}
+/* 人物词条跳转按钮：点击前往 /persons/:id 人物词条页 */
+.note-person-btn {
+  flex-shrink: 0;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  background: rgba(139, 115, 85, 0.08);
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.1rem 0.5rem;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.note-person-btn:hover {
+  background: var(--gold);
   color: #fff;
 }
 .note-type {

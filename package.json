@@ -19,6 +19,10 @@
     "data": "npm run data:import && npm run data:build && npm run data:crossrefs"
   },
   "dependencies": {
+    "@vue-flow/background": "^1.3.2",
+    "@vue-flow/controls": "^1.1.3",
+    "@vue-flow/core": "^1.48.2",
+    "@vue-flow/minimap": "^1.5.4",
     "epubjs": "^0.3.93",
     "maplibre-gl": "^5.24.0",
     "vue": "^3.5.13",

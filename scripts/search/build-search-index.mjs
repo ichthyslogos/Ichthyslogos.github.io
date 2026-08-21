@@ -352,13 +352,17 @@ function countCommentarySections() {
 /* ---------- 8. 主题专题（apologetics/topics，双语标题 + 标签 + 问题） ---------- */
 const topicsDir = path.join(DATA, 'apologetics/topics')
 const topics = []
+const apolSearch = [] // 护教全文检索（子问题级，懒加载文件）
+/** 证据类别显示名（与 ArgumentGraph 保持一致） */
+const EVIDENCE_LABEL = { bible: '圣经', philosophy: '哲学', history: '历史', science: '科学', theology: '神学', ethics: '伦理', literature: '文献' }
 if (exists(topicsDir)) {
   for (const f of fs.readdirSync(topicsDir).filter((x) => x.endsWith('.json')).sort()) {
     const t = readJson(path.join(topicsDir, f))
     const title = t.title || {}
     const qTitles = (t.sub_questions || []).map((q) => q.title?.zh || q.title?.en || '').filter(Boolean)
+    const topicId = t.id || f.replace(/\.json$/, '')
     topics.push({
-      id: t.id || f.replace(/\.json$/, ''),
+      id: topicId,
       zh: title.zh || '',
       en: title.en || '',
       tags: t.tags || [],
@@ -366,6 +370,52 @@ if (exists(topicsDir)) {
       al: qTitles.slice(0, 12),
       q: (t.sub_questions || []).length,
     })
+    // 子问题全文 → 护教全文检索条目（question/objection/summary/text/evidence 均可命中；
+    // 结果携带完整逻辑链条：命题 → 质疑 → 回应 → 证据）
+    let added = 0
+    for (const q of t.sub_questions || []) {
+      const question = q.question || q.title?.zh || ''
+      const objection = q.objection || ''
+      const summary = q.summary || ''
+      const text = q.text || ''
+      if (!question && !objection && !summary && !text) continue
+      // 证据扁平化（类别 + 引用 + 注释；供搜索结果展示完整链条）
+      const evidence = []
+      for (const [cat, items] of Object.entries(q.evidence || {})) {
+        for (const it of items || []) {
+          if (!it || (!it.ref && !it.note)) continue
+          evidence.push({ cat, label: EVIDENCE_LABEL[cat] || cat, ref: it.ref || '', note: it.note || '' })
+        }
+      }
+      apolSearch.push({
+        topicId,
+        topicZh: title.zh || '',
+        topicEn: title.en || '',
+        tags: t.tags || [],
+        qid: q.id || '',
+        question,
+        objection,
+        summary,
+        text,
+        evidence,
+      })
+      added++
+    }
+    // 无子问题内容的主题：补一条仅标题/标签可命中的条目（保证主题名搜索仍能命中）
+    if (!added) {
+      apolSearch.push({
+        topicId,
+        topicZh: title.zh || '',
+        topicEn: title.en || '',
+        tags: t.tags || [],
+        qid: '',
+        question: title.zh || title.en || '',
+        objection: '',
+        summary: clip(t.description || '', 160),
+        text: '',
+        evidence: [],
+      })
+    }
   }
 }
 
@@ -379,6 +429,80 @@ for (let p = 1; p <= 5; p++) {
   history.push({ id: `p${p}intro`, part: p, no: 'intro', t: part.title || `第${p}部`, period: part.period || '' })
   for (const c of part.chapters || []) {
     history.push({ id: `p${p}c${c.no}`, part: p, no: String(c.no), t: c.title || '', period: part.period || '' })
+  }
+}
+
+/* ---------- 9a. 预言（弥赛亚预言 → 应验；data/prophecy/prophecies.json） ----------
+ * 全局搜索把预言作为一级实体（标题中英/类别/出处），命中跳 /prophecies/:key。
+ * people：预言文本中提到的相关人物 id（供搜索结果里「预言→人物」匹配，把预言挂到
+ * 对应人物词条下并从预言组原位移除；一条预言可关联多个人）。 */
+const prophecies = []
+const prophecyPath = path.join(DATA, 'prophecy/prophecies.json')
+const reEn = new Map()
+const reZh = new Map()
+const MAX_PEOPLE = 40
+const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+if (exists(prophecyPath)) {
+  const pd = readJson(prophecyPath)
+  prophecyPeople(pd, persons)
+  for (const p of pd.prophecies || []) {
+    prophecies.push({
+      id: p.key,
+      zh: p.titleZh || p.title,
+      en: p.title,
+      cat: p.category,
+      catZh: p.categoryZh || p.category,
+      ot: p.otRef,
+      nt: p.ntRef,
+      st: p.status || 'fulfilled',
+      people: p.__people,
+    })
+  }
+}
+
+/** 为每条预言预计算相关人物 id（人名在中文/英文预言文本中的提及）。
+ * 中名人名 ≥2 字、英名人名 ≥3 字母且以词边界出现；结果原地写到 p.__people
+ * （存在则写入索引 people 字段，SearchPanel 据此把命中的预言挂到人物下）。 */
+function prophecyPeople(pd, personList) {
+  const tokens = [] // [personId, kind, name]
+  for (const pr of personList) {
+    const pushName = (name, kind) => {
+      const s = String(name || '').trim()
+      if (!s) return
+      if (kind === 'en') {
+        if (s.length < 3) return
+        reEn.set(s.toLowerCase(), pr.id)
+      } else {
+        if (s.length < 2) return
+        reZh.set(s.toLowerCase(), pr.id)
+      }
+    }
+    pushName(pr.en, 'en')
+    pushName(pr.zh, 'zh')
+    for (const a of pr.al || []) pushName(a, /[\u4e00-\u9fff]/.test(a) ? 'zh' : 'en')
+  }
+  for (const p of pd.prophecies || []) {
+    const plain = (strs, en) =>
+      strs.map((s) => (s ? String(s) : '')).join(' ').toLowerCase().replace(/[\u2018\u2019'’`]/g, "'")
+    const enText = plain(
+      [p.title, p.titleZh, p.otText, p.ntText, p.explanation, ...(p.interpretations || []).map((i) => i.note)],
+      true,
+    )
+    const zhText = plain(
+      [p.titleZh, p.title, p.otTextZh, p.ntTextZh, p.explanationZh, ...(p.interpretations || []).map((i) => i.note)],
+      false,
+    )
+    const found = new Set()
+    for (const [name, id] of reEn) {
+      if (!enText) break
+      if (found.size >= MAX_PEOPLE) break
+      if (new RegExp(`(?<![a-z])${escRe(name)}(?![a-z])`).test(enText)) found.add(id)
+    }
+    for (const [name, id] of reZh) {
+      if (found.size >= MAX_PEOPLE) break
+      if (zhText && zhText.includes(name)) found.add(id)
+    }
+    if (found.size) p.__people = [...found]
   }
 }
 
@@ -406,6 +530,14 @@ function buildScripture(transKey) {
 
 /* ---------- 输出 ---------- */
 fs.mkdirSync(OUT, { recursive: true })
+
+// 护教全文检索（懒加载文件；子问题级条目，question/objection/summary/text 全文可命中）
+fs.writeFileSync(path.join(OUT, 'apologetics-search.json'), JSON.stringify(apolSearch))
+console.log(`apologetics-search.json: ${apolSearch.length} 条子问题全文`)
+
+// Strong 词典条目数（轻量索引仍由 brp/strongs-index.json 提供，搜索时懒加载）
+const strongsIdxPath = path.join(DATA, 'brp/strongs-index.json')
+const strongsCount = exists(strongsIdxPath) ? readJson(strongsIdxPath).count || 0 : 0
 
 // 全部译本全文索引（每译本一个懒加载文件）
 const translations = []
@@ -440,7 +572,10 @@ const index = {
       timeline: 'Theographic Bible Metadata CC BY-SA 4.0（theographic/events.json；编年事件，Ussher 传统编年）',
       commentaries: 'commentary/fullCommentary + mhcc（全文检索直接调用注释数据库原文件）',
       topics: 'apologetics/topics（护教学专题）',
+      apolSearch: 'apologetics/topics（护教子问题全文，apologetics-search.json 懒加载）',
+      strongs: 'brp/strongs-index.json（Strong 原文词典，搜索时懒加载）',
       history: 'church-history part1-5（教会史章节）',
+      prophecies: 'scripture-journey / Payne 弥赛亚预言（data/prophecy/prophecies.json）',
     },
     counts: {
       books: books.length,
@@ -455,7 +590,10 @@ const index = {
       commentaries: commentaries.length,
       commentarySections: countCommentarySections(),
       topics: topics.length,
+      apolQuestions: apolSearch.length,
+      strongs: strongsCount,
       history: history.length,
+      prophecies: prophecies.length,
       translations: translations.length,
       scriptureVerses: translations.reduce((s, t) => s + t.verses, 0),
     },
@@ -471,8 +609,19 @@ const index = {
   commentaries,
   topics,
   history,
+  prophecies,
 }
 fs.writeFileSync(path.join(OUT, 'index.json'), JSON.stringify(index))
+
+// 轻量人物映射（strong 码 → 人物{shortId, zh, en}），供读经页背景注释按 TIPNR strong
+// 把人物词条链接到 /persons/:id；避免读经页加载整个 index.json。
+const personsMap = {}
+for (const p of persons) {
+  if (!p.s) continue
+  personsMap[p.s] = { id: p.id.replace(/^person_/, ''), zh: p.zh || '', en: p.en || '' }
+}
+fs.writeFileSync(path.join(OUT, 'persons-map.json'), JSON.stringify(personsMap))
+console.log(`persons-map.json: ${Object.keys(personsMap).length} 人写盘`)
 
 const kb = (p) => (fs.statSync(path.join(OUT, p)).size / 1024).toFixed(1)
 console.log('index.json:')

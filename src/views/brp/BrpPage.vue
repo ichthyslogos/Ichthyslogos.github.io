@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router'
 import {
   fetchManifest,
   fetchBook,
+  fetchStrong,
   resolveTranslation,
   resolveBook,
   clampChapter,
@@ -30,7 +31,7 @@ const panelOpen = ref(window.innerWidth > 900)
 const sidebarOpen = ref(false)
 // 移动端沉浸阅读：隐藏头部（标题/章节标签）扩大阅读区；桌面端无意义但状态无害
 const immersive = ref(false)
-// 地图抽屉（与解经面板共用右侧栏/底部抽屉位置，互斥切换）
+// 地图抽屉（与解经面板共用右侧栏/底部抽屉位置，互斥切换）：默认收起，由功能菜单打开
 const mapOpen = ref(false)
 // 解经面板地点跳转联动：focusName + focusSeq（序号递增保证同名重复跳转也重新定位）
 const mapFocus = ref('')
@@ -44,11 +45,11 @@ const menuOpen = ref(false)
 /** 移动端判定（响应式 ref：窗口缩放即时更新，模板可直接绑定；三面板互斥仅窄屏生效） */
 const isMobile = ref(window.innerWidth <= 900)
 
-/** 移动端互斥：打开任一面板时先关闭其他两个 */
+/** 开启任一其他抽屉时，先强制收起译本菜单（任何视口）；其余面板的互斥仅限移动端 */
 function closeOthers(except) {
+  if (except !== 'menu') menuOpen.value = false
   if (!isMobile.value) return
   if (except !== 'sidebar') sidebarOpen.value = false
-  if (except !== 'menu') menuOpen.value = false
   if (except !== 'commentary') panelOpen.value = false
   if (except !== 'map') mapOpen.value = false
 }
@@ -121,6 +122,120 @@ const verses = computed(() => {
   return ch ? ch.verses : []
 })
 
+/* ---- 译本多选对照：按选择顺序，transOrder[0] 为主译本，其余为对照译本 ---- */
+const transOrder = ref([])
+const compareData = ref({}) // 对照译本 key → 整卷数据（data.js 缓存）
+watch(
+  translation,
+  (t) => {
+    if (!t) return
+    if (!transOrder.value.length) transOrder.value = [t.key]
+    else if (transOrder.value[0] !== t.key) transOrder.value = [t.key, ...transOrder.value.slice(1)]
+  },
+  { immediate: true },
+)
+
+/** 选主译本（单选）：替换 transOrder 首位并切换主译本取数；保持对照集、展开状态不变 */
+function onSetPrimary(key) {
+  clearGoto()
+  const others = transOrder.value.slice(1).filter((k) => k !== key)
+  transOrder.value = [key, ...others]
+  navigate(book.value.id, chapter.value, key)
+}
+
+/** 切换对照译本（多选）；'__none__' 清空对照；主译本不变，不触发导航 */
+function onToggleCompare(key) {
+  clearGoto()
+  const primary = transOrder.value[0]
+  let comps = transOrder.value.slice(1)
+  if (key === '__none__') {
+    comps = []
+  } else {
+    if (key === primary) return // 互斥：主译不能作为对照
+    comps = comps.includes(key) ? comps.filter((k) => k !== key) : [...comps, key]
+  }
+  transOrder.value = [primary, ...comps]
+}
+
+/** 对照译本数据拉取：只取照译本同卷同章，data.js 缓存复用；带序号守卫防快速切换错位 */
+let cmpLoadSeq = 0
+watch(
+  () => [transOrder.value, book.value?.id, chapter.value],
+  async () => {
+    const seq = ++cmpLoadSeq
+    const order = transOrder.value
+    const others = order.slice(1)
+    // 清掉已被取消的对照缓存
+    const keep = {}
+    for (const k of Object.keys(compareData.value)) if (others.includes(k)) keep[k] = compareData.value[k]
+    compareData.value = keep
+    if (!book.value) return
+    for (const key of others) {
+      try {
+        const bd = await fetchBook(key, book.value.id)
+        if (seq !== cmpLoadSeq) return
+        if (!others.includes(key)) continue
+        compareData.value = { ...compareData.value, [key]: bd }
+      } catch (e) {
+        /* 对照译本加载失败：静默跳过该对照（主译本不受影响） */
+      }
+    }
+  },
+  { immediate: true },
+)
+
+/** 对照译本表（主译本的对照列表）：{key, name, verses:{节:文本}} */
+const compareTrans = computed(() => {
+  const order = transOrder.value
+  const out = []
+  for (const key of order.slice(1)) {
+    const t = manifest.value?.translations.find((x) => x.key === key)
+    const bd = compareData.value[key]
+    const versesMap = {}
+    if (bd?.book) {
+      const ch = bd.book.chapters.find((c) => c.chapter === chapter.value)
+      for (const v of ch?.verses || []) versesMap[v.verse] = v.text
+    }
+    out.push({ key, name: t?.name || key, verses: versesMap })
+  }
+  return out
+})
+
+/* ---- 逐字原文（和合本简体 Strong）：仅在主译本为和合本简体时可用 ---- */
+const strongOn = ref(false)
+const strongBook = ref(null)
+watch(
+  () => [translation.value?.key, book.value?.id],
+  async () => {
+    strongBook.value = null
+    if (translation.value?.key !== 'chisim') {
+      strongOn.value = false
+      return
+    }
+    try {
+      strongBook.value = await fetchStrong(book.value.id)
+    } catch (e) {
+      strongBook.value = null
+      strongOn.value = false
+    }
+  },
+  { immediate: true },
+)
+const strongReady = computed(() => translation.value?.key === 'chisim')
+/** 当前章每节 words 映射（未开启/非 chisim 时 null） */
+const strongWords = computed(() => {
+  if (!strongOn.value || !strongBook.value) return null
+  const ch = strongBook.value.chapters?.find((c) => c.chapter === chapter.value)
+  if (!ch) return null
+  const m = {}
+  for (const v of ch.verses) m[v.verse] = v.words
+  return m
+})
+function onToggleStrong() {
+  if (!strongReady.value) return
+  strongOn.value = !strongOn.value
+}
+
 /** 从 URL 同步状态：URL 变化 → 重新拉取切片数据。
  * 带序号守卫：快速切换时旧响应直接丢弃。 */
 async function load() {
@@ -142,12 +257,12 @@ async function load() {
 
 watch([translation, book], load)
 
-// 路由变化（含外部链接/后退进入）时收起移动端面板，避免残留遮挡
+// 路由变化（含外部链接/后退进入）时收起移动端侧栏/解经面板，避免残留遮挡；
+// 译本菜单保持展开（多选体验），由用户手动关闭或开启其他抽屉时强关。
 watch(
   () => route.fullPath,
   () => {
     sidebarOpen.value = false
-    menuOpen.value = false
   },
 )
 
@@ -196,13 +311,6 @@ function onSelectBook(bookId) {
 function onSelectChapter(ch) {
   clearGoto()
   navigate(book.value.id, ch)
-}
-
-function onChangeTranslation(key) {
-  menuOpen.value = false // 选择后收起下拉
-  clearGoto()
-  // 译本切换后若当前书卷在新译本中不存在（如次经），resolveBook 自动回退第一卷
-  navigate(book.value.id, chapter.value, key)
 }
 
 /** 串珠引用目标跳转（记录来源与目标节，用于返回与跳转后定位） */
@@ -371,10 +479,17 @@ function onToggleMenu() {
           :verses="verses"
           :translations="manifest.translations"
           :active-key="translation.key"
+          :compare-keys="transOrder.slice(1)"
+          :compare-trans="compareTrans"
+          :strong-ready="strongReady"
+          :strong-on="strongOn"
+          :strong-of="strongWords"
           :menu-open="menuOpen"
           :loading="loading"
           :immersive="immersive"
-          @change-translation="onChangeTranslation"
+          @set-primary="onSetPrimary"
+          @toggle-compare="onToggleCompare"
+          @toggle-strong="onToggleStrong"
           @toggle-sidebar="onToggleSidebar"
           @toggle-menu="onToggleMenu"
           @goto-verse="onGotoVerse"

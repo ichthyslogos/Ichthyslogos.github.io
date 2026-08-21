@@ -1,9 +1,10 @@
 <script setup>
 /**
- * TranslationMenu — 展开式译本选择器（brp 子组件，受控组件）
- * 展开状态由父组件（BrpPage）控制：移动端与侧栏抽屉、解经面板互斥（每次只开一个）。
- * 面板采用动态定位：展开时测量 trigger 与面板尺寸，将面板钳制在视口内
- * （避免窄屏下 panel-head 换行导致 trigger 靠左时面板向左溢出屏幕）。
+ * TranslationMenu — 两列式译本选择器（brp 子组件，受控组件）
+ * 左列「主译本」：单选一个；右列「对照译本」：多选多个，含「无」清空项。
+ * 主译与对照互斥（同一译本不能既是主又是对照）；主译本切换由父级重新取数。
+ * 展开状态由父组件控制；面板动态定位，钳制在视口内。
+ * 交互事件：toggle（开/关）、set-primary（选主译本）、toggle-compare（切换对照，'__none__' 清空）。
  */
 import { ref, computed, watch, nextTick } from 'vue'
 
@@ -11,8 +12,11 @@ const props = defineProps({
   translations: { type: Array, required: true },
   activeKey: { type: String, required: true },
   open: { type: Boolean, default: false },
+  /** 对照译本（已选中；主译本为 activeKey，与对照互斥） */
+  compareKeys: { type: Array, default: () => [] },
 })
-const emit = defineEmits(['toggle', 'select'])
+const emit = defineEmits(['toggle', 'set-primary', 'toggle-compare'])
+const NONE = '__none__'
 
 const triggerEl = ref(null)
 const popEl = ref(null)
@@ -21,37 +25,24 @@ const versions = computed(() => props.translations.filter((t) => !t.original))
 const originals = computed(() => props.translations.filter((t) => t.original))
 const active = computed(() => props.translations.find((t) => t.key === props.activeKey))
 
-/** 语言显示顺序：中文（简→繁）→ 英文 → 其他按代码字母序；同语言保持 manifest 顺序（stable sort） */
-const LANG_ORDER = { 'zh-Hans': 0, 'zh-Hant': 1, en: 2 }
+/** 主译列：全部白话/译本（非原文），按语言序 */
+const primaryList = computed(() =>
+  [...versions.value].sort((a, b) => langRank(a.lang) - langRank(b.lang)),
+)
+/** 对照列：白话译本 + 原文，按语言序 */
+const compareList = computed(() =>
+  [...versions.value, ...originals.value].sort((a, b) => langRank(a.lang) - langRank(b.lang)),
+)
+
+const isPrimary = (k) => k === props.activeKey
+const isCompare = (k) => props.compareKeys.includes(k)
+
 function langRank(lang) {
-  return lang in LANG_ORDER ? LANG_ORDER[lang] : 3
-}
-function sortByLang(list) {
-  return [...list].sort((a, b) => langRank(a.lang) - langRank(b.lang))
+  const L = { 'zh-Hans': 0, 'zh-Hant': 1, en: 2 }
+  return lang in L ? L[lang] : 3
 }
 
-/** 宗派分组（新教 / 天主教 / 其他未登记），组内按语言排列 */
-const traditionGroups = computed(() => {
-  const groups = [
-    { key: 'protestant', title: '新教译本', list: [] },
-    { key: 'catholic', title: '天主教译本', list: [] },
-    { key: 'other', title: '其他译本', list: [] },
-  ]
-  for (const t of versions.value) {
-    // 未知 tradition 值回退「其他」组：manifest 数据驱动，缺兜底会整页白屏
-    const g = groups.find((x) => x.key === (t.tradition || 'other')) || groups[2]
-    g.list.push(t)
-  }
-  for (const g of groups) g.list = sortByLang(g.list)
-  return groups.filter((g) => g.list.length)
-})
-
-function pick(key) {
-  emit('select', key)
-}
-
-/** 展开时把面板定位到视口内：水平不超出左右缘，垂直不超出下缘。
- * flush: 'post'——等待 pop 挂载后再测量定位（pre-flush 时 popEl 尚为 null，定位会跳过）。 */
+/** 展开时把面板定位到视口内 */
 watch(
   () => props.open,
   async (v) => {
@@ -78,43 +69,68 @@ watch(
     <button
       ref="triggerEl"
       class="trans-trigger"
-      :class="{ open }"
+      :class="{ open, hasCmp: compareKeys.length }"
       @click="emit('toggle')"
-      aria-haspopup="listbox"
+      aria-haspopup="dialog"
     >
       <span class="trans-trigger-name">{{ active ? active.name : '译本' }}</span>
+      <span v-if="compareKeys.length" class="cmp-dot" aria-label="存在对照译本"></span>
       <span class="caret" aria-hidden="true">▾</span>
     </button>
 
     <Transition name="menu">
-      <div v-if="open" ref="popEl" class="menu-pop" role="listbox">
-        <div v-for="g in traditionGroups" :key="g.key" class="menu-group">
-          <div class="menu-group-title">{{ g.title }}</div>
-          <button
-            v-for="t in g.list"
-            :key="t.key"
-            class="menu-item"
-            :class="{ active: t.key === activeKey }"
-            role="option"
-            :aria-selected="t.key === activeKey"
-            @click="pick(t.key)"
-          >
-            {{ t.name }}
-          </button>
-        </div>
-        <div v-if="originals.length" class="menu-group">
-          <div class="menu-group-title">原文</div>
-          <button
-            v-for="t in originals"
-            :key="t.key"
-            class="menu-item"
-            :class="{ active: t.key === activeKey }"
-            role="option"
-            :aria-selected="t.key === activeKey"
-            @click="pick(t.key)"
-          >
-            {{ t.name }}
-          </button>
+      <div v-if="open" ref="popEl" class="menu-pop" role="dialog" aria-label="选择主译本与对照译本">
+        <div class="menu-cols">
+          <!-- 左列：主译本（单选） -->
+          <div class="menu-col">
+            <p class="menu-col-title">主译本</p>
+            <div class="menu-col-list">
+              <button
+                v-for="t in primaryList"
+                :key="t.key"
+                class="row"
+                :class="{ sel: isPrimary(t.key) }"
+                role="radio"
+                :aria-checked="isPrimary(t.key)"
+                @click="emit('set-primary', t.key)"
+              >
+                <span class="mark" aria-hidden="true">{{ isPrimary(t.key) ? '●' : '' }}</span>
+                <span class="name">{{ t.name }}</span>
+                <span v-if="t.key === 'chisim'" class="badge-orig" title="该译本支持逐字原文 Strong 码">原文</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 右列：对照译本（多选 + 无） -->
+          <div class="menu-col">
+            <p class="menu-col-title">对照译本</p>
+            <div class="menu-col-list">
+              <button
+                class="row"
+                :class="{ sel: !compareKeys.length }"
+                role="checkbox"
+                :aria-checked="!compareKeys.length"
+                @click="emit('toggle-compare', NONE)"
+              >
+                <span class="mark" aria-hidden="true">{{ !compareKeys.length ? '✓' : '' }}</span>
+                <span class="name name-none">无</span>
+              </button>
+              <button
+                v-for="t in compareList"
+                :key="t.key"
+                class="row"
+                :class="{ sel: isCompare(t.key), disc: isPrimary(t.key) }"
+                role="checkbox"
+                :aria-checked="isCompare(t.key)"
+                :disabled="isPrimary(t.key)"
+                @click="emit('toggle-compare', t.key)"
+              >
+                <span class="mark" aria-hidden="true">{{ isCompare(t.key) ? '✓' : '' }}</span>
+                <span class="name">{{ t.name }}</span>
+                <span v-if="isPrimary(t.key)" class="hint">主译本</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </Transition>
@@ -141,13 +157,21 @@ watch(
   max-width: 14rem;
 }
 .trans-trigger:hover,
-.trans-trigger.open {
+.trans-trigger.open,
+.trans-trigger.hasCmp {
   border-color: var(--accent);
   color: var(--accent);
 }
 .trans-trigger-name {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.cmp-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 .caret {
   font-size: 0.75rem;
@@ -156,53 +180,98 @@ watch(
 .trans-trigger.open .caret {
   transform: rotate(180deg);
 }
-/* 固定定位 + JS 动态设置 left/top，保证面板始终在视口内 */
+/* 固定定位 + JS 动态设置 left/top */
 .menu-pop {
   position: fixed;
-  min-width: 15rem;
-  max-height: min(24rem, 60vh);
-  overflow-y: auto;
-  scrollbar-gutter: stable;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: 0 10px 28px rgba(20, 28, 38, 0.14);
-  padding: 0.35rem;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(20, 28, 38, 0.16);
+  padding: 0.5rem;
   z-index: 51;
 }
-.menu-group + .menu-group {
-  border-top: 1px solid var(--line);
-  margin-top: 0.3rem;
-  padding-top: 0.3rem;
+.menu-cols {
+  display: flex;
+  gap: 0.5rem;
 }
-.menu-group-title {
-  padding: 0.2rem 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 700;
+.menu-col {
+  width: 14.5rem;
+  min-width: 0;
+}
+.menu-col:first-child {
+  border-right: 1px solid var(--line);
+  padding-right: 0.5rem;
+}
+.menu-col-title {
+  margin: 0 0 0.3rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 800;
   color: var(--muted);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
-.menu-item {
-  display: block;
+.menu-col-list {
+  max-height: min(20rem, 52vh);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   width: 100%;
   text-align: left;
-  padding: 0.32rem 0.6rem;
+  padding: 0.32rem 0.5rem;
   border: none;
   border-radius: 6px;
   background: transparent;
   color: var(--text);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.row:hover {
+  background: var(--accent-soft);
+}
+.row.sel {
+  background: var(--accent-soft);
+}
+.row:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background: transparent;
+}
+.mark {
+  flex-shrink: 0;
+  width: 1.05rem;
+  text-align: center;
+  color: var(--accent);
+  font-weight: 700;
+}
+.name {
+  flex: 1;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.menu-item:hover {
-  background: var(--accent-soft);
+.name-none {
+  color: var(--muted);
 }
-.menu-item.active {
-  background: var(--accent);
-  color: #fff;
-  font-weight: 600;
+.hint {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.badge-orig {
+  flex-shrink: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--gold);
+  background: var(--gold-soft);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
+  letter-spacing: 0.04em;
 }
 .menu-backdrop {
   position: fixed;
@@ -218,18 +287,19 @@ watch(
   opacity: 0;
   transform: translateY(-4px);
 }
-/* 窄屏适配：触发按钮紧凑化，避免头部换行过宽 */
 @media (max-width: 900px) {
   .trans-trigger {
     min-height: 2.75rem;
     padding: 0.25rem 0.6rem;
     gap: 0.3rem;
     font-size: 0.85rem;
-    max-width: 9.5rem;
+    max-width: 8.5rem;
   }
   .menu-pop {
-    min-width: 13rem;
-    max-width: calc(100vw - 1.5rem);
+    max-width: calc(100vw - 1rem);
+  }
+  .menu-col {
+    width: min(12.5rem, 42vw);
   }
 }
 </style>

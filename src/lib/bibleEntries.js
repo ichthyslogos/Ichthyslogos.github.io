@@ -11,9 +11,12 @@
 let indexPromise = null
 let theoPromise = null
 
+/** 站点根路径（尊重 vite base；深层路由下相对 fetch 会解析错目录，统一用根路径） */
+const ROOT = import.meta.env.BASE_URL === './' ? '/' : import.meta.env.BASE_URL
+
 export function loadEntryIndex() {
   if (!indexPromise) {
-    indexPromise = fetch('data/search/index.json')
+    indexPromise = fetch(`${ROOT}data/search/index.json`)
       .then((r) => {
         if (!r.ok) throw new Error(`词条索引加载失败 (${r.status})`)
         return r.json()
@@ -28,7 +31,7 @@ export function loadEntryIndex() {
 
 export function loadTheoPersons() {
   if (!theoPromise) {
-    theoPromise = fetch('data/theographic/persons.json')
+    theoPromise = fetch(`${ROOT}data/theographic/persons.json`)
       .then((r) => {
         if (!r.ok) throw new Error(`人物词典数据加载失败 (${r.status})`)
         return r.json()

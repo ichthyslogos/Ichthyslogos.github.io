@@ -14,22 +14,25 @@
       content="圣经研究,圣经原文,Strong,圣经地图,圣经注释,串珠,基督教研究,圣经历史"
     />
     <script>
-      // Umami 访问统计：仅生产域名加载（本地开发不计入统计，避免污染数据）
-      if (location.hostname !== 'localhost') {
+      // 访问统计（umami + 不蒜子）：仅生产域名加载。
+      // 本地回环（localhost / 127.0.0.1 / ::1）一律跳过，避免外部脚本拖慢开发加载、污染统计。
+      var isLocal = /^(localhost|127\.0\.0\.1|::1)$/.test(location.hostname)
+      if (!isLocal) {
+        // Umami 访问统计：仅生产域名加载（本地开发不计入统计，避免污染数据）
         var s = document.createElement('script')
         s.src = 'https://cloud.umami.is/script.js'
         s.setAttribute('data-website-id', 'b589b8c3-71d5-45e9-80cc-7f0db0751d90')
         s.setAttribute('defer', '')
         document.head.appendChild(s)
+        // 不蒜子（busuanzi）访问计数：免费、无注册；按域名隔离统计（localhost 不影响线上）。
+        // 脚本加载后暴露全局 bszCaller，首页通过 bszCaller.fetch(JSONP) 主动读取 site_pv。
+        ;(function () {
+          var s = document.createElement('script')
+          s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js'
+          s.async = true
+          document.head.appendChild(s)
+        })()
       }
-      // 不蒜子（busuanzi）访问计数：免费、无注册；按域名隔离统计（localhost 不影响线上）。
-      // 脚本加载后暴露全局 bszCaller，首页通过 bszCaller.fetch(JSONP) 主动读取 site_pv。
-      ;(function () {
-        var s = document.createElement('script')
-        s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js'
-        s.async = true
-        document.head.appendChild(s)
-      })()
     </script>
   </head>
   <body>

@@ -18,18 +18,30 @@ const props = defineProps({
   verses: { type: Array, default: () => [] },
   translations: { type: Array, required: true },
   activeKey: { type: String, required: true },
+  /** 对照译本（按选择顺序的主译本的对照；空数组=仅单译本阅读） */
+  compareKeys: { type: Array, default: () => [] },
+  /** 对照译本取数结果：{key, name, verses:{节:文本}} */
+  compareTrans: { type: Array, default: () => [] },
+  /** 逐字原文（和合本简体 Strong）：是否可用 / 是否已开启 / 每节 words（{节:[{t,s}]}） */
+  strongReady: { type: Boolean, default: false },
+  strongOn: { type: Boolean, default: false },
+  strongOf: { type: Object, default: null },
   menuOpen: { type: Boolean, default: false },
   loading: { type: Boolean, default: false },
   /** 移动端沉浸阅读：隐藏头部（标题/按钮）扩大阅读区；退出靠 BrpPage 悬浮按钮 */
   immersive: { type: Boolean, default: false },
 })
-const emit = defineEmits(['change-translation', 'toggle-sidebar', 'toggle-menu', 'goto-verse', 'toggle-immersive', 'open-tool', 'open-note'])
+const emit = defineEmits(['set-primary', 'toggle-compare', 'toggle-strong', 'toggle-sidebar', 'toggle-menu', 'goto-verse', 'toggle-immersive', 'open-tool', 'open-note'])
 
 /** 功能词条菜单（解经/地图）本地展开状态：瞬时浮层，选择后即关 */
 const toolMenuOpen = ref(false)
 function pickTool(tool) {
   toolMenuOpen.value = false
   emit('open-tool', tool)
+}
+/** 逐字原文开关：切换后保持菜单展开，便于看到 ✓ 状态并随时关闭 */
+function pickStrong() {
+  emit('toggle-strong')
 }
 
 // 串珠数据：按卷加载 + 缓存（data.js 内部缓存）；加载失败的卷记入集合，避免反复请求
@@ -176,6 +188,16 @@ const refsByVerseLabeled = computed(() => {
 function verseRefs(verse) {
   return refsByVerseLabeled.value[verse] || null
 }
+
+/* ---- 对照译本渲染：某主译本节 → 各对照译本的 {key,name,text}（只保留有文本的）---- */
+function compareOf(verse) {
+  const out = []
+  for (const c of props.compareTrans) {
+    const text = c.verses[verse]
+    if (text) out.push({ key: c.key, name: c.name, text })
+  }
+  return out
+}
 </script>
 
 <template>
@@ -200,11 +222,13 @@ function verseRefs(verse) {
         <TranslationMenu
           :translations="translations"
           :active-key="activeKey"
+          :compare-keys="compareKeys"
           :open="menuOpen"
           @toggle="emit('toggle-menu')"
-          @select="emit('change-translation', $event)"
+          @set-primary="emit('set-primary', $event)"
+          @toggle-compare="emit('toggle-compare', $event)"
         />
-        <!-- 功能词条：调出解经或地图抽屉（受控菜单，选择后由父页互斥切换面板） -->
+        <!-- 功能词条：调出解经/地图抽屉 + 逐字原文开关（受控菜单，选择后由父页互斥切换面板） -->
         <div class="tool-menu">
           <button
             class="btn-commentary"
@@ -226,6 +250,20 @@ function verseRefs(verse) {
                 <span class="tool-ico" aria-hidden="true">🗺️</span>
                 <span>地图</span>
               </button>
+              <!-- 逐字原文（和合本简体 Strong）：仅主译本为和合本简体时显示 -->
+              <button
+                v-if="strongReady"
+                class="tool-item"
+                :class="{ on: strongOn }"
+                role="menuitemcheckbox"
+                :aria-checked="strongOn"
+                title="逐字显示原文 Strong 码（和合本简体）"
+                @click="pickStrong"
+              >
+                <span class="tool-ico" aria-hidden="true">📜</span>
+                <span>原文</span>
+                <span v-if="strongOn" class="tool-check" aria-hidden="true">✓</span>
+              </button>
             </div>
           </Transition>
           <div v-if="toolMenuOpen" class="tool-backdrop" @click="toolMenuOpen = false"></div>
@@ -238,16 +276,33 @@ function verseRefs(verse) {
         <div v-if="loading" class="scripture-loading">经文加载中…</div>
         <template v-else>
           <p v-if="!verses.length" class="scripture-empty">本章无经文数据</p>
-          <VerseItem
+          <div
             v-for="v in verses"
             :key="chapter + '-' + v.verse"
-            :verse="v.verse"
-            :text="v.text"
-            :refs="verseRefs(v.verse)"
-            :note-names="noteNamesOf(v.verse)"
-            @goto="emit('goto-verse', $event)"
-            @open-note="emit('open-note', $event)"
-          />
+            class="vblock"
+          >
+            <VerseItem
+              :verse="v.verse"
+              :text="v.text"
+              :words="strongOf ? strongOf[v.verse] : null"
+              :strong="strongOn"
+              :refs="verseRefs(v.verse)"
+              :note-names="noteNamesOf(v.verse)"
+              @goto="emit('goto-verse', $event)"
+              @open-note="emit('open-note', $event)"
+            />
+            <!-- 对照译本：仅当选择了 2+ 译本时逐节显示，清晰区别于主译本 -->
+            <div v-if="compareOf(v.verse).length" class="vcmp">
+              <div
+                v-for="c in compareOf(v.verse)"
+                :key="c.key"
+                class="vcmp-row"
+              >
+                <div class="vcmp-label">{{ c.name }}</div>
+                <div class="vcmp-text">{{ c.text }}</div>
+              </div>
+            </div>
+          </div>
         </template>
       </div>
     </div>
@@ -353,7 +408,7 @@ function verseRefs(verse) {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
-/* 功能词条菜单（解经/地图）：按钮 + 下拉浮层 */
+/* 功能词条菜单（解经/地图/原文）：按钮 + 下拉浮层 */
 .tool-menu {
   position: relative;
 }
@@ -395,9 +450,19 @@ function verseRefs(verse) {
 .tool-item:hover {
   background: var(--accent-soft);
 }
+.tool-item.on {
+  color: var(--gold);
+  font-weight: 700;
+}
 .tool-ico {
   font-size: 0.95rem;
   line-height: 1;
+}
+.tool-check {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--gold);
+  font-weight: 700;
 }
 .tool-backdrop {
   position: fixed;
@@ -431,6 +496,43 @@ function verseRefs(verse) {
   color: var(--muted);
   text-align: center;
   padding: 2rem 0;
+}
+/* 对照译本（多选）：缩进 + 左侧金线，标签与译文并排，清晰区别于上方主译本 */
+.vblock {
+  margin-bottom: 0.15rem;
+}
+.vcmp {
+  margin: 0.12rem 0 0.6rem 2rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--gold-soft);
+}
+.vcmp-row {
+  margin-bottom: 0.45rem;
+}
+.vcmp-row:last-child {
+  margin-bottom: 0;
+}
+.vcmp-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.1rem;
+}
+.vcmp-text {
+  font-family: var(--serif);
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: #5a6572;
+  /* 定格：正文统一固定缩进，多译本正文左缘对齐 */
+  padding-left: 1rem;
+}
+@media (max-width: 900px) {
+  .vcmp {
+    margin-left: 1.4rem;
+  }
 }
 
 /* 窄屏适配：显示汉堡按钮、头部与正文紧凑化 */

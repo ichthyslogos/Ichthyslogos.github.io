@@ -202,19 +202,6 @@ function loadMore() {
 
     <!-- ===== 探索视图：Hero + 筛选 + 人物网格 ===== -->
     <div v-else-if="view === 'explore'" class="explore">
-      <section class="hero">
-        <div class="hero-inner">
-          <p class="hero-eyebrow">BIBLE ENTRIES · 圣经词条</p>
-          <h1 class="hero-title">圣经人物</h1>
-          <p class="hero-sub">People of the Bible</p>
-          <p class="hero-desc">按出现经文排序的圣经人物数据库，收录词典、亲属关系与编年事件。</p>
-          <div class="hero-actions">
-            <a href="#list" class="btn-explore" @click.prevent="scrollToList">开始浏览 <span class="arr">→</span></a>
-            <span v-if="stats.persons" class="hero-stats">{{ stats.persons }} 位人物</span>
-          </div>
-        </div>
-      </section>
-
       <section class="explorer" id="list">
         <header class="explorer-head">
           <h2 class="section-title">人物探索</h2>
@@ -398,93 +385,6 @@ export default { name: 'PersonsPage' }
 }
 .state-msg {
   margin: 0 0 1rem;
-}
-
-/* ===== Hero ===== */
-.hero {
-  position: relative;
-  background: linear-gradient(180deg, var(--gold-soft) 0%, var(--bg) 100%);
-  border-bottom: 1px solid var(--line-soft);
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  left: 3rem;
-  top: 2.6rem;
-  width: 34px;
-  height: 34px;
-  border-left: 1px solid rgba(139, 115, 85, 0.45);
-  border-top: 1px solid rgba(139, 115, 85, 0.45);
-}
-.hero-inner {
-  max-width: var(--content-w);
-  margin: 0 auto;
-  padding: 4.6rem 2rem 4rem;
-}
-.hero-eyebrow {
-  margin: 0 0 1.1rem;
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 0.26em;
-}
-.hero-title {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: var(--fs-3xl);
-  line-height: 1.18;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: var(--text);
-}
-.hero-sub {
-  margin: 1rem 0 0;
-  font-size: var(--fs-sm);
-  color: var(--gold);
-  letter-spacing: 0.18em;
-}
-.hero-desc {
-  margin: 1.1rem 0 0;
-  max-width: 30rem;
-  font-size: var(--fs-sm);
-  line-height: 1.95;
-  color: var(--muted);
-}
-.hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-  margin-top: 2.1rem;
-  flex-wrap: wrap;
-}
-.btn-explore {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--ink);
-  color: #fff;
-  text-decoration: none;
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  padding: 0.62rem 1.6rem;
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-sm);
-  transition: background var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-.btn-explore:hover {
-  background: #000;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-  text-decoration: none;
-}
-.arr {
-  font-size: 1.05rem;
-  line-height: 1;
-}
-.hero-stats {
-  font-size: var(--fs-xs);
-  color: #a2957e;
-  letter-spacing: 0.05em;
 }
 
 /* ===== 探索区 ===== */
@@ -968,16 +868,6 @@ export default { name: 'PersonsPage' }
   }
 }
 @media (max-width: 900px) {
-  .hero::before {
-    left: 1.4rem;
-    top: 2.2rem;
-  }
-  .hero-inner {
-    padding: 3.4rem 1.5rem 3rem;
-  }
-  .hero-title {
-    font-size: 2.3rem;
-  }
   .explorer {
     padding: 2.2rem 1.5rem 3rem;
   }

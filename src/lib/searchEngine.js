@@ -182,11 +182,31 @@ export function searchEntities(query, index, limit = 8) {
   const history = run(index.history || [], (h) => ({
     title: h.t, en: '', aliases: [], sub: h.period ? `${h.period} · 第${h.part}部` : `第${h.part}部`,
   }))
+  // 预言：放宽上限，供「预言→人物」匹配使用完整命中集（不仅是预言组可见的前几条）
+  const prophecyHits = run(index.prophecies || [], (p) => ({
+    title: p.zh || p.en, en: p.en, aliases: [], sub: `${p.zcat || p.catZh || p.cat || ''} · ${p.ot} → ${p.nt}`,
+  }), Math.max(limit * 3, 40))
+
+  // 预言 ↔ 人物：命中的预言若关联到「同样命中的」人物，则挂到该人物词条下（可同时挂多人），
+  // 并从「预言 / 应验」组原位移除；未关联任何命中人物者留在组内。
+  const hitPersonCodes = new Set(persons.map((x) => x.raw.id))
+  const personProphecies = {} // person id -> prophecy hit[]
+  const propMoved = new Set() // 已位移到人物下的预言 id
+  for (const ph of prophecyHits) {
+    const matched = (ph.raw.people || []).filter((code) => hitPersonCodes.has(code))
+    if (!matched.length) continue
+    propMoved.add(ph.raw.id)
+    for (const code of matched) {
+      ;(personProphecies[code] = personProphecies[code] || []).push(ph)
+    }
+  }
+  for (const k in personProphecies) personProphecies[k].sort((a, b) => b.score - a.score)
+  const prophecies = prophecyHits.filter((ph) => !propMoved.has(ph.raw.id)).slice(0, limit)
 
   const total =
     persons.length + places.length + polities.length + events.length + periods.length + timeline.length +
-    commentaries.length + topics.length + history.length
-  return { persons, places, polities, events, timeline, periods, commentaries, topics, history, total }
+    commentaries.length + topics.length + history.length + prophecies.length + Object.keys(personProphecies).length
+  return { persons, places, polities, events, timeline, periods, commentaries, topics, history, prophecies, personProphecies, total }
 }
 
 /** 年份显示：负数 → 前 N 年（传统编年，非考古学定年） */
@@ -302,4 +322,126 @@ export function scanCommentaryBook(bookData, nq, rawQ = '') {
     }
   }
   return hits
+}
+
+/* ============ 5. Strong 原文词典检索 ============ */
+
+/**
+ * 预处理 Strong 词典索引：一次性归一化全部条目（lemma/translit/gloss/code），
+ * 缓存在返回对象上，后续同词重搜零成本。
+ * data 为 brp/strongs-index.json 的解析结果（{ count, items: { code: {lemma,translit,pos,gloss} } }）。
+ */
+export function prepareStrongs(data) {
+  if (data._norm) return data
+  const arr = []
+  for (const code of Object.keys(data.items || {})) {
+    const e = data.items[code]
+    arr.push({
+      code,
+      nCode: norm(code),
+      nLemma: norm(e.lemma),
+      nTranslit: norm(e.translit),
+      nGloss: norm(e.gloss),
+      lemma: e.lemma,
+      translit: e.translit,
+      pos: e.pos || '',
+      gloss: e.gloss,
+    })
+  }
+  data._norm = arr
+  return data
+}
+
+/**
+ * Strong 词典检索：跨希腊文 lemma / 拉丁转写 translit / 英文 gloss / 强码 code 匹配。
+ * 返回 [{ code, lemma, translit, pos, gloss, score }]（≤ limit 条，按分数降序）。
+ */
+export function searchStrongs(query, data, { limit = 20 } = {}) {
+  const nq = norm(query)
+  if (!nq) return []
+  if (/^[a-z0-9]+$/.test(nq) && nq.length < 2) return []
+  if (!data._norm) prepareStrongs(data)
+  const out = []
+  for (const e of data._norm) {
+    let s = 0
+    if (e.nCode === nq) s = Math.max(s, 1200)
+    else if (e.nCode.startsWith(nq)) s = Math.max(s, 600)
+    else if (e.nCode.includes(nq)) s = Math.max(s, 300)
+    if (e.nLemma === nq) s = Math.max(s, 1000)
+    else if (e.nLemma.startsWith(nq)) s = Math.max(s, 500)
+    else if (e.nLemma.includes(nq)) s = Math.max(s, 200)
+    if (e.nTranslit === nq) s = Math.max(s, 950)
+    else if (e.nTranslit.startsWith(nq)) s = Math.max(s, 450)
+    else if (e.nTranslit.includes(nq)) s = Math.max(s, 180)
+    if (e.nGloss === nq) s = Math.max(s, 900)
+    else if (new RegExp(`(^|[\\s'\\-])${escapeRe(nq)}`).test(e.nGloss)) s = Math.max(s, 400) // 词首命中
+    else if (e.nGloss.includes(nq)) s = Math.max(s, 150)
+    if (s > 0) out.push({ code: e.code, lemma: e.lemma, translit: e.translit, pos: e.pos, gloss: e.gloss, score: s })
+  }
+  out.sort((a, b) => b.score - a.score || a.code.localeCompare(b.code))
+  return out.slice(0, limit)
+}
+
+/* ============ 6. 护教问答全文检索 ============ */
+
+/**
+ * 护教论证检索：主题级聚合。跨主题标题/标签 + 子问题 question/objection/summary/text/evidence 匹配。
+ * data 为 apologetics-search.json 的解析结果（子问题级条目数组，含完整逻辑链条字段）。
+ * 返回主题级结果 [{ topicId, topicZh, topicEn, tags, score, chain }]（≤ limit 条，按分数降序）；
+ * chain 为得分最高的子问题完整链条 { qid, question, objection, summary, text, evidence }。
+ */
+export function searchApologetics(query, data, { limit = 20 } = {}) {
+  const nq = norm(query)
+  if (!nq) return []
+  if (/^[a-z0-9' ]+$/.test(nq) && nq.length < 2) return []
+  // 标题匹配域剥离书名号等 CJK 标点，避免「《圣经》」与「圣经」无法互中
+  const stripPunct = (s) => (s || '').replace(/[《》「」『』【】〈〉（）()]/g, '')
+  const nqTitle = norm(stripPunct(query)) // 标题匹配用（查询词同样剥离标点）
+  // 按主题聚合子问题：主题级得分 = max(标题/标签命中, 各子问题内容命中)；保留最佳匹配链条
+  const byTopic = new Map()
+  for (const item of data || []) {
+    const nT = norm(`${stripPunct(item.topicZh)} ${stripPunct(item.topicEn)} ${(item.tags || []).join(' ')}`)
+    const nQ = norm(item.question)
+    const nObj = norm(item.objection)
+    const nSum = norm(item.summary)
+    const nText = norm(item.text)
+    const nEv = norm((item.evidence || []).map((e) => `${e.ref} ${e.note}`).join(' '))
+    let s = 0
+    if (nT === nqTitle) s = Math.max(s, 1100)
+    else if (nT.startsWith(nqTitle)) s = Math.max(s, 550)
+    else if (nT.includes(nqTitle)) s = Math.max(s, 300)
+    if (nQ === nq) s = Math.max(s, 1000)
+    else if (nQ.startsWith(nq)) s = Math.max(s, 500)
+    else if (nQ.includes(nq)) s = Math.max(s, 250)
+    if (nObj.includes(nq)) s = Math.max(s, 220)
+    if (nSum.includes(nq)) s = Math.max(s, 200)
+    if (nText.includes(nq)) s = Math.max(s, 120)
+    if (nEv.includes(nq)) s = Math.max(s, 160)
+    if (!s) continue
+    let t = byTopic.get(item.topicId)
+    if (!t) {
+      t = {
+        topicId: item.topicId,
+        topicZh: item.topicZh,
+        topicEn: item.topicEn,
+        tags: item.tags || [],
+        score: 0,
+        chain: null,
+      }
+      byTopic.set(item.topicId, t)
+    }
+    if (s > t.score) {
+      t.score = s
+      t.chain = {
+        qid: item.qid,
+        question: item.question,
+        objection: item.objection,
+        summary: item.summary,
+        text: item.text,
+        evidence: item.evidence || [],
+      }
+    }
+  }
+  const out = [...byTopic.values()].sort((a, b) => b.score - a.score || String(a.topicZh).localeCompare(String(b.topicZh), 'zh'))
+  return out.slice(0, limit)
 }

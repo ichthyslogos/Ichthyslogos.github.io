@@ -18,6 +18,8 @@ import {
   countScripture,
   prepareScripture,
   scanCommentaryBook,
+  searchStrongs,
+  searchApologetics,
   snippet,
   norm,
   yearLabel,
@@ -25,6 +27,9 @@ import {
 } from '../../lib/searchEngine.js'
 
 const router = useRouter()
+
+/** 站点根路径（尊重 vite base；深层路由下相对 fetch 会解析错目录，统一用根路径） */
+const ROOT = import.meta.env.BASE_URL === './' ? '/' : import.meta.env.BASE_URL
 
 /* 页面模式：独立结果页（非浮层）。page=true 时组件在 /search 页内联渲染（复用同一套
  * 检索逻辑），initialQuery 提供初始查询词；overlay（默认）保留全局横浮层体验。 */
@@ -53,7 +58,7 @@ let indexPromise = null
 const scripturePromises = new Map() // transKey -> Promise
 function loadIndex() {
   if (!indexPromise) {
-    indexPromise = fetch('data/search/index.json', { cache: 'no-store' }).then((r) => {
+    indexPromise = fetch(`${ROOT}data/search/index.json`, { cache: 'no-store' }).then((r) => {
       if (!r.ok) throw new Error(`索引加载失败 (${r.status})`)
       return r.json()
     })
@@ -64,7 +69,7 @@ function loadScripture(key) {
   if (!scripturePromises.has(key)) {
     scripturePromises.set(
       key,
-      fetch(`data/search/scripture-${key}.json`, { cache: 'no-store' })
+      fetch(`${ROOT}data/search/scripture-${key}.json`, { cache: 'no-store' })
         .then((r) => {
           if (!r.ok) throw new Error(`${key} 索引加载失败 (${r.status})`)
           return r.json()
@@ -78,11 +83,43 @@ function loadScripture(key) {
   return scripturePromises.get(key)
 }
 
+/* ---------- Strong 原文词典 / 护教问答全文（懒加载，模块级缓存） ---------- */
+let strongsPromise = null
+let apolPromise = null
+function loadStrongs() {
+  if (!strongsPromise) {
+    strongsPromise = fetch(`${ROOT}data/brp/strongs-index.json`, { cache: 'no-store' })
+      .then((r) => {
+        if (!r.ok) throw new Error(`Strong 词典加载失败 (${r.status})`)
+        return r.json()
+      })
+      .catch((e) => {
+        strongsPromise = null
+        throw e
+      })
+  }
+  return strongsPromise
+}
+function loadApologetics() {
+  if (!apolPromise) {
+    apolPromise = fetch(`${ROOT}data/search/apologetics-search.json`, { cache: 'no-store' })
+      .then((r) => {
+        if (!r.ok) throw new Error(`护教问答加载失败 (${r.status})`)
+        return r.json()
+      })
+      .catch((e) => {
+        apolPromise = null
+        throw e
+      })
+  }
+  return apolPromise
+}
+
 /* ---------- Theographic 人物详情（词典摘录 + 亲属名单；一次性懒加载） ---------- */
 let theoPromise = null
 function loadTheoPersons() {
   if (!theoPromise) {
-    theoPromise = fetch('data/theographic/persons.json', { cache: 'no-store' })
+    theoPromise = fetch(`${ROOT}data/theographic/persons.json`, { cache: 'no-store' })
       .then((r) => {
         if (!r.ok) throw new Error(`theographic 数据加载失败 (${r.status})`)
         return r.json()
@@ -111,6 +148,10 @@ const commentaryResults = ref([]) // 注释段落命中（按宗派 group 聚合
 const commentaryLoading = ref(false)
 const commentaryLoadingLabel = ref('') // 当前正在全文检索的宗派（渐进加载提示）
 const expandedCommGroups = reactive(new Set()) // 注释组内「显示全部」展开的宗派
+const strongsResults = ref([]) // Strong 原文词典命中
+const strongsLoading = ref(false)
+const apolResults = ref([]) // 护教问答命中
+const apolLoading = ref(false)
 const inputEl = ref(null)
 
 /* ---------- 人物详情展开（Theographic 增强：词典 + 亲属） ---------- */
@@ -186,13 +227,17 @@ let composing = false
 /** query 是否含 CJK（决定全文索引默认译本语言） */
 const isCjk = computed(() => /[\u4e00-\u9fff]/.test(query.value))
 
-/** 可选译本列表（按语言分组展示） */
-const transList = computed(() => index.value?.translations || [])
+/** 可选译本列表（和合本简体优先于和合本繁体，其余保持原序） */
+const transList = computed(() => {
+  const list = index.value?.translations || []
+  const rank = { chisim: 0, chiun: 1, chisb: 2 }
+  return [...list].sort((a, b) => (rank[a.key] ?? 9) - (rank[b.key] ?? 9))
+})
 function autoTransKey() {
   const list = transList.value
   if (!list.length) return ''
   const want = isCjk.value ? 'zh' : 'latin'
-  const preferred = isCjk.value ? 'chiun' : 'niv'
+  const preferred = isCjk.value ? 'chisim' : 'niv'
   return list.find((t) => t.key === preferred)?.key || list.find((t) => t.lang === want)?.key || list[0].key
 }
 const activeTrans = computed(() => transList.value.find((t) => t.key === transKey.value) || null)
@@ -287,6 +332,10 @@ async function runSearch() {
     scriptureResults.value = []
     scriptureTotal.value = 0
     commentaryResults.value = []
+    strongsResults.value = []
+    strongsLoading.value = false
+    apolResults.value = []
+    apolLoading.value = false
     return
   }
   const seq = ++searchSeq
@@ -294,6 +343,8 @@ async function runSearch() {
   results.value = searchEntities(q, index.value, verseResultsOpen.value ? 20 : 8)
   // 经文地址解析
   refHit.value = parseReference(q, lookup.value)
+  // Strong 原文词典 / 护教问答全文（懒加载；与经文全文并行，失败不阻塞）
+  runStrongsAndApol()
   // 经文全文（按语言懒加载索引；英文 ≥2 字符，中文 ≥1 字）
   await ensureScripture()
   if (seq !== searchSeq) return
@@ -303,6 +354,37 @@ async function runSearch() {
   }
   // 注释段落（全文检索注释数据库原文件，按宗派分组渐进加载；失败不阻塞）
   runCommentary()
+}
+
+/** Strong 原文词典 + 护教问答全文检索（懒加载数据；seq 过期结果丢弃，失败不阻塞） */
+async function runStrongsAndApol() {
+  const q = query.value.trim()
+  const seq = searchSeq
+  const counts = index.value?.meta?.counts || {}
+  if (counts.strongs > 0) {
+    strongsLoading.value = true
+    try {
+      const d = await loadStrongs()
+      if (seq !== searchSeq) return
+      strongsResults.value = searchStrongs(q, d)
+    } catch {
+      if (seq === searchSeq) strongsResults.value = []
+    } finally {
+      if (seq === searchSeq) strongsLoading.value = false
+    }
+  }
+  if (counts.apolQuestions > 0) {
+    apolLoading.value = true
+    try {
+      const d = await loadApologetics()
+      if (seq !== searchSeq) return
+      apolResults.value = searchApologetics(q, d)
+    } catch {
+      if (seq === searchSeq) apolResults.value = []
+    } finally {
+      if (seq === searchSeq) apolLoading.value = false
+    }
+  }
 }
 
 const refHit = ref(null)
@@ -436,6 +518,10 @@ watch(searchOpen, async (open) => {
     commentaryResults.value = []
     commentaryLoadingLabel.value = ''
     expandedCommGroups.clear()
+    strongsResults.value = []
+    strongsLoading.value = false
+    apolResults.value = []
+    apolLoading.value = false
     expandedPerson.value = ''
   }
 })
@@ -503,11 +589,19 @@ function goPeriod(p) {
 function goCommentary() {
   go('/brp')
 }
-function goTopic() {
-  go('/apologetics')
+/** Strong 词典词条页 */
+function goStrong(s) {
+  go(`/strongs/${encodeURIComponent(s.code)}`)
+}
+/** 护教专题：深链到该主题论证图 */
+function goApol(a) {
+  go(`/apologetics?topic=${encodeURIComponent(a.topicId)}`)
 }
 function goHistory(h) {
   go(`/history/${h.part}/${h.no}`)
+}
+function goProphecy(p) {
+  go(`/prophecies/${encodeURIComponent(p.raw.id)}`)
 }
 function goCommentarySec(s) {
   const b = (index.value?.books || []).find((x) => x.id === s.bookId)
@@ -555,8 +649,12 @@ const hasResults = computed(() => {
     (r && r.total > 0) ||
     scriptureResults.value.length ||
     commentaryResults.value.length ||
+    strongsResults.value.length ||
+    apolResults.value.length ||
     scriptureLoading.value ||
-    commentaryLoading.value
+    commentaryLoading.value ||
+    strongsLoading.value ||
+    apolLoading.value
   )
 })
 
@@ -575,6 +673,7 @@ function periodName(key) {
 /** 每个同名人都是独立母词条：人名 + 别名（常显）+ 区分信息（子词条：历史时期） */
 const personRows = computed(() => {
   const list = results.value?.persons || []
+  const pProph = results.value?.personProphecies || {}
   return list.map((item) => {
     const raw = item.raw
     return {
@@ -587,6 +686,8 @@ const personRows = computed(() => {
       periods: (raw.ps || []).map((k) => ({ id: k, name: periodName(k) })),
       timeline: timelineOf(raw.s),
       tlShowAll: personTimelineOpen.has(raw.id),
+      props: pProph[raw.id] || [],
+      propsShowAll: personProphecyOpen.has(raw.id),
       first: raw.first,
       sub: [
         raw.zh && raw.en !== raw.zh ? raw.en : '',
@@ -606,7 +707,9 @@ function goPeriodKey(p) {
 
 /* ---------- 编年时间线 ↔ 人物匹配：事件 ppl(强码) → 人物 s(强码) ---------- */
 const TL_SHOW = 4
+const PROPH_SHOW = 4
 const personTimelineOpen = reactive(new Set()) // 展开「显示全部」时间线的人物 id
+const personProphecyOpen = reactive(new Set()) // 展开「显示全部」相关预言的人物 id
 let timelineIndex = null // normStrong(code) -> 事件[]
 /** Strong 码去前导零（H0121G → H121G），人物 s 与事件 ppl 格式对齐 */
 function normStrong(c) {
@@ -635,6 +738,9 @@ function timelineOf(s) {
 function togglePersonTimeline(pg) {
   personTimelineOpen.has(pg.id) ? personTimelineOpen.delete(pg.id) : personTimelineOpen.add(pg.id)
 }
+function togglePersonProphecies(pg) {
+  personProphecyOpen.has(pg.id) ? personProphecyOpen.delete(pg.id) : personProphecyOpen.add(pg.id)
+}
 
 const GROUPS = computed(() => {
     const r = results.value
@@ -644,7 +750,7 @@ const GROUPS = computed(() => {
       { key: 'polities', icon: '🏛', label: '政权 / 区域', items: r.polities, act: goPolity, actIcon: '🗺', actTitle: '在地图中查看' },
       { key: 'periods', icon: '⏳', label: '历史时期', items: r.periods, act: goPeriod, actIcon: '🗺', actTitle: '在地图中查看' },
       { key: 'events', icon: '📜', label: '事件 / 旅程', items: r.events, act: goEvent, actIcon: '🗺', actTitle: '在地图中查看' },
-      { key: 'topics', icon: '🧭', label: '主题专题', items: r.topics, act: goTopic, actIcon: '📄', actTitle: '查看专题' },
+      { key: 'prophecies', icon: '🔯', label: '预言 / 应验', items: r.prophecies, act: goProphecy, actIcon: '🔍', actTitle: '查看预言' },
       { key: 'history', icon: '⛪', label: '教会历史', items: r.history, act: goHistory, actIcon: '📄', actTitle: '阅读该章' },
       { key: 'commentaries', icon: '📚', label: '注释源', items: r.commentaries, act: goCommentary, actIcon: '📖', actTitle: '前往读经页' },
     ]
@@ -723,7 +829,9 @@ function onCompositionEnd() {
               <ul class="sp-tips">
                 <li>📖 输入经文地址直达：<code>约3:16</code> / <code>约翰福音 3 章 16 节</code> / <code>John 3:16</code></li>
                 <li>👤 实体检索：人物 / 地点 / 政权 / 时期 / 事件 / 主题 / 教会史（TIPNR · Pleiades · MARBLE）</li>
-                <li>🔎 经文全文：多译本可切换（和合本/思高本/NIV/KJV/ASV/DRC…，简繁互通）</li>
+                <li>🔎 经文全文：多译本可切换（和合本/和合本简/思高本/NIV/KJV/ASV/DRC…，简繁互通）</li>
+                <li>📖 原文词典：Strong 希腊文 lemma / 转写 / 英文 gloss / 强码（如 <code>G2316</code> / <code>theos</code>）</li>
+                <li>🧭 护教论证：主题 + 子问题全文检索，直接呈现完整逻辑链条（命题 → 质疑 → 回应 → 证据，如 <code>进化论</code> / <code>正典</code>）</li>
                 <li>📚 注释段落：Matthew Henry / Calvin / RWP / Abbott / Catena / MH 简明</li>
               </ul>
             </div>
@@ -772,6 +880,32 @@ function onCompositionEnd() {
                       >{{ pd.name }}</button>
                     </div>
 
+                    <!-- 展开介绍：紧跟人物下方第一个位置（时间线/相关预言之前） -->
+                    <div v-if="expandedPerson === pg.id" class="sp-pdetail">
+                      <template v-if="personDetail">
+                        <div v-if="personDetail.years || personDetail.appear || personDetail.firstRef" class="sp-pdetail-meta">
+                          <span v-if="personDetail.years">{{ personDetail.years }}</span>
+                          <span v-if="personDetail.appear">出现 {{ personDetail.appear }} 次</span>
+                          <span v-if="personDetail.firstRef">首现 {{ personDetail.firstRef }}</span>
+                        </div>
+                        <div v-if="personDetail.relLines.length" class="sp-pdetail-rel">
+                          <div v-for="(line, i) in personDetail.relLines" :key="i">{{ line }}</div>
+                        </div>
+                        <DictView v-if="personDetail.dict" :text="personDetail.dict" />
+                        <div
+                          v-if="!personDetail.relLines.length && !personDetail.dict && !personDetail.years && !personDetail.firstRef"
+                          class="sp-pdetail-none"
+                        >暂无词典与亲属数据</div>
+                        <div class="sp-pdetail-acts">
+                          <button v-if="personDetail.firstRaw?.first" class="sp-pdetail-btn" @click="goPerson(personDetail.firstRaw)">📖 首处经文{{ personDetail.firstRef ? `（${personDetail.firstRef}）` : '' }}</button>
+                          <button class="sp-pdetail-btn" @click="goPersonPage(personDetail.firstRaw)">📄 人物词条</button>
+                        </div>
+                      </template>
+                      <div v-else-if="theoError" class="sp-pdetail-none">详情数据加载失败</div>
+                      <div v-else class="sp-pdetail-none">加载中…</div>
+                      <div class="sp-pdetail-src">Easton 词典 · Theographic（传统编年）</div>
+                    </div>
+
                     <!-- 编年时间线：与人物匹配的相关事件（点击前往经文） -->
                     <template v-if="pg.timeline.length">
                       <div class="sp-pmeta sp-pperiod">
@@ -796,33 +930,32 @@ function onCompositionEnd() {
                       >{{ pg.tlShowAll ? '收起' : `显示全部 ${pg.timeline.length} 条` }}</button>
                     </template>
 
-                    <div v-if="expandedPerson === pg.id" class="sp-pdetail">
-                          <template v-if="personDetail">
-                            <div v-if="personDetail.years || personDetail.appear || personDetail.firstRef" class="sp-pdetail-meta">
-                              <span v-if="personDetail.years">{{ personDetail.years }}</span>
-                              <span v-if="personDetail.appear">出现 {{ personDetail.appear }} 次</span>
-                              <span v-if="personDetail.firstRef">首现 {{ personDetail.firstRef }}</span>
-                            </div>
-                            <div v-if="personDetail.relLines.length" class="sp-pdetail-rel">
-                              <div v-for="(line, i) in personDetail.relLines" :key="i">{{ line }}</div>
-                            </div>
-                            <DictView v-if="personDetail.dict" :text="personDetail.dict" />
-                            <div
-                              v-if="!personDetail.relLines.length && !personDetail.dict && !personDetail.years && !personDetail.firstRef"
-                              class="sp-pdetail-none"
-                            >暂无词典与亲属数据</div>
-                            <div class="sp-pdetail-acts">
-                              <button v-if="personDetail.firstRaw?.first" class="sp-pdetail-btn" @click="goPerson(personDetail.firstRaw)">📖 首处经文{{ personDetail.firstRef ? `（${personDetail.firstRef}）` : '' }}</button>
-                              <button class="sp-pdetail-btn" @click="goPersonPage(personDetail.firstRaw)">📄 人物词条</button>
-                            </div>
-                          </template>
-                          <div v-else-if="theoError" class="sp-pdetail-none">详情数据加载失败</div>
-                          <div v-else class="sp-pdetail-none">加载中…</div>
-                          <div class="sp-pdetail-src">Easton 词典 · Theographic（传统编年）</div>
-                        </div>
+                    <!-- 相关预言：命中的预言挂到对应人物下（并从「预言 / 应验」组原位移除） -->
+                    <template v-if="pg.props.length">
+                      <div class="sp-pmeta sp-pperiod">
+                        <span class="sp-pmeta-k">相关预言</span>
+                        <span class="sp-pmeta-count">{{ pg.props.length }} 条</span>
+                      </div>
+                      <ul class="sp-tlist">
+                        <li
+                          v-for="ph in (pg.propsShowAll ? pg.props : pg.props.slice(0, PROPH_SHOW))"
+                          :key="ph.raw.id"
+                        >
+                          <button class="sp-tl-item" @click="goProphecy(ph)">
+                            <span class="sp-tl-z" v-html="mark(ph.title, query)"></span>
+                            <span class="sp-tl-y" v-if="ph.raw.ot">{{ ph.raw.ot }}</span>
+                          </button>
+                        </li>
+                      </ul>
+                      <button
+                        v-if="pg.props.length > PROPH_SHOW"
+                        class="sp-more"
+                        @click="togglePersonProphecies(pg)"
+                      >{{ pg.propsShowAll ? '收起' : `显示全部 ${pg.props.length} 条` }}</button>
+                    </template>
                     </li>
                   </ul>
-              </section>
+                </section>
 
               <!-- 2. 实体分组 -->
               <section v-for="g in GROUPS" :key="g.key" class="sp-group">
@@ -845,6 +978,33 @@ function onCompositionEnd() {
                     </button>
                   </li>
                 </ul>
+              </section>
+
+              <!-- 2b. 原文词典（Strong：希腊文 lemma / 转写 / 英文 gloss / 强码） -->
+              <section class="sp-group">
+                <h3 class="sp-group-h">
+                  <span aria-hidden="true">📖</span>原文词典
+                  <span class="sp-group-n" v-if="strongsResults.length">{{ strongsResults.length }}</span>
+                </h3>
+                <div v-if="strongsLoading" class="sp-loading">正在加载 Strong 原文词典…</div>
+                <template v-else-if="strongsResults.length">
+                  <ul class="sp-list">
+                    <li v-for="s in strongsResults" :key="s.code">
+                      <button class="sp-item" title="查看词典" @click="goStrong(s)">
+                        <span class="sp-item-main">
+                          <strong class="sp-item-t">
+                            <span class="sp-strong-code">{{ s.code }}</span>
+                            <span class="sp-strong-lemma" v-html="mark(s.lemma, query)"></span>
+                            <span v-if="s.translit" class="sp-strong-translit" v-html="mark(s.translit, query)"></span>
+                          </strong>
+                          <small v-if="s.gloss" class="sp-item-sub" v-html="mark(s.gloss, query)"></small>
+                        </span>
+                        <span class="sp-item-act" aria-hidden="true">🔍</span>
+                      </button>
+                    </li>
+                  </ul>
+                </template>
+                <div v-else-if="index && !strongsLoading" class="sp-none">无原文词典命中</div>
               </section>
 
               <!-- 3. 经文全文（多译本切换） -->
@@ -883,6 +1043,66 @@ function onCompositionEnd() {
                   </button>
                 </template>
                 <div v-else-if="index && !scriptureLoading" class="sp-none">无经文命中</div>
+              </section>
+
+              <!-- 3b. 护教论证（主题 + 子问题全文合并；护教页同款逻辑链条可视化） -->
+              <section class="sp-group">
+                <h3 class="sp-group-h">
+                  <span aria-hidden="true">🧭</span>护教论证
+                  <span class="sp-group-n" v-if="apolResults.length">{{ apolResults.length }}</span>
+                </h3>
+                <div v-if="apolLoading" class="sp-loading">正在检索护教论证图谱…</div>
+                <template v-else-if="apolResults.length">
+                  <ul class="sp-list">
+                    <li v-for="(a, i) in apolResults" :key="a.topicId + i">
+                      <button class="sp-item sp-apol" title="打开该主题论证图谱" @click="goApol(a)">
+                        <span class="sp-item-main">
+                          <span class="sp-apol-topic">
+                            <span class="sp-apol-topic-t" v-html="mark(a.topicZh, query)"></span>
+                            <span v-if="a.topicEn" class="sp-apol-topic-en" v-html="mark(a.topicEn, query)"></span>
+                            <span v-if="a.tags?.length" class="sp-apol-tags">{{ a.tags.join(' · ') }}</span>
+                          </span>
+                          <span v-if="a.chain" class="sp-apol-chain">
+                            <!-- 命题 -->
+                            <span class="apol-node n-claim">
+                              <span class="apol-chip c-claim">命题</span>
+                              <span class="apol-node-text" v-html="mark(a.chain.question || a.topicZh, query)"></span>
+                            </span>
+                            <!-- 质疑 -->
+                            <template v-if="a.chain.objection">
+                              <span class="apol-edge refutes"><span class="apol-edge-line"></span><span class="apol-edge-label">反驳</span></span>
+                              <span class="apol-node n-objection">
+                                <span class="apol-chip c-objection">质疑</span>
+                                <span class="apol-node-text" v-html="mark(a.chain.objection, query)"></span>
+                              </span>
+                            </template>
+                            <!-- 回应 -->
+                            <template v-if="a.chain.summary || a.chain.text">
+                              <span class="apol-edge responds"><span class="apol-edge-line"></span><span class="apol-edge-label">回应</span></span>
+                              <span class="apol-node n-response">
+                                <span class="apol-chip c-response">回应</span>
+                                <span class="apol-node-text" v-html="mark(a.chain.summary || a.chain.text, query)"></span>
+                              </span>
+                            </template>
+                            <!-- 证据 -->
+                            <template v-if="a.chain.evidence.length">
+                              <span class="apol-edge evidences"><span class="apol-edge-line"></span><span class="apol-edge-label">提供证据</span></span>
+                              <span v-for="(e, j) in a.chain.evidence.slice(0, 3)" :key="j" class="apol-node n-evidence">
+                                <span class="apol-chip c-evidence">{{ e.label }}</span>
+                                <span class="apol-node-text">
+                                  <span class="apol-ref" v-html="mark(e.ref, query)"></span>
+                                  <template v-if="e.note"> — <span v-html="mark(e.note, query)"></span></template>
+                                </span>
+                              </span>
+                            </template>
+                          </span>
+                        </span>
+                        <span class="sp-item-act" aria-hidden="true">🧭</span>
+                      </button>
+                    </li>
+                  </ul>
+                </template>
+                <div v-else-if="index && !apolLoading" class="sp-none">无护教论证命中</div>
               </section>
 
               <!-- 4. 注释段落（按宗派分组；heading + 摘录，跳读经页看完整注释） -->
@@ -940,7 +1160,8 @@ function onCompositionEnd() {
                 (index.meta.counts.topics || 0) +
                 (index.meta.counts.history || 0)
               }}
-              条 · 经文 {{ index.meta.counts.translations }} 译本 · 注释段 {{ index.meta.counts.commentarySections }}
+              条 · 经文 {{ index.meta.counts.translations }} 译本 · 注释段 {{ index.meta.counts.commentarySections }} ·
+              原文词典 {{ index.meta.counts.strongs || 0 }} · 护教论证 {{ index.meta.counts.apolQuestions || 0 }}
             </span>
           </footer>
         </div>
@@ -1203,6 +1424,125 @@ function onCompositionEnd() {
   opacity: 0.55;
   margin-left: 10px;
 }
+/* 原文词典词条：强码 / 希腊文 lemma / 拉丁转写 */
+.sp-strong-code {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: #4a6fa5;
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-right: 6px;
+  vertical-align: 1px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.sp-strong-lemma {
+  font-size: 15px;
+  color: #1c2733;
+  font-weight: 600;
+  margin-right: 8px;
+}
+.sp-strong-translit {
+  font-size: 13px;
+  color: #7b8a99;
+  font-style: italic;
+}
+/* 护教论证：主题头 + 迷你逻辑链（护教页同款节点卡片 + 关系连线） */
+.sp-apol-topic {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+  margin-bottom: 0.5rem;
+}
+.sp-apol-topic-t {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.sp-apol-topic-en {
+  font-size: 0.72rem;
+  color: #a7adb6;
+  letter-spacing: 0.03em;
+}
+.sp-apol-tags {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--gold);
+  background: var(--gold-soft);
+  border-radius: 999px;
+  padding: 0.06rem 0.55rem;
+}
+.sp-apol-chain {
+  display: flex;
+  flex-direction: column;
+}
+.apol-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  border-radius: 10px;
+  padding: 0.55rem 0.7rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  border: 1.5px solid;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.apol-node.n-claim { background: #fff; border-color: #c9d6ea; }
+.apol-node.n-objection { background: #fdf7f5; border-color: #e4bdb3; }
+.apol-node.n-response { background: #fff; border-color: #bfd6c8; }
+.apol-node.n-evidence { background: #faf8fd; border-color: #d8cfe6; }
+.apol-chip {
+  flex: none;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.08rem 0.5rem;
+  margin-top: 0.14rem;
+}
+.apol-chip.c-claim { background: #2f5d9e; }
+.apol-chip.c-objection { background: #b3452e; }
+.apol-chip.c-response { background: #2f6f4f; }
+.apol-chip.c-evidence { background: #7a5f9e; }
+.apol-node-text {
+  min-width: 0;
+  color: #55636f;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.apol-node.n-objection .apol-node-text { color: #7a4a3c; font-style: italic; }
+.apol-ref { font-weight: 700; color: #2c4a7c; }
+/* 关系连线（竖线 + 关系标签，颜色与护教图谱关系一致） */
+.apol-edge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 22px;
+  margin-left: 14px;
+}
+.apol-edge-line {
+  width: 2px;
+  height: 100%;
+  background: #d8d2c6;
+  border-radius: 1px;
+}
+.apol-edge-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.apol-edge.refutes .apol-edge-line { background: #b3452e; }
+.apol-edge.refutes .apol-edge-label { color: #b3452e; }
+.apol-edge.responds .apol-edge-line { background: #2f5d9e; }
+.apol-edge.responds .apol-edge-label { color: #2f5d9e; }
+.apol-edge.evidences .apol-edge-line { background: #7a5f9e; }
+.apol-edge.evidences .apol-edge-label { color: #7a5f9e; }
 /* 人物别称 / 历史时期（母词条常显元信息；时期为可点击子词条） */
 .sp-pmeta {
   display: flex;

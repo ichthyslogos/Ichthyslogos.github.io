@@ -37,7 +37,21 @@ export default defineConfig({
   base: './',
   // 固定监听 IPv4 127.0.0.1：Vite 默认只绑 IPv6 回环 ::1，若浏览器把
   // localhost 解析为 127.0.0.1 会 ERR_CONNECTION_REFUSED
-  server: { host: '127.0.0.1' },
+  server: {
+    host: '127.0.0.1',
+    // 排除大数据目录的文件监听：geography/tiles 含 7 万+ 瓦片，chokidar 全量
+    // 监听会 ENOMEM 崩溃；search/strongs/commentary 等大文件也无需热更新监听。
+    watch: {
+      ignored: [
+        '**/public/data/geography/**',
+        '**/public/data/search/**',
+        '**/public/data/brp/strongs-lsj.json',
+        '**/public/data/brp/strongs-dict.json',
+        '**/public/data/brp/strongs-index.json',
+        '**/public/data/brp/commentary/**',
+      ],
+    },
+  },
   // maplibre-gl v5：不排除 dep 优化——排除后 dev 直接以原始 UMD（9MB，无 CJS 互操作）
   // 导入 node_modules 文件，浏览器端 import default 失败、地图页空白（生产构建经
   // rollup 转换无此问题）。v5 经 vite 预构建 + 自带 worker 均正常。

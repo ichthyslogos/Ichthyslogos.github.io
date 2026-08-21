@@ -9,7 +9,10 @@
  * 原文与译本隔离：manifest 中 original=true 的条目为原文（future Strong 功能挂载点）。
  */
 
-const BASE = 'data/brp/'
+/** 站点根路径（尊重 vite base；base='./' 时归一为 '/'，保证深层路由下相对 fetch 不解析错目录） */
+const ROOT = import.meta.env.BASE_URL === './' ? '/' : import.meta.env.BASE_URL
+
+const BASE = `${ROOT}data/brp/`
 const cache = new Map()
 
 /** 书卷分组展示名（与构建端 bible-books.mjs 的 group 取值对应） */
@@ -58,8 +61,23 @@ export async function fetchBook(key, bookId) {
   return fetchJson(`${BASE}translations/${key}/books/${bookId}.json`)
 }
 
-/** 默认译本偏好顺序（URL 未指定译本时的回退链；NIV 为默认，新放入的译本不影响此偏好） */
-const PREFERRED_TRANS = ['niv', 'chiun', 'chisb']
+/** 加载某卷的逐字 Strong 数据（和合本简体；每章每节 words[{t,s}]），按卷缓存 */
+export async function fetchStrong(bookId) {
+  return fetchJson(`${BASE}strongs/${bookId}.json`)
+}
+
+/** 加载 Strong 词典全量（悬停/详情用；词条键为补零强码如 H0430），fetchJson 内置缓存 */
+export async function fetchStrongDict() {
+  return fetchJson(BASE + 'strongs-dict.json')
+}
+
+/** 加载 TFLSJ 高级希腊词典（Full LSJ，约 16MB；详情页按需懒加载），fetchJson 内置缓存 */
+export async function fetchStrongLsj() {
+  return fetchJson(BASE + 'strongs-lsj.json')
+}
+
+/** 默认译本偏好顺序（URL 未指定译本时的回退链；和合本简体为默认，新放入的译本不影响此偏好） */
+const PREFERRED_TRANS = ['chisim', 'niv', 'chiun', 'chisb']
 
 /** 当前选中译本在 manifest 中的条目（按偏好顺序回退） */
 export function resolveTranslation(manifest, key) {
@@ -80,7 +98,7 @@ export function resolveTranslation(manifest, key) {
  *   <sourceKey>/<bookId>.json  按卷注释（整卷一个文件，按需加载 + 缓存）
  * 新注释源接入：把 JSON 放入 data-src/brp/commentary/<key>/ → npm run data
  */
-const COMMENT_BASE = 'data/brp/commentary/'
+const COMMENT_BASE = `${ROOT}data/brp/commentary/`
 
 /** 加载注释源清单（no-store：开发期数据重建频繁，避免 304 命中陈旧响应） */
 export async function fetchCommentaryManifest() {
@@ -213,7 +231,7 @@ export async function fetchNameVariants() {
  *   tiles/          Vector Tile（疆域/城市/城区，按时期预切——由 MapLibre 直接加载）
  *   base/           底图（Gray Earth 栅格 + NE 自然层 GeoJSON）
  */
-const GEO_BASE = 'data/geography/'
+const GEO_BASE = `${ROOT}data/geography/`
 
 /** 加载旅程索引（含全部 journey 元数据与 stops/segments 引用），自动缓存 */
 export async function fetchJourneys() {
@@ -338,7 +356,7 @@ export function sourcesOfCategory(manifest, category) {
  *   topics/<topicId>.json   主题切片（完整数据，按需加载 + 缓存）
  * 由 scripts/build-data.mjs 从 data-src/apologetics/topics/（每回答一个文件）组装生成
  */
-const APOLOG_BASE = 'data/apologetics/'
+const APOLOG_BASE = `${ROOT}data/apologetics/`
 
 /** 加载护教索引（{ topics: [{ id, title, description, tags, sqCount, responseCount, questions: [...] }] }），自动缓存 */
 export async function fetchApologetics() {
@@ -356,7 +374,7 @@ export async function fetchApologeticsTopic(topicId) {
  *   books/<bookId>.json 书目详情（元数据 + 文件直链清单，按需加载 + 缓存）
  * 书籍文件本体存放于独立 GitHub 仓库（library-books-*，Pages 直链），不在本站。
  */
-const LIB_BASE = 'data/library/'
+const LIB_BASE = `${ROOT}data/library/`
 
 /** 加载图书馆索引（{ source, categories: [...], books: [...] }），自动缓存 */
 export async function fetchLibraryIndex() {
@@ -375,7 +393,7 @@ export async function fetchLibraryBook(bookId) {
  *   图片           data/church-history/images/（转换脚本已复制）
  * 由工作区 scripts 生成数据 → build-data.mjs 复制到 public/data
  */
-const HISTORY_BASE = 'data/church-history/'
+const HISTORY_BASE = `${ROOT}data/church-history/`
 
 /** 加载教会史书目索引，自动缓存 */
 export async function fetchChurchHistory() {
@@ -396,7 +414,7 @@ export function churchHistoryImg(src) {
  * 运行时数据位于 public/data/brp/crossrefs/<bookId>.json（按卷切片 + 缓存）
  * 由 scripts/build-crossrefs.mjs 从素材 TSV 构建（素材只读）
  */
-const CROSSREF_BASE = 'data/brp/crossrefs/'
+const CROSSREF_BASE = `${ROOT}data/brp/crossrefs/`
 
 /** 加载某卷串珠数据（chapters[].verses[].refs[]：anchor + targets），自动缓存 */
 export async function fetchCrossrefs(bookId) {

@@ -10,22 +10,30 @@ const props = defineProps({
 })
 
 const expanded = ref(false)
+/** 清理词典正文：去掉 markdown 脚注/链接残留（如 [Gen. 1:27](/gen#Gen.1.27) 及 -ch. 5），纯文本呈现 */
+const clean = computed(() =>
+  (props.text || '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/-\s*(?:ch|ver|vers)\.?\s*\d+/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim(),
+)
 /** 短词条无需折叠 */
-const isLong = computed(() => props.text.length > PREVIEW)
-const preview = computed(() => props.text.slice(0, PREVIEW))
+const isLong = computed(() => clean.value.length > PREVIEW)
+const preview = computed(() => clean.value.slice(0, PREVIEW))
 </script>
 
 <template>
   <div v-if="isLong" class="dict" :class="{ open: expanded }">
-    <p class="dict-text">{{ expanded ? text : preview }}</p>
+    <p class="dict-text">{{ expanded ? clean : preview }}</p>
     <div v-if="expanded" class="dict-bbar">
       <button type="button" class="dict-btn" @click="expanded = false">收起全文</button>
     </div>
     <div v-else class="dict-bbar">
-      <button type="button" class="dict-btn" @click="expanded = true">展开全文（共 {{ text.length }} 字）</button>
+      <button type="button" class="dict-btn" @click="expanded = true">展开全文（共 {{ clean.length }} 字）</button>
     </div>
   </div>
-  <p v-else class="dict-text">{{ text }}</p>
+  <p v-else class="dict-text">{{ clean }}</p>
 </template>
 
 <style scoped>

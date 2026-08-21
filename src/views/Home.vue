@@ -40,6 +40,12 @@ function doSearch(q) {
   const kw = String(q ?? query.value).trim()
   router.push({ path: '/search', query: kw ? { q: kw } : undefined })
 }
+
+/** 清除搜索内容并重新聚焦输入框 */
+function clearSearch() {
+  query.value = ''
+  document.getElementById('home-search')?.focus()
+}
 </script>
 
 <template>
@@ -64,6 +70,18 @@ function doSearch(q) {
             aria-label="搜索人物、经文、地点、原文或主题"
             @keydown.enter.prevent="doSearch()"
           />
+          <button
+            v-if="query"
+            type="button"
+            class="search-clear"
+            aria-label="清除搜索内容"
+            title="清除"
+            @click="clearSearch"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor" />
+            </svg>
+          </button>
         </div>
         <div class="search-actions">
           <button type="submit" class="gbtn">FISH 搜索</button>
@@ -86,6 +104,8 @@ function doSearch(q) {
           <router-link to="/map">地图</router-link>
           <router-link to="/persons">人物</router-link>
           <router-link to="/events">事件</router-link>
+          <router-link to="/prophecies">预言</router-link>
+          <router-link to="/strongs">原文词典</router-link>
         </div>
         <div class="footer-links">
           <router-link to="/apologetics">护教</router-link>
@@ -175,6 +195,38 @@ function doSearch(q) {
   font-size: 1rem;
   color: #202124;
   font-family: inherit;
+}
+/* 隐藏浏览器原生清除叉号（位置不可控），改用自定义按钮 */
+.search-box input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+.search-box input::-ms-clear {
+  display: none;
+}
+.search-clear {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 0.9rem;
+  border: none;
+  border-radius: 50%;
+  background: #dadce0;
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+.search-clear:hover {
+  background: #bdc1c6;
+}
+.search-clear svg {
+  width: 14px;
+  height: 14px;
 }
 
 /* 按钮行：Google 风格的浅灰按钮 */
