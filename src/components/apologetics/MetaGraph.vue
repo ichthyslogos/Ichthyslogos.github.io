@@ -49,7 +49,10 @@ const edges = ref([])
 /** 节点原始构图位置（「复位/复原词条」用） */
 const originPos = ref(new Map())
 
-const { fitView, onNodeClick, setCenter } = useVueFlow()
+const { fitView, onNodeClick, setCenter, onNodesInitialized } = useVueFlow()
+
+/** 节点测量完成后自动适配视口（fitView 需节点已渲染测量，否则静默失败） */
+onNodesInitialized(() => fitView({ padding: 0.2, maxZoom: 1.1, duration: 300 }))
 
 /** 角色过滤 + 搜索 */
 const roleFilter = ref('all')
@@ -342,7 +345,7 @@ const LEGEND = [
           :min-zoom="0.1"
           :max-zoom="3"
           :delete-key-code="null"
-          :nodes-draggable="true"
+          :nodes-draggable="!isMobileView"
           :nodes-connectable="false"
           :fit-view-on-init="false"
           :node-types="nodeTypes"
@@ -364,7 +367,7 @@ const LEGEND = [
             <span class="mg-legend-line" :style="{ background: lg.color }"></span>{{ lg.label }}
           </span>
         </div>
-        <div class="mg-hint">拖拽移动节点 · 滚轮缩放 · 点击主题节点查看其论证细节</div>
+        <div class="mg-hint">{{ isMobileView ? '滚轮缩放 · 点击主题节点查看其论证细节' : '拖拽移动节点 · 滚轮缩放 · 点击主题节点查看其论证细节' }}</div>
       </div>
       <div v-else class="mg-empty">暂无主题数据</div>
     </div>

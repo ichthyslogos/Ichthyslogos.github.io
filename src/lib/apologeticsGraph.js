@@ -40,11 +40,22 @@ export const REL_STYLE = {
 
 /** 布局常量 */
 const COL_W = 340 // 列间距（含列内卡片宽度 + 空隙）
-const ROW_H = 240 // 每个子命题占据的纵向带高
-const EV_STEP_MAX = 96 // 证据节点在带内的最大纵向间距
+const ROW_H_MIN = 240 // 每个子命题占据的最小纵向带高
+const EV_CARD_W = 200 // 证据卡片宽（两列并排，紧凑）
+const EV_COL_GAP = 14 // 证据两列间距
+const EV_ROW_H = 112 // 证据网格行高（卡片高 + 行距）
+const EV_ROW_PAD = 40 // 证据网格上下留白（并入行带）
 
-/** 受版权保护全文的主题描述标记（与 ApologeticsPage 一致：正文不展示全文） */
-export const COPYRIGHT_RE = /全文归档|游子吟/
+/** 依据主题内最大证据数计算行带高，保证证据两列网格纵向不重叠 */
+function computeRowHeight(topic) {
+  let maxEv = 0
+  for (const sq of topic.sub_questions || []) {
+    const c = countEvidence(sq.evidence)
+    if (c > maxEv) maxEv = c
+  }
+  const gridRows = Math.ceil(maxEv / 2)
+  return Math.max(ROW_H_MIN, gridRows * EV_ROW_H + EV_ROW_PAD)
+}
 
 /**
  * 构建主题论证图
@@ -57,6 +68,7 @@ export function buildTopicGraph(topic) {
   const sqs = topic.sub_questions || []
   const topicId = topic.id
   const n = sqs.length
+  const ROW_H = computeRowHeight(topic)
   const topicNodeId = `topic-${topicId}`
 
   // 核心命题节点（置于全部子命题带的纵向中心，作为所有命题的汇聚点）
@@ -119,26 +131,29 @@ export function buildTopicGraph(topic) {
         perspective: sq.perspective || '',
         tags: sq.tags || [],
         summary: sq.summary || '',
-        copyrighted: COPYRIGHT_RE.test(topic.description || '') || COPYRIGHT_RE.test(sq.text || ''),
-        hasText: !!(sq.text || '').trim(),
       },
     })
     edges.push(makeEdge(`${sqId}-supports`, respId, claimId, 'supports'))
     edges.push(makeEdge(`${sqId}-responds`, respId, objId, 'responds_to'))
 
-    // ── 证据 / 经文节点（分布在带内） ──
+    // ── 证据 / 经文节点（两列网格，垂直居中于行带；列内自上而下填充） ──
     const evCount = countEvidence(sq.evidence)
-    const evStep = evCount > 0 ? Math.min(EV_STEP_MAX, (ROW_H * 0.82) / evCount) : 0
+    const gridRows = Math.ceil(evCount / 2)
     let k = 0
     for (const [catKey, catMeta] of Object.entries(EVIDENCE_CATS)) {
       const items = sq.evidence?.[catKey] || []
       for (const item of items) {
+        const col = k % 2
+        const row = Math.floor(k / 2)
         const id = `${catKey === 'bible' ? 'scr' : 'ev'}-${sqId}-${k}`
         const nodeType = catMeta.nodeType
         nodes.push({
           id,
           type: nodeType,
-          position: { x: COL_W * 4, y: ty + (k - (evCount - 1) / 2) * evStep },
+          position: {
+            x: COL_W * 4 + col * (EV_CARD_W + EV_COL_GAP),
+            y: ty + (row - (gridRows - 1) / 2) * EV_ROW_H,
+          },
           data: {
             kind: catKey === 'bible' ? 'scripture' : 'evidence',
             category: catKey,

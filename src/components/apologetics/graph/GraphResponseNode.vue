@@ -12,7 +12,6 @@ defineProps({ data: { type: Object, default: {} }, selected: { type: Boolean, de
     <div class="gn-title">{{ data.titleZh }}</div>
     <div v-if="data.titleEn" class="gn-en">{{ data.titleEn }}</div>
     <p v-if="data.summary" class="gn-summary">{{ data.summary }}</p>
-    <span v-if="data.copyrighted" class="gn-cr">版权内容 · 摘要呈现</span>
   </div>
 </template>
 
@@ -35,5 +34,4 @@ defineProps({ data: { type: Object, default: {} }, selected: { type: Boolean, de
 .gn-title { font-size: 0.98rem; font-weight: 700; line-height: 1.5; color: var(--text); }
 .gn-en { font-size: 0.75rem; color: #a7adb6; letter-spacing: 0.03em; margin-top: 0.15rem; }
 .gn-summary { margin: 0.5rem 0 0; font-size: 0.8rem; line-height: 1.7; color: #6b7683; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.gn-cr { display: inline-block; margin-top: 0.5rem; font-size: 0.68rem; font-weight: 600; color: var(--gold); }
 </style>

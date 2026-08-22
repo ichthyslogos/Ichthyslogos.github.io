@@ -78,7 +78,10 @@ function argLabel(n) {
 }
 
 // Vue Flow 实例工具
-const { fitView, project, onNodeClick, setViewport, setCenter } = useVueFlow()
+const { fitView, project, onNodeClick, setViewport, setCenter, onNodesInitialized } = useVueFlow()
+
+/** 节点测量完成后自动适配视口（fitView 需节点已渲染测量，否则静默失败） */
+onNodesInitialized(() => fitView({ padding: 0.2, maxZoom: 1.1, duration: 300 }))
 
 /** 加载主题切片并构建图谱 */
 let seq = 0
@@ -242,7 +245,7 @@ function jumpTo(id) {
   const n = allNodes.value.find((x) => x.id === id)
   if (!n) return
   selected.value = n
-  const w = n.type === 'graph-topic' ? 300 : n.type === 'graph-claim' || n.type === 'graph-response' ? 280 : 260
+  const w = n.type === 'graph-topic' ? 300 : n.type === 'graph-claim' || n.type === 'graph-response' ? 280 : 200
   setCenter(n.position.x + w / 2, n.position.y + 96, { zoom: 0.9, duration: 320 })
 }
 
@@ -390,7 +393,7 @@ function onWindowResize() {
         :min-zoom="0.12"
         :max-zoom="2.5"
         :delete-key-code="null"
-        :nodes-draggable="true"
+        :nodes-draggable="!isMobileView"
         :nodes-connectable="false"
         :fit-view-on-init="false"
         :node-types="nodeTypes"
@@ -487,7 +490,7 @@ function onWindowResize() {
       </div>
 
       <!-- 提示浮层：引导用户交互 -->
-      <div class="ag-hint">拖拽移动节点 · 滚轮缩放 · 点击节点查看论证详情</div>
+      <div class="ag-hint">{{ isMobileView ? '滚轮缩放 · 点击节点查看论证详情' : '拖拽移动节点 · 滚轮缩放 · 点击节点查看论证详情' }}</div>
 
       <!-- 右侧详情面板 -->
       <aside v-if="selected" class="ag-panel">
@@ -513,17 +516,13 @@ function onWindowResize() {
             <p class="ap-obj">{{ selected.data.text }}</p>
           </template>
 
-          <!-- 回应（含全文阅读 / 版权提示 / 证据清单） -->
+          <!-- 回应（含全文阅读 / 证据清单） -->
           <template v-else-if="selected.data?.kind === 'response'">
             <h3 class="ap-q">{{ selected.data.titleZh }}</h3>
             <div v-if="selected.data.titleEn" class="ap-en">{{ selected.data.titleEn }}</div>
             <div v-if="selected.data.tags?.length" class="ap-meta">{{ selected.data.perspective }} · {{ selected.data.tags.join(' · ') }}</div>
             <p v-if="selected.data.summary" class="ap-summary">{{ selected.data.summary }}</p>
-
-            <div v-if="selected.data.copyrighted" class="ap-copyright">
-              <span class="ap-cr-badge">版权提示</span>
-              <p>本内容基于里程《游子吟》整理，为受版权保护作品，全文暂不公开展示。摘要如上，完整论述请参阅正版书籍。</p>
-            </div>
+            <div v-if="selectedSQ?.text" class="ap-fulltext">{{ selectedSQ.text }}</div>
           </template>
 
           <!-- 证据 / 经文 -->
@@ -848,9 +847,7 @@ function onWindowResize() {
 .ap-block-text { margin: 0.55rem 0 0; font-size: 0.88rem; line-height: 1.8; color: #7a4a3c; font-style: italic; }
 .ap-obj { margin: 0; font-size: 0.96rem; line-height: 1.9; color: #7a4a3c; font-style: italic; }
 
-.ap-copyright { margin-top: 0.9rem; display: flex; gap: 0.8rem; align-items: flex-start; background: var(--gold-soft); border: 1px dashed rgba(139,115,85,0.5); border-radius: var(--radius-sm); padding: 0.8rem 1rem; }
-.ap-cr-badge { flex-shrink: 0; font-size: var(--fs-xs); font-weight: 700; color: #fff; background: var(--gold); border-radius: var(--radius-pill); padding: 0.14rem 0.6rem; margin-top: 0.1rem; }
-.ap-copyright p { margin: 0; font-size: var(--fs-sm); line-height: 1.8; color: #6b7683; }
+.ap-fulltext { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--line-soft); font-size: 0.92rem; line-height: 2; color: #4a5462; white-space: pre-wrap; }
 
 .ap-ref { font-size: 1.05rem; font-weight: 700; color: var(--text); }
 .ap-note { margin: 0.6rem 0 0; font-size: 0.9rem; line-height: 1.8; color: #5c6676; }

@@ -69,19 +69,24 @@ const META_EDGES = [
   { s: 'jesus-resurrection', t: 'suffering', rel: 'responds_to' },
 ]
 
-/** 手工构图坐标（fitView 会自动适配视口，坐标仅决定相对构图） */
+/** 手工构图坐标（fitView 会自动适配视口，坐标仅决定相对构图）。
+ * 卡片宽 300px（核心结论 340px）、高约 200px；列距 340、行距 280，
+ * 保证默认视图下所有卡片互不遮挡、排列整齐。 */
 const POS = {
   '__thesis__': { x: 0, y: 0 },
-  'bible-inspired': { x: -620, y: -80 },
-  'bible-reliability': { x: -360, y: 180 },
-  'does-god-exist': { x: -180, y: 150 },
-  'creation-and-evolution': { x: -620, y: 320 },
-  'science-faith': { x: -880, y: 320 },
-  'resurrection-evidence': { x: 120, y: 180 },
-  'jesus-resurrection': { x: 380, y: 60 },
-  'eternal-life': { x: 380, y: 260 },
-  'faith-life': { x: 660, y: 260 },
-  'suffering': { x: 120, y: 360 },
+  // 左列：神存在论证链（圣经灵感/可靠 → 神存在；科学信仰 → 创造进化 → 神存在）
+  'bible-inspired': { x: -360, y: -120 },
+  'bible-reliability': { x: -360, y: 200 },
+  'does-god-exist': { x: -360, y: 520 },
+  'science-faith': { x: -700, y: 200 },
+  'creation-and-evolution': { x: -700, y: 520 },
+  // 右列：复活论证链（复活证据 → 耶稣复活；永生 → 复活；信仰生活 → 永生）
+  'resurrection-evidence': { x: 380, y: 200 },
+  'jesus-resurrection': { x: 720, y: -120 },
+  'eternal-life': { x: 720, y: 200 },
+  'faith-life': { x: 720, y: 520 },
+  // 反方：苦难问题（被神存在/复活回应）
+  'suffering': { x: 380, y: 520 },
 }
 
 /**
