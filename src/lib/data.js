@@ -315,7 +315,7 @@ export const BOOK_PERIODS = {
   '64': 'temple_fall', // 约翰三书
   '65': 'temple_fall', // 犹大书
   '66': 'temple_fall', // 启示录
-  // 次经（思高本/DRC）
+  // 次经（思高本）
   'ext-1': 'assyria', // 多俾亚传（亚述流放背景）
   'ext-2': 'babylon', // 友弟德传
   'ext-3': 'rome_entry', // 智慧篇（希腊化时代）

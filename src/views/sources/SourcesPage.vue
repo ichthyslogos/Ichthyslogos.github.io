@@ -44,27 +44,6 @@ const categories = [
         via: 'bible_databases（KJV with Strongs）',
         url: null,
       },
-      {
-        name: '美国标准译本（ASV）',
-        use: '英文译本（1901）',
-        license: '公有领域',
-        via: 'bible_databases（ASV）',
-        url: null,
-      },
-      {
-        name: '杜埃-兰斯译本（DRC）',
-        use: '英文天主教译本（Challoner 修订）',
-        license: '公有领域',
-        via: 'bible_databases（DRC）',
-        url: null,
-      },
-      {
-        name: '法语 Martin 1744',
-        use: '法语译本（David Martin, 1744）',
-        license: '公有领域',
-        via: 'bible_databases（FreBDM1744）',
-        url: null,
-      },
     ],
   },
   {

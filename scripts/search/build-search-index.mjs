@@ -7,7 +7,7 @@
  *   注释段落                      不预建索引；搜索时直接调用注释数据库原文件做全文检索
  *
  * 数据来源与许可：
- *   经文    translations/*（STEP Bible / NIV 导入数据，含和合本/思高本/KJV/ASV/DRC 等）
+ *   经文    translations/*（STEP Bible / NIV 导入数据，含和合本/KJV/NIV；思高本/法语/德语仅阅读不入搜索）
  *   人物    commentary/notes/tipnr（STEP TIPNR, CC BY 4.0）：type Male/Female
  *   地点    同上 type=Place + place-coords.json（坐标）
  *   政权    geography/regions.json（Pleiades + STEP + DARE）：entity_type nation/region
@@ -540,8 +540,14 @@ const strongsIdxPath = path.join(DATA, 'brp/strongs-index.json')
 const strongsCount = exists(strongsIdxPath) ? readJson(strongsIdxPath).count || 0 : 0
 
 // 全部译本全文索引（每译本一个懒加载文件）
+// 仅白名单译本进入搜索系统：思高本/法语/德语仅阅读，暂不录入搜索索引
+const SCRIPTURE_SEARCH_KEYS = ['chiun', 'chisim', 'niv', 'kjv']
 const translations = []
 for (const t of brpManifest.translations || []) {
+  if (!SCRIPTURE_SEARCH_KEYS.includes(t.key)) {
+    console.log(`跳过 scripture-${t.key}.json（不入搜索系统）`)
+    continue
+  }
   const s = buildScripture(t.key)
   if (!s || !s.count) {
     console.log(`跳过 scripture-${t.key}.json（无数据）`)

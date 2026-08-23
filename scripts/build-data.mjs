@@ -35,10 +35,9 @@ const META_BY_KEY = {
   ChiUnL: { lang: 'zh-Hant', original: false, tradition: 'protestant' },
   ChiUns: { lang: 'zh-Hans', original: false, tradition: 'protestant' },
   KJV: { lang: 'en', original: false, name: '英王钦定本 (KJV)', tradition: 'protestant' },
-  ASV: { lang: 'en', original: false, name: '美国标准译本 (ASV)', tradition: 'protestant' },
-  DRC: { lang: 'en', original: false, name: '杜埃-兰斯译本 (DRC)', tradition: 'catholic' },
-  FreBDM1744: { lang: 'fr', original: false, name: '法语 Martin 1744', tradition: 'protestant' },
   NIV: { lang: 'en', original: false, name: '新国际版 (NIV)', tradition: 'protestant' },
+  FreBDM1744: { lang: 'fr', original: false, name: '法语 Martin 1744', tradition: 'protestant' },
+  GerBoLut: { lang: 'de', original: false, name: '路德译本 (Luther 1545)', tradition: 'protestant' },
   WLC: { lang: 'hbo', original: true }, // 希伯来文马所拉文本
   Byz: { lang: 'grc', original: true }, // 希腊文拜占庭文本
   TR: { lang: 'grc', original: true }, // 希腊文公认文本
@@ -166,9 +165,9 @@ for (const file of files) {
   }
 }
 
-// 译本顺序：显式顺序表（和合本简中 → 繁中 → 思高本 → NIV → 英文 → 法文），未登记 key 按字母序排后；
+// 译本顺序：显式顺序表（和合本简中 → 繁中 → 思高本 → NIV → KJV → 法语 → 德语），未登记 key 按字母序排后；
 // 原文（original）始终排在译本之后，保证 manifest 顺序稳定可预期
-const TRANSLATION_ORDER = ['chiun', 'chisim', 'chisb', 'niv', 'kjv', 'frebdm1744']
+const TRANSLATION_ORDER = ['chiun', 'chisim', 'chisb', 'niv', 'kjv', 'frebdm1744', 'gerbolut']
 const orderOf = (t) => {
   const i = TRANSLATION_ORDER.indexOf(t.key)
   return t.original ? 1e6 + i : (i === -1 ? 1e5 : i)

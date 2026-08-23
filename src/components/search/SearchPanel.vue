@@ -847,7 +847,7 @@ function onCompositionEnd() {
               <ul class="sp-tips">
                 <li>📖 输入经文地址直达：<code>约3:16</code> / <code>约翰福音 3 章 16 节</code> / <code>John 3:16</code></li>
                 <li>👤 实体检索：人物 / 地点 / 政权 / 时期 / 事件 / 主题 / 教会史（TIPNR · Pleiades · MARBLE）</li>
-                <li>🔎 经文全文：多译本可切换（和合本/和合本简/思高本/NIV/KJV/ASV/DRC…，简繁互通）</li>
+                <li>🔎 经文全文：多译本可切换（和合本/和合本简/思高本/NIV/KJV，简繁互通）</li>
                 <li>📖 原文词典：Strong 希腊文 lemma / 转写 / 英文 gloss / 强码（如 <code>G2316</code> / <code>theos</code>）</li>
                 <li>🧭 护教论证：主题 + 子问题全文检索，直接呈现完整逻辑链条（命题 → 质疑 → 回应 → 证据，如 <code>进化论</code> / <code>正典</code>）</li>
                 <li>📚 注释段落：Matthew Henry / Calvin / RWP / Abbott / Catena / MH 简明</li>
