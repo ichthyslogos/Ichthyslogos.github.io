@@ -71,7 +71,7 @@ function sliceFC(slice) {
         geometry: st.geometry,
       })
       if (!byName.has(e.name)) byName.set(e.name, [])
-      byName.get(e.name).push({ area: st.area, geometry: st.geometry })
+      byName.get(e.name).push({ area: st.area, geometry: st.geometry, color: e.color })
     }
   }
   // 标签点：每实体一条，取最大 state 的质心（与瓦片版 territoryLabelsFC 同逻辑）
@@ -81,7 +81,10 @@ function sliceFC(slice) {
     if (!c || !c.geometry) continue
     feats.push({
       type: 'Feature',
-      properties: { name, label: 1, area: best.area }, // area 供前端 symbol-sort-key 大国优先占位（与瓦片版一致）
+      // color 一并带上：territory-fill/line 的 paint 用 ['get','color']，MapLibre 对
+      // Point feature 也会求值（fill/line 不渲染但 populatePaintArrays 照跑），
+      // 缺 color 会报 "Could not parse color from value 'null'"
+      properties: { name, label: 1, area: best.area, color: best.color || '#c9b896' }, // area 供前端 symbol-sort-key 大国优先占位（与瓦片版一致）
       geometry: c.geometry,
     })
   }

@@ -615,7 +615,10 @@ onMounted(async () => {
       source: 'territory-geo',
       // 国家层级提高：全程可见不消失（z8+ 渐降透明度，避免覆盖街景细节）
       paint: {
-        'fill-color': ['get', 'color'],
+        // coalesce 兜底：territory-geo 含 label 质心点（无 color），MapLibre 对
+        // Point feature 也会求值 paint（fill/line 不渲染但 populatePaintArrays 照跑），
+        // 缺 color 会报 "Could not parse color from value 'null'"
+        'fill-color': ['coalesce', ['get', 'color'], '#c9b896'],
         'fill-opacity': ['interpolate', ['linear'], ['zoom'], 7, 0.4, 10, 0.28, 13, 0.18],
       },
     })
@@ -624,7 +627,7 @@ onMounted(async () => {
       type: 'line',
       source: 'territory-geo',
       paint: {
-        'line-color': ['get', 'color'],
+        'line-color': ['coalesce', ['get', 'color'], '#c9b896'],
         'line-width': 1,
         'line-opacity': ['interpolate', ['linear'], ['zoom'], 7, 0.6, 10, 0.4, 13, 0.25],
       },
@@ -717,7 +720,7 @@ onMounted(async () => {
         'symbol-sort-key': ['get', 'level'],
       },
       paint: {
-        'text-color': ['get', 'color'],
+        'text-color': ['coalesce', ['get', 'color'], '#3c4652'],
         'text-halo-color': 'rgba(255,255,255,0.9)',
         'text-halo-width': ['case', ['==', ['get', 'major'], 1], 1, 0],
       },
@@ -740,7 +743,7 @@ onMounted(async () => {
         'symbol-sort-key': ['get', 'level'],
       },
       paint: {
-        'text-color': ['get', 'color'],
+        'text-color': ['coalesce', ['get', 'color'], '#3c4652'],
         'text-halo-color': 'rgba(250,249,247,0.94)',
         'text-halo-width': 1.8,
       },
