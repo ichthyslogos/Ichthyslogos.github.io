@@ -1,0 +1,45 @@
+# 部署 GitHub Pages —— 仅手动触发（workflow_dispatch）
+# 约定：部署是手动操作，只有明确要求"部署/上线"时才触发；
+# 日常代码修改提交不会自动部署。
+# 手动触发方式：仓库 Actions 页 → Deploy to GitHub Pages → Run workflow
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # 数据已入库（public/data），直接构建；素材库在本地，CI 不执行 data:import
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
